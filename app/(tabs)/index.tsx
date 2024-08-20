@@ -1,6 +1,13 @@
-import { Image, StyleSheet, View, useColorScheme } from "react-native";
+import {
+  Button,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useColorScheme,
+} from "react-native";
 
-import { ParallaxScrollView } from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import {
@@ -21,9 +28,10 @@ import { chain, client } from "@/constants/thirdweb";
 import { shortenAddress } from "thirdweb/utils";
 import { ThemedButton } from "@/components/ThemedButton";
 import { useEffect, useState } from "react";
-import { createWallet } from "thirdweb/wallets";
+import { createWallet, Wallet } from "thirdweb/wallets";
 import { ethereum, base } from "thirdweb/chains";
 import { createAuth } from "thirdweb/auth";
+import { ScrollView } from "react-native";
 
 const wallets = [
   inAppWallet({
@@ -54,107 +62,33 @@ export default function HomeScreen() {
   const account = useActiveAccount();
   const theme = useColorScheme();
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/title.png")}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Connecting Wallets</ThemedText>
-      </ThemedView>
-      <View style={{ gap: 2 }}>
-        <ThemedText type="subtitle">{`<ConnectButton />`}</ThemedText>
-        <ThemedText type="subtext">
-          Configurable button + modal, handles both connection and connected
-          state. Example below has Smart Accounts + sponsored transactions
-          enabled.
-        </ThemedText>
+    <ScrollView style={styles.scrollView}>
+      <View style={styles.container}>
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 32,
+            fontWeight: 600,
+            width: "100%",
+          }}
+        >
+          Bienvenue
+        </Text>
+        <Image source={require("@/assets/images/biometry-image.png")} />
+        <ConnectWithPasskey />
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 18,
+            width: "100%",
+            fontFamily: "Poppins",
+          }}
+        >
+          Ou bien connectez vous avec :
+        </Text>
+        <CustomConnectUI />
       </View>
-      <ConnectButton
-        client={client}
-        theme={theme || "dark"}
-        wallets={wallets}
-        chain={base}
-      />
-      <View style={{ gap: 2 }}>
-        <ThemedText type="subtitle">{`Themed <ConnectButton />`}</ThemedText>
-        <ThemedText type="subtext">
-          Styled the Connect Button to match your app.
-        </ThemedText>
-      </View>
-      <ConnectButton
-        client={client}
-        theme={lightTheme({
-          colors: {
-            primaryButtonBg: "#e0142f",
-            modalBg: "#e0142f",
-            borderColor: "#ed3a51",
-            accentButtonBg: "#b11025",
-            primaryText: "#fef5f6",
-            secondaryIconColor: "#e2dddd",
-            secondaryText: "#e2dddd",
-            secondaryButtonBg: "#ed3a51",
-          },
-        })}
-        wallets={wallets}
-        connectButton={{
-          label: "Sign in to ✨ MyApp",
-        }}
-        connectModal={{
-          title: "✨ MyApp Login",
-        }}
-      />
-      <View style={{ height: 16 }} />
-      <View style={{ gap: 2 }}>
-        <ThemedText type="subtitle">{`<ConnectEmbed />`}</ThemedText>
-        <ThemedText type="subtext">
-          Embeddable connection component in any screen. Example below is
-          configured with a specific list of EOAs + SIWE.
-        </ThemedText>
-      </View>
-      <ConnectEmbed
-        client={client}
-        theme={theme || "dark"}
-        chain={ethereum}
-        wallets={wallets}
-        auth={{
-          async doLogin(params) {
-            // fake delay
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-            const verifiedPayload = await thirdwebAuth.verifyPayload(params);
-            isLoggedIn = verifiedPayload.valid;
-          },
-          async doLogout() {
-            isLoggedIn = false;
-          },
-          async getLoginPayload(params) {
-            return thirdwebAuth.generatePayload(params);
-          },
-          async isLoggedIn(address) {
-            return isLoggedIn;
-          },
-        }}
-      />
-      {account && (
-        <ThemedText type="subtext">
-          ConnectEmbed does not render when connected, use the `onConnect` prop
-          to navigate to a new screen instead.
-        </ThemedText>
-      )}
-      <View style={{ height: 16 }} />
-      <View style={{ gap: 2 }}>
-        <ThemedText type="subtitle">{`useConnect()`}</ThemedText>
-        <ThemedText type="subtext">
-          Hooks to build your own UI. Example below connects to a smart Google
-          account or metamask EOA.
-        </ThemedText>
-      </View>
-      <CustomConnectUI />
-    </ParallaxScrollView>
+    </ScrollView>
   );
 }
 
@@ -179,8 +113,6 @@ const CustomConnectUI = () => {
   ) : (
     <>
       <ConnectWithGoogle />
-      <ConnectWithMetaMask />
-      <ConnectWithPasskey />
     </>
   );
 };
@@ -188,12 +120,18 @@ const CustomConnectUI = () => {
 const ConnectWithGoogle = () => {
   const { connect, isConnecting } = useConnect();
   return (
-    <ThemedButton
-      title="Connect with Google"
-      loading={isConnecting}
-      loadingTitle="Connecting..."
+    <Pressable
+      style={{
+        backgroundColor: "#13293D",
+        padding: 10,
+        borderRadius: 30,
+        height: 50,
+        justifyContent: "center",
+        alignItems: "center",
+        width: 50,
+      }}
       onPress={() => {
-        connect(async () => {
+        connect(async (): Promise<Wallet> => {
           const w = inAppWallet({
             smartAccount: {
               chain,
@@ -202,64 +140,87 @@ const ConnectWithGoogle = () => {
           });
           await w.connect({
             client,
-            strategy: "google",
+            strategy: "facebook",
           });
           return w;
         });
       }}
-    />
-  );
-};
-
-const ConnectWithMetaMask = () => {
-  const { connect, isConnecting } = useConnect();
-  return (
-    <ThemedButton
-      title="Connect with MetaMask"
-      variant="secondary"
-      loading={isConnecting}
-      loadingTitle="Connecting..."
-      onPress={() => {
-        connect(async () => {
-          const w = createWallet("io.metamask");
-          await w.connect({
-            client,
-          });
-          return w;
-        });
-      }}
-    />
+    >
+      <Image
+        source={require("@/assets/images/google.png")}
+        style={{
+          width: 30,
+          height: 30,
+        }}
+      />
+    </Pressable>
   );
 };
 
 const ConnectWithPasskey = () => {
   const { connect, isConnecting } = useConnect();
   return (
-    <ThemedButton
-      title="Login with Passkey"
+    <Pressable
+      style={{
+        backgroundColor: "#13293D",
+        padding: 10,
+        borderRadius: 30,
+        height: 50,
+        justifyContent: "center",
+        alignItems: "center",
+        width: 335,
+      }}
       onPress={() => {
-        connect(async () => {
-          const hasPasskey = await hasStoredPasskey({
-            client,
-          });
-          const w = inAppWallet({
+        connect(async (): Promise<Wallet> => {
+          const wallet = inAppWallet({
             auth: {
-              passkeyDomain: "thirdweb.com",
+              options: ["passkey"],
+              passkeyDomain: "moncomptesouverain.fr",
             },
           });
-          await w.connect({
+
+          const hasPasskey = await hasStoredPasskey(client);
+          await wallet.connect({
             client,
             strategy: "passkey",
             type: hasPasskey ? "sign-in" : "sign-up",
           });
-          return w;
+          return wallet;
         });
       }}
-    />
+    >
+      <Text
+        style={{
+          fontSize: 14,
+          color: "white",
+          fontWeight: 500,
+        }}
+      >
+        Créez votre portefeuille
+      </Text>
+    </Pressable>
+    // <ThemedButton
+    //   title="Login with Passkey"
+    //
+    // />
   );
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+    padding: 24,
+    backgroundColor: "#ECFF78",
+    height: "100%",
+  },
+  container: {
+    backgroundColor: "#ECFF78",
+    display: "flex",
+    flexDirection: "column",
+    gap: 24,
+    flex: 1,
+    height: "100%",
+    alignItems: "center",
+  },
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -272,9 +233,6 @@ const styles = StyleSheet.create({
   reactLogo: {
     height: "100%",
     width: "100%",
-    bottom: 0,
-    left: 0,
-    position: "absolute",
   },
   rowContainer: {
     flexDirection: "row",
