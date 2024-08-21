@@ -99,17 +99,15 @@ const ConnectWithGoogle = () => {
               sponsorGas: true,
             },
           });
-          await w
-            .connect({
-              client,
-              strategy: "google",
-            })
-            .then(() => {
-              router.push({
-                pathname: "/(tabs)home",
-              });
-            });
+          await w.connect({
+            client,
+            strategy: "google",
+          });
           return w;
+        }).then(() => {
+          router.push({
+            pathname: "/(tabs)home",
+          });
         });
       }}
     >

@@ -22,14 +22,14 @@
         "foregroundImage": "./assets/images/ibex-splash.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mcs_ibex.app",
+      "package": "com.thirdweb.demo",
       "intentFilters": [
         {
           "autoVerify": true,
           "action": "VIEW",
           "data": {
             "scheme": "https",
-            "host": "moncomptesouverain.fr"
+            "host": "thirdweb.com"
           },
           "category": ["BROWSABLE", "DEFAULT"]
         }
