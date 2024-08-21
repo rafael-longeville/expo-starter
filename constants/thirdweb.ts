@@ -1,6 +1,5 @@
 import { createThirdwebClient, getContract } from "thirdweb";
-import { base, baseSepolia } from "thirdweb/chains";
-import { setThirdwebDomains } from "thirdweb/utils";
+import { base, arbitrumSepolia } from "thirdweb/chains";
 
 const clientId = process.env.EXPO_PUBLIC_THIRDWEB_CLIENT_ID!;
 
@@ -14,7 +13,7 @@ export const client = createThirdwebClient({
   clientId,
 });
 
-export const chain = baseSepolia;
+export const chain = arbitrumSepolia;
 
 export const contract = getContract({
   client,

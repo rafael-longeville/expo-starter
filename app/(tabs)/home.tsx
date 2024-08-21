@@ -1,31 +1,31 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
+import { StyleSheet, Text, View, Button } from "react-native";
 import {
   useActiveAccount,
-  useConnect,
-  useDisconnect,
-  useActiveWallet,
+  useWalletBalance,
 } from "thirdweb/react";
-import {
-  getUserEmail,
-  hasStoredPasskey,
-  inAppWallet,
-} from "thirdweb/wallets/in-app";
 import { chain, client } from "@/constants/thirdweb";
-import { shortenAddress } from "thirdweb/utils";
-import { ThemedButton } from "@/components/ThemedButton";
-import { useEffect, useState } from "react";
-import { Wallet } from "thirdweb/wallets";
 import { ScrollView } from "react-native";
-import { Link, router } from "expo-router";
+import { approve, transferFrom } from "thirdweb/extensions/erc20";
+
 
 export default function HomeScreen() {
+
   const account = useActiveAccount();
+
+  const { data } = useWalletBalance({
+    chain: chain,
+    address: account?.address,
+    client,
+  });
+  // console.log("data", data);
+  // console.log("balance", data?.displayValue, data?.symbol);
+  // console.log("address", account?.address);``
 
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        <Text style={styles.title}>Bonjour {account?.address}</Text>
+        <Text style={styles.blackSubtitle}>Bonjour {account?.address}</Text>
+        <Text style={styles.title}>Vous avez {data?.displayValue} ETH</Text>
       </View>
     </ScrollView>
   );
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ECFF78",
     display: "flex",
     flexDirection: "column",
+    padding: 50,
     gap: 12,
     flex: 1,
     height: "100%",
