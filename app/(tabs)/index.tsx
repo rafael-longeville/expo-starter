@@ -1,23 +1,10 @@
-import {
-  Button,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  useColorScheme,
-} from "react-native";
-
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import {
   useActiveAccount,
   useConnect,
   useDisconnect,
   useActiveWallet,
-  ConnectButton,
-  ConnectEmbed,
-  lightTheme,
 } from "thirdweb/react";
 import {
   getUserEmail,
@@ -28,94 +15,68 @@ import { chain, client } from "@/constants/thirdweb";
 import { shortenAddress } from "thirdweb/utils";
 import { ThemedButton } from "@/components/ThemedButton";
 import { useEffect, useState } from "react";
-import { createWallet, Wallet } from "thirdweb/wallets";
-import { ethereum, base } from "thirdweb/chains";
-import { createAuth } from "thirdweb/auth";
+import { Wallet } from "thirdweb/wallets";
 import { ScrollView } from "react-native";
-
-const wallets = [
-  inAppWallet({
-    auth: {
-      passkeyDomain: "thirdweb.com",
-    },
-    smartAccount: {
-      chain: base,
-      sponsorGas: true,
-    },
-  }),
-  createWallet("io.metamask"),
-
-  createWallet("me.rainbow"),
-  createWallet("com.trustwallet.app"),
-  createWallet("io.zerion.wallet"),
-];
-
-const thirdwebAuth = createAuth({
-  domain: "localhost:3000",
-  client,
-});
-
-// fake login state, this should be returned from the backend
-let isLoggedIn = false;
+import { Link, router } from "expo-router";
 
 export default function HomeScreen() {
   const account = useActiveAccount();
-  const theme = useColorScheme();
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
+        <Text style={styles.title}>Bienvenue</Text>
         <Text
           style={{
+            ...styles.blackSubtitle,
             textAlign: "center",
-            fontSize: 32,
-            fontWeight: 600,
-            width: "100%",
+            fontSize: 16,
           }}
         >
-          Bienvenue
+          Vous êtes à un doigt de créer votre compte souverain gratuitement !
         </Text>
         <Image source={require("@/assets/images/biometry-image.png")} />
         <ConnectWithPasskey />
+        <CreateWithPasskey />
         <Text
           style={{
+            ...styles.blackSubtitle,
             textAlign: "center",
-            fontSize: 18,
-            width: "100%",
-            fontFamily: "Poppins",
+            fontSize: 14,
           }}
         >
           Ou bien connectez vous avec :
         </Text>
-        <CustomConnectUI />
+        <ConnectWithGoogle />
+        <Image
+          style={{
+            marginTop: 24,
+          }}
+          source={require("@/assets/images/ibex-wallet-logo.png")}
+        />
+        <Text
+          style={{
+            ...styles.blackSubtitle,
+            textAlign: "center",
+            fontSize: 12,
+            marginTop: 12,
+          }}
+        >
+          En continuant, vous confirmez avoir lu et accepté{" "}
+          <Link href={"https://moncomptesouverain.fr"}>
+            <Text
+              style={{
+                textDecorationLine: "underline",
+              }}
+            >
+              nos conditions générales de ventes.
+            </Text>
+          </Link>
+        </Text>
       </View>
     </ScrollView>
   );
 }
-
-const CustomConnectUI = () => {
-  const wallet = useActiveWallet();
-  const account = useActiveAccount();
-  const [email, setEmail] = useState<string | undefined>();
-  const { disconnect } = useDisconnect();
-  useEffect(() => {
-    if (wallet && wallet.id === "inApp") {
-      getUserEmail({ client }).then(setEmail);
-    }
-  }, [wallet]);
-
-  return wallet && account ? (
-    <View>
-      <ThemedText>Connected as {shortenAddress(account.address)}</ThemedText>
-      {email && <ThemedText type="subtext">{email}</ThemedText>}
-      <View style={{ height: 16 }} />
-      <ThemedButton onPress={() => disconnect(wallet)} title="Disconnect" />
-    </View>
-  ) : (
-    <>
-      <ConnectWithGoogle />
-    </>
-  );
-};
 
 const ConnectWithGoogle = () => {
   const { connect, isConnecting } = useConnect();
@@ -138,10 +99,16 @@ const ConnectWithGoogle = () => {
               sponsorGas: true,
             },
           });
-          await w.connect({
-            client,
-            strategy: "facebook",
-          });
+          await w
+            .connect({
+              client,
+              strategy: "google",
+            })
+            .then(() => {
+              router.push({
+                pathname: "/(tabs)home",
+              });
+            });
           return w;
         });
       }}
@@ -157,7 +124,7 @@ const ConnectWithGoogle = () => {
   );
 };
 
-const ConnectWithPasskey = () => {
+const CreateWithPasskey = () => {
   const { connect, isConnecting } = useConnect();
   return (
     <Pressable
@@ -191,24 +158,84 @@ const ConnectWithPasskey = () => {
     >
       <Text
         style={{
+          ...styles.whiteSubtitle,
+          textAlign: "center",
           fontSize: 14,
-          color: "white",
-          fontWeight: 500,
+          fontFamily: "Poppins_500Medium",
         }}
       >
         Créez votre portefeuille
       </Text>
     </Pressable>
-    // <ThemedButton
-    //   title="Login with Passkey"
-    //
-    // />
   );
 };
 
+const ConnectWithPasskey = () => {
+  const { connect, isConnecting } = useConnect();
+  return (
+    <Pressable
+      style={{
+        backgroundColor: "white",
+        padding: 10,
+        borderRadius: 30,
+        height: 50,
+        justifyContent: "center",
+        alignItems: "center",
+        width: 335,
+      }}
+      onPress={() => {
+        connect(async (): Promise<Wallet> => {
+          const wallet = inAppWallet({
+            auth: {
+              options: ["passkey"],
+              passkeyDomain: "moncomptesouverain.fr",
+            },
+          });
+
+          const hasPasskey = await hasStoredPasskey(client);
+          await wallet.connect({
+            client,
+            strategy: "passkey",
+            type: hasPasskey ? "sign-in" : "sign-up",
+          });
+          return wallet;
+        });
+      }}
+    >
+      <Text
+        style={{
+          ...styles.blackSubtitle,
+          textAlign: "center",
+          fontSize: 14,
+          fontFamily: "Poppins_500Medium",
+        }}
+      >
+        Utilisez un portefeuille existant
+      </Text>
+    </Pressable>
+  );
+};
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 32,
+    width: "100%",
+    color: "#13293D",
+    textAlign: "center",
+    fontFamily: "Poppins_600SemiBold",
+  },
+  blackSubtitle: {
+    fontSize: 18,
+    width: "100%",
+    color: "#13293D",
+    fontFamily: "Poppins_400Regular",
+  },
+  whiteSubtitle: {
+    fontSize: 18,
+    width: "100%",
+    color: "white",
+    fontFamily: "Poppins_400Regular",
+  },
   scrollView: {
-    padding: 24,
     backgroundColor: "#ECFF78",
     height: "100%",
   },
@@ -216,10 +243,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#ECFF78",
     display: "flex",
     flexDirection: "column",
-    gap: 24,
+    gap: 12,
     flex: 1,
     height: "100%",
     alignItems: "center",
+    fontFamily: "Poppins",
+    marginTop: 24,
   },
   titleContainer: {
     flexDirection: "row",
