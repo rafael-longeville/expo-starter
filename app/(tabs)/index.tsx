@@ -106,7 +106,7 @@ const ConnectWithGoogle = () => {
           return w;
         }).then(() => {
           router.push({
-            pathname: "/(tabs)home",
+            pathname: "/(tabs)/home",
           });
         });
       }}
