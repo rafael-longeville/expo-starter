@@ -6,9 +6,8 @@ import {
 } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
 import { ScrollView } from "react-native";
-import { getContract, prepareContractCall } from "thirdweb";
-import { toUnits } from "thirdweb/utils";
-
+import { sendAndConfirmTransaction } from "thirdweb";
+import { prepareTransaction, toWei } from "thirdweb";
 
 export default function HomeScreen() {
 
@@ -23,21 +22,18 @@ export default function HomeScreen() {
   // console.log("balance", data?.displayValue, data?.symbol);
   // console.log("address", account?.address);``
 
-  const contract = getContract({
-    address: "0x0",
+  const transaction = prepareTransaction({
+    to: "0x4fc0C27D9F37dC94469e449CBe015df9A392c83e",
     chain: chain,
-    client,
+    client: client,
+    value: toWei("0.0001"),
   });
-
-  const { mutate: sendTx, data: transactionResult } = useSendTransaction();
-
-  const onClick = () => {
-    const transaction = prepareContractCall({
-        contract,
-        method: "function transfer(address to, uint256 value)",
-        params: ["0x4fc0C27D9F37dC94469e449CBe015df9A392c83e", toUnits("0.001", 18)],
-    });
-    sendTx(transaction);
+  
+  const onClick = async () => {
+    if (account) {
+      const tx = await sendAndConfirmTransaction({ transaction, account, });
+      console.log(tx)
+    }
   };
 
   return (
