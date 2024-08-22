@@ -1,26 +1,30 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import React, { useState, useCallback } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import {
   useActiveAccount,
   useWalletBalance,
-  useSendTransaction
+  useSendTransaction,
 } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
-import { ScrollView } from "react-native";
-import { sendAndConfirmTransaction } from "thirdweb";
-import { prepareTransaction, toWei } from "thirdweb";
+import { sendAndConfirmTransaction, prepareTransaction, toWei } from "thirdweb";
 
 export default function HomeScreen() {
-
   const account = useActiveAccount();
+  const [refreshing, setRefreshing] = useState(false);
+  const [transactionObject, setTransactionObject] = useState(null);
 
-  const { data } = useWalletBalance({
+  const { data, refetch } = useWalletBalance({
     chain: chain,
     address: account?.address,
     client,
   });
-  // console.log("data", data);
-  // console.log("balance", data?.displayValue, data?.symbol);
-  // console.log("address", account?.address);``
 
   const transaction = prepareTransaction({
     to: "0x4fc0C27D9F37dC94469e449CBe015df9A392c83e",
@@ -28,16 +32,41 @@ export default function HomeScreen() {
     client: client,
     value: toWei("0.0001"),
   });
-  
+
   const onClick = async () => {
     if (account) {
-      const tx = await sendAndConfirmTransaction({ transaction, account, });
-      console.log(tx)
+      try {
+        const tx = await sendAndConfirmTransaction({
+          transaction,
+          account,
+        })
+          .then((res) => {
+            refetch();
+            console.log(tx);
+            setTransactionObject(tx);
+            console.log("Transaction", res);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch().finally(() => setRefreshing(false));
+  }, []);
+
   return (
-    <ScrollView style={styles.scrollView}>
+    <ScrollView
+      style={styles.scrollView}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View style={styles.container}>
         <Text style={styles.blackSubtitle}>Bonjour {account?.address}</Text>
         <Text style={styles.title}>Vous avez {data?.displayValue} ETH</Text>
