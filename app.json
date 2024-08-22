@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/ibex-splash.png",
-    "scheme": "com.thirdweb.demo",
+    "scheme": "com.civicpower.ibexwallet",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/ibex-splash.png",
