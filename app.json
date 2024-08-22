@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "thirdweb playground",
-    "slug": "thirdweb-playground",
+    "slug": "civicpower-wallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/ibex-splash.png",
@@ -33,7 +33,8 @@
           },
           "category": ["BROWSABLE", "DEFAULT"]
         }
-      ]
+      ],
+      "versionCode": 7
     },
     "web": {
       "bundler": "metro",
@@ -60,7 +61,12 @@
           }
         }
       ],
-      ["expo-font", { "fonts": ["./assets/fonts/Poppins-Black.ttf"] }]
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/Poppins-Black.ttf"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
@@ -70,9 +76,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "d1d7acaf-b44a-4425-af35-620596448499"
+        "projectId": "cb471d7b-fc40-4a02-b7fd-8beae6ebc6c0"
       }
     },
-    "owner": "thirdweb"
+    "owner": "sneakydev"
   }
 }
