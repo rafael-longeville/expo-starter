@@ -14,8 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.thirdweb.demo",
-      "associatedDomains": ["webcredentials:thirdweb.com"]
+      "bundleIdentifier": "com.civicpower.ibexwallet",
+      "associatedDomains": ["webcredentials:moncomptesouverain.fr"]
     },
     "android": {
       "adaptiveIcon": {
