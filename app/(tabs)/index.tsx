@@ -47,7 +47,7 @@ export default function HomeScreen() {
         >
           Ou bien connectez vous avec :
         </Text>
-        <ConnectWithGoogle account={account} />
+        <ConnectWithGoogle />
         <Image
           style={{
             marginTop: 24,
@@ -78,36 +78,8 @@ export default function HomeScreen() {
   );
 }
 
-const ConnectWithGoogle = ({ account }: any) => {
+const ConnectWithGoogle = () => {
   const { connect, isConnecting, error: googleHookError } = useConnect();
-
-  const handleGoogleSignIn = () => {
-    try {
-      connect(async () => {
-        const w = inAppWallet({
-          smartAccount: {
-            chain,
-            sponsorGas: true,
-          },
-        });
-        await w.connect({
-          client,
-          strategy: "google",
-        });
-        return w;
-      });
-
-      if (account && !isConnecting) {
-        router.push({
-          pathname: "/(tabs)/home",
-        });
-      }
-    } catch (error) {
-      console.log("Google hook error :", googleHookError);
-      console.error("Google sign-in failed:", error);
-      // Handle or display the error as needed
-    }
-  };
 
   return (
     <Pressable
@@ -120,7 +92,31 @@ const ConnectWithGoogle = ({ account }: any) => {
         alignItems: "center",
         width: 50,
       }}
-      onPress={handleGoogleSignIn}
+      onPress={() => {
+        try {
+          connect(async (): Promise<Wallet> => {
+            const w = inAppWallet({
+              smartAccount: {
+                chain,
+                sponsorGas: true,
+              },
+            });
+            await w.connect({
+              client,
+              strategy: "google",
+            });
+            return w;
+          }).then(() => {
+            if (!isConnecting) {
+              router.push({
+                pathname: "/(tabs)/home",
+              });
+            }
+          });
+        } catch {
+          console.log("error", googleHookError);
+        }
+      }}
     >
       <Image
         source={require("@/assets/images/google.png")}
