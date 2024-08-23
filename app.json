@@ -18,7 +18,7 @@
       "associatedDomains": [
         "webcredentials:moncomptesouverain.fr"
       ],
-      "buildNumber": "4"
+      "buildNumber": "14"
     },
     "android": {
       "adaptiveIcon": {
@@ -40,7 +40,7 @@
           ]
         }
       ],
-      "versionCode": 17
+      "versionCode": 19
     },
     "web": {
       "bundler": "metro",

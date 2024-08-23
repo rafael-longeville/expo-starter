@@ -47,7 +47,7 @@ export default function HomeScreen() {
         >
           Ou bien connectez vous avec :
         </Text>
-        <ConnectWithGoogle />
+        <ConnectWithGoogle account={account} />
         <Image
           style={{
             marginTop: 24,
@@ -78,12 +78,12 @@ export default function HomeScreen() {
   );
 }
 
-const ConnectWithGoogle = () => {
-  const { connect, isConnecting } = useConnect();
+const ConnectWithGoogle = ({ account }: any) => {
+  const { connect, isConnecting, error: googleHookError } = useConnect();
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = () => {
     try {
-      const wallet = await connect(async () => {
+      connect(async () => {
         const w = inAppWallet({
           smartAccount: {
             chain,
@@ -97,12 +97,13 @@ const ConnectWithGoogle = () => {
         return w;
       });
 
-      if (wallet && !isConnecting) {
+      if (account && !isConnecting) {
         router.push({
           pathname: "/(tabs)/home",
         });
       }
     } catch (error) {
+      console.log("Google hook error :", googleHookError);
       console.error("Google sign-in failed:", error);
       // Handle or display the error as needed
     }
