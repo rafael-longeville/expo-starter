@@ -15,10 +15,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.civicpower.ibexwallet",
-      "associatedDomains": [
-        "webcredentials:moncomptesouverain.fr"
-      ],
-      "buildNumber": "16"
+      "associatedDomains": ["webcredentials:moncomptesouverain.fr"],
+      "buildNumber": "15",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -34,10 +35,7 @@
             "scheme": "https",
             "host": "moncomptesouverain.fr"
           },
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "versionCode": 19
@@ -59,10 +57,7 @@
             "extraPods": [
               {
                 "name": "OpenSSL-Universal",
-                "configurations": [
-                  "Release",
-                  "Debug"
-                ],
+                "configurations": ["Release", "Debug"],
                 "modular_headers": true,
                 "version": "3.1.5004"
               }
@@ -73,9 +68,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/Poppins-Black.ttf"
-          ]
+          "fonts": ["./assets/fonts/Poppins-Black.ttf"]
         }
       ]
     ],
