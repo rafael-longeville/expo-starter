@@ -21,7 +21,7 @@
     "production": {
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_THIRDWEB_CLIENT_ID=": "4579e43397058d9ee5b5e1688ace9160"
+        "EXPO_PUBLIC_THIRDWEB_CLIENT_ID": "4579e43397058d9ee5b5e1688ace9160"
       }
     }
   },

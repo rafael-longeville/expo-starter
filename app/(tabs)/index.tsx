@@ -80,6 +80,34 @@ export default function HomeScreen() {
 
 const ConnectWithGoogle = () => {
   const { connect, isConnecting } = useConnect();
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const wallet = await connect(async () => {
+        const w = inAppWallet({
+          smartAccount: {
+            chain,
+            sponsorGas: true,
+          },
+        });
+        await w.connect({
+          client,
+          strategy: "google",
+        });
+        return w;
+      });
+
+      if (wallet && !isConnecting) {
+        router.push({
+          pathname: "/(tabs)/home",
+        });
+      }
+    } catch (error) {
+      console.error("Google sign-in failed:", error);
+      // Handle or display the error as needed
+    }
+  };
+
   return (
     <Pressable
       style={{
@@ -91,25 +119,7 @@ const ConnectWithGoogle = () => {
         alignItems: "center",
         width: 50,
       }}
-      onPress={() => {
-        connect(async (): Promise<Wallet> => {
-          const w = inAppWallet({
-            smartAccount: {
-              chain,
-              sponsorGas: true,
-            },
-          });
-          await w.connect({
-            client,
-            strategy: "google",
-          });
-          return w;
-        }).then(() => {
-          router.push({
-            pathname: "/(tabs)/home",
-          });
-        });
-      }}
+      onPress={handleGoogleSignIn}
     >
       <Image
         source={require("@/assets/images/google.png")}
