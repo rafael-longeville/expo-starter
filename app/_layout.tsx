@@ -4,7 +4,6 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { ThirdwebProvider } from "thirdweb/react";
@@ -16,25 +15,17 @@ import {
   Poppins_500Medium,
   Poppins_600SemiBold,
 } from "@expo-google-fonts/poppins";
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_600SemiBold,
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
+  if (!fontsLoaded) {
+    return null; // Render nothing or a fallback UI until fonts are loaded
   }
 
   return (
