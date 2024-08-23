@@ -20,6 +20,8 @@ import { ScrollView } from "react-native";
 import { Link, router } from "expo-router";
 
 export default function HomeScreen() {
+  const { connect, isConnecting, error } = useConnect();
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -34,8 +36,16 @@ export default function HomeScreen() {
           Vous êtes à un doigt de créer votre compte souverain gratuitement !
         </Text>
         <Image source={require("@/assets/images/biometry-image.png")} />
-        <ConnectWithPasskey />
-        <CreateWithPasskey />
+        <ConnectWithPasskey
+          connect={connect}
+          isConnecting={isConnecting}
+          error={error}
+        />
+        <CreateWithPasskey
+          connect={connect}
+          isConnecting={isConnecting}
+          error={error}
+        />
         <Text
           style={{
             ...styles.blackSubtitle,
@@ -45,7 +55,11 @@ export default function HomeScreen() {
         >
           Ou bien connectez vous avec :
         </Text>
-        <ConnectWithGoogle />
+        <ConnectWithGoogle
+          connect={connect}
+          isConnecting={isConnecting}
+          error={error}
+        />
         <Image
           style={{
             marginTop: 24,
@@ -76,8 +90,7 @@ export default function HomeScreen() {
   );
 }
 
-const ConnectWithGoogle = () => {
-  const { connect, isConnecting, error: googleHookError } = useConnect();
+const ConnectWithGoogle = ({ connect, isConnecting, error }: any) => {
   const account = useActiveAccount();
 
   return (
@@ -113,7 +126,7 @@ const ConnectWithGoogle = () => {
             }
           });
         } catch {
-          console.log("error", googleHookError);
+          console.log("error", error);
         }
       }}
     >
@@ -128,10 +141,9 @@ const ConnectWithGoogle = () => {
   );
 };
 
-const CreateWithPasskey = () => {
+const CreateWithPasskey = ({ connect, isConnecting, error }: any) => {
   const account = useActiveAccount();
 
-  const { connect, isConnecting, error: createPasskeyHookError } = useConnect();
   return (
     <Pressable
       style={{
@@ -168,7 +180,7 @@ const CreateWithPasskey = () => {
             }
           });
         } catch {
-          console.log("error", createPasskeyHookError);
+          console.log("error", error);
         }
       }}
     >
@@ -186,10 +198,9 @@ const CreateWithPasskey = () => {
   );
 };
 
-const ConnectWithPasskey = () => {
+const ConnectWithPasskey = ({ connect, isConnecting, error }: any) => {
   const account = useActiveAccount();
 
-  const { connect, isConnecting, error: connectWithPasskey } = useConnect();
   return (
     <Pressable
       style={{
@@ -226,7 +237,7 @@ const ConnectWithPasskey = () => {
             }
           });
         } catch {
-          console.log("error", connectWithPasskey);
+          console.log("error", error);
         }
       }}
     >
