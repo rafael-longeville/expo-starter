@@ -26,6 +26,12 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "rafael.longeville.pro@gmail.com",
+        "ascAppId": "6618139123",
+        "appleTeamId": "V2PT63M57P"
+      }
+    }
   }
 }
