@@ -21,6 +21,7 @@ import { Link, router } from "expo-router";
 
 export default function HomeScreen() {
   const { connect, isConnecting, error } = useConnect();
+  const account = useActiveAccount();
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -91,8 +92,6 @@ export default function HomeScreen() {
 }
 
 const ConnectWithGoogle = ({ connect, isConnecting, error }: any) => {
-  const account = useActiveAccount();
-
   return (
     <Pressable
       style={{
@@ -119,7 +118,7 @@ const ConnectWithGoogle = ({ connect, isConnecting, error }: any) => {
             });
             return w;
           }).then(() => {
-            if (!isConnecting && account) {
+            if (!isConnecting) {
               router.push({
                 pathname: "/(tabs)/home",
               });
@@ -142,8 +141,6 @@ const ConnectWithGoogle = ({ connect, isConnecting, error }: any) => {
 };
 
 const CreateWithPasskey = ({ connect, isConnecting, error }: any) => {
-  const account = useActiveAccount();
-
   return (
     <Pressable
       style={{
@@ -173,7 +170,7 @@ const CreateWithPasskey = ({ connect, isConnecting, error }: any) => {
             });
             return wallet;
           }).then(() => {
-            if (!isConnecting && account) {
+            if (!isConnecting) {
               router.push({
                 pathname: "/(tabs)/home",
               });
@@ -199,8 +196,6 @@ const CreateWithPasskey = ({ connect, isConnecting, error }: any) => {
 };
 
 const ConnectWithPasskey = ({ connect, isConnecting, error }: any) => {
-  const account = useActiveAccount();
-
   return (
     <Pressable
       style={{
@@ -230,7 +225,7 @@ const ConnectWithPasskey = ({ connect, isConnecting, error }: any) => {
             });
             return wallet;
           }).then(() => {
-            if (!isConnecting && account) {
+            if (!isConnecting) {
               router.push({
                 pathname: "/(tabs)/home",
               });
