@@ -130,7 +130,7 @@ const ConnectWithGoogle = () => {
 };
 
 const CreateWithPasskey = () => {
-  const { connect, isConnecting } = useConnect();
+  const { connect, isConnecting, error: createPasskeyHookError } = useConnect();
   return (
     <Pressable
       style={{
@@ -143,22 +143,32 @@ const CreateWithPasskey = () => {
         width: 335,
       }}
       onPress={() => {
-        connect(async (): Promise<Wallet> => {
-          const wallet = inAppWallet({
-            auth: {
-              options: ["passkey"],
-              passkeyDomain: "moncomptesouverain.fr",
-            },
-          });
+        try {
+          connect(async (): Promise<Wallet> => {
+            const wallet = inAppWallet({
+              auth: {
+                options: ["passkey"],
+                passkeyDomain: "moncomptesouverain.fr",
+              },
+            });
 
-          const hasPasskey = await hasStoredPasskey(client);
-          await wallet.connect({
-            client,
-            strategy: "passkey",
-            type: hasPasskey ? "sign-in" : "sign-up",
+            const hasPasskey = await hasStoredPasskey(client);
+            await wallet.connect({
+              client,
+              strategy: "passkey",
+              type: hasPasskey ? "sign-in" : "sign-up",
+            });
+            return wallet;
+          }).then(() => {
+            if (!isConnecting) {
+              router.push({
+                pathname: "/(tabs)/home",
+              });
+            }
           });
-          return wallet;
-        });
+        } catch {
+          console.log("error", createPasskeyHookError);
+        }
       }}
     >
       <Text
@@ -176,7 +186,7 @@ const CreateWithPasskey = () => {
 };
 
 const ConnectWithPasskey = () => {
-  const { connect, isConnecting } = useConnect();
+  const { connect, isConnecting, error: connectWithPasskey } = useConnect();
   return (
     <Pressable
       style={{
@@ -189,22 +199,32 @@ const ConnectWithPasskey = () => {
         width: 335,
       }}
       onPress={() => {
-        connect(async (): Promise<Wallet> => {
-          const wallet = inAppWallet({
-            auth: {
-              options: ["passkey"],
-              passkeyDomain: "moncomptesouverain.fr",
-            },
-          });
+        try {
+          connect(async (): Promise<Wallet> => {
+            const wallet = inAppWallet({
+              auth: {
+                options: ["passkey"],
+                passkeyDomain: "moncomptesouverain.fr",
+              },
+            });
 
-          const hasPasskey = await hasStoredPasskey(client);
-          await wallet.connect({
-            client,
-            strategy: "passkey",
-            type: hasPasskey ? "sign-in" : "sign-up",
+            const hasPasskey = await hasStoredPasskey(client);
+            await wallet.connect({
+              client,
+              strategy: "passkey",
+              type: hasPasskey ? "sign-in" : "sign-up",
+            });
+            return wallet;
+          }).then(() => {
+            if (!isConnecting) {
+              router.push({
+                pathname: "/(tabs)/home",
+              });
+            }
           });
-          return wallet;
-        });
+        } catch {
+          console.log("error", connectWithPasskey);
+        }
       }}
     >
       <Text
