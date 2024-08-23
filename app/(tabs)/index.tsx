@@ -20,8 +20,6 @@ import { ScrollView } from "react-native";
 import { Link, router } from "expo-router";
 
 export default function HomeScreen() {
-  const account = useActiveAccount();
-
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -80,6 +78,7 @@ export default function HomeScreen() {
 
 const ConnectWithGoogle = () => {
   const { connect, isConnecting, error: googleHookError } = useConnect();
+  const account = useActiveAccount();
 
   return (
     <Pressable
@@ -107,7 +106,7 @@ const ConnectWithGoogle = () => {
             });
             return w;
           }).then(() => {
-            if (!isConnecting) {
+            if (!isConnecting && account) {
               router.push({
                 pathname: "/(tabs)/home",
               });
@@ -130,6 +129,8 @@ const ConnectWithGoogle = () => {
 };
 
 const CreateWithPasskey = () => {
+  const account = useActiveAccount();
+
   const { connect, isConnecting, error: createPasskeyHookError } = useConnect();
   return (
     <Pressable
@@ -160,7 +161,7 @@ const CreateWithPasskey = () => {
             });
             return wallet;
           }).then(() => {
-            if (!isConnecting) {
+            if (!isConnecting && account) {
               router.push({
                 pathname: "/(tabs)/home",
               });
@@ -186,6 +187,8 @@ const CreateWithPasskey = () => {
 };
 
 const ConnectWithPasskey = () => {
+  const account = useActiveAccount();
+
   const { connect, isConnecting, error: connectWithPasskey } = useConnect();
   return (
     <Pressable
@@ -216,7 +219,7 @@ const ConnectWithPasskey = () => {
             });
             return wallet;
           }).then(() => {
-            if (!isConnecting) {
+            if (!isConnecting && account) {
               router.push({
                 pathname: "/(tabs)/home",
               });
