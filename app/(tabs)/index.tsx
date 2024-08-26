@@ -26,7 +26,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        <Text style={styles.title}>Bienvenue</Text>
+        <Text style={styles.title}>Bienvenues</Text>
         <Text
           style={{
             ...styles.blackSubtitle,
@@ -40,11 +40,13 @@ export default function HomeScreen() {
         <ConnectWithPasskey
           connect={connect}
           isConnecting={isConnecting}
+          account={account}
           error={error}
         />
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
+          account={account}
           error={error}
         />
         <Text
@@ -59,6 +61,7 @@ export default function HomeScreen() {
         <ConnectWithGoogle
           connect={connect}
           isConnecting={isConnecting}
+          account={account}
           error={error}
         />
         <Image
@@ -91,7 +94,7 @@ export default function HomeScreen() {
   );
 }
 
-const ConnectWithGoogle = ({ connect, isConnecting, error }: any) => {
+const ConnectWithGoogle = ({ connect, isConnecting, account, error }: any) => {
   return (
     <Pressable
       style={{
@@ -118,7 +121,7 @@ const ConnectWithGoogle = ({ connect, isConnecting, error }: any) => {
             });
             return w;
           }).then(() => {
-            if (!isConnecting) {
+            if (!isConnecting && account) {
               router.push({
                 pathname: "/(tabs)/home",
               });
@@ -140,7 +143,7 @@ const ConnectWithGoogle = ({ connect, isConnecting, error }: any) => {
   );
 };
 
-const CreateWithPasskey = ({ connect, isConnecting, error }: any) => {
+const CreateWithPasskey = ({ connect, isConnecting, account, error }: any) => {
   return (
     <Pressable
       style={{
@@ -170,7 +173,7 @@ const CreateWithPasskey = ({ connect, isConnecting, error }: any) => {
             });
             return wallet;
           }).then(() => {
-            if (!isConnecting) {
+            if (!isConnecting && account) {
               router.push({
                 pathname: "/(tabs)/home",
               });
@@ -195,7 +198,7 @@ const CreateWithPasskey = ({ connect, isConnecting, error }: any) => {
   );
 };
 
-const ConnectWithPasskey = ({ connect, isConnecting, error }: any) => {
+const ConnectWithPasskey = ({ connect, isConnecting, account, error }: any) => {
   return (
     <Pressable
       style={{
@@ -225,7 +228,7 @@ const ConnectWithPasskey = ({ connect, isConnecting, error }: any) => {
             });
             return wallet;
           }).then(() => {
-            if (!isConnecting) {
+            if (!isConnecting && account) {
               router.push({
                 pathname: "/(tabs)/home",
               });
