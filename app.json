@@ -16,7 +16,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.civicpower.ibexwallet",
       "associatedDomains": ["webcredentials:moncomptesouverain.fr"],
-      "buildNumber": "15",
+      "buildNumber": "17",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos."
       }
