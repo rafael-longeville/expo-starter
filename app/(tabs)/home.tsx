@@ -6,7 +6,9 @@ import {
   Button,
   ScrollView,
   RefreshControl,
+  Alert,
 } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
 import {
   useActiveAccount,
   useWalletBalance,
@@ -18,7 +20,7 @@ import { sendAndConfirmTransaction, prepareTransaction, toWei } from "thirdweb";
 export default function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
-  const [transactionObject, setTransactionObject] = useState(null);
+  const [transactionObject, setTransactionObject] = useState<any>(null);
 
   const { data, refetch } = useWalletBalance({
     chain: chain,
@@ -60,6 +62,13 @@ export default function HomeScreen() {
     refetch().finally(() => setRefreshing(false));
   }, []);
 
+  const copyToClipboard = () => {
+    if (account?.address) {
+      Clipboard.setString(account.address);
+      Alert.alert("Adresse copiée", "L'adresse a été copiée dans le presse-papier.");
+    }
+  };
+
   return (
     <ScrollView
       style={styles.scrollView}
@@ -71,6 +80,7 @@ export default function HomeScreen() {
         <Text style={styles.blackSubtitle}>Bonjour {account?.address}</Text>
         <Text style={styles.title}>Vous avez {data?.displayValue} ETH</Text>
         <Button title="Envoyer 0.001 ETH" onPress={onClick} />
+        <Button title="Copier l'adresse" onPress={copyToClipboard} />
       </View>
     </ScrollView>
   );

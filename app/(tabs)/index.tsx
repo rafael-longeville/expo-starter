@@ -47,20 +47,6 @@ export default function HomeScreen() {
           isConnecting={isConnecting}
           error={error}
         />
-        <Text
-          style={{
-            ...styles.blackSubtitle,
-            textAlign: "center",
-            fontSize: 14,
-          }}
-        >
-          Ou bien connectez vous avec :
-        </Text>
-        <ConnectWithGoogle
-          connect={connect}
-          isConnecting={isConnecting}
-          error={error}
-        />
         <Image
           style={{
             marginTop: 24,
@@ -162,11 +148,10 @@ const CreateWithPasskey = ({ connect, isConnecting, error }: any) => {
               },
             });
 
-            const hasPasskey = await hasStoredPasskey(client);
             await wallet.connect({
               client,
               strategy: "passkey",
-              type: hasPasskey ? "sign-in" : "sign-up",
+              type: "sign-up",
             });
             return wallet;
           }).then(() => {
@@ -282,7 +267,7 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     fontFamily: "Poppins",
-    marginTop: 24,
+    marginTop: 50,
   },
   titleContainer: {
     flexDirection: "row",
