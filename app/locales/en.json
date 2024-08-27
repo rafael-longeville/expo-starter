@@ -1,0 +1,21 @@
+{
+  "welcome": "Welcome",
+  "pages": {
+    "onboarding_1": {
+      "title": "Make your money grow",
+      "subtitle": "Invest your funds and start earning from the first second:",
+      "second_subtitle": "Or secure them in your sovereign current account:",
+      "continue_button": "Continue without funding",
+      "has_account": "I already have an account"
+    }
+  },
+  "components": {
+    "investment_card": {
+      "investment": "Investment",
+      "yield": "Yield",
+      "deposit": "Deposit",
+      "withdraw": "Withdraw",
+      "gains": "Gains"
+    }
+  }
+}

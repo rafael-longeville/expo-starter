@@ -1,0 +1,22 @@
+{
+  "welcome": "Bienvenue",
+  "pages": {
+    "onboarding_1": {
+      "title": "Faites fructifier votre argent",
+      "subtitle": "Placez vos fonds et soyez rémunéré dès la première seconde :",
+      "second_subtitle": "Ou sécurisez les dans votre compte courant souverain :",
+      "continue_button": "Continuer sans alimenter",
+      "has_account": "J'ai déjà un compte"
+    }
+  },
+  "components": {
+    "investment_card": {
+      "investment": "Placement",
+      "account": "Compte",
+      "yield": "Rendement",
+      "deposit": "Déposer",
+      "withdraw": "Retirer",
+      "gains": "Gains"
+    }
+  }
+}
