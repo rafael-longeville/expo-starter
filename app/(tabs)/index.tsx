@@ -68,7 +68,7 @@ export default function HomeScreen() {
           account={account}
           error={error}
         />
-        {process.env.IS_DEVELOPMENT === "true" && (
+        {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
           <ConnectWithGoogle
             connect={connect}
             isConnecting={isConnecting}
