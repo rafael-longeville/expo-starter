@@ -38,6 +38,7 @@ export default function OnboardingLayout() {
       <View style={styles.stackContainer}>
         <Stack>
           <Stack.Screen name="onboarding_1" options={{ headerShown: false }} />
+          <Stack.Screen name="onboarding_2" options={{ headerShown: false }} />
           <Stack.Screen name="onboarding_3" options={{ headerShown: false }} />
         </Stack>
       </View>
