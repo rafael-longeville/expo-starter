@@ -26,7 +26,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        <Text style={styles.title}>Bienvenues</Text>
+        <Text style={styles.title}>Bienvenue</Text>
         <Text
           style={{
             ...styles.blackSubtitle,
@@ -43,12 +43,39 @@ export default function HomeScreen() {
           account={account}
           error={error}
         />
+        <Pressable
+          style={{
+            backgroundColor: "#13293D",
+            padding: 10,
+            borderRadius: 30,
+            height: 50,
+            justifyContent: "center",
+            alignItems: "center",
+            width: 50,
+          }}
+          onPress={() => {
+            console.log("pushing to splash"),
+              router.push({
+                pathname: "/(tabs)/splash",
+              });
+          }}
+        >
+          <Text>To splash</Text>
+        </Pressable>
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
           account={account}
           error={error}
         />
+        {process.env.IS_DEVELOPMENT === "true" && (
+          <ConnectWithGoogle
+            connect={connect}
+            isConnecting={isConnecting}
+            account={account}
+            error={error}
+          />
+        )}
         <Image
           style={{
             marginTop: 24,
