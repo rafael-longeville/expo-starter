@@ -1,28 +1,17 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-import {
-  useActiveAccount,
-  useConnect,
-  useDisconnect,
-  useActiveWallet,
-} from "thirdweb/react";
-import {
-  getUserEmail,
-  hasStoredPasskey,
-  inAppWallet,
-} from "thirdweb/wallets/in-app";
+import { useActiveAccount, useConnect } from "thirdweb/react";
+import { hasStoredPasskey, inAppWallet } from "thirdweb/wallets/in-app";
 import { chain, client } from "@/constants/thirdweb";
-import { shortenAddress } from "thirdweb/utils";
-import { ThemedButton } from "@/components/ThemedButton";
-import { useEffect, useState } from "react";
 import { Wallet } from "thirdweb/wallets";
 import { ScrollView } from "react-native";
 import { Link, router } from "expo-router";
+import { useSegments } from "expo-router";
 
 export default function HomeScreen() {
   const { connect, isConnecting, error } = useConnect();
   const account = useActiveAccount();
-
+  const segments = useSegments();
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -43,25 +32,111 @@ export default function HomeScreen() {
           account={account}
           error={error}
         />
-        <Pressable
-          style={{
-            backgroundColor: "#13293D",
-            padding: 10,
-            borderRadius: 30,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-            width: 50,
-          }}
-          onPress={() => {
-            console.log("pushing to splash"),
-              router.push({
-                pathname: "/(tabs)/splash",
-              });
-          }}
-        >
-          <Text>To splash</Text>
-        </Pressable>
+        {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
+          <>
+            <Pressable
+              style={{
+                backgroundColor: "#13293D",
+                padding: 10,
+                borderRadius: 30,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 300,
+              }}
+              onPress={() => {
+                console.log("pushing to splash"),
+                  router.push({
+                    pathname: "/(tabs)/splash",
+                  });
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                To splash
+              </Text>
+            </Pressable>
+            <Pressable
+              style={{
+                backgroundColor: "#13293D",
+                padding: 10,
+                borderRadius: 30,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 300,
+              }}
+              onPress={() => {
+                console.log("pushing to onboarding 1"),
+                  router.push({
+                    pathname: "/(onboarding)/onboarding_1",
+                  });
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                To Onboarding 1
+              </Text>
+            </Pressable>
+            <Pressable
+              style={{
+                backgroundColor: "#13293D",
+                padding: 10,
+                borderRadius: 30,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 300,
+              }}
+              onPress={() => {
+                console.log("pushing to onboarding 1"),
+                  router.push({
+                    pathname: "/(onboarding)/onboarding_2",
+                  });
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                To Onboarding 2
+              </Text>
+            </Pressable>
+            <Pressable
+              style={{
+                backgroundColor: "#13293D",
+                padding: 10,
+                borderRadius: 30,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 300,
+              }}
+              onPress={() => {
+                console.log("pushing to onboarding 1"),
+                  router.push({
+                    pathname: "/(onboarding)/onboarding_3",
+                  });
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                To Onboarding 3
+              </Text>
+            </Pressable>
+          </>
+        )}
+
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}

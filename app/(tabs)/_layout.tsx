@@ -12,11 +12,10 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
         tabBarStyle: {
-          display: route.name === "index" || "splash" ? "none" : "flex",
+          display: route.name === "splash" ? "none" : "flex",
         },
       })}
     >
-      <Tabs.Screen name="index" options={{ href: null }} />
       <Tabs.Screen name="home" />
       <Tabs.Screen name="splash" />
       {/* Add other screens here */}

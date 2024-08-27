@@ -37,7 +37,7 @@ export default function Onboarding() {
     if (currentIndex < slides.length - 1) {
       slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
-      router.push("/(tabs)/");
+      router.push("/");
     }
   };
 
