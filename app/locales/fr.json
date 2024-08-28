@@ -7,6 +7,12 @@
       "second_subtitle": "Ou sécurisez les dans votre compte courant souverain :",
       "continue_button": "Continuer sans alimenter",
       "has_account": "J'ai déjà un compte"
+    },
+    "onboarding_2": {
+      "title": "Accédez à votre compte",
+      "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
+      "sign-in": "Utiliser un portefeuille existant",
+      "create-account": "Créer un nouveau portefeuille"
     }
   },
   "components": {

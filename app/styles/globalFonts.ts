@@ -4,15 +4,23 @@ import "@expo-google-fonts/poppins";
 
 export const globalFonts = StyleSheet.create({
   bigTitle: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_600SemiBold",
     fontSize: 32,
-    fontWeight: "semibold",
     color: "#13293D",
   },
   title: {
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_600SemiBold",
     fontSize: 22,
-    fontWeight: "semibold",
     color: "#13293D",
+  },
+  subtitle: {
+    fontFamily: "Poppins_400Regular",
+    fontSize: 16,
+    color: "#13293D",
+  },
+  whiteSubtitle: {
+    fontSize: 16,
+    color: "white",
+    fontFamily: "Poppins_400Regular",
   },
 });

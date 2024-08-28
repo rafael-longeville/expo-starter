@@ -1,43 +1,34 @@
-import { router } from "expo-router";
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import { globalFonts } from "../styles/globalFonts";
+import { useTranslation } from "react-i18next";
+import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
+import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
 
 const Onboarding2: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Hello, from onboarding 2</Text>
-      <Pressable
+      <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
+      <Text
         style={{
-          backgroundColor: "#13293D",
-          padding: 10,
-          borderRadius: 5,
-          marginTop: 20,
-        }}
-        onPress={() => {
-          router.push({
-            pathname: "/",
-          });
+          ...globalFonts.subtitle,
+          width: "80%",
         }}
       >
-        <Text
-          style={{
-            color: "#fff",
-          }}
-        >
-          {" "}
-          Back to home page
-        </Text>
-      </Pressable>
+        {t("pages.onboarding_2.subtitle")}
+      </Text>
+      <ConnectWithPasskey />
+      <CreateWithPasskey />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   text: {
     fontSize: 24,
