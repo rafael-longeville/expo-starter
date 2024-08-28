@@ -8,10 +8,12 @@ import {
   Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router, Stack, useSegments } from "expo-router";
+import { router, useSegments } from "expo-router";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
-import Onboarding1 from "./onboarding_1"; // Import your Onboarding component
+import Onboarding1 from "./onboarding_1";
+import Onboarding2 from "./onboarding_2";
+import Onboarding3 from "./onboarding_3";
 
 export default function OnboardingLayout() {
   const segments = useSegments();
@@ -24,7 +26,6 @@ export default function OnboardingLayout() {
     onboarding_3: require("@/assets/images/onboarding/onboarding_3.png"),
   } as const;
 
-  // Get source based on the current route
   const currentSegment = segments[segments.length - 1];
 
   const getSource = () => {
@@ -38,6 +39,19 @@ export default function OnboardingLayout() {
     return images.onboarding_1;
   };
 
+  const renderCurrentScreen = () => {
+    switch (currentSegment) {
+      case "onboarding_1":
+        return <Onboarding1 />;
+      case "onboarding_2":
+        return <Onboarding2 />;
+      case "onboarding_3":
+        return <Onboarding3 />;
+      default:
+        return <Onboarding1 />;
+    }
+  };
+
   const changeLanguageToFrench = () => {
     i18n.changeLanguage("fr");
   };
@@ -48,11 +62,11 @@ export default function OnboardingLayout() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Image
+        source={require("@/assets/images/yellow-rectangle.png")}
+        style={styles.backgroundImage}
+      />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <Image
-          source={require("@/assets/images/yellow-rectangle.png")}
-          style={styles.backgroundImage}
-        />
         <View style={styles.languageSwitcher}>
           <Pressable
             onPress={changeLanguageToFrench}
@@ -69,26 +83,8 @@ export default function OnboardingLayout() {
         </View>
 
         <Image source={getSource()} style={styles.image} />
+        {renderCurrentScreen()}
 
-        {/* Conditionally render the onboarding content based on the current segment */}
-        {currentSegment === "onboarding_1" && <Onboarding1 />}
-        {/* You can similarly add other components for onboarding_2, onboarding_3 if needed */}
-        <View style={styles.stackContainer}>
-          <Stack>
-            <Stack.Screen
-              name="onboarding_1"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="onboarding_2"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="onboarding_3"
-              options={{ headerShown: false }}
-            />
-          </Stack>
-        </View>
         <Pressable
           style={{
             backgroundColor: "#13293D",
@@ -108,8 +104,63 @@ export default function OnboardingLayout() {
               color: "#fff",
             }}
           >
-            {" "}
             Back to home page
+          </Text>
+        </Pressable>
+        <Pressable
+          style={{
+            backgroundColor: "#13293D",
+            padding: 10,
+            borderRadius: 5,
+            marginTop: 20,
+          }}
+          onPress={() => {
+            console.log("Button pressed");
+            let number = parseInt(currentSegment.split("_")[1]) + 1;
+            let path = `/onboarding_${number as unknown as 1 | 2 | 3}`;
+            router.push({
+              pathname: path as
+                | "/(onboarding)/onboarding_1"
+                | "/(onboarding)/onboarding_2"
+                | "/(onboarding)/onboarding_3",
+            });
+            console.log("Path: ", path);
+          }}
+        >
+          <Text
+            style={{
+              color: "#fff",
+            }}
+          >
+            Go + 1 page
+          </Text>
+        </Pressable>
+        <Pressable
+          style={{
+            backgroundColor: "#13293D",
+            padding: 10,
+            borderRadius: 5,
+            marginTop: 20,
+          }}
+          onPress={() => {
+            console.log("Button pressed");
+            let number = parseInt(currentSegment.split("_")[1]) - 1;
+            let path = `/onboarding_${number as unknown as 1 | 2 | 3}`;
+            router.push({
+              pathname: path as
+                | "/(onboarding)/onboarding_1"
+                | "/(onboarding)/onboarding_2"
+                | "/(onboarding)/onboarding_3",
+            });
+            console.log("Path: ", path);
+          }}
+        >
+          <Text
+            style={{
+              color: "#fff",
+            }}
+          >
+            Go - 1 page
           </Text>
         </Pressable>
       </ScrollView>
@@ -158,7 +209,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     width: "100%", // Adjust as needed to cover the bottom part of the screen
-    height: "50%", // Adjust as needed
     resizeMode: "cover", // Ensures the image covers the area proportionally
     zIndex: -1, // Ensures the image stays behind all other elements
   },
