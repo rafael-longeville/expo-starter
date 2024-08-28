@@ -48,11 +48,11 @@ export default function OnboardingLayout() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Image
-        source={require("@/assets/images/yellow-rectangle.png")}
-        style={styles.backgroundImage}
-      />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <Image
+          source={require("@/assets/images/yellow-rectangle.png")}
+          style={styles.backgroundImage}
+        />
         <View style={styles.languageSwitcher}>
           <Pressable
             onPress={changeLanguageToFrench}

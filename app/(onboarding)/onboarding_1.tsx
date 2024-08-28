@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 30,
     flex: 1,
-    backgroundColor: "#fff",
     gap: 20,
   },
   text: {
