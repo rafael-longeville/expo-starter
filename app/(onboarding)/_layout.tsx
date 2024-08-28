@@ -15,28 +15,30 @@ import Onboarding1 from "./onboarding_1";
 import Onboarding2 from "./onboarding_2";
 import Onboarding3 from "./onboarding_3";
 
+const IMAGES = {
+  onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
+  onboarding_2: require("@/assets/images/onboarding/onboarding_2.png"),
+  onboarding_3: require("@/assets/images/onboarding/onboarding_3.png"),
+} as const;
+
 export default function OnboardingLayout() {
   const segments = useSegments();
   const { t } = useTranslation();
-
-  // Define the images for each onboarding step
-  const images = {
-    onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
-    onboarding_2: require("@/assets/images/onboarding/onboarding_2.png"),
-    onboarding_3: require("@/assets/images/onboarding/onboarding_3.png"),
-  } as const;
-
   const currentSegment = segments[segments.length - 1];
 
-  const getSource = () => {
-    if (
-      currentSegment === "onboarding_1" ||
-      currentSegment === "onboarding_2" ||
-      currentSegment === "onboarding_3"
-    ) {
-      return images[currentSegment];
-    }
-    return images.onboarding_1;
+  const handleChangeLanguage = (language: "fr" | "en") => {
+    i18n.changeLanguage(language);
+  };
+
+  const navigateToPage = (offset: number) => {
+    const number = Math.min(
+      Math.max(parseInt(currentSegment.split("_")[1]) + offset, 1),
+      3
+    );
+    const path = `/onboarding_${number}`;
+    router.push({
+      pathname: path as `/onboarding_1` | `/onboarding_2` | `/onboarding_3`,
+    });
   };
 
   const renderCurrentScreen = () => {
@@ -52,14 +54,6 @@ export default function OnboardingLayout() {
     }
   };
 
-  const changeLanguageToFrench = () => {
-    i18n.changeLanguage("fr");
-  };
-
-  const changeLanguageToEnglish = () => {
-    i18n.changeLanguage("en");
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -68,105 +62,62 @@ export default function OnboardingLayout() {
       />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.languageSwitcher}>
-          <Pressable
-            onPress={changeLanguageToFrench}
-            style={styles.languageButton}
-          >
-            <Text style={styles.languageButtonText}>Change to French</Text>
-          </Pressable>
-          <Pressable
-            onPress={changeLanguageToEnglish}
-            style={styles.languageButton}
-          >
-            <Text style={styles.languageButtonText}>Change to English</Text>
-          </Pressable>
+          <LanguageButton
+            label="Change to French"
+            onPress={() => handleChangeLanguage("fr")}
+          />
+          <LanguageButton
+            label="Change to English"
+            onPress={() => handleChangeLanguage("en")}
+          />
         </View>
 
-        <Image source={getSource()} style={styles.image} />
+        <Image
+          source={IMAGES[currentSegment as keyof typeof IMAGES]}
+          style={styles.image}
+        />
         {renderCurrentScreen()}
 
-        <Pressable
-          style={{
-            backgroundColor: "#13293D",
-            padding: 10,
-            borderRadius: 5,
-            marginTop: 20,
-          }}
-          onPress={() => {
-            console.log("Button pressed");
-            router.push({
-              pathname: "/",
-            });
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-            }}
-          >
-            Back to home page
-          </Text>
-        </Pressable>
-        <Pressable
-          style={{
-            backgroundColor: "#13293D",
-            padding: 10,
-            borderRadius: 5,
-            marginTop: 20,
-          }}
-          onPress={() => {
-            console.log("Button pressed");
-            let number = parseInt(currentSegment.split("_")[1]) + 1;
-            let path = `/onboarding_${number as unknown as 1 | 2 | 3}`;
-            router.push({
-              pathname: path as
-                | "/(onboarding)/onboarding_1"
-                | "/(onboarding)/onboarding_2"
-                | "/(onboarding)/onboarding_3",
-            });
-            console.log("Path: ", path);
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-            }}
-          >
-            Go + 1 page
-          </Text>
-        </Pressable>
-        <Pressable
-          style={{
-            backgroundColor: "#13293D",
-            padding: 10,
-            borderRadius: 5,
-            marginTop: 20,
-          }}
-          onPress={() => {
-            console.log("Button pressed");
-            let number = parseInt(currentSegment.split("_")[1]) - 1;
-            let path = `/onboarding_${number as unknown as 1 | 2 | 3}`;
-            router.push({
-              pathname: path as
-                | "/(onboarding)/onboarding_1"
-                | "/(onboarding)/onboarding_2"
-                | "/(onboarding)/onboarding_3",
-            });
-            console.log("Path: ", path);
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-            }}
-          >
-            Go - 1 page
-          </Text>
-        </Pressable>
+        <NavigationButton
+          label="Back to home page"
+          onPress={() => router.push("/")}
+        />
+        <NavigationButton
+          label="Go + 1 page"
+          onPress={() => navigateToPage(1)}
+        />
+        <NavigationButton
+          label="Go - 1 page"
+          onPress={() => navigateToPage(-1)}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 }
+
+const LanguageButton = ({
+  label,
+  onPress,
+}: {
+  label: string;
+  onPress: () => void;
+}) => (
+  <Pressable onPress={onPress} style={styles.languageButton}>
+    <Text style={styles.languageButtonText}>{label}</Text>
+  </Pressable>
+);
+
+const NavigationButton = ({
+  label,
+  onPress,
+}: {
+  label: string;
+  onPress: () => void;
+}) => (
+  <Pressable onPress={onPress} style={styles.navigationButton}>
+    <Text style={styles.navigationButtonText}>{label}</Text>
+  </Pressable>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -211,5 +162,15 @@ const styles = StyleSheet.create({
     width: "100%", // Adjust as needed to cover the bottom part of the screen
     resizeMode: "cover", // Ensures the image covers the area proportionally
     zIndex: -1, // Ensures the image stays behind all other elements
+  },
+  navigationButton: {
+    backgroundColor: "#13293D",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  navigationButtonText: {
+    color: "#fff",
+    textAlign: "center",
   },
 });

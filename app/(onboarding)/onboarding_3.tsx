@@ -14,7 +14,6 @@ const Onboarding3: React.FC = () => {
           marginTop: 20,
         }}
         onPress={() => {
-          console.log("Button pressed");
           router.push({
             pathname: "/",
           });

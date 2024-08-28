@@ -45,10 +45,9 @@ export default function HomeScreen() {
                 width: 300,
               }}
               onPress={() => {
-                console.log("pushing to splash"),
-                  router.push({
-                    pathname: "/(tabs)/splash",
-                  });
+                router.push({
+                  pathname: "/(tabs)/splash",
+                });
               }}
             >
               <Text
@@ -70,10 +69,9 @@ export default function HomeScreen() {
                 width: 300,
               }}
               onPress={() => {
-                console.log("pushing to onboarding 1"),
-                  router.push({
-                    pathname: "/(onboarding)/onboarding_1",
-                  });
+                router.push({
+                  pathname: "/(onboarding)/onboarding_1",
+                });
               }}
             >
               <Text
@@ -95,10 +93,9 @@ export default function HomeScreen() {
                 width: 300,
               }}
               onPress={() => {
-                console.log("pushing to onboarding 1"),
-                  router.push({
-                    pathname: "/(onboarding)/onboarding_2",
-                  });
+                router.push({
+                  pathname: "/(onboarding)/onboarding_2",
+                });
               }}
             >
               <Text
@@ -120,10 +117,9 @@ export default function HomeScreen() {
                 width: 300,
               }}
               onPress={() => {
-                console.log("pushing to onboarding 1"),
-                  router.push({
-                    pathname: "/(onboarding)/onboarding_3",
-                  });
+                router.push({
+                  pathname: "/(onboarding)/onboarding_3",
+                });
               }}
             >
               <Text
