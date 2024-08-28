@@ -13,7 +13,6 @@ import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 export default function HomeScreen() {
   const { connect, isConnecting, error } = useConnect();
   const account = useActiveAccount();
-  const segments = useSegments();
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { globalFonts } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
@@ -18,8 +18,14 @@ const Onboarding2: React.FC = () => {
       >
         {t("pages.onboarding_2.subtitle")}
       </Text>
-      <ConnectWithPasskey />
-      <CreateWithPasskey />
+      <View style={styles.buttonContainer}>
+        <Image
+          style={styles.image}
+          source={require("@/assets/images/biometry-image.png")}
+        />
+        <ConnectWithPasskey />
+        <CreateWithPasskey />
+      </View>
     </View>
   );
 };
@@ -29,6 +35,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "flex-start",
+    gap: 20,
+  },
+  buttonContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignSelf: "center",
+    gap: 10,
+  },
+  image: {
+    borderWidth: 1,
+    borderColor: "#13293D",
+    borderRadius: 30, // Optional, gives rounded corners to the image
   },
   text: {
     fontSize: 24,
