@@ -72,6 +72,7 @@
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "15.2.0",
     "react-native-web": "~0.19.10",
+    "react-native-webview": "^13.12.0",
     "shamir-secret-sharing": "^0.0.3",
     "thirdweb": "^5.46.1"
   },
