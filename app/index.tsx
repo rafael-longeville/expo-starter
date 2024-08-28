@@ -137,6 +137,30 @@ export default function HomeScreen() {
                 To Onboarding 3
               </Text>
             </Pressable>
+            <Pressable
+              style={{
+                backgroundColor: "#13293D",
+                padding: 10,
+                borderRadius: 30,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 300,
+              }}
+              onPress={() => {
+                router.push({
+                  pathname: "/(onboarding)/onboarding_4",
+                });
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                To Onboarding 4
+              </Text>
+            </Pressable>
           </>
         )}
 

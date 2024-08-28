@@ -2,17 +2,26 @@
   "welcome": "Welcome",
   "pages": {
     "onboarding_1": {
-      "title": "Make your money grow",
-      "subtitle": "Invest your funds and start earning from the first second:",
-      "second_subtitle": "Or secure them in your sovereign checking account:",
+      "title": "Grow your money",
+      "subtitle": "Invest your funds and earn interest from the first second:",
+      "second_subtitle": "Or secure them in your sovereign current account:",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
     },
     "onboarding_2": {
       "title": "Access your account",
-      "subtitle": "Open or access an existing account in one click:",
+      "subtitle": "Open or access an existing account with one click:",
       "sign-in": "Use an existing wallet",
       "create-account": "Create a new wallet"
+    },
+    "onboarding_4": {
+      "title": "You're almost there!",
+      "subtitle": "Set up the currency display and notifications.",
+      "money_question": "Do you want the amounts to be displayed generally in Euro or Dollar?",
+      "money_question_helper": "To help you, the amounts displayed (according to the chosen currency) will be preceded by an asterisk (*).",
+      "notifications_question": "Would you like to enable notifications?",
+      "notifications_question_helper": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+      "save_button": "Save"
     }
   },
   "components": {

@@ -13,6 +13,15 @@
       "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
       "sign-in": "Utiliser un portefeuille existant",
       "create-account": "Créer un nouveau portefeuille"
+    },
+    "onboarding_4": {
+      "title": "Vous y êtes presque !",
+      "subtitle": "Paramètrez l’affichage de la devise et les notifications. ",
+      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
+      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
+      "notifications_question": "Souhaitez-vous activer les notifications ?",
+      "notifications_question_helper": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+      "save_button": "Enregistrer"
     }
   },
   "components": {
