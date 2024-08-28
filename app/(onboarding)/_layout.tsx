@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   image: {
     resizeMode: "contain",
     alignSelf: "center",
-    marginVertical: 20,
+    marginBottom: 40,
   },
   backgroundImage: {
     position: "absolute",

@@ -12,7 +12,7 @@ const Onboarding1: React.FC = () => {
     <View style={styles.container}>
       <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
       <Text style={globalFonts.subtitle}>
-        {decodeURIComponent(t("pages.onboarding_1.subtitle"))}
+        {t("pages.onboarding_1.subtitle")}
       </Text>
       <InvestmentCard investment={"DOLLAR US"} investing={true} />
       <InvestmentCard investment={"EURO"} investing={true} />
@@ -34,7 +34,6 @@ const Onboarding1: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
     flex: 1,
     gap: 20,
   },

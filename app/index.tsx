@@ -7,6 +7,8 @@ import { Wallet } from "thirdweb/wallets";
 import { ScrollView } from "react-native";
 import { Link, router } from "expo-router";
 import { useSegments } from "expo-router";
+import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
+import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 
 export default function HomeScreen() {
   const { connect, isConnecting, error } = useConnect();
@@ -27,6 +29,12 @@ export default function HomeScreen() {
         </Text>
         <Image source={require("@/assets/images/biometry-image.png")} />
         <ConnectWithPasskey
+          connect={connect}
+          isConnecting={isConnecting}
+          account={account}
+          error={error}
+        />
+        <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
           account={account}
@@ -133,12 +141,6 @@ export default function HomeScreen() {
           </>
         )}
 
-        <CreateWithPasskey
-          connect={connect}
-          isConnecting={isConnecting}
-          account={account}
-          error={error}
-        />
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
           <ConnectWithGoogle
             connect={connect}
@@ -226,114 +228,6 @@ const ConnectWithGoogle = ({ connect, isConnecting, account, error }: any) => {
   );
 };
 
-const CreateWithPasskey = ({ connect, isConnecting, account, error }: any) => {
-  return (
-    <Pressable
-      style={{
-        backgroundColor: "#13293D",
-        padding: 10,
-        borderRadius: 30,
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        width: 335,
-      }}
-      onPress={() => {
-        try {
-          connect(async (): Promise<Wallet> => {
-            const wallet = inAppWallet({
-              auth: {
-                options: ["passkey"],
-                passkeyDomain: "moncomptesouverain.fr",
-              },
-            });
-
-            await wallet.connect({
-              client,
-              strategy: "passkey",
-              type: "sign-up",
-            });
-            return wallet;
-          }).then(() => {
-            if (!isConnecting && account) {
-              router.push({
-                pathname: "/(tabs)/home",
-              });
-            }
-          });
-        } catch {
-          console.log("error", error);
-        }
-      }}
-    >
-      <Text
-        style={{
-          ...styles.whiteSubtitle,
-          textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
-        }}
-      >
-        Créez votre portefeuille
-      </Text>
-    </Pressable>
-  );
-};
-
-const ConnectWithPasskey = ({ connect, isConnecting, account, error }: any) => {
-  return (
-    <Pressable
-      style={{
-        backgroundColor: "white",
-        padding: 10,
-        borderRadius: 30,
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        width: 335,
-      }}
-      onPress={() => {
-        try {
-          connect(async (): Promise<Wallet> => {
-            const wallet = inAppWallet({
-              auth: {
-                options: ["passkey"],
-                passkeyDomain: "moncomptesouverain.fr",
-              },
-            });
-
-            const hasPasskey = await hasStoredPasskey(client);
-            await wallet.connect({
-              client,
-              strategy: "passkey",
-              type: hasPasskey ? "sign-in" : "sign-up",
-            });
-            return wallet;
-          }).then(() => {
-            if (!isConnecting && account) {
-              router.push({
-                pathname: "/(tabs)/home",
-              });
-            }
-          });
-        } catch {
-          console.log("error", error);
-        }
-      }}
-    >
-      <Text
-        style={{
-          ...styles.blackSubtitle,
-          textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
-        }}
-      >
-        Utilisez un portefeuille existant
-      </Text>
-    </Pressable>
-  );
-};
 const styles = StyleSheet.create({
   title: {
     fontSize: 32,
@@ -348,12 +242,7 @@ const styles = StyleSheet.create({
     color: "#13293D",
     fontFamily: "Poppins_400Regular",
   },
-  whiteSubtitle: {
-    fontSize: 18,
-    width: "100%",
-    color: "white",
-    fontFamily: "Poppins_400Regular",
-  },
+
   scrollView: {
     backgroundColor: "#ECFF78",
     height: "100%",

@@ -4,14 +4,21 @@
     "onboarding_1": {
       "title": "Make your money grow",
       "subtitle": "Invest your funds and start earning from the first second:",
-      "second_subtitle": "Or secure them in your sovereign current account:",
+      "second_subtitle": "Or secure them in your sovereign checking account:",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
+    },
+    "onboarding_2": {
+      "title": "Access your account",
+      "subtitle": "Open or access an existing account in one click:",
+      "sign-in": "Use an existing wallet",
+      "create-account": "Create a new wallet"
     }
   },
   "components": {
     "investment_card": {
       "investment": "Investment",
+      "account": "Account",
       "yield": "Yield",
       "deposit": "Deposit",
       "withdraw": "Withdraw",
