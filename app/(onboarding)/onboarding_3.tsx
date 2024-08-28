@@ -1,11 +1,16 @@
 import { router } from "expo-router";
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import { WebView } from 'react-native-webview';
 
 const Onboarding3: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Hello, from onboarding 3</Text>
+      <WebView
+      style={styles.webview}
+      source={{ uri: 'https://expo.dev' }}
+    />
       <Pressable
         style={{
           backgroundColor: "#13293D",
@@ -42,6 +47,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontWeight: "bold",
+  },
+  webview: {
+    flex: 1,
   },
 });
 
