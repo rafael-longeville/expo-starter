@@ -16,6 +16,7 @@ import {
 } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
 import { sendAndConfirmTransaction, prepareTransaction, toWei } from "thirdweb";
+import { Collapsible } from "@/components/Collapsible";
 
 export default function HomeScreen() {
   const account = useActiveAccount();
@@ -65,7 +66,10 @@ export default function HomeScreen() {
   const copyToClipboard = () => {
     if (account?.address) {
       Clipboard.setString(account.address);
-      Alert.alert("Adresse copiée", "L'adresse a été copiée dans le presse-papier.");
+      Alert.alert(
+        "Adresse copiée",
+        "L'adresse a été copiée dans le presse-papier."
+      );
     }
   };
 
@@ -81,6 +85,9 @@ export default function HomeScreen() {
         <Text style={styles.title}>Vous avez {data?.displayValue} ETH</Text>
         <Button title="Envoyer 0.001 ETH" onPress={onClick} />
         <Button title="Copier l'adresse" onPress={copyToClipboard} />
+        <Collapsible title="Transaction">
+          <Text>{JSON.stringify(transactionObject, null, 2)}</Text>
+        </Collapsible>
       </View>
     </ScrollView>
   );
