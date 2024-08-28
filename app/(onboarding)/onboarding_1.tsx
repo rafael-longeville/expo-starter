@@ -1,10 +1,9 @@
-import InvestmentCard from "@/components/InvestmentCard";
+import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import { router } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Divider } from "react-native-paper";
-import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
 // import { globalFonts } from "../styles/globalFonts";
 
 const Onboarding1: React.FC = () => {
@@ -13,48 +12,22 @@ const Onboarding1: React.FC = () => {
     <View style={styles.container}>
       <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
       <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_1.subtitle")}
+        {decodeURIComponent(t("pages.onboarding_1.subtitle"))}
       </Text>
-      <InvestmentCard investment={"DOLLAR US"} />
-      <InvestmentCard investment={"EURO"} />
+      <InvestmentCard investment={"DOLLAR US"} investing={true} />
+      <InvestmentCard investment={"EURO"} investing={true} />
 
       <Divider
         style={{
           backgroundColor: "#13293D",
           opacity: 0.3,
           height: 1.5,
-          marginTop: 20,
-          marginBottom: 20,
         }}
       />
       <Text style={globalFonts.subtitle}>
         {t("pages.onboarding_1.second_subtitle")}
       </Text>
-      <InvestmentCard investment={"EURO"} />
-
-      <Pressable
-        style={{
-          backgroundColor: "#13293D",
-          padding: 10,
-          borderRadius: 5,
-          marginTop: 20,
-        }}
-        onPress={() => {
-          console.log("Button pressed");
-          router.push({
-            pathname: "/",
-          });
-        }}
-      >
-        <Text
-          style={{
-            color: "#fff",
-          }}
-        >
-          {" "}
-          Back to home page
-        </Text>
-      </Pressable>
+      <InvestmentCard investment={"DOLLAR US"} investing={false} />
     </View>
   );
 };

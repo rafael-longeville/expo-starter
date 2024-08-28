@@ -18,7 +18,6 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 import "@/app/i18n";
-import "intl-pluralrules";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
