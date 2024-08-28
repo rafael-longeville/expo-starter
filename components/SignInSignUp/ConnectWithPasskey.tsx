@@ -21,6 +21,8 @@ export default function ConnectWithPasskey({
         justifyContent: "center",
         alignItems: "center",
         width: 335,
+        borderWidth: 1,
+        borderColor: "#13293D",
       }}
       onPress={() => {
         try {
