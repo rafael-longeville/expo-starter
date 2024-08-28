@@ -1,8 +1,34 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { globalFonts } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
-import { Divider, Switch } from "react-native-paper";
+import { Divider } from "react-native-paper";
+
+const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
+  value,
+  onValueChange,
+}) => {
+  return (
+    <TouchableOpacity
+      style={[styles.switchContainer, styles.switch]}
+      onPress={onValueChange}
+      activeOpacity={0.8}
+    >
+      <View
+        style={[
+          styles.switchThumb,
+          value ? styles.switchThumbOn : styles.switchThumbOff,
+        ]}
+      >
+        {value ? (
+          <Image source={require("../../assets/images/check-icon.png")}></Image>
+        ) : (
+          <Image source={require("../../assets/images/cross-icon.png")}></Image>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const Onboarding4: React.FC = () => {
   const { t } = useTranslation();
@@ -86,12 +112,13 @@ const Onboarding4: React.FC = () => {
               flexDirection: "row",
               justifyContent: "space-between",
               width: "100%",
+              alignItems: "center",
             }}
           >
             <Text style={styles.questionText}>
               {t("pages.onboarding_4.notifications_question")}
             </Text>
-            <Switch
+            <CustomSwitch
               value={notifications}
               onValueChange={() => setNotifications(!notifications)}
             />
@@ -116,14 +143,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#13293D",
     fontFamily: "Poppins_600SemiBold",
-    width: "80%", // Ensure the text takes full width of the container
+    width: "80%",
   },
   descriptionText: {
     fontSize: 12,
     color: "#13293D",
     opacity: 0.7,
     fontFamily: "Poppins_400Regular",
-    width: "100%", // Ensure the text takes full width of the container
+    width: "100%",
   },
   commonButtonStyle: {
     width: "47%",
@@ -137,6 +164,37 @@ const styles = StyleSheet.create({
   isSelectedButtonStyle: {
     backgroundColor: "#ECFF78",
     borderColor: "#13293D",
+  },
+  switchContainer: {
+    width: 70,
+    height: 40,
+    borderRadius: 65,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    padding: 2,
+  },
+  switch: {
+    backgroundColor: "#13293D",
+  },
+  switchThumb: {
+    width: 30,
+    height: 30,
+    borderRadius: 52.5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  switchThumbOn: {
+    backgroundColor: "#FFF",
+    transform: [{ translateX: 15 }],
+  },
+  switchThumbOff: {
+    backgroundColor: "#FFF",
+    transform: [{ translateX: -15 }],
+  },
+  switchIcon: {
+    fontSize: 16,
+    color: "#13293D",
   },
 });
 
