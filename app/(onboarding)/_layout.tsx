@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   scrollViewContainer: {
-    padding: 20,
+    padding: 30,
   },
   stackContainer: {
     flex: 1,
