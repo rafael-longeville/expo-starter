@@ -78,11 +78,10 @@ export default function OnboardingLayout() {
             onPress={() => handleChangeLanguage("en")}
           />
         </View>
-
-        <Image
+        {currentSegment !== "onboarding_3" && <Image
           source={IMAGES[currentSegment as keyof typeof IMAGES]}
           style={styles.image}
-        />
+        />}
         {renderCurrentScreen()}
 
         <NavigationButton
