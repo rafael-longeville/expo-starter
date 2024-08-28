@@ -53,6 +53,30 @@ export default function HomeScreen() {
               }}
               onPress={() => {
                 router.push({
+                  pathname: "/(tabs)/home",
+                });
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                To Home
+              </Text>
+            </Pressable>
+            <Pressable
+              style={{
+                backgroundColor: "#13293D",
+                padding: 10,
+                borderRadius: 30,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 300,
+              }}
+              onPress={() => {
+                router.push({
                   pathname: "/(tabs)/splash",
                 });
               }}

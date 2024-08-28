@@ -3,6 +3,11 @@ import { StyleSheet } from "react-native";
 import "@expo-google-fonts/poppins";
 
 export const globalFonts = StyleSheet.create({
+  bigNumber: {
+    fontFamily: "Poppins_700Bold",
+    fontSize: 40,
+    color: "#13293D",
+  },
   bigTitle: {
     fontFamily: "Poppins_600SemiBold",
     fontSize: 32,

@@ -22,6 +22,14 @@
       "notifications_question": "Souhaitez-vous activer les notifications ?",
       "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
       "save_button": "Enregistrer"
+    },
+    "home": {
+      "total_balance": "Solde total",
+      "balance": "Solde",
+      "on_main_account": "sur le compte courant",
+      "on_investments": "sur le livret rémunéré",
+      "your_main_account": "Votre compte courant",
+      "details": "En détails"
     }
   },
   "components": {

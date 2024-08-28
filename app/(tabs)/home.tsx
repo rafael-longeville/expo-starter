@@ -7,6 +7,8 @@ import {
   ScrollView,
   RefreshControl,
   Alert,
+  Image,
+  Pressable,
 } from "react-native";
 import Clipboard from "@react-native-clipboard/clipboard";
 import {
@@ -16,9 +18,14 @@ import {
 } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
 import { sendAndConfirmTransaction, prepareTransaction, toWei } from "thirdweb";
-import { Collapsible } from "@/components/Collapsible";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
+import { globalFonts } from "../styles/globalFonts";
+import AccountDetails from "@/components/Homepage/AccountDetails";
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
+
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
   const [transactionObject, setTransactionObject] = useState<any>(null);
@@ -74,39 +81,43 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView
-      style={styles.scrollView}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <View style={styles.container}>
-        <Text style={styles.blackSubtitle}>Bonjour {account?.address}</Text>
-        <Text style={styles.title}>Vous avez {data?.displayValue} ETH</Text>
-        <Button title="Envoyer 0.001 ETH" onPress={onClick} />
-        <Button title="Copier l'adresse" onPress={copyToClipboard} />
-        <Collapsible title="Transaction">
-          <Text>{JSON.stringify(transactionObject, null, 2)}</Text>
-        </Collapsible>
-      </View>
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <AccountDetails />
+        {/* <View style={styles.container}>
+          <Text style={globalFonts.subtitle}>Bonjour {account?.address}</Text>
+          <Text style={globalFonts.title}>
+            Vous avez {data?.displayValue} ETH
+          </Text>
+          <Button title="Envoyer 0.001 ETH" onPress={onClick} />
+          <Button title="Copier l'adresse" onPress={copyToClipboard} />
+        </View> */}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 32,
-    width: "100%",
-    color: "#13293D",
-    textAlign: "center",
-    fontFamily: "Poppins_600SemiBold",
+  account_details: {
+    backgroundColor: "#ECFF78",
+    padding: 20,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
-  blackSubtitle: {
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  smallNumber: {
     fontSize: 18,
-    width: "100%",
-    color: "#13293D",
-    fontFamily: "Poppins_400Regular",
+    fontFamily: "Poppins_700Bold",
   },
+
   whiteSubtitle: {
     fontSize: 18,
     width: "100%",
@@ -114,19 +125,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
   },
   scrollView: {
-    backgroundColor: "#ECFF78",
+    backgroundColor: "#fff",
     height: "100%",
-  },
-  container: {
-    backgroundColor: "#ECFF78",
-    display: "flex",
-    flexDirection: "column",
-    padding: 50,
-    gap: 12,
-    flex: 1,
-    height: "100%",
-    alignItems: "center",
-    fontFamily: "Poppins",
-    marginTop: 24,
   },
 });

@@ -1,45 +1,57 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { type PropsWithChildren, useState } from "react";
-import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
+import React, { useEffect, useRef } from "react";
+import {
+  Animated,
+  StyleSheet,
+  View,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+  Easing,
+} from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Colors } from "@/constants/Colors";
+interface CollapsibleProps {
+  title: string;
+  isOpen: boolean;
+  children: React.ReactNode;
+}
 
-export function Collapsible({
-	children,
-	title,
-}: PropsWithChildren & { title: string }) {
-	const [isOpen, setIsOpen] = useState(false);
-	const theme = useColorScheme() ?? "light";
+export function Collapsible({ children, isOpen }: CollapsibleProps) {
+  // Animated value to control the height
+  const animatedHeight = useRef(new Animated.Value(0)).current;
 
-	return (
-		<ThemedView>
-			<TouchableOpacity
-				style={styles.heading}
-				onPress={() => setIsOpen((value) => !value)}
-				activeOpacity={0.8}
-			>
-				<Ionicons
-					name={isOpen ? "chevron-down" : "chevron-forward-outline"}
-					size={18}
-					color={theme === "light" ? Colors.light.icon : Colors.dark.icon}
-				/>
-				<ThemedText type="defaultSemiBold">{title}</ThemedText>
-			</TouchableOpacity>
-			{isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
-		</ThemedView>
-	);
+  useEffect(() => {
+    // Enable layout animation on Android
+    if (
+      Platform.OS === "android" &&
+      UIManager.setLayoutAnimationEnabledExperimental
+    ) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+
+    Animated.timing(animatedHeight, {
+      toValue: isOpen ? 1 : 0,
+      duration: 300,
+      easing: Easing.ease,
+      useNativeDriver: false, // We animate height, so native driver can't be used
+    }).start();
+  }, [isOpen]);
+
+  // Interpolating the height animation
+  const heightInterpolation = animatedHeight.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 60], // Adjust the final height according to your content
+  });
+
+  return (
+    <Animated.View style={[styles.content, { height: heightInterpolation }]}>
+      {children}
+    </Animated.View>
+  );
 }
 
 const styles = StyleSheet.create({
-	heading: {
-		flexDirection: "row",
-		alignItems: "center",
-		gap: 6,
-	},
-	content: {
-		marginTop: 6,
-		marginLeft: 24,
-	},
+  content: {
+    backgroundColor: "transparent",
+    overflow: "hidden", // Ensure content doesn't overflow when collapsing
+  },
 });

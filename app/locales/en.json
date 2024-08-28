@@ -3,7 +3,7 @@
   "pages": {
     "onboarding_1": {
       "title": "Grow your money",
-      "subtitle": "Invest your funds and earn interest from the first second:",
+      "subtitle": "Invest your funds and earn rewards from the first second:",
       "second_subtitle": "Or secure them in your sovereign current account:",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
@@ -16,12 +16,20 @@
     },
     "onboarding_4": {
       "title": "You're almost there!",
-      "subtitle": "Set up the currency display and notifications.",
-      "money_question": "Do you want the amounts to be displayed generally in Euro or Dollar?",
-      "money_question_helper": "To help you, the amounts displayed (according to the chosen currency) will be preceded by an asterisk (*).",
+      "subtitle": "Set up currency display and notifications.",
+      "money_question": "Would you like a general display of amounts in Euro or Dollar?",
+      "money_question_helper": "To help you, the converted amounts displayed (according to the chosen currency) will be preceded by an asterisk (*).",
       "notifications_question": "Would you like to enable notifications?",
       "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
       "save_button": "Save"
+    },
+    "home": {
+      "total_balance": "Total balance",
+      "balance": "Balance",
+      "on_main_account": "in the current account",
+      "on_investments": "in the remunerated account",
+      "your_main_account": "Your current account",
+      "details": "In details"
     }
   },
   "components": {
