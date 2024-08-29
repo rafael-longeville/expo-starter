@@ -1,6 +1,10 @@
 {
   "welcome": "Welcome",
   "pages": {
+    "login": {
+      "title": "Welcome",
+      "subtitle": "You are one step away from creating your sovereign account for free!"
+    },
     "onboarding_1": {
       "title": "Grow Your Money",
       "subtitle": "Invest your funds and earn from the very first second:",
@@ -23,7 +27,7 @@
     "onboarding_4": {
       "title": "You're Almost There!",
       "subtitle": "Set up currency display and notifications.",
-      "money_question": "Do you want a general display of amounts in Euro or Dollar?",
+      "money_question": "Would you like to display amounts in Euro or Dollar?",
       "money_question_helper": "To help you, amounts displayed (according to the chosen currency) will be preceded by an asterisk (*).",
       "notifications_question": "Would you like to enable notifications?",
       "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
@@ -46,6 +50,8 @@
       }
     }
   },
+  "disclaimer": "By continuing, you confirm that you have read and accepted ",
+  "disclaimer_link": "our terms and conditions.",
   "components": {
     "investment_card": {
       "investment": "Investment",
