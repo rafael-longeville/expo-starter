@@ -18,7 +18,7 @@ export default function LoginScreen() {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
-        <Text style={styles.title}>({t("pages.login.title")})</Text>
+        <Text style={styles.title}>{t("pages.login.title")}</Text>
         <Text
           style={{
             ...styles.blackSubtitle,
