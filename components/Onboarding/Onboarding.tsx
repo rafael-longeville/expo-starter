@@ -7,14 +7,31 @@ import Paginator from "./Paginator";
 import NextButton from "./NextButton";
 import slides from "./slides";
 import { router } from "expo-router";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Onboarding() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasSeenSplash, setHasSeenSplash] = useState(false);
   const scrollX = useRef(new Animated.Value(0)).current;
 
   // Explicitly type the slidesRef as a reference to FlatList
   const slidesRef = useRef<FlatList<any>>(null);
+
+  // Check if the user has seen the splash screen
+  useEffect(() => {
+    const checkIfSeenSplash = async () => {
+      try {
+        const value = await AsyncStorage.getItem("hasSeenSplash");
+        if (value === "true") {
+          setHasSeenSplash(true);
+        }
+      } catch (error) {
+        console.error("Error retrieving data: ", error);
+      }
+    };
+
+    checkIfSeenSplash();
+  }, []);
 
   // Reset the onboarding process to the first slide whenever the screen is focused
   useFocusEffect(
@@ -49,11 +66,14 @@ export default function Onboarding() {
     }
   };
 
+  // Render only the first slide if the user has already seen the splash
+  const slidesToRender = hasSeenSplash ? [slides[0]] : slides;
+
   return (
     <View style={styles.container}>
       <View style={{ flex: 3 }}>
         <FlatList
-          data={slides}
+          data={slidesToRender}
           renderItem={({ item }) => <OnboardingItem item={item} />}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -88,7 +108,7 @@ export default function Onboarding() {
           scrollTo={scrollTo}
           percentage={(currentIndex + 1) * (100 / slides.length)}
         />
-        <Paginator data={slides} scrollX={scrollX} />
+        <Paginator data={slidesToRender} scrollX={scrollX} />
       </View>
     </View>
   );

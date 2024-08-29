@@ -1,15 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { globalFonts } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
 import { useActiveAccount, useConnect } from "thirdweb/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Onboarding2: React.FC = () => {
   const { t } = useTranslation();
   const { connect, isConnecting, error } = useConnect();
   const account = useActiveAccount();
+
+  const [storedValue, setStoredValue] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getValueFromAsyncStorage = async () => {
+      try {
+        const value = await AsyncStorage.getItem("continueWithoutFunding");
+        if (value !== null) {
+          setStoredValue(value); // Set the value if it exists
+        }
+      } catch (error) {
+        console.error("Error retrieving data from AsyncStorage: ", error);
+      }
+    };
+
+    getValueFromAsyncStorage();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
@@ -39,6 +58,14 @@ const Onboarding2: React.FC = () => {
           error={error}
         />
       </View>
+      <Text style={globalFonts.disclaimerText}>{t("disclaimer")}</Text>
+
+      {/* Display the value retrieved from AsyncStorage */}
+      {storedValue && (
+        <Text style={globalFonts.subtitle}>
+          Skipped provisionning: {storedValue}
+        </Text>
+      )}
     </View>
   );
 };

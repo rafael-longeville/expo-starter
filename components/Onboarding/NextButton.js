@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Image,
   View,
@@ -7,9 +7,15 @@ import {
   Animated,
 } from "react-native";
 import Svg, { G, Circle } from "react-native-svg";
-import { AntDesign } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import { client } from "@/constants/thirdweb";
+import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 
-export default NextButton = ({ percentage, scrollTo }) => {
+export default function NextButton({ percentage, scrollTo }) {
+  const [hasSeenSplash, setHasSeenSplash] = useState(false);
+  const [hasPasskey, setHasPasskey] = useState(false);
+
   const size = 70;
   const strokeWidth = 1.5;
   const center = size / 2;
@@ -18,6 +24,32 @@ export default NextButton = ({ percentage, scrollTo }) => {
 
   const progressAnimation = useRef(new Animated.Value(0)).current;
   const progressRef = useRef(null);
+
+  useEffect(() => {
+    const checkIfPasskey = async () => {
+      const hasPasskey = await hasStoredPasskey(client);
+      if (hasPasskey) {
+        setHasPasskey(true);
+      } else {
+        setHasPasskey(false);
+      }
+      return hasPasskey;
+    };
+
+    const checkIfSeenSplash = async () => {
+      try {
+        const value = await AsyncStorage.getItem("hasSeenSplash");
+        if (value === "true") {
+          setHasSeenSplash(true);
+        }
+      } catch (error) {
+        console.error("Error retrieving data: ", error);
+      }
+    };
+
+    checkIfSeenSplash();
+    checkIfPasskey();
+  }, []);
 
   const animation = (toValue) => {
     return Animated.timing(progressAnimation, {
@@ -51,6 +83,16 @@ export default NextButton = ({ percentage, scrollTo }) => {
     };
   }, []);
 
+  const handlePress = () => {
+    if (hasSeenSplash && hasPasskey) {
+      router.push("/(tabs)/login");
+    } else if (hasSeenSplash && !hasPasskey) {
+      router.push("/(onboarding)/onboarding_1");
+    } else {
+      scrollTo();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Svg width={size} height={size}>
@@ -75,7 +117,7 @@ export default NextButton = ({ percentage, scrollTo }) => {
         </G>
       </Svg>
       <TouchableOpacity
-        onPress={scrollTo}
+        onPress={handlePress}
         style={styles.button}
         activeOpacity={0.6}
       >
@@ -83,7 +125,7 @@ export default NextButton = ({ percentage, scrollTo }) => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

@@ -7,7 +7,7 @@ import {
   getCurrencySymbol,
   gainContainerStyle,
 } from "./StyleFunctions";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 
 // Define the props interface
@@ -24,6 +24,12 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
 
   // State for the amount entered in the TextInput
   const [amount, setAmount] = useState<string>("");
+
+  const parseAmount = (value: string): number => {
+    // Replace comma with a dot and parse to a floating-point number
+    const parsedValue = parseFloat(value.replace(",", "."));
+    return isNaN(parsedValue) ? 0 : parsedValue;
+  };
 
   return (
     <View style={styles.cardContainer}>
@@ -66,18 +72,20 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
         style={styles.buttonContainer}
         activeOpacity={0.6}
         onPress={async () => {
-          const isValidAmount = (value: string) => {
-            const num = parseInt(value, 10);
-            return !isNaN(num) && num > 0 && Number.isInteger(num);
-          };
+          const numericAmount = parseAmount(amount); // Convert amount to number
 
-          if (!isValidAmount(amount)) {
-            console.error("Invalid amount. Please enter an integer greater than 0.");
+          if (numericAmount <= 0) {
+            console.error(
+              "Invalid amount. Please enter a number greater than 0."
+            );
             return;
           }
 
           try {
-            await AsyncStorage.setItem("onboardingValue", amount);
+            await AsyncStorage.setItem(
+              "onboardingValue",
+              numericAmount.toString()
+            );
           } catch (error) {
             console.error("Error storing data: ", error);
           }
@@ -104,7 +112,8 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
           router.push({
             pathname: "/(onboarding)/onboarding_2",
           });
-        }}>
+        }}
+      >
         <Image
           source={require("@/assets/images/deposit-button-shape.png")}
           style={styles.buttonImage}

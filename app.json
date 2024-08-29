@@ -4,31 +4,29 @@
     "slug": "civicpower-wallet",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/ibex-splash.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "com.civicpower.ibexwallet",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/ibex-splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#13293D"
     },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.civicpower.ibexwallet",
-      "associatedDomains": [
-        "webcredentials:moncomptesouverain.fr"
-      ],
+      "associatedDomains": ["webcredentials:moncomptesouverain.fr"],
       "buildNumber": "17",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos."
       }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/ibex-splash.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "com.mcs_ibex.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#13293D"
+      },
       "intentFilters": [
         {
           "autoVerify": true,
@@ -37,10 +35,7 @@
             "scheme": "https",
             "host": "moncomptesouverain.fr"
           },
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "versionCode": 20
@@ -62,10 +57,7 @@
             "extraPods": [
               {
                 "name": "OpenSSL-Universal",
-                "configurations": [
-                  "Release",
-                  "Debug"
-                ],
+                "configurations": ["Release", "Debug"],
                 "modular_headers": true,
                 "version": "3.1.5004"
               }
@@ -76,9 +68,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/Poppins-Black.ttf"
-          ]
+          "fonts": ["./assets/fonts/Poppins-Black.ttf"]
         }
       ],
       "expo-localization"

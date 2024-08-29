@@ -71,6 +71,7 @@ export default function TransactionHistory() {
             width: "100%",
             marginBottom: 12,
           }}
+          key={item.id}
         >
           <View
             style={{

@@ -1,6 +1,10 @@
 {
   "welcome": "Bienvenue",
   "pages": {
+    "login": {
+      "title": "Bienvenue",
+      "subtitle": "Vous êtes à un doigt de créer votre compte souverain gratuitement !"
+    },
     "onboarding_1": {
       "title": "Faites fructifier votre argent",
       "subtitle": "Placez vos fonds et soyez rémunéré dès la première seconde :",
@@ -13,6 +17,12 @@
       "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
       "sign-in": "Utiliser un portefeuille existant",
       "create-account": "Créer un nouveau portefeuille"
+    },
+    "onboarding_3": {
+      "account": "Compte",
+      "title": "Alimentez votre compte",
+      "subtitle": "Placez vos fonds dans un des compte rémunéré via carte bancaire, Apple Pay ou Google Pay.",
+      "cancel": "Annuler"
     },
     "onboarding_4": {
       "title": "Vous y êtes presque !",
@@ -40,6 +50,8 @@
       }
     }
   },
+  "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",
+  "disclaimer_link": "nos conditions générales de ventes.",
   "components": {
     "investment_card": {
       "investment": "Placement",

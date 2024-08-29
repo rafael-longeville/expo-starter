@@ -15,6 +15,7 @@ import Onboarding1 from "./onboarding_1";
 import Onboarding2 from "./onboarding_2";
 import Onboarding3 from "./onboarding_3";
 import Onboarding4 from "./onboarding_4";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
@@ -78,10 +79,12 @@ export default function OnboardingLayout() {
             onPress={() => handleChangeLanguage("en")}
           />
         </View>
-        {currentSegment !== "onboarding_3" && <Image
-          source={IMAGES[currentSegment as keyof typeof IMAGES]}
-          style={styles.image}
-        />}
+        {currentSegment !== "onboarding_3" && (
+          <Image
+            source={IMAGES[currentSegment as keyof typeof IMAGES]}
+            style={styles.image}
+          />
+        )}
         {renderCurrentScreen()}
 
         <NavigationButton
@@ -96,6 +99,18 @@ export default function OnboardingLayout() {
           label="Go - 1 page"
           onPress={() => navigateToPage(-1)}
         />
+        <Pressable
+          onPress={async () => {
+            try {
+              await AsyncStorage.clear();
+              console.log("All async storage data cleared.");
+            } catch (error) {
+              console.error("Error clearing async storage: ", error);
+            }
+          }}
+        >
+          <Text>Clear Cache</Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
