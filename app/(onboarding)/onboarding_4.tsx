@@ -37,7 +37,7 @@ const Onboarding4: React.FC = () => {
   const [selectedCurrency, setSelectedCurrency] = useState<
     "euro" | "dollar" | null
   >(null);
-  const [notifications, setNotifications] = useState<boolean>(true);
+  const [notifications, setNotifications] = useState<boolean>(false);
 
   return (
     <View style={styles.container}>

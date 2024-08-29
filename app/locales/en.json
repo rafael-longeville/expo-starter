@@ -2,10 +2,10 @@
   "welcome": "Welcome",
   "pages": {
     "onboarding_1": {
-      "title": "Grow your money",
-      "subtitle": "Invest your funds and earn rewards from the first second:",
+      "title": "Make your money grow",
+      "subtitle": "Invest your funds and start earning from the first second:",
       "second_subtitle": "Or secure them in your sovereign current account:",
-      "continue_button": "Continue without funding",
+      "continue_button": "Continue without depositing",
       "has_account": "I already have an account"
     },
     "onboarding_2": {
@@ -16,9 +16,9 @@
     },
     "onboarding_4": {
       "title": "You're almost there!",
-      "subtitle": "Set up currency display and notifications.",
+      "subtitle": "Set up your currency display and notifications.",
       "money_question": "Would you like a general display of amounts in Euro or Dollar?",
-      "money_question_helper": "To help you, the converted amounts displayed (according to the chosen currency) will be preceded by an asterisk (*).",
+      "money_question_helper": "To help you, amounts converted at display (according to the chosen currency) will be preceded by an asterisk (*).",
       "notifications_question": "Would you like to enable notifications?",
       "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
       "save_button": "Save"
@@ -26,10 +26,18 @@
     "home": {
       "total_balance": "Total balance",
       "balance": "Balance",
-      "on_main_account": "in the current account",
-      "on_investments": "in the remunerated account",
+      "on_main_account": "on the current account",
+      "on_investments": "on the remunerated account",
       "your_main_account": "Your current account",
-      "details": "In details"
+      "your_investment_account": "Your remunerated account",
+      "details": "Details",
+      "hide_details": "Hide details",
+      "including_gains": "Including gains",
+      "transactions": {
+        "title": "Your transaction history",
+        "in_progress": "In progress",
+        "seeAll": "See all"
+      }
     }
   },
   "components": {

@@ -7,6 +7,13 @@ export const globalFonts = StyleSheet.create({
     fontFamily: "Poppins_700Bold",
     fontSize: 40,
     color: "#13293D",
+    lineHeight: 50,
+  },
+  bigNumberSemi: {
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 40,
+    color: "#13293D",
+    lineHeight: 50,
   },
   bigTitle: {
     fontFamily: "Poppins_600SemiBold",
@@ -17,6 +24,12 @@ export const globalFonts = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     fontSize: 22,
     color: "#13293D",
+  },
+  mediumSubtitle: {
+    fontFamily: "Poppins_500Medium",
+    fontSize: 18,
+    color: "#13293D",
+    // lineHeight: 25,
   },
   subtitle: {
     fontFamily: "Poppins_400Regular",

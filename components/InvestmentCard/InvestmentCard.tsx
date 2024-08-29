@@ -57,7 +57,7 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
 
       <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.6}>
         <Image
-          source={require("@/assets/images/button-shape.png")}
+          source={require("@/assets/images/deposit-button-shape.png")}
           style={styles.buttonImage}
         />
         <Text style={styles.depositButtonText}>

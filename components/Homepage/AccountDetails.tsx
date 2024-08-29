@@ -17,6 +17,12 @@ export default function AccountDetails() {
   const main_account_balance = "133,64";
   const investment_account_balance = "939,40";
 
+  const collapsibleText = !isOpen ? (
+    <Text style={globalFonts.subtitle}>{t("pages.home.details")}</Text>
+  ) : (
+    <Text style={globalFonts.subtitle}>{t("pages.home.hide_details")}</Text>
+  );
+
   return (
     <View style={styles.account_details}>
       <Text style={globalFonts.bigTitle}>{t("welcome")} !</Text>
@@ -45,7 +51,7 @@ export default function AccountDetails() {
               gap: 5,
             }}
           >
-            <Text style={globalFonts.subtitle}>{t("pages.home.details")}</Text>
+            {collapsibleText}
             <Image
               source={chevronIcon}
               style={{
