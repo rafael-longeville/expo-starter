@@ -135,19 +135,18 @@ export default function TransactionHistory() {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            gap: 5,
+            gap: 8,
           }}
         >
-          <Text
+          <Image
+            source={require("@/assets/images/tx-eye-icon.png")}
             style={{
-              color: "#AFC0FF",
-              fontSize: 14,
-              fontFamily: "Poppins_500Medium",
+              marginBottom: 3,
             }}
-          >
+          />
+          <Text style={styles.secondRowText}>
             {t("pages.home.transactions.seeAll")}
           </Text>
-          <Image source={require("@/assets/images/tx-eye-icon.png")} />
         </View>
       </TouchableOpacity>
     </View>
