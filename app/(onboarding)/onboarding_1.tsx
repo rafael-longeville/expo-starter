@@ -64,9 +64,9 @@ const Onboarding1: React.FC = () => {
           fontFamily: "Poppins_500Medium",
         }}
       >
-        <Link href={"/(tabs)/login"}>
+        {/* <Link href={"/(tabs)/login"}> */}
           {t("pages.onboarding_1.has_account")}
-        </Link>
+        {/* </Link> */}
       </Text>
     </View>
   );

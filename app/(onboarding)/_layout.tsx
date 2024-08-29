@@ -69,16 +69,6 @@ export default function OnboardingLayout() {
         style={styles.backgroundImage}
       />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <View style={styles.languageSwitcher}>
-          <LanguageButton
-            label="Change to French"
-            onPress={() => handleChangeLanguage("fr")}
-          />
-          <LanguageButton
-            label="Change to English"
-            onPress={() => handleChangeLanguage("en")}
-          />
-        </View>
         {currentSegment !== "onboarding_3" && (
           <Image
             source={IMAGES[currentSegment as keyof typeof IMAGES]}
@@ -87,7 +77,7 @@ export default function OnboardingLayout() {
         )}
         {renderCurrentScreen()}
 
-        <NavigationButton
+        {/* <NavigationButton
           label="Back to home page"
           onPress={() => router.push("/")}
         />
@@ -98,19 +88,28 @@ export default function OnboardingLayout() {
         <NavigationButton
           label="Go - 1 page"
           onPress={() => navigateToPage(-1)}
-        />
-        <Pressable
-          onPress={async () => {
-            try {
-              await AsyncStorage.clear();
-              console.log("All async storage data cleared.");
-            } catch (error) {
-              console.error("Error clearing async storage: ", error);
-            }
-          }}
-        >
-          <Text>Clear Cache</Text>
-        </Pressable>
+        /> */}
+        <View style={styles.languageSwitcher}>
+          <LanguageButton
+            label="Change to French"
+            onPress={() => handleChangeLanguage("fr")}
+          />
+          <LanguageButton
+            label="Change to English"
+            onPress={() => handleChangeLanguage("en")}
+          />
+          <LanguageButton
+            label="Clear cache"
+            onPress={async () => {
+              try {
+                await AsyncStorage.clear();
+                console.log("All async storage data cleared.");
+              } catch (error) {
+                console.error("Error clearing async storage: ", error);
+              }
+            }}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -162,6 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginBottom: 20,
+    marginTop: 400,
   },
   languageButton: {
     backgroundColor: "blue",

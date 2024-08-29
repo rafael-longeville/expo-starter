@@ -6,6 +6,8 @@ import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
 import { useActiveAccount, useConnect } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Link } from "expo-router";
+
 
 const Onboarding2: React.FC = () => {
   const { t } = useTranslation();
@@ -58,14 +60,20 @@ const Onboarding2: React.FC = () => {
           error={error}
         />
       </View>
-      <Text style={globalFonts.disclaimerText}>{t("disclaimer")}</Text>
+      <Text style={globalFonts.disclaimerText}>{t("disclaimer")}
+        <Link href={"https://moncomptesouverain.fr"}>
+          <Text style={{ textDecorationLine: "underline" }}>
+            nos conditions générales de ventes.
+          </Text>
+        </Link>
+      </Text>
 
       {/* Display the value retrieved from AsyncStorage */}
-      {storedValue && (
+      {/* {storedValue && (
         <Text style={globalFonts.subtitle}>
           Skipped provisionning: {storedValue}
         </Text>
-      )}
+      )} */}
     </View>
   );
 };

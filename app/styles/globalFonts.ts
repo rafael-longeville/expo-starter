@@ -45,5 +45,6 @@ export const globalFonts = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
     fontSize: 12,
     color: "rgba(19, 41, 61, 0.70)",
+    textAlign: "center",
   },
 });

@@ -61,16 +61,13 @@ const Onboarding3: React.FC = () => {
           <Text style={styles.amount}> 0 €*</Text>
         </Text>
       </View>
-      <Text style={globalFonts.title}>{t("pages.onboardin_3.title")}</Text>
+      <Text style={globalFonts.title}>{t("pages.onboarding_3.title")}</Text>
       <Text style={globalFonts.subtitle}>
-        {t("pages.onboardin_3.subtitle")}
+        {t("pages.onboarding_3.subtitle")}
       </Text>
       {customUri && (
         <WebView style={styles.webview} source={{ uri: customUri }} />
       )}
-      <Text style={globalFonts.title}>
-        Value is {onboardingValue} and method is {onboardingMethod}
-      </Text>
       <Text
         style={{
           ...globalFonts.subtitle,
