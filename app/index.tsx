@@ -9,10 +9,30 @@ import { Link, router } from "expo-router";
 import { useSegments } from "expo-router";
 import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
 import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect } from 'react';
 
 export default function HomeScreen() {
   const { connect, isConnecting, error } = useConnect();
   const account = useActiveAccount();
+
+  const getDataandTransfer = async (key: any) => {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      if (value === null) {
+        router.push({
+          pathname: "/(tabs)/splash",
+        });
+      }
+    } catch (error) {
+      console.error("Error retrieving data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getDataandTransfer("hasSeenSplash");
+  }, []);
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -41,7 +61,7 @@ export default function HomeScreen() {
         />
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
           <>
-            <Pressable
+            {/* <Pressable
               style={{
                 backgroundColor: "#13293D",
                 padding: 10,
@@ -64,7 +84,7 @@ export default function HomeScreen() {
               >
                 To Home
               </Text>
-            </Pressable>
+            </Pressable> */}
             <Pressable
               style={{
                 backgroundColor: "#13293D",
@@ -183,6 +203,34 @@ export default function HomeScreen() {
                 }}
               >
                 To Onboarding 4
+              </Text>
+            </Pressable>
+            <Pressable
+              style={{
+                backgroundColor: "#13293D",
+                padding: 10,
+                borderRadius: 30,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 300,
+              }}
+              onPress={async () => {
+                try {
+                  await AsyncStorage.clear();
+                  console.log("All async storage data cleared.");
+                  // Optional: You can navigate to a specific screen or give feedback to the user
+                } catch (error) {
+                  console.error("Error clearing async storage: ", error);
+                }
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                Clear Cache
               </Text>
             </Pressable>
           </>
