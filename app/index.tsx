@@ -6,7 +6,6 @@ import { chain, client } from "@/constants/thirdweb";
 import { Wallet } from "thirdweb/wallets";
 import { ScrollView } from "react-native";
 import { Link, router } from "expo-router";
-import { useSegments } from "expo-router";
 import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
 import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 
