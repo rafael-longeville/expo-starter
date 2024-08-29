@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
@@ -7,6 +7,8 @@ import {
   getCurrencySymbol,
   gainContainerStyle,
 } from "./StyleFunctions";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from "expo-router";
 
 // Define the props interface
 interface InvestmentCardProps {
@@ -19,6 +21,9 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
   investing = false, // Default value for investing
 }) => {
   const { t } = useTranslation();
+
+  // State for the amount entered in the TextInput
+  const [amount, setAmount] = useState<string>("");
 
   return (
     <View style={styles.cardContainer}>
@@ -41,6 +46,8 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
               style={styles.input}
               placeholder="0"
               placeholderTextColor="rgba(19, 41, 61, 0.60)"
+              value={amount} // Bind the state to the TextInput
+              onChangeText={(text) => setAmount(text)} // Update the state on text change
             />
           </View>
           <Text style={styles.asideInputText}>
@@ -55,7 +62,49 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
         </View>
       </View>
 
-      <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.6}>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        activeOpacity={0.6}
+        onPress={async () => {
+          const isValidAmount = (value: string) => {
+            const num = parseInt(value, 10);
+            return !isNaN(num) && num > 0 && Number.isInteger(num);
+          };
+
+          if (!isValidAmount(amount)) {
+            console.error("Invalid amount. Please enter an integer greater than 0.");
+            return;
+          }
+
+          try {
+            await AsyncStorage.setItem("onboardingValue", amount);
+          } catch (error) {
+            console.error("Error storing data: ", error);
+          }
+
+          if (investing === true && investment === "DOLLAR US") {
+            try {
+              await AsyncStorage.setItem("onboardingMethod", "angleUSD");
+            } catch (error) {
+              console.error("Error storing data: ", error);
+            }
+          } else if (investing === true && investment === "EURO") {
+            try {
+              await AsyncStorage.setItem("onboardingMethod", "angleEUR");
+            } catch (error) {
+              console.error("Error storing data: ", error);
+            }
+          } else {
+            try {
+              await AsyncStorage.setItem("onboardingMethod", "onRamp");
+            } catch (error) {
+              console.error("Error storing data: ", error);
+            }
+          }
+          router.push({
+            pathname: "/(onboarding)/onboarding_2",
+          });
+        }}>
         <Image
           source={require("@/assets/images/deposit-button-shape.png")}
           style={styles.buttonImage}

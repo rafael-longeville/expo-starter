@@ -7,6 +7,7 @@ import Paginator from "./Paginator";
 import NextButton from "./NextButton";
 import slides from "./slides";
 import { router } from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Onboarding() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -33,11 +34,18 @@ export default function Onboarding() {
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
-  const scrollTo = () => {
+  const scrollTo = async () => {
     if (currentIndex < slides.length - 1) {
       slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
-      router.push("/");
+      router.push({
+        pathname: "/(onboarding)/onboarding_1",
+      });
+      try {
+        await AsyncStorage.setItem("hasSeenSplash", "true");
+      } catch (error) {
+        console.error("Error storing data: ", error);
+      }
     }
   };
 
