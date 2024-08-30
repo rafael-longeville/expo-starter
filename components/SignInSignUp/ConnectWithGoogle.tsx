@@ -1,43 +1,65 @@
 import { router } from "expo-router";
-import { Pressable, StyleSheet, Image } from "react-native";
+import { Pressable, StyleSheet, Image, Alert } from "react-native";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { chain, client } from "@/constants/thirdweb";
+import * as Sentry from "@sentry/react-native";
 
 export default function ConnectWithGoogle({
   connect,
   isConnecting,
   account,
-  error,
 }: any) {
-  return (
-    <Pressable
-      style={styles.button}
-      onPress={() => {
+  const handlePress = async () => {
+    try {
+      Sentry.addBreadcrumb({
+        category: "action",
+        message: "User clicked connect with Google button",
+        level: "info",
+      });
+
+      const wallet = inAppWallet({
+        smartAccount: {
+          chain,
+          sponsorGas: true,
+        },
+      });
+
+      await connect(async (): Promise<Wallet> => {
         try {
-          connect(async (): Promise<Wallet> => {
-            const w = inAppWallet({
-              smartAccount: {
-                chain,
-                sponsorGas: true,
-              },
-            });
-            await w.connect({
-              client,
-              strategy: "google",
-            });
-            return w;
-          }).then(() => {
-            if (!isConnecting && account) {
-              router.push({
-                pathname: "/(onboarding)/onboarding_3",
-              });
-            }
+          await wallet.connect({
+            client,
+            strategy: "google",
           });
-        } catch {
-          console.log("error", error);
+          Sentry.captureMessage(`Wallet connected using Google strategy`);
+          return wallet;
+        } catch (connectError: any) {
+          Sentry.captureException(connectError);
+          throw connectError;
         }
-      }}
-    >
+      });
+
+      if (!isConnecting && account) {
+        Sentry.addBreadcrumb({
+          category: "navigation",
+          message: "Navigating after successful Google connection",
+          level: "info",
+        });
+
+        router.push({
+          pathname: "/(onboarding)/onboarding_3",
+        });
+      }
+    } catch (err: any) {
+      Sentry.captureException(err);
+      Alert.alert(
+        "Error",
+        "An error occurred during the Google connection process. Please try again."
+      );
+    }
+  };
+
+  return (
+    <Pressable style={styles.button} onPress={handlePress}>
       <Image
         source={require("@/assets/images/google.png")}
         style={{ width: 30, height: 30 }}
