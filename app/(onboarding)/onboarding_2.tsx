@@ -32,19 +32,19 @@ const Onboarding2: React.FC = () => {
     getValueFromAsyncStorage();
   }, []);
 
-  if (isConnecting) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ActivityIndicator size="large" color="#13293D" />
-      </View>
-    );
-  }
+  // if (isConnecting) {
+  //   return (
+  //     <View
+  //       style={{
+  //         flex: 1,
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //       }}
+  //     >
+  //       <ActivityIndicator size="large" color="#13293D" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>

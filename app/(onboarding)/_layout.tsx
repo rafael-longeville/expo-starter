@@ -16,6 +16,8 @@ import Onboarding2 from "./onboarding_2";
 import Onboarding3 from "./onboarding_3";
 import Onboarding4 from "./onboarding_4";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as CONFIG from "../../app.json";
+import { globalFonts } from "../styles/globalFonts";
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
@@ -64,6 +66,14 @@ export default function OnboardingLayout() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text
+        style={{
+          ...globalFonts.subtitle,
+          textAlign: "center",
+        }}
+      >
+        Version {CONFIG.expo.ios.buildNumber}
+      </Text>
       <Image
         source={require("@/assets/images/yellow-rectangle.png")}
         style={styles.backgroundImage}

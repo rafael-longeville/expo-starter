@@ -9,12 +9,9 @@ import {
 import Svg, { G, Circle } from "react-native-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { client } from "@/constants/thirdweb";
-import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 
 export default function NextButton({ percentage, scrollTo }) {
   const [hasSeenSplash, setHasSeenSplash] = useState(false);
-  const [hasPasskey, setHasPasskey] = useState(false);
 
   const size = 70;
   const strokeWidth = 1.5;
@@ -26,16 +23,6 @@ export default function NextButton({ percentage, scrollTo }) {
   const progressRef = useRef(null);
 
   useEffect(() => {
-    const checkIfPasskey = async () => {
-      const hasPasskey = await hasStoredPasskey(client);
-      if (hasPasskey) {
-        setHasPasskey(true);
-      } else {
-        setHasPasskey(false);
-      }
-      return hasPasskey;
-    };
-
     const checkIfSeenSplash = async () => {
       try {
         const value = await AsyncStorage.getItem("hasSeenSplash");
@@ -48,7 +35,6 @@ export default function NextButton({ percentage, scrollTo }) {
     };
 
     checkIfSeenSplash();
-    checkIfPasskey();
   }, []);
 
   const animation = (toValue) => {
@@ -84,9 +70,7 @@ export default function NextButton({ percentage, scrollTo }) {
   }, []);
 
   const handlePress = () => {
-    if (hasSeenSplash && hasPasskey) {
-      router.push("/(tabs)/login");
-    } else if (hasSeenSplash && !hasPasskey) {
+    if (hasSeenSplash) {
       router.push("/(onboarding)/onboarding_1");
     } else {
       scrollTo();

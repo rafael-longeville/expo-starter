@@ -18,7 +18,7 @@
       "associatedDomains": [
         "webcredentials:moncomptesouverain.fr"
       ],
-      "buildNumber": "18",
+      "buildNumber": "19",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos."
       }
