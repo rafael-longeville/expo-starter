@@ -9,6 +9,7 @@ import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
 
 export default function LoginScreen() {
   const { connect, isConnecting, error } = useConnect();
@@ -34,12 +35,14 @@ export default function LoginScreen() {
           isConnecting={isConnecting}
           account={account}
           error={error}
+          isOnboarding={false}
         />
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
           account={account}
           error={error}
+          isOnboarding={false}
         />
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
           <>
@@ -137,45 +140,16 @@ export default function LoginScreen() {
   );
 }
 
-const ConnectWithGoogle = ({ connect, isConnecting, account, error }: any) => {
-  return (
-    <Pressable
-      style={styles.button}
-      onPress={() => {
-        try {
-          connect(async (): Promise<Wallet> => {
-            const w = inAppWallet({
-              smartAccount: {
-                chain,
-                sponsorGas: true,
-              },
-            });
-            await w.connect({
-              client,
-              strategy: "google",
-            });
-            return w;
-          }).then(() => {
-            if (!isConnecting && account) {
-              router.push({
-                pathname: "/(tabs)/home",
-              });
-            }
-          });
-        } catch {
-          console.log("error", error);
-        }
-      }}
-    >
-      <Image
-        source={require("@/assets/images/google.png")}
-        style={{ width: 30, height: 30 }}
-      />
-    </Pressable>
-  );
-};
-
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#13293D",
+    padding: 10,
+    borderRadius: 30,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 300,
+  },
   title: {
     fontSize: 32,
     width: "100%",
@@ -204,15 +178,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins",
     marginTop: 50,
   },
-  button: {
-    backgroundColor: "#13293D",
-    padding: 10,
-    borderRadius: 30,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 300,
-  },
+
   buttonText: {
     color: "white",
   },

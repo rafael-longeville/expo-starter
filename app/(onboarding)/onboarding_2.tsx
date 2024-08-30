@@ -6,8 +6,9 @@ import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
 import { useActiveAccount, useConnect } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link } from "expo-router";
-
+import { Link, router } from "expo-router";
+import { ActivityIndicator } from "react-native-paper";
+import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
 
 const Onboarding2: React.FC = () => {
   const { t } = useTranslation();
@@ -31,6 +32,20 @@ const Onboarding2: React.FC = () => {
     getValueFromAsyncStorage();
   }, []);
 
+  if (isConnecting) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityIndicator size="large" color="#13293D" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
@@ -52,15 +67,26 @@ const Onboarding2: React.FC = () => {
           isConnecting={isConnecting}
           account={account}
           error={error}
+          isOnboarding={true}
         />
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
           account={account}
           error={error}
+          isOnboarding={true}
         />
+        {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
+          <ConnectWithGoogle
+            connect={connect}
+            isConnecting={isConnecting}
+            account={account}
+            error={error}
+          />
+        )}
       </View>
-      <Text style={globalFonts.disclaimerText}>{t("disclaimer")}
+      <Text style={globalFonts.disclaimerText}>
+        {t("disclaimer")}
         <Link href={"https://moncomptesouverain.fr"}>
           <Text style={{ textDecorationLine: "underline" }}>
             nos conditions générales de ventes.

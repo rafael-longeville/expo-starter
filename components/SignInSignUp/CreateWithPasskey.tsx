@@ -3,12 +3,21 @@ import { chain, client } from "@/constants/thirdweb";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { router } from "expo-router";
 import { globalFonts } from "@/app/styles/globalFonts";
+
+interface CreateWithPasskeyProps {
+  connect: any;
+  isConnecting: boolean;
+  account: any;
+  error: any;
+  isOnboarding: boolean;
+}
 export default function CreateWithPasskey({
   connect,
   isConnecting,
   account,
   error,
-}: any) {
+  isOnboarding,
+}: CreateWithPasskeyProps) {
   return (
     <Pressable
       style={{
@@ -39,7 +48,9 @@ export default function CreateWithPasskey({
           }).then(() => {
             if (!isConnecting && account) {
               router.push({
-                pathname: "/(tabs)/home",
+                pathname: !isOnboarding
+                  ? "/(tabs)/home"
+                  : "/(onboarding)/onboarding_3",
               });
             }
           });

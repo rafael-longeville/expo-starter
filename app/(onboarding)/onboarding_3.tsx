@@ -74,7 +74,9 @@ const Onboarding3: React.FC = () => {
           textAlign: "center",
           fontSize: 14,
           fontFamily: "Poppins_500Medium",
+          marginTop: 20,
         }}
+        onPress={() => router.push("/(tabs)/home")}
       >
         {t("pages.onboarding_3.cancel")}
       </Text>
@@ -84,7 +86,6 @@ const Onboarding3: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
     flex: 1,
     justifyContent: "center",
   },
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
   webview: {
     marginTop: 20,
     width: "100%",
-    height: 800,
+    height: 600,
   },
   containercompte: {
     height: 60,

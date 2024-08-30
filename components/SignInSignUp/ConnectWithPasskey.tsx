@@ -5,12 +5,21 @@ import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 import { chain, client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
 
+interface ConnectWithPasskeyProps {
+  connect: any;
+  isConnecting: boolean;
+  account: any;
+  error: any;
+  isOnboarding: boolean;
+}
+
 export default function ConnectWithPasskey({
   connect,
   isConnecting,
   account,
   error,
-}: any) {
+  isOnboarding,
+}: ConnectWithPasskeyProps) {
   return (
     <Pressable
       style={{
@@ -44,7 +53,9 @@ export default function ConnectWithPasskey({
           }).then(() => {
             if (!isConnecting && account) {
               router.push({
-                pathname: "/(tabs)/home",
+                pathname: !isOnboarding
+                  ? "/(tabs)/home"
+                  : "/(onboarding)/onboarding_3",
               });
             }
           });
