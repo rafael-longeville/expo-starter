@@ -18,7 +18,7 @@
       "associatedDomains": [
         "webcredentials:moncomptesouverain.fr"
       ],
-      "buildNumber": "19",
+      "buildNumber": "20",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos."
       }
@@ -81,7 +81,15 @@
           ]
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "civicpower"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

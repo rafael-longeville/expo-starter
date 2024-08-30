@@ -1,23 +1,75 @@
-import { Pressable, Text } from "react-native";
+import { Pressable, Text, Alert } from "react-native";
 import { chain, client } from "@/constants/thirdweb";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { router } from "expo-router";
 import { globalFonts } from "@/app/styles/globalFonts";
+import * as Sentry from "@sentry/react-native";
 
 interface CreateWithPasskeyProps {
   connect: any;
   isConnecting: boolean;
   account: any;
-  error: any;
   isOnboarding: boolean;
 }
+
 export default function CreateWithPasskey({
   connect,
   isConnecting,
   account,
-  error,
   isOnboarding,
 }: CreateWithPasskeyProps) {
+  const handlePress = async () => {
+    try {
+      Sentry.addBreadcrumb({
+        category: "action",
+        message: "User clicked create wallet button",
+        level: "info",
+      });
+
+      const wallet = inAppWallet({
+        auth: {
+          options: ["passkey"],
+          passkeyDomain: "moncomptesouverain.fr",
+        },
+      });
+
+      await connect(async (): Promise<Wallet> => {
+        try {
+          await wallet.connect({
+            client,
+            strategy: "passkey",
+            type: "sign-up",
+          });
+          Sentry.captureMessage(`Wallet connected using sign-up strategy`);
+          return wallet;
+        } catch (connectError: any) {
+          Sentry.captureException(connectError);
+          throw connectError;
+        }
+      });
+
+      if (!isConnecting && account) {
+        Sentry.addBreadcrumb({
+          category: "navigation",
+          message: "Navigating after successful wallet creation",
+          level: "info",
+        });
+
+        router.push({
+          pathname: !isOnboarding
+            ? "/(tabs)/home"
+            : "/(onboarding)/onboarding_3",
+        });
+      }
+    } catch (err: any) {
+      Sentry.captureException(err);
+      Alert.alert(
+        "Error",
+        "An error occurred during the wallet creation process. Please try again."
+      );
+    }
+  };
+
   return (
     <Pressable
       style={{
@@ -29,35 +81,7 @@ export default function CreateWithPasskey({
         alignItems: "center",
         width: 335,
       }}
-      onPress={() => {
-        try {
-          connect(async (): Promise<Wallet> => {
-            const wallet = inAppWallet({
-              auth: {
-                options: ["passkey"],
-                passkeyDomain: "moncomptesouverain.fr",
-              },
-            });
-
-            await wallet.connect({
-              client,
-              strategy: "passkey",
-              type: "sign-up",
-            });
-            return wallet;
-          }).then(() => {
-            if (!isConnecting && account) {
-              router.push({
-                pathname: !isOnboarding
-                  ? "/(tabs)/home"
-                  : "/(onboarding)/onboarding_3",
-              });
-            }
-          });
-        } catch {
-          console.log("error", error);
-        }
-      }}
+      onPress={handlePress}
     >
       <Text
         style={{

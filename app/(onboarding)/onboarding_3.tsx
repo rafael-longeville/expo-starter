@@ -6,13 +6,13 @@ import { globalFonts } from "../styles/globalFonts";
 import { useActiveAccount } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
+import * as Sentry from "@sentry/react-native";
 
 const Onboarding3: React.FC = () => {
   const account = useActiveAccount();
   const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
   const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
   const [customUri, setCustomUri] = useState<string | null>(null);
-
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -22,6 +22,12 @@ const Onboarding3: React.FC = () => {
         const method = await AsyncStorage.getItem("onboardingMethod");
         setOnboardingValue(value);
         setOnboardingMethod(method);
+
+        Sentry.addBreadcrumb({
+          category: "storage",
+          message: `Retrieved onboardingValue: ${value}, onboardingMethod: ${method}`,
+          level: "info",
+        });
 
         if (account?.address) {
           let uri =
@@ -37,10 +43,15 @@ const Onboarding3: React.FC = () => {
           }
 
           setCustomUri(uri);
-          console.log(uri);
+          Sentry.addBreadcrumb({
+            category: "navigation",
+            message: `Generated custom URI: ${uri}`,
+            level: "info",
+          });
         }
       } catch (error) {
-        console.log("Error loading onboarding data from AsyncStorage", error);
+        Sentry.captureException(error);
+        console.error("Error loading onboarding data from AsyncStorage", error);
       }
     };
 
@@ -65,8 +76,12 @@ const Onboarding3: React.FC = () => {
       <Text style={globalFonts.subtitle}>
         {t("pages.onboarding_3.subtitle")}
       </Text>
-      {customUri && (
+      {customUri ? (
         <WebView style={styles.webview} source={{ uri: customUri }} />
+      ) : (
+        <Text style={globalFonts.subtitle}>
+          {t("pages.onboarding_3.loading")}
+        </Text>
       )}
       <Text
         style={{
@@ -76,7 +91,14 @@ const Onboarding3: React.FC = () => {
           fontFamily: "Poppins_500Medium",
           marginTop: 20,
         }}
-        onPress={() => router.push("/(tabs)/home")}
+        onPress={() => {
+          Sentry.addBreadcrumb({
+            category: "navigation",
+            message: "User navigated to home from Onboarding3",
+            level: "info",
+          });
+          router.push("/(tabs)/home");
+        }}
       >
         {t("pages.onboarding_3.cancel")}
       </Text>

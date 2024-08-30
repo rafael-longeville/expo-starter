@@ -6,9 +6,10 @@ import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
 import { useActiveAccount, useConnect } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import { ActivityIndicator } from "react-native-paper";
 import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
+import * as Sentry from "@sentry/react-native";
 
 const Onboarding2: React.FC = () => {
   const { t } = useTranslation();
@@ -23,8 +24,14 @@ const Onboarding2: React.FC = () => {
         const value = await AsyncStorage.getItem("continueWithoutFunding");
         if (value !== null) {
           setStoredValue(value); // Set the value if it exists
+          Sentry.addBreadcrumb({
+            category: "storage",
+            message: `Retrieved continueWithoutFunding: ${value}`,
+            level: "info",
+          });
         }
       } catch (error) {
+        Sentry.captureException(error);
         console.error("Error retrieving data from AsyncStorage: ", error);
       }
     };
@@ -32,19 +39,12 @@ const Onboarding2: React.FC = () => {
     getValueFromAsyncStorage();
   }, []);
 
-  // if (isConnecting) {
-  //   return (
-  //     <View
-  //       style={{
-  //         flex: 1,
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //       }}
-  //     >
-  //       <ActivityIndicator size="large" color="#13293D" />
-  //     </View>
-  //   );
-  // }
+  useEffect(() => {
+    if (error) {
+      Sentry.captureException(error);
+      console.error("Error during connection:", error);
+    }
+  }, [error]);
 
   return (
     <View style={styles.container}>
@@ -66,14 +66,12 @@ const Onboarding2: React.FC = () => {
           connect={connect}
           isConnecting={isConnecting}
           account={account}
-          error={error}
           isOnboarding={true}
         />
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
           account={account}
-          error={error}
           isOnboarding={true}
         />
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (

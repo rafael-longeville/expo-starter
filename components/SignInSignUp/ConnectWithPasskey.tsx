@@ -1,15 +1,14 @@
 import { router } from "expo-router";
-import { Pressable, Text } from "react-native";
+import { Pressable, Text, Alert } from "react-native";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
-import { hasStoredPasskey } from "thirdweb/wallets/in-app";
-import { chain, client } from "@/constants/thirdweb";
+import { client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
+import * as Sentry from "@sentry/react-native";
 
 interface ConnectWithPasskeyProps {
   connect: any;
   isConnecting: boolean;
   account: any;
-  error: any;
   isOnboarding: boolean;
 }
 
@@ -17,9 +16,60 @@ export default function ConnectWithPasskey({
   connect,
   isConnecting,
   account,
-  error,
   isOnboarding,
 }: ConnectWithPasskeyProps) {
+  const handlePress = async () => {
+    try {
+      Sentry.addBreadcrumb({
+        category: "action",
+        message: "User clicked connect button",
+        level: "info",
+      });
+
+      const wallet = inAppWallet({
+        auth: {
+          options: ["passkey"],
+          passkeyDomain: "moncomptesouverain.fr",
+        },
+      });
+
+      await connect(async (): Promise<Wallet> => {
+        try {
+          await wallet.connect({
+            client,
+            strategy: "passkey",
+            type: "sign-in",
+          });
+          Sentry.captureMessage(`Wallet connected using sign-in strategy`);
+          return wallet;
+        } catch (connectError: any) {
+          Sentry.captureException(connectError);
+          throw connectError;
+        }
+      });
+
+      if (!isConnecting && account) {
+        Sentry.addBreadcrumb({
+          category: "navigation",
+          message: "Navigating after successful connection",
+          level: "info",
+        });
+
+        router.push({
+          pathname: !isOnboarding
+            ? "/(tabs)/home"
+            : "/(onboarding)/onboarding_3",
+        });
+      }
+    } catch (err: any) {
+      Sentry.captureException(err);
+      Alert.alert(
+        "Error",
+        "An error occurred during the connection process. Please try again."
+      );
+    }
+  };
+
   return (
     <Pressable
       style={{
@@ -33,36 +83,7 @@ export default function ConnectWithPasskey({
         borderWidth: 1,
         borderColor: "#13293D",
       }}
-      onPress={() => {
-        try {
-          connect(async (): Promise<Wallet> => {
-            const wallet = inAppWallet({
-              auth: {
-                options: ["passkey"],
-                passkeyDomain: "moncomptesouverain.fr",
-              },
-            });
-
-            const hasPasskey = await hasStoredPasskey(client);
-            await wallet.connect({
-              client,
-              strategy: "passkey",
-              type: hasPasskey ? "sign-in" : "sign-up",
-            });
-            return wallet;
-          }).then(() => {
-            if (!isConnecting && account) {
-              router.push({
-                pathname: !isOnboarding
-                  ? "/(tabs)/home"
-                  : "/(onboarding)/onboarding_3",
-              });
-            }
-          });
-        } catch {
-          console.log("error", error);
-        }
-      }}
+      onPress={handlePress}
     >
       <Text
         style={{

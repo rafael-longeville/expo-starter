@@ -1,15 +1,48 @@
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
-import { Link, router } from "expo-router";
-import React from "react";
+import { router } from "expo-router";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Divider } from "react-native-paper";
 import { globalFonts } from "../styles/globalFonts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { globalFonts } from "../styles/globalFonts";
+import * as Sentry from "@sentry/react-native";
 
 const Onboarding1: React.FC = () => {
   const { t } = useTranslation();
+
+  // Capture a breadcrumb when the component mounts
+  useEffect(() => {
+    Sentry.addBreadcrumb({
+      category: "navigation",
+      message: "Onboarding1 screen loaded",
+      level: "info",
+    });
+  }, []);
+
+  const handleContinuePress = async () => {
+    try {
+      Sentry.addBreadcrumb({
+        category: "action",
+        message: "User clicked continue without funding",
+        level: "info",
+      });
+
+      await AsyncStorage.setItem("continueWithoutFunding", "true");
+
+      Sentry.addBreadcrumb({
+        category: "storage",
+        message: "Stored continueWithoutFunding flag in AsyncStorage",
+        level: "info",
+      });
+
+      router.push("/(onboarding)/onboarding_2");
+    } catch (error) {
+      Sentry.captureException(error);
+      console.error("Error storing data or navigating:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
@@ -40,10 +73,7 @@ const Onboarding1: React.FC = () => {
           alignItems: "center",
           width: 335,
         }}
-        onPress={() => {
-          AsyncStorage.setItem("continueWithoutFunding", "true");
-          router.push("/(onboarding)/onboarding_2");
-        }}
+        onPress={handleContinuePress}
       >
         <Text
           style={{
@@ -64,9 +94,7 @@ const Onboarding1: React.FC = () => {
           fontFamily: "Poppins_500Medium",
         }}
       >
-        {/* <Link href={"/(tabs)/login"}> */}
-          {t("pages.onboarding_1.has_account")}
-        {/* </Link> */}
+        {t("pages.onboarding_1.has_account")}
       </Text>
     </View>
   );

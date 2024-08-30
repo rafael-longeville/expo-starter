@@ -28,6 +28,7 @@
     "@react-native-clipboard/clipboard": "^1.14.1",
     "@react-native-community/netinfo": "11.3.1",
     "@react-navigation/native": "^6.0.2",
+    "@sentry/react-native": "^5.31.1",
     "@thirdweb-dev/react-native-adapter": "^1.2.0",
     "@types/react-native-snap-carousel": "^3.8.11",
     "amazon-cognito-identity-js": "^6.3.12",

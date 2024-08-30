@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { globalFonts } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Divider } from "react-native-paper";
+import * as Sentry from "@sentry/react-native";
 
 const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
   value,
@@ -11,7 +12,14 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
   return (
     <TouchableOpacity
       style={[styles.switchContainer, styles.switch]}
-      onPress={onValueChange}
+      onPress={() => {
+        Sentry.addBreadcrumb({
+          category: "action",
+          message: `User toggled notifications switch to ${value ? "off" : "on"}`,
+          level: "info",
+        });
+        onValueChange();
+      }}
       activeOpacity={0.8}
     >
       <View
@@ -38,6 +46,15 @@ const Onboarding4: React.FC = () => {
     "euro" | "dollar" | null
   >(null);
   const [notifications, setNotifications] = useState<boolean>(false);
+
+  const handleCurrencySelection = (currency: "euro" | "dollar") => {
+    Sentry.addBreadcrumb({
+      category: "selection",
+      message: `User selected currency: ${currency}`,
+      level: "info",
+    });
+    setSelectedCurrency(currency);
+  };
 
   return (
     <View style={styles.container}>
@@ -69,7 +86,7 @@ const Onboarding4: React.FC = () => {
               styles.commonButtonStyle,
               selectedCurrency === "euro" && styles.isSelectedButtonStyle,
             ]}
-            onPress={() => setSelectedCurrency("euro")}
+            onPress={() => handleCurrencySelection("euro")}
           >
             <Text
               style={{
@@ -89,7 +106,7 @@ const Onboarding4: React.FC = () => {
               styles.commonButtonStyle,
               selectedCurrency === "dollar" && styles.isSelectedButtonStyle,
             ]}
-            onPress={() => setSelectedCurrency("dollar")}
+            onPress={() => handleCurrencySelection("dollar")}
           >
             <Text
               style={{
@@ -120,7 +137,9 @@ const Onboarding4: React.FC = () => {
             </Text>
             <CustomSwitch
               value={notifications}
-              onValueChange={() => setNotifications(!notifications)}
+              onValueChange={() => {
+                setNotifications(!notifications);
+              }}
             />
           </View>
           <Text style={styles.descriptionText}>

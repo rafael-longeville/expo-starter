@@ -16,10 +16,20 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
+import * as Sentry from "@sentry/react-native";
+
+// Initialize Sentry
+Sentry.init({
+  dsn: "https://27208761507910af7d813dfb11ef409c@o4507865111855104.ingest.de.sentry.io/4507865113821264",
+  tracesSampleRate: 1.0,
+  _experiments: {
+    profilesSampleRate: 1.0,
+  },
+});
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     Poppins_400Regular,
@@ -48,11 +58,13 @@ export default function RootLayout() {
   );
 }
 
+export default Sentry.wrap(RootLayout);
+
 const styles = StyleSheet.create({
   loaderContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff", // Match your app's background color
+    backgroundColor: "#ffffff",
   },
 });
