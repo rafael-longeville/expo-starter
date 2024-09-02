@@ -87,9 +87,9 @@ export default function OnboardingLayout() {
         )}
         {renderCurrentScreen()}
 
-        {/* <NavigationButton
+        <NavigationButton
           label="Back to home page"
-          onPress={() => router.push("/")}
+          onPress={() =>           router.push("/(tabs)/home")}
         />
         <NavigationButton
           label="Go + 1 page"
@@ -98,7 +98,7 @@ export default function OnboardingLayout() {
         <NavigationButton
           label="Go - 1 page"
           onPress={() => navigateToPage(-1)}
-        /> */}
+        />
         <View style={styles.languageSwitcher}>
           <LanguageButton
             label="Change to French"

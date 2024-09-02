@@ -1,47 +1,78 @@
-import { globalFonts } from "@/app/styles/globalFonts";
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useTranslation } from "react-i18next";
+import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, gql } from "@apollo/client";
 import { shortenHex } from "thirdweb/utils";
+import { globalFonts } from "@/app/styles/globalFonts";
+import moment from "moment";  // Import moment.js for date formatting
 
-export default function TransactionHistory() {
+// Step 1: Set up Apollo Client
+const client = new ApolloClient({
+  uri: "https://cyxmcvdjccisnvnhnrvc.hasura.eu-central-1.nhost.run/v1/graphql",
+  cache: new InMemoryCache(),
+});
+
+// Step 2: Create GraphQL Query
+const GET_TRANSACTIONS = gql`
+  query GetTransactions {
+    transaction {
+      id
+      transaction_type
+      transaction_amount
+      wallet_address
+      transaction_method
+      transaction_status
+      transaction_created_at
+    }
+  }
+`;
+
+function TransactionHistoryComponent() {
   const { t } = useTranslation();
 
-  const history = [
-    {
-      id: 1,
-      date: "10/07/2O24",
-      status: "En cours",
-      from: "Placement EUR",
-      to: "Compte courant",
-      amount: "860,10",
-      txId: shortenHex(
-        "0x944196a0018793ddfe3d0b01ace032c187fab2cfd62da6b6fdf8f49c85356ebc"
-      ),
-    },
-    {
-      id: 2,
-      date: "04/07/2O24",
-      status: "En cours",
-      from: "Compte courant",
-      to: "Placement EUR",
-      amount: "130,50",
-      txId: shortenHex(
-        "0x944196a0018793ddfe3d0b01ace032c187fab2cfd62da6b6fdf8f49c85356ebc"
-      ),
-    },
-    {
-      id: 3,
-      date: "10/07/2O24",
-      status: "En cours",
-      from: "Google Pay",
-      to: "Compte courant",
-      amount: "100",
-      txId: shortenHex(
-        "0x944196a0018793ddfe3d0b01ace032c187fab2cfd62da6b6fdf8f49c85356ebc"
-      ),
-    },
-  ];
+  // Step 3: Fetch transactions using the useQuery hook with pollInterval for auto refetch
+  const { loading, error, data, refetch } = useQuery(GET_TRANSACTIONS, { 
+    client,
+    pollInterval: 10000 // Set poll interval to 10 seconds (10000 milliseconds)
+  });
+
+  useEffect(() => {
+    if (data) {
+      console.log("Fetched Transactions: ", data.transaction);
+    }
+  }, [data]);
+
+  if (loading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error loading transactions.</Text>;
+
+  // Use fetched transactions instead of static history
+  const transactions = data.transaction.map((item: any) => {
+    let from, to;
+
+    if (item.transaction_type === "BUY") {
+      from = "Carte de Crédit";
+      to = "Compte Courant";
+    } else if (item.transaction_type === "SELL") {
+      from = "Compte Courant";
+      to = "Carte de Crédit";
+    } else {
+      from = "Source"; // Placeholder; adjust based on actual logic if different
+      to = item.transaction_method; // Assuming transaction_method is the destination
+    }
+
+    // Format the date to DD/MM/YYYY format
+    const formattedDate = moment(item.transaction_created_at).format("DD/MM/YYYY");
+
+    return {
+      id: item.id,
+      date: formattedDate,
+      status: item.transaction_status === "PENDING_DELIVERY_FROM_TRANSAK" ? "En cours" : "Terminée",
+      from,
+      to,
+      amount: item.transaction_amount.toFixed(2),
+      txId: shortenHex(item.wallet_address), // Assuming wallet_address serves as a transaction ID
+    };
+  });
 
   return (
     <View style={styles.container}>
@@ -57,8 +88,8 @@ export default function TransactionHistory() {
         />
       </View>
 
-      {/* Replace with async storage currency */}
-      {history.map((item) => (
+      {/* Display fetched transactions */}
+      {transactions.map((item: any) => (
         <View
           style={{
             flexDirection: "column",
@@ -154,6 +185,7 @@ export default function TransactionHistory() {
   );
 }
 
+// Step 4: Define the styles
 const styles = StyleSheet.create({
   container: {
     padding: 20,
@@ -175,3 +207,12 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
 });
+
+// Step 5: Wrap the component in ApolloProvider and export
+export default function App() {
+  return (
+    <ApolloProvider client={client}>
+      <TransactionHistoryComponent />
+    </ApolloProvider>
+  );
+}
