@@ -1,18 +1,25 @@
 import { router } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
-import { WebView } from "react-native-webview";
 import { globalFonts } from "../styles/globalFonts";
 import { useActiveAccount } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import * as Sentry from "@sentry/react-native";
+import {
+  TransakWebView,
+  Environments,
+  Events,
+  TransakConfig,
+  EventTypes,
+  Order,
+} from "@transak/react-native-sdk";
 
 const Onboarding3: React.FC = () => {
   const account = useActiveAccount();
   const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
   const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
-  const [customUri, setCustomUri] = useState<string | null>(null);
+  const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -30,22 +37,30 @@ const Onboarding3: React.FC = () => {
         });
 
         if (account?.address) {
-          let uri =
-            "https://global-stg.transak.com/?apiKey=ec807ee4-b564-4b2a-af55-92a8adfe619b&network=arbitrum&paymentMethod=credit_debit_card&visaMasterCard=true&defaultCryptoCurrency=USDC&productsAvailed=BUY&walletAddress=" +
-            account.address;
+          let params = {
+            apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
+            environment: "STAGING",
+            cryptoCurrency: "USDC",
+            network: "arbitrum",
+            walletAddress: account.address,
+            fiatCurrency: "EUR",
+            paymentMethod: "credit_debit_card",
+            fiatAmount: "100",
+            partnerOrderId: "123456",
+          };
 
-          if (method === "onRamp") {
-            uri =
-              "https://global-stg.transak.com/?apiKey=ec807ee4-b564-4b2a-af55-92a8adfe619b&network=arbitrum&paymentMethod=credit_debit_card&visaMasterCard=true&defaultCryptoCurrency=USDC&productsAvailed=BUY&fiatCurrency=EUR&walletAddress=" +
-              account.address +
-              "&fiatAmount=" +
-              onboardingValue;
+          if (method === "onRamp" && onboardingValue) {
+            params = {
+              ...params,
+              fiatAmount: onboardingValue,
+            };
           }
 
-          setCustomUri(uri);
+          setTransakParams(params);
+
           Sentry.addBreadcrumb({
             category: "navigation",
-            message: `Generated custom URI: ${uri}`,
+            message: `Set Transak params: ${JSON.stringify(params)}`,
             level: "info",
           });
         }
@@ -57,6 +72,27 @@ const Onboarding3: React.FC = () => {
 
     loadOnboardingData();
   }, [account, onboardingMethod, onboardingValue]);
+
+  const onTransakEventHandler = (event: EventTypes, data: Order) => {
+    switch (event) {
+      case Events.ORDER_CREATED:
+        console.log(event, data);
+        break;
+
+      case Events.ORDER_PROCESSING:
+        console.log(event, data);
+        router.push("/(tabs)/home");
+        break;
+
+      case Events.ORDER_COMPLETED:
+        router.push("/(onboarding)/onboarding_2?transactionSuccess=true");
+        console.log(event, data);
+        break;
+
+      default:
+        console.log(event, data);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -76,8 +112,12 @@ const Onboarding3: React.FC = () => {
       <Text style={globalFonts.subtitle}>
         {t("pages.onboarding_3.subtitle")}
       </Text>
-      {customUri ? (
-        <WebView style={styles.webview} source={{ uri: customUri }} />
+      {transakParams ? (
+        <TransakWebView
+          style={styles.webview}
+          transakConfig={transakParams}
+          onTransakEvent={onTransakEventHandler}
+        />
       ) : (
         <Text style={globalFonts.subtitle}>
           {t("pages.onboarding_3.loading")}

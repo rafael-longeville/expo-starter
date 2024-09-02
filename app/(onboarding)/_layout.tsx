@@ -100,6 +100,9 @@ export default function OnboardingLayout() {
           onPress={() => navigateToPage(-1)}
         /> */}
         <View style={styles.languageSwitcher}>
+          <Pressable onPress={() => router.push("/(onboarding)/onboarding_3")}>
+            <Text>To transak</Text>
+          </Pressable>
           <LanguageButton
             label="Change to French"
             onPress={() => handleChangeLanguage("fr")}
