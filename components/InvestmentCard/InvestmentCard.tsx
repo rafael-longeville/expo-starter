@@ -110,7 +110,7 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
             }
           }
           router.push({
-            pathname: "/(onboarding)/onboarding_2",
+            pathname: "/(onboarding)/onboarding_3",
           });
         }}
       >

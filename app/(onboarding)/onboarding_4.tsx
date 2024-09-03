@@ -1,152 +1,152 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { router } from "expo-router";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { globalFonts } from "../styles/globalFonts";
+import { useActiveAccount } from "thirdweb/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
-import { Divider } from "react-native-paper";
 import * as Sentry from "@sentry/react-native";
-
-const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
-  value,
-  onValueChange,
-}) => {
-  return (
-    <TouchableOpacity
-      style={[styles.switchContainer, styles.switch]}
-      onPress={() => {
-        Sentry.addBreadcrumb({
-          category: "action",
-          message: `User toggled notifications switch to ${value ? "off" : "on"}`,
-          level: "info",
-        });
-        onValueChange();
-      }}
-      activeOpacity={0.8}
-    >
-      <View
-        style={[
-          styles.switchThumb,
-          value ? styles.switchThumbOn : styles.switchThumbOff,
-        ]}
-      >
-        {value ? (
-          <Image source={require("../../assets/images/check-icon.png")}></Image>
-        ) : (
-          <Image source={require("../../assets/images/cross-icon.png")}></Image>
-        )}
-      </View>
-    </TouchableOpacity>
-  );
-};
+import {
+  TransakWebView,
+  Environments,
+  Events,
+  TransakConfig,
+  EventTypes,
+  Order,
+} from "@transak/react-native-sdk";
 
 const Onboarding4: React.FC = () => {
+  const account = useActiveAccount();
+  const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
+  const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
+  const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
   const { t } = useTranslation();
 
-  // State to track the selected currency
-  const [selectedCurrency, setSelectedCurrency] = useState<
-    "euro" | "dollar" | null
-  >(null);
-  const [notifications, setNotifications] = useState<boolean>(false);
+  useEffect(() => {
+    const loadOnboardingData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("onboardingValue");
+        const method = await AsyncStorage.getItem("onboardingMethod");
+        setOnboardingValue(value);
+        setOnboardingMethod(method);
 
-  const handleCurrencySelection = (currency: "euro" | "dollar") => {
-    Sentry.addBreadcrumb({
-      category: "selection",
-      message: `User selected currency: ${currency}`,
-      level: "info",
-    });
-    setSelectedCurrency(currency);
+        Sentry.addBreadcrumb({
+          category: "storage",
+          message: `Retrieved onboardingValue: ${value}, onboardingMethod: ${method}`,
+          level: "info",
+        });
+
+        if (account?.address) {
+          let params = {
+            apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
+            fiatCurrency: "EUR",
+            cryptoCurrencyCode: "USDC",
+            fiatAmount: "100",
+            productsAvailed: ["BUY"],
+            network: "arbitrum",
+            paymentMethod: "credit_debit_card",
+            // hideExchangeScreen: true,
+            walletAddress: account.address,
+            disableWalletAddressForm: true,
+            isFeeCalculationHidden: true,
+            environment: "STAGING",
+            partnerOrderId: "123456",
+          };
+
+          if (method === "onRamp" && onboardingValue) {
+            params = {
+              ...params,
+              fiatAmount: onboardingValue,
+            };
+          }
+
+          setTransakParams(params);
+
+          Sentry.addBreadcrumb({
+            category: "navigation",
+            message: `Set Transak params: ${JSON.stringify(params)}`,
+            level: "info",
+          });
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+        console.error("Error loading onboarding data from AsyncStorage", error);
+      }
+    };
+
+    loadOnboardingData();
+  }, [account, onboardingMethod, onboardingValue]);
+
+  const onTransakEventHandler = (event: EventTypes, data: Order) => {
+    switch (event) {
+      case Events.ORDER_CREATED:
+        console.log(event, data);
+        break;
+
+      case Events.ORDER_PROCESSING:
+        console.log(event, data);
+        router.push("/(tabs)/home");
+        break;
+
+      case Events.ORDER_COMPLETED:
+        router.push("/(onboarding)/onboarding_2?transactionSuccess=true");
+        console.log(event, data);
+        break;
+
+      default:
+        console.log(event, data);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
-        <Text style={globalFonts.subtitle}>
-          {t("pages.onboarding_4.subtitle")}
+      <View style={styles.containercompte}>
+        <Image
+          source={require("@/assets/images/lock-icon.png")}
+          style={styles.icon}
+        />
+        <Text style={styles.textcompte}>
+          <Text style={globalFonts.whiteSubtitle}>
+            {t("pages.onboarding_3.account")} DOLLAR US :
+          </Text>
+          <Text style={styles.amount}> 0 €*</Text>
         </Text>
       </View>
-      <View style={{ flexDirection: "column", gap: 15, width: "100%" }}>
-        <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
-          <Text style={styles.questionText}>
-            {t("pages.onboarding_4.money_question")}
-          </Text>
-          <Text style={styles.descriptionText}>
-            {t("pages.onboarding_4.money_question_helper")}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            width: "100%",
+      <Text style={globalFonts.title}>{t("pages.onboarding_3.title")}</Text>
+      <Text style={globalFonts.subtitle}>
+        {t("pages.onboarding_3.subtitle")}
+      </Text>
+      {transakParams ? (
+        <TransakWebView
+          onError={(error) => {
+            console.error("Transak error", error);
           }}
-        >
-          <TouchableOpacity
-            style={[
-              styles.commonButtonStyle,
-              selectedCurrency === "euro" && styles.isSelectedButtonStyle,
-            ]}
-            onPress={() => handleCurrencySelection("euro")}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color:
-                  selectedCurrency === "euro"
-                    ? "#13293D"
-                    : "rgba(19, 41, 61, .7)",
-                fontFamily: "Poppins_600SemiBold",
-              }}
-            >
-              Euro (€)
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.commonButtonStyle,
-              selectedCurrency === "dollar" && styles.isSelectedButtonStyle,
-            ]}
-            onPress={() => handleCurrencySelection("dollar")}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color:
-                  selectedCurrency === "dollar"
-                    ? "#13293D"
-                    : "rgba(19, 41, 61, .7)",
-                fontFamily: "Poppins_600SemiBold",
-              }}
-            >
-              Dollar US ($)
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <Divider style={{ width: "100%", height: 1.5 }} />
-        <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
-              alignItems: "center",
-            }}
-          >
-            <Text style={styles.questionText}>
-              {t("pages.onboarding_4.notifications_question")}
-            </Text>
-            <CustomSwitch
-              value={notifications}
-              onValueChange={() => {
-                setNotifications(!notifications);
-              }}
-            />
-          </View>
-          <Text style={styles.descriptionText}>
-            {t("pages.onboarding_4.notifications_question_helper")}
-          </Text>
-        </View>
-      </View>
+          style={styles.webview}
+          transakConfig={transakParams}
+          onTransakEvent={onTransakEventHandler}
+        />
+      ) : (
+        <Text style={globalFonts.subtitle}>Put a loader here or something</Text>
+      )}
+      <Text
+        style={{
+          ...globalFonts.subtitle,
+          textAlign: "center",
+          fontSize: 14,
+          fontFamily: "Poppins_500Medium",
+          marginTop: 20,
+        }}
+        onPress={() => {
+          Sentry.addBreadcrumb({
+            category: "navigation",
+            message: "User navigated to home from Onboarding3",
+            level: "info",
+          });
+          router.push("/(tabs)/home");
+        }}
+      >
+        {t("pages.onboarding_3.cancel")}
+      </Text>
     </View>
   );
 };
@@ -155,65 +155,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "flex-start",
-    gap: 20,
   },
-  questionText: {
-    fontSize: 14,
-    color: "#13293D",
-    fontFamily: "Poppins_600SemiBold",
-    width: "80%",
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
   },
-  descriptionText: {
-    fontSize: 12,
-    color: "#13293D",
-    opacity: 0.7,
-    fontFamily: "Poppins_400Regular",
+  webview: {
+    marginTop: 20,
     width: "100%",
+    height: 600,
   },
-  commonButtonStyle: {
-    width: "47%",
-    borderWidth: 2,
+  containercompte: {
     height: 60,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: "rgba(19, 41, 61, .5)",
-  },
-  isSelectedButtonStyle: {
-    backgroundColor: "#ECFF78",
-    borderColor: "#13293D",
-  },
-  switchContainer: {
-    width: 70,
-    height: 40,
-    borderRadius: 65,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    padding: 2,
-  },
-  switch: {
+    borderRadius: 30,
+    width: "100%",
     backgroundColor: "#13293D",
-  },
-  switchThumb: {
-    width: 30,
-    height: 30,
-    borderRadius: 52.5,
-    justifyContent: "center",
+    flexDirection: "row",
     alignItems: "center",
+    paddingLeft: 20,
+    marginBottom: 30,
   },
-  switchThumbOn: {
-    backgroundColor: "#FFF",
-    transform: [{ translateX: 15 }],
+  icon: {
+    marginRight: 10,
   },
-  switchThumbOff: {
-    backgroundColor: "#FFF",
-    transform: [{ translateX: -15 }],
+  textcompte: {
+    flexDirection: "row",
+    alignItems: "center",
+    fontFamily: "Poppins",
   },
-  switchIcon: {
-    fontSize: 16,
-    color: "#13293D",
+  amount: {
+    color: "#ECFF78",
+    fontSize: 20,
+    fontWeight: "700",
+    fontFamily: "Poppins",
   },
 });
 

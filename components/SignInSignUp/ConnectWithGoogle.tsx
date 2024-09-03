@@ -29,6 +29,8 @@ export default function ConnectWithGoogle({
           await wallet.connect({
             client,
             strategy: "google",
+            redirectUrl:
+              "com.civicpower.ibexwallet://(onboarding)/onboarding_4",
           });
           Sentry.captureMessage(`Wallet connected using Google strategy`);
           return wallet;
@@ -37,18 +39,6 @@ export default function ConnectWithGoogle({
           throw connectError;
         }
       });
-
-      if (!isConnecting && account) {
-        Sentry.addBreadcrumb({
-          category: "navigation",
-          message: "Navigating after successful Google connection",
-          level: "info",
-        });
-
-        router.push({
-          pathname: "/(onboarding)/onboarding_3",
-        });
-      }
     } catch (err: any) {
       Sentry.captureException(err);
       Alert.alert(
@@ -76,6 +66,6 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    width: 300,
+    width: "100%",
   },
 });

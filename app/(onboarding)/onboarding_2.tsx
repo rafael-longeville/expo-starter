@@ -1,103 +1,101 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
+import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
+import { router } from "expo-router";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
-import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
-import { useActiveAccount, useConnect } from "thirdweb/react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { Divider } from "react-native-paper";
+import { globalFonts } from "../styles/globalFonts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link } from "expo-router";
-import { ActivityIndicator } from "react-native-paper";
-import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
 import * as Sentry from "@sentry/react-native";
 
 const Onboarding2: React.FC = () => {
   const { t } = useTranslation();
-  const { connect, isConnecting, error } = useConnect();
-  const account = useActiveAccount();
 
-  const [storedValue, setStoredValue] = useState<string | null>(null);
-
+  // Capture a breadcrumb when the component mounts
   useEffect(() => {
-    const getValueFromAsyncStorage = async () => {
-      try {
-        const value = await AsyncStorage.getItem("continueWithoutFunding");
-        if (value !== null) {
-          setStoredValue(value); // Set the value if it exists
-          Sentry.addBreadcrumb({
-            category: "storage",
-            message: `Retrieved continueWithoutFunding: ${value}`,
-            level: "info",
-          });
-        }
-      } catch (error) {
-        Sentry.captureException(error);
-        console.error("Error retrieving data from AsyncStorage: ", error);
-      }
-    };
-
-    getValueFromAsyncStorage();
+    Sentry.addBreadcrumb({
+      category: "navigation",
+      message: "Onboarding1 screen loaded",
+      level: "info",
+    });
   }, []);
 
-  useEffect(() => {
-    if (error) {
+  const handleContinuePress = async () => {
+    try {
+      Sentry.addBreadcrumb({
+        category: "action",
+        message: "User clicked continue without funding",
+        level: "info",
+      });
+
+      await AsyncStorage.setItem("continueWithoutFunding", "true");
+
+      Sentry.addBreadcrumb({
+        category: "storage",
+        message: "Stored continueWithoutFunding flag in AsyncStorage",
+        level: "info",
+      });
+
+      router.push("/(onboarding)/onboarding_3");
+    } catch (error) {
       Sentry.captureException(error);
-      console.error("Error during connection:", error);
+      console.error("Error storing data or navigating:", error);
     }
-  }, [error]);
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
+      <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
+      <Text style={globalFonts.subtitle}>
+        {t("pages.onboarding_1.subtitle")}
+      </Text>
+      <InvestmentCard investment={"DOLLAR US"} investing={true} />
+      <InvestmentCard investment={"EURO"} investing={true} />
+
+      <Divider
+        style={{
+          backgroundColor: "#13293D",
+          opacity: 0.3,
+          height: 1.5,
+        }}
+      />
+      <Text style={globalFonts.subtitle}>
+        {t("pages.onboarding_1.second_subtitle")}
+      </Text>
+      <InvestmentCard investment={"DOLLAR US"} investing={false} />
+      <Pressable
+        style={{
+          backgroundColor: "#13293D",
+          padding: 10,
+          borderRadius: 30,
+          height: 50,
+          justifyContent: "center",
+          alignItems: "center",
+          width: 335,
+        }}
+        onPress={handleContinuePress}
+      >
+        <Text
+          style={{
+            ...globalFonts.whiteSubtitle,
+            textAlign: "center",
+            fontSize: 14,
+            fontFamily: "Poppins_500Medium",
+          }}
+        >
+          {t("pages.onboarding_1.continue_button")}
+        </Text>
+      </Pressable>
       <Text
         style={{
           ...globalFonts.subtitle,
-          width: "80%",
+          textAlign: "center",
+          fontSize: 14,
+          fontFamily: "Poppins_500Medium",
         }}
       >
-        {t("pages.onboarding_2.subtitle")}
+        {t("pages.onboarding_1.has_account")}
       </Text>
-      <View style={styles.buttonContainer}>
-        <Image
-          style={styles.image}
-          source={require("@/assets/images/biometry-image.png")}
-        />
-        <ConnectWithPasskey
-          connect={connect}
-          isConnecting={isConnecting}
-          account={account}
-          isOnboarding={true}
-        />
-        <CreateWithPasskey
-          connect={connect}
-          isConnecting={isConnecting}
-          account={account}
-          isOnboarding={true}
-        />
-        {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
-          <ConnectWithGoogle
-            connect={connect}
-            isConnecting={isConnecting}
-            account={account}
-            error={error}
-          />
-        )}
-      </View>
-      <Text style={globalFonts.disclaimerText}>
-        {t("disclaimer")}
-        <Link href={"https://moncomptesouverain.fr"}>
-          <Text style={{ textDecorationLine: "underline" }}>
-            nos conditions générales de ventes.
-          </Text>
-        </Link>
-      </Text>
-
-      {/* Display the value retrieved from AsyncStorage */}
-      {/* {storedValue && (
-        <Text style={globalFonts.subtitle}>
-          Skipped provisionning: {storedValue}
-        </Text>
-      )} */}
     </View>
   );
 };
@@ -105,24 +103,12 @@ const Onboarding2: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
     gap: 20,
-  },
-  buttonContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignSelf: "center",
-    gap: 10,
-  },
-  image: {
-    borderWidth: 1,
-    borderColor: "#13293D",
-    borderRadius: 30, // Optional, gives rounded corners to the image
   },
   text: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#13293D",
   },
 });
 

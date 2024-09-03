@@ -38,6 +38,7 @@ function TransactionHistoryComponent() {
 
   // Step 3: Fetch transactions using the useQuery hook with pollInterval for auto refetch
   const { loading, error, data, refetch } = useQuery(GET_TRANSACTIONS, {
+    variables: { excludedStatus: "AWAITING_PAYMENT_FROM_USER " }, // Exclude cancelled transactions
     client,
     pollInterval: 10000, // Set poll interval to 10 seconds (10000 milliseconds)
   });

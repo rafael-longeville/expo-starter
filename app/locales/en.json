@@ -3,11 +3,11 @@
   "pages": {
     "login": {
       "title": "Welcome",
-      "subtitle": "You are one step away from creating your sovereign account for free!"
+      "subtitle": "You are just one step away from creating your sovereign account for free!"
     },
     "onboarding_1": {
       "title": "Grow Your Money",
-      "subtitle": "Invest your funds and earn from the very first second:",
+      "subtitle": "Invest your funds and start earning from the first second:",
       "second_subtitle": "Or secure them in your sovereign checking account:",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
@@ -21,30 +21,32 @@
     "onboarding_3": {
       "account": "Account",
       "title": "Fund Your Account",
-      "subtitle": "Invest your funds in one of the savings accounts via credit card, Apple Pay, or Google Pay.",
+      "subtitle": "Invest your funds in one of the interest-bearing accounts via credit card, Apple Pay, or Google Pay.",
       "cancel": "Cancel"
     },
     "onboarding_4": {
-      "title": "You're Almost There!",
-      "subtitle": "Set up currency display and notifications.",
-      "money_question": "Would you like to display amounts in Euro or Dollar?",
-      "money_question_helper": "To help you, amounts displayed (according to the chosen currency) will be preceded by an asterisk (*).",
+      "title": "Set Currency Display and Notifications",
+      "money_question": "Would you like a general display of amounts in Euros or Dollars?",
+      "money_question_helper": "To help you, displayed amounts (according to the chosen currency) will be preceded by an asterisk (*).",
       "notifications_question": "Would you like to enable notifications?",
       "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
+      "language_question": "In which language would you like to use the application?",
+      "french": "French",
+      "english": "English",
       "save_button": "Save"
     },
     "home": {
       "total_balance": "Total Balance",
       "balance": "Balance",
       "on_main_account": "in the checking account",
-      "on_investments": "in the savings account",
+      "on_investments": "in the interest-bearing account",
       "your_main_account": "Your Checking Account",
-      "your_investment_account": "Your Savings Account",
+      "your_investment_account": "Your Interest-Bearing Account",
       "details": "Details",
-      "hide_details": "Hide",
+      "hide_details": "Hide ",
       "including_gains": "Including Gains",
       "transactions": {
-        "title": "Your Transaction History",
+        "title": "Transaction History",
         "in_progress": "In Progress",
         "seeAll": "See All"
       }
