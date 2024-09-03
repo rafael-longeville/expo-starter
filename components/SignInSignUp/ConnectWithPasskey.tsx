@@ -40,6 +40,9 @@ export default function ConnectWithPasskey({
             strategy: "passkey",
             type: "sign-in",
           });
+          router.push({
+            pathname: "/(onboarding)/onboarding_4",
+          });
           Sentry.captureMessage(`Wallet connected using sign-in strategy`);
           return wallet;
         } catch (connectError: any) {

@@ -29,10 +29,11 @@ export default function ConnectWithGoogle({
           await wallet.connect({
             client,
             strategy: "google",
-            redirectUrl:
-              "com.civicpower.ibexwallet://(onboarding)/onboarding_4",
           });
           Sentry.captureMessage(`Wallet connected using Google strategy`);
+          router.push({
+            pathname: "/(onboarding)/onboarding_4",
+          });
           return wallet;
         } catch (connectError: any) {
           Sentry.captureException(connectError);

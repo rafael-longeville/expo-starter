@@ -11,6 +11,7 @@ import {
 import { shortenHex } from "thirdweb/utils";
 import { globalFonts } from "@/app/styles/globalFonts";
 import moment from "moment"; // Import moment.js for date formatting
+import { useActiveAccount } from "thirdweb/react"; // Import the useActiveAccount hook
 
 // Step 1: Set up Apollo Client
 const client = new ApolloClient({
@@ -20,8 +21,13 @@ const client = new ApolloClient({
 
 // Step 2: Create GraphQL Query
 const GET_TRANSACTIONS = gql`
-  query GetTransactions($excludedStatus: String!) {
-    transaction(where: { transaction_status: { _neq: $excludedStatus } }) {
+  query GetTransactions($excludedStatus: String!, $walletAddress: String!) {
+    transaction(
+      where: {
+        transaction_status: { _neq: $excludedStatus },
+        wallet_address: { _eq: $walletAddress }
+      }
+    ) {
       id
       transaction_type
       transaction_amount
@@ -35,10 +41,18 @@ const GET_TRANSACTIONS = gql`
 
 function TransactionHistoryComponent() {
   const { t } = useTranslation();
+  const activeAccount = useActiveAccount(); // Get the active account
+
+  if (!activeAccount?.address) {
+    return <Text>No active account found.</Text>;
+  }
 
   // Step 3: Fetch transactions using the useQuery hook with pollInterval for auto refetch
   const { loading, error, data, refetch } = useQuery(GET_TRANSACTIONS, {
-    variables: { excludedStatus: "AWAITING_PAYMENT_FROM_USER " }, // Exclude cancelled transactions
+    variables: {
+      excludedStatus: "AWAITING_PAYMENT_FROM_USER",
+      walletAddress: activeAccount.address, // Filter by the active account address
+    },
     client,
     pollInterval: 10000, // Set poll interval to 10 seconds (10000 milliseconds)
   });
