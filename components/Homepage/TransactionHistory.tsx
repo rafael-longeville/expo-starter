@@ -76,9 +76,12 @@ function TransactionHistoryComponent() {
       id: item.id,
       date: formattedDate,
       status:
-        item.transaction_status === "PENDING_DELIVERY_FROM_TRANSAK"
+        item.transaction_status === "PENDING_DELIVERY_FROM_TRANSAK" ||
+        item.transaction_status === "PROCESSING"
           ? "En cours"
-          : "Terminée",
+          : item.transaction_status === "EXPIRED"
+            ? "Echouée"
+            : "Terminée",
       from,
       to,
       amount: item.transaction_amount.toFixed(2),

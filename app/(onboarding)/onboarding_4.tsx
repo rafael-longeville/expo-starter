@@ -8,9 +8,7 @@ import { useTranslation } from "react-i18next";
 import * as Sentry from "@sentry/react-native";
 import {
   TransakWebView,
-  Environments,
   Events,
-  TransakConfig,
   EventTypes,
   Order,
 } from "@transak/react-native-sdk";
