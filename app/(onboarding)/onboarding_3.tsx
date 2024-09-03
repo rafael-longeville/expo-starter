@@ -39,13 +39,17 @@ const Onboarding3: React.FC = () => {
         if (account?.address) {
           let params = {
             apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
-            environment: "STAGING",
-            cryptoCurrency: "USDC",
-            network: "arbitrum",
-            walletAddress: account.address,
             fiatCurrency: "EUR",
-            paymentMethod: "credit_debit_card",
+            cryptoCurrencyCode: "USDC",
             fiatAmount: "100",
+            productsAvailed: ["BUY"],
+            network: "arbitrum",
+            paymentMethod: "credit_debit_card",
+            // hideExchangeScreen: true,
+            walletAddress: account.address,
+            disableWalletAddressForm: true,
+            isFeeCalculationHidden: true,
+            environment: "STAGING",
             partnerOrderId: "123456",
           };
 
@@ -114,6 +118,9 @@ const Onboarding3: React.FC = () => {
       </Text>
       {transakParams ? (
         <TransakWebView
+          onError={(error) => {
+            console.error("Transak error", error);
+          }}
           style={styles.webview}
           transakConfig={transakParams}
           onTransakEvent={onTransakEventHandler}

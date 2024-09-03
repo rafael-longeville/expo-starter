@@ -1,10 +1,16 @@
 import React, { useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, gql } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  gql,
+} from "@apollo/client";
 import { shortenHex } from "thirdweb/utils";
 import { globalFonts } from "@/app/styles/globalFonts";
-import moment from "moment";  // Import moment.js for date formatting
+import moment from "moment"; // Import moment.js for date formatting
 
 // Step 1: Set up Apollo Client
 const client = new ApolloClient({
@@ -14,8 +20,8 @@ const client = new ApolloClient({
 
 // Step 2: Create GraphQL Query
 const GET_TRANSACTIONS = gql`
-  query GetTransactions {
-    transaction {
+  query GetTransactions($excludedStatus: String!) {
+    transaction(where: { transaction_status: { _neq: $excludedStatus } }) {
       id
       transaction_type
       transaction_amount
@@ -31,9 +37,9 @@ function TransactionHistoryComponent() {
   const { t } = useTranslation();
 
   // Step 3: Fetch transactions using the useQuery hook with pollInterval for auto refetch
-  const { loading, error, data, refetch } = useQuery(GET_TRANSACTIONS, { 
+  const { loading, error, data, refetch } = useQuery(GET_TRANSACTIONS, {
     client,
-    pollInterval: 10000 // Set poll interval to 10 seconds (10000 milliseconds)
+    pollInterval: 10000, // Set poll interval to 10 seconds (10000 milliseconds)
   });
 
   useEffect(() => {
@@ -61,12 +67,17 @@ function TransactionHistoryComponent() {
     }
 
     // Format the date to DD/MM/YYYY format
-    const formattedDate = moment(item.transaction_created_at).format("DD/MM/YYYY");
+    const formattedDate = moment(item.transaction_created_at).format(
+      "DD/MM/YYYY"
+    );
 
     return {
       id: item.id,
       date: formattedDate,
-      status: item.transaction_status === "PENDING_DELIVERY_FROM_TRANSAK" ? "En cours" : "Terminée",
+      status:
+        item.transaction_status === "PENDING_DELIVERY_FROM_TRANSAK"
+          ? "En cours"
+          : "Terminée",
       from,
       to,
       amount: item.transaction_amount.toFixed(2),

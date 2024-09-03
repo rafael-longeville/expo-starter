@@ -89,7 +89,7 @@ export default function OnboardingLayout() {
 
         <NavigationButton
           label="Back to home page"
-          onPress={() =>           router.push("/(tabs)/home")}
+          onPress={() => router.push("/(tabs)/home")}
         />
         <NavigationButton
           label="Go + 1 page"
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginBottom: 20,
-    marginTop: 400,
+    marginTop: 200,
   },
   languageButton: {
     backgroundColor: "blue",
