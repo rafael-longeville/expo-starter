@@ -10,6 +10,8 @@ import InvestmentAccount from "@/components/Homepage/InvestmentAccount";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import TransactionHistory from "@/components/Homepage/TransactionHistory";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import StayUpdated from "@/components/PopUp/StayUpdated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function HomeScreen() {
   const account = useActiveAccount();
@@ -46,32 +48,35 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <AccountDetails currency={currency} />
-        <MainAccount />
-        <InvestmentAccount />
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingHorizontal: 20,
-            gap: 20,
-          }}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          style={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
-          <InvestmentCard investment={`DOLLAR US (${currency})`} investing />
-          <InvestmentCard investment={`EURO (${currency})`} investing />
-        </View>
-        <TransactionHistory />
-        <TransactionPOC account={account} refetch={refetch} />
-      </ScrollView>
-    </SafeAreaView>
+          <AccountDetails currency={currency} />
+          <MainAccount />
+          <InvestmentAccount />
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              paddingHorizontal: 20,
+              gap: 20,
+            }}
+          >
+            <InvestmentCard investment={`DOLLAR US (${currency})`} investing />
+            <InvestmentCard investment={`EURO (${currency})`} investing />
+          </View>
+          <TransactionHistory />
+          <StayUpdated />
+          <TransactionPOC account={account} refetch={refetch} />
+        </ScrollView>
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 }
 

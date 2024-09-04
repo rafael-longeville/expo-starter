@@ -79,5 +79,17 @@
       "withdraw": "Retirer",
       "gains": "Gains"
     }
+  },
+  "pop-ups": {
+    "stay_updated": {
+      "title": "Restez à jour !",
+      "subtitle": "Glissez vers le bas pour rafraîchir.",
+      "disclaimer": {
+        "description": "Les montants sont arrondis au centième (2 chiffres après la virgules).",
+        "link": "En savoir plus.",
+        "href_link": "https://moncomptesouverain.fr/"
+      },
+      "button": "J'ai compris"
+    }
   }
 }

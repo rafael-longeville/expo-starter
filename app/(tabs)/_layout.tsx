@@ -27,9 +27,9 @@ export default function TabLayout() {
       </Tabs>
 
       {/* Add the login button */}
-      <Pressable style={styles.loginButton} onPress={handleGoToLogin}>
+      {/* <Pressable style={styles.loginButton} onPress={handleGoToLogin}>
         <Text style={styles.loginButtonText}>Go to Login</Text>
-      </Pressable>
+      </Pressable> */}
     </View>
   );
 }
