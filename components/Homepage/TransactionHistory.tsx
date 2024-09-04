@@ -24,7 +24,7 @@ const GET_TRANSACTIONS = gql`
   query GetTransactions($excludedStatus: String!, $walletAddress: String!) {
     transaction(
       where: {
-        transaction_status: { _neq: $excludedStatus },
+        transaction_status: { _neq: $excludedStatus }
         wallet_address: { _eq: $walletAddress }
       }
     ) {
@@ -56,12 +56,6 @@ function TransactionHistoryComponent() {
     client,
     pollInterval: 10000, // Set poll interval to 10 seconds (10000 milliseconds)
   });
-
-  useEffect(() => {
-    if (data) {
-      console.log("Fetched Transactions: ", data.transaction);
-    }
-  }, [data]);
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error loading transactions.</Text>;
@@ -109,107 +103,120 @@ function TransactionHistoryComponent() {
         <Text style={globalFonts.mediumSubtitle}>
           {t("pages.home.transactions.title")}
         </Text>
-        <Image
-          source={require("@/assets/images/info-icon.png")}
-          style={{
-            marginBottom: 5,
-          }}
-        />
       </View>
 
-      {/* Display fetched transactions */}
-      {transactions.map((item: any) => (
-        <View
-          style={{
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "center",
-            backgroundColor: "rgba(216,226,225,.3)",
-            paddingHorizontal: 25,
-            paddingVertical: 15,
-            borderRadius: 30,
-            width: "100%",
-            marginBottom: 12,
-          }}
-          key={item.id}
-        >
-          <View
-            style={{
-              width: "100%",
-              paddingVertical: 0,
-            }}
-          >
+      {transactions.length > 0 ? (
+        <>
+          {transactions.map((item: any) => (
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                justifyContent: "center",
+                backgroundColor: "rgba(216,226,225,.3)",
+                paddingHorizontal: 25,
+                paddingVertical: 15,
+                borderRadius: 30,
+                width: "100%",
+                marginBottom: 12,
               }}
+              key={item.id}
             >
               <View
                 style={{
-                  flexDirection: "column",
-                  gap: 2,
-                  width: "40%",
-                  alignItems: "flex-start",
+                  width: "100%",
+                  paddingVertical: 0,
                 }}
               >
-                <Text style={styles.topRowText}>{item.date}</Text>
-                <Text style={styles.secondRowText}>{item.from}</Text>
-                <Text style={styles.amount}>{item.amount} €*</Text>
-              </View>
-              <Image
-                source={require("@/assets/images/tx-middle-icon.png")}
-                style={{ alignSelf: "flex-end" }}
-              />
-              <View
-                style={{
-                  flexDirection: "column",
-                  gap: 2,
-                  width: "40%",
-                  alignItems: "flex-end",
-                }}
-              >
-                <Text
+                <View
                   style={{
-                    ...styles.topRowText,
-                    alignSelf: "flex-end",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  {item.status}
-                </Text>
-                <Text style={styles.secondRowText}>{item.to}</Text>
-                <View style={{ flexDirection: "row", gap: 2 }}>
-                  <Text style={{ ...styles.secondRowText, fontSize: 12 }}>
-                    ID: {item.txId}
-                  </Text>
-                  <Image source={require("@/assets/images/tx-copy-icon.png")} />
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      gap: 2,
+                      width: "40%",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <Text style={styles.topRowText}>{item.date}</Text>
+                    <Text style={styles.secondRowText}>{item.from}</Text>
+                    <Text style={styles.amount}>{item.amount} €*</Text>
+                  </View>
+                  <Image
+                    source={require("@/assets/images/tx-middle-icon.png")}
+                    style={{ alignSelf: "flex-end" }}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      gap: 2,
+                      width: "40%",
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.topRowText,
+                        alignSelf: "flex-end",
+                      }}
+                    >
+                      {item.status}
+                    </Text>
+                    <Text style={styles.secondRowText}>{item.to}</Text>
+                    <View style={{ flexDirection: "row", gap: 2 }}>
+                      <Text style={{ ...styles.secondRowText, fontSize: 12 }}>
+                        ID: {item.txId}
+                      </Text>
+                      <Image
+                        source={require("@/assets/images/tx-copy-icon.png")}
+                      />
+                    </View>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </View>
-      ))}
-      <TouchableOpacity>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-          }}
-        >
-          <Image
-            source={require("@/assets/images/tx-eye-icon.png")}
+          ))}
+
+          <TouchableOpacity>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+              }}
+            >
+              <Image
+                source={require("@/assets/images/tx-eye-icon.png")}
+                style={{ marginBottom: 3 }}
+              />
+              <Text style={styles.secondRowText}>
+                {t("pages.home.transactions.seeAll")}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <View>
+          <Text
             style={{
-              marginBottom: 3,
+              ...globalFonts.disclaimerText,
+              color: "#13293D",
+              marginTop: 20,
             }}
-          />
-          <Text style={styles.secondRowText}>
-            {t("pages.home.transactions.seeAll")}
+            numberOfLines={4}
+          >
+            {t("pages.home.transactions.no_transactions_1")}
+            {"\n"}
+            {t("pages.home.transactions.no_transactions_2")}
           </Text>
         </View>
-      </TouchableOpacity>
+      )}
     </View>
   );
 }

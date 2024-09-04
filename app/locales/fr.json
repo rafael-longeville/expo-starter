@@ -1,5 +1,19 @@
 {
   "welcome": "Bienvenue",
+  "splash": {
+    "1": {
+      "title": "Alimentez votre compte courant",
+      "subtitle": "ET REPRENEZ LE CONTRÔLE DE VOTRE ARGENT"
+    },
+    "2": {
+      "title": "Ou placez votre argent",
+      "subtitle": "ET SOYEZ REMUNÉRÉ DÈS LA PREMIÈRE SECONDE "
+    },
+    "3": {
+      "title": "Restez informé",
+      "subtitle": "SUR LA NATURE DES PRODUITS PROPOSÉS EN CLIQUANT SUR LES POINTS INFO :"
+    }
+  },
   "pages": {
     "login": {
       "title": "Bienvenue",
@@ -48,7 +62,9 @@
       "transactions": {
         "title": "Historique de vos transactions",
         "in_progress": "En cours",
-        "seeAll": "Tout voir"
+        "seeAll": "Tout voir",
+        "no_transactions_1": "Vous n'avez pas encore réalisé d'opération.",
+        "no_transactions_2": "Alimentez votre compte courant  ou effectuez un placement pour commencer."
       }
     }
   },

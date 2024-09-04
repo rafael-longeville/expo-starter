@@ -1,33 +1,47 @@
 {
   "welcome": "Welcome",
+  "splash": {
+    "1": {
+      "title": "Fund Your Checking Account",
+      "subtitle": "AND TAKE CONTROL OF YOUR MONEY"
+    },
+    "2": {
+      "title": "Or Invest Your Money",
+      "subtitle": "AND EARN FROM THE FIRST SECOND"
+    },
+    "3": {
+      "title": "Stay Informed",
+      "subtitle": "ABOUT THE PRODUCTS OFFERED BY CLICKING ON THE INFO POINTS:"
+    }
+  },
   "pages": {
     "login": {
       "title": "Welcome",
-      "subtitle": "You are just one step away from creating your sovereign account for free!"
+      "subtitle": "You’re just a step away from creating your sovereign account for free!"
     },
     "onboarding_1": {
       "title": "Grow Your Money",
-      "subtitle": "Invest your funds and start earning from the first second:",
+      "subtitle": "Invest your funds and earn from the first second:",
       "second_subtitle": "Or secure them in your sovereign checking account:",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
     },
     "onboarding_2": {
       "title": "Access Your Account",
-      "subtitle": "Open or access an existing account with one click:",
+      "subtitle": "Open or access an existing account, in one click:",
       "sign-in": "Use an existing wallet",
       "create-account": "Create a new wallet"
     },
     "onboarding_3": {
       "account": "Account",
       "title": "Fund Your Account",
-      "subtitle": "Invest your funds in one of the interest-bearing accounts via credit card, Apple Pay, or Google Pay.",
+      "subtitle": "Place your funds in one of the interest-bearing accounts via credit card, Apple Pay, or Google Pay.",
       "cancel": "Cancel"
     },
     "onboarding_4": {
       "title": "Set Currency Display and Notifications",
-      "money_question": "Would you like a general display of amounts in Euros or Dollars?",
-      "money_question_helper": "To help you, displayed amounts (according to the chosen currency) will be preceded by an asterisk (*).",
+      "money_question": "Would you like a general display of amounts in Euro or Dollar?",
+      "money_question_helper": "To help you, the converted amounts displayed (according to the chosen currency) will be preceded by an asterisk (*).",
       "notifications_question": "Would you like to enable notifications?",
       "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
       "language_question": "In which language would you like to use the application?",
@@ -38,17 +52,19 @@
     "home": {
       "total_balance": "Total Balance",
       "balance": "Balance",
-      "on_main_account": "in the checking account",
-      "on_investments": "in the interest-bearing account",
+      "on_main_account": "on the checking account",
+      "on_investments": "on the interest-bearing account",
       "your_main_account": "Your Checking Account",
       "your_investment_account": "Your Interest-Bearing Account",
       "details": "Details",
-      "hide_details": "Hide ",
-      "including_gains": "Including Gains",
+      "hide_details": "Hide",
+      "including_gains": "Including gains",
       "transactions": {
         "title": "Transaction History",
         "in_progress": "In Progress",
-        "seeAll": "See All"
+        "seeAll": "See All",
+        "no_transactions_1": "You haven’t made any transactions yet.",
+        "no_transactions_2": "Fund your checking account or make an investment to start."
       }
     }
   },

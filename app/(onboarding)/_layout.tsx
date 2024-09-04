@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   ScrollView,
   View,
@@ -87,7 +87,7 @@ export default function OnboardingLayout() {
         )}
         {renderCurrentScreen()}
 
-        <NavigationButton
+        {/* <NavigationButton
           label="Back to home page"
           onPress={() => router.push("/(tabs)/home")}
         />
@@ -98,11 +98,15 @@ export default function OnboardingLayout() {
         <NavigationButton
           label="Go - 1 page"
           onPress={() => navigateToPage(-1)}
-        />
+        /> */}
         <View style={styles.languageSwitcher}>
           <LanguageButton
-            label="To Transak page"
+            label="To T"
             onPress={() => router.push("/(onboarding)/onboarding_4")}
+          />
+          <LanguageButton
+            label="To home"
+            onPress={() => router.push("/(tabs)/home")}
           />
           <LanguageButton
             label="Clear cache"
@@ -167,7 +171,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginBottom: 20,
-    marginTop: 200,
+    marginTop: 50,
   },
   languageButton: {
     backgroundColor: "blue",

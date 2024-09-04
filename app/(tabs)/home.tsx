@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { StyleSheet, ScrollView, RefreshControl, View } from "react-native";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
@@ -9,11 +9,13 @@ import TransactionPOC from "@/components/Homepage/TransactionsPOC";
 import InvestmentAccount from "@/components/Homepage/InvestmentAccount";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import TransactionHistory from "@/components/Homepage/TransactionHistory";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
   const [transactionObject, setTransactionObject] = useState<any>(null);
+  const [currency, setCurrency] = useState<string>("$"); // Default to dollar
 
   const { data, refetch } = useWalletBalance({
     chain: chain,
@@ -26,6 +28,23 @@ export default function HomeScreen() {
     refetch().finally(() => setRefreshing(false));
   }, []);
 
+  useEffect(() => {
+    const fetchCurrency = async () => {
+      try {
+        const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
+        if (storedCurrency === "euro") {
+          setCurrency("€");
+        } else {
+          setCurrency("$");
+        }
+      } catch (error) {
+        console.error("Error fetching currency:", error);
+      }
+    };
+
+    fetchCurrency();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -34,7 +53,7 @@ export default function HomeScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <AccountDetails />
+        <AccountDetails currency={currency} />
         <MainAccount />
         <InvestmentAccount />
         <View
@@ -46,8 +65,8 @@ export default function HomeScreen() {
             gap: 20,
           }}
         >
-          <InvestmentCard investment={"DOLLAR US"} investing />
-          <InvestmentCard investment={"EURO"} investing />
+          <InvestmentCard investment={`DOLLAR US (${currency})`} investing />
+          <InvestmentCard investment={`EURO (${currency})`} investing />
         </View>
         <TransactionHistory />
         <TransactionPOC account={account} refetch={refetch} />
@@ -65,7 +84,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "Poppins_700Bold",
   },
-
   whiteSubtitle: {
     fontSize: 18,
     width: "100%",

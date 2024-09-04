@@ -15,6 +15,7 @@ import {
   Poppins_500Medium,
   Poppins_600SemiBold,
   Poppins_700Bold,
+  Poppins_700Bold_Italic,
 } from "@expo-google-fonts/poppins";
 import * as Sentry from "@sentry/react-native";
 
@@ -36,6 +37,7 @@ function RootLayout() {
     Poppins_500Medium,
     Poppins_600SemiBold,
     Poppins_700Bold,
+    Poppins_700Bold_Italic,
   });
 
   useEffect(() => {

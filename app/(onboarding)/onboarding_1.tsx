@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,30 +6,50 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  Alert,
 } from "react-native";
 import { globalFonts } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Divider } from "react-native-paper";
 import * as Sentry from "@sentry/react-native";
 import i18n from "../i18n";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// Custom Switch component to toggle notifications
 const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
   value,
   onValueChange,
 }) => {
+  const handlePress = async () => {
+    Sentry.addBreadcrumb({
+      category: "action",
+      message: `User toggled notifications switch to ${value ? "off" : "on"}`,
+      level: "info",
+    });
+
+    if (value) {
+      onValueChange();
+    } else {
+      // Request notification permissions
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status === "granted") {
+        onValueChange();
+      } else {
+        Alert.alert(
+          "Permission Required",
+          "This app needs permission to show notifications.",
+          [{ text: "OK" }]
+        );
+      }
+    }
+  };
+
   return (
     <TouchableOpacity
       style={[styles.switchContainer, styles.switch]}
-      onPress={() => {
-        Sentry.addBreadcrumb({
-          category: "action",
-          message: `User toggled notifications switch to ${value ? "off" : "on"}`,
-          level: "info",
-        });
-        onValueChange();
-      }}
+      onPress={handlePress}
       activeOpacity={0.8}
     >
       <View
@@ -39,9 +59,9 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
         ]}
       >
         {value ? (
-          <Image source={require("../../assets/images/check-icon.png")}></Image>
+          <Image source={require("../../assets/images/check-icon.png")} />
         ) : (
-          <Image source={require("../../assets/images/cross-icon.png")}></Image>
+          <Image source={require("../../assets/images/cross-icon.png")} />
         )}
       </View>
     </TouchableOpacity>
@@ -51,7 +71,6 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
 const Onboarding1: React.FC = () => {
   const { t } = useTranslation();
 
-  // State to track the selected currency
   const [selectedCurrency, setSelectedCurrency] = useState<
     "euro" | "dollar" | null
   >("dollar");
@@ -59,6 +78,49 @@ const Onboarding1: React.FC = () => {
     "en"
   );
   const [notifications, setNotifications] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchStoredSettings = async () => {
+      try {
+        const storedLanguage = await AsyncStorage.getItem("selectedLanguage");
+        const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
+        const storedNotifications = await AsyncStorage.getItem("notifications");
+
+        if (storedLanguage) {
+          i18n.changeLanguage(storedLanguage);
+          setSelectedLanguage(storedLanguage as "fr" | "en");
+        }
+        if (storedCurrency) {
+          setSelectedCurrency(storedCurrency as "euro" | "dollar");
+        }
+        if (storedNotifications !== null) {
+          setNotifications(storedNotifications === "true");
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+        console.error("Error retrieving settings from AsyncStorage:", error);
+      }
+    };
+
+    fetchStoredSettings();
+  }, []);
+
+  useEffect(() => {
+    // Add notification listeners
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log(notification);
+      }
+    );
+
+    Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   const handleCurrencySelection = (currency: "euro" | "dollar") => {
     Sentry.addBreadcrumb({
@@ -75,7 +137,6 @@ const Onboarding1: React.FC = () => {
       message: `User selected language: ${language}`,
       level: "info",
     });
-    i18n.changeLanguage(language);
     setSelectedLanguage(language);
   };
 
@@ -87,6 +148,18 @@ const Onboarding1: React.FC = () => {
         level: "info",
       });
 
+      // Save all settings to AsyncStorage
+      await AsyncStorage.setItem("selectedLanguage", selectedLanguage || "en");
+      await AsyncStorage.setItem(
+        "selectedCurrency",
+        selectedCurrency || "dollar"
+      );
+      await AsyncStorage.setItem(
+        "notifications",
+        notifications ? "true" : "false"
+      );
+
+      // Navigate to the next screen
       router.push("/(onboarding)/onboarding_2");
     } catch (error) {
       Sentry.captureException(error);
@@ -252,7 +325,7 @@ const Onboarding1: React.FC = () => {
               height: 50,
               justifyContent: "center",
               alignItems: "center",
-              width: 335,
+              width: "100%",
               marginTop: 30,
             }}
             onPress={handleContinuePress}

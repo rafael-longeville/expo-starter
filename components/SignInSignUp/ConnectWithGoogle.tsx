@@ -4,11 +4,7 @@ import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { chain, client } from "@/constants/thirdweb";
 import * as Sentry from "@sentry/react-native";
 
-export default function ConnectWithGoogle({
-  connect,
-  isConnecting,
-  account,
-}: any) {
+export default function ConnectWithGoogle({ connect, redirectUrl }: any) {
   const handlePress = async () => {
     try {
       Sentry.addBreadcrumb({
@@ -32,7 +28,7 @@ export default function ConnectWithGoogle({
           });
           Sentry.captureMessage(`Wallet connected using Google strategy`);
           router.push({
-            pathname: "/(onboarding)/onboarding_4",
+            pathname: redirectUrl,
           });
           return wallet;
         } catch (connectError: any) {

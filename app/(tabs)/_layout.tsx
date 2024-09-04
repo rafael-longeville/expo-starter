@@ -18,7 +18,7 @@ export default function TabLayout() {
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
           headerShown: false,
           tabBarStyle: {
-            display: route.name === "splash" ? "none" : "flex",
+            display: route.name === "home" || "login" ? "none" : "flex",
           },
         })}
       >

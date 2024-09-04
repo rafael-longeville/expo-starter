@@ -34,14 +34,12 @@ export default function LoginScreen() {
           connect={connect}
           isConnecting={isConnecting}
           account={account}
-          error={error}
           isOnboarding={false}
         />
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
           account={account}
-          error={error}
           isOnboarding={false}
         />
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (

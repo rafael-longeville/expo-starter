@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Civicpower Wallet",
+    "name": "Power Wallet",
     "slug": "civicpower-wallet",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,7 +18,13 @@
       "associatedDomains": ["webcredentials:moncomptesouverain.fr"],
       "buildNumber": "21",
       "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos."
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos.",
+        "UIBackgroundModes": ["fetch", "remote-notification"],
+        "UIUserNotificationSettings": {
+          "UIUserNotificationTypeAlert": true,
+          "UIUserNotificationTypeBadge": true,
+          "UIUserNotificationTypeSound": true
+        }
       }
     },
     "android": {

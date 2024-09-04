@@ -1,14 +1,17 @@
-import { globalFonts } from "@/app/styles/globalFonts";
 import React, { useState } from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { Collapsible } from "@/components/Collapsible";
 import { useTranslation } from "react-i18next";
+import { globalFonts } from "@/app/styles/globalFonts";
 
-export default function AccountDetails() {
+interface AccountDetailsProps {
+  currency: string; // Currency symbol passed from HomeScreen
+}
+
+export default function AccountDetails({ currency }: AccountDetailsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
-  // Conditionally require the image based on the isOpen state
   const chevronIcon = isOpen
     ? require("../../assets/images/chevron-up-icon.png")
     : require("../../assets/images/chevron-down-icon.png");
@@ -27,7 +30,6 @@ export default function AccountDetails() {
     <View style={styles.account_details}>
       <Text style={globalFonts.bigTitle}>{t("welcome")} !</Text>
       <Text style={globalFonts.subtitle}>{t("pages.home.total_balance")}</Text>
-      {/* Change the currency symbol based on async storage value */}
       <View
         style={{
           flexDirection: "row",
@@ -35,7 +37,17 @@ export default function AccountDetails() {
           alignItems: "baseline",
         }}
       >
-        <Text style={globalFonts.bigNumber}>{total_balance} €*</Text>
+        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+          <Text style={globalFonts.bigNumber}>{total_balance} </Text>
+          <Text
+            style={{
+              ...globalFonts.bigNumber,
+              fontFamily: "Poppins_700Bold_Italic",
+            }}
+          >
+            {currency}
+          </Text>
+        </View>
         <View
           style={{
             flexDirection: "row",
@@ -70,7 +82,18 @@ export default function AccountDetails() {
             gap: 5,
           }}
         >
-          <Text style={styles.smallNumber}> {main_account_balance} €*</Text>
+          <Text style={styles.smallNumber}>
+            {" "}
+            {main_account_balance}{" "}
+            <Text
+              style={{
+                ...styles.smallNumber,
+                fontFamily: "Poppins_700Bold_Italic",
+              }}
+            >
+              {currency}
+            </Text>
+          </Text>
           <Text
             style={{
               ...globalFonts.subtitle,
@@ -88,8 +111,15 @@ export default function AccountDetails() {
           }}
         >
           <Text style={styles.smallNumber}>
-            {" "}
-            {investment_account_balance} €*
+            {investment_account_balance}{" "}
+            <Text
+              style={{
+                ...styles.smallNumber,
+                fontFamily: "Poppins_700Bold_Italic",
+              }}
+            >
+              {currency}
+            </Text>
           </Text>
           <Text
             style={{
@@ -120,7 +150,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "Poppins_700Bold",
   },
-
   whiteSubtitle: {
     fontSize: 18,
     width: "100%",

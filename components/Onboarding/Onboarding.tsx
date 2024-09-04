@@ -5,13 +5,15 @@ import { useFocusEffect } from "@react-navigation/native";
 import OnboardingItem from "./OnboardingItem";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
-import slides from "./slides";
+
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTranslation } from "react-i18next";
 
 export default function Onboarding() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hasSeenSplash, setHasSeenSplash] = useState(false);
+  const { t } = useTranslation();
   const scrollX = useRef(new Animated.Value(0)).current;
 
   // Explicitly type the slidesRef as a reference to FlatList
@@ -50,6 +52,30 @@ export default function Onboarding() {
   }).current;
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+
+  const slides = [
+    {
+      id: "1",
+      image: require("@/assets/images/splash/initial_splash.png"),
+    },
+    {
+      id: "2",
+      title: t("splash.1.title"),
+      subtitle: t("splash.1.subtitle"),
+      image: require("@/assets/images/splash/splash_1.png"),
+    },
+    {
+      id: "3",
+      title: t("splash.2.title"),
+      subtitle: t("splash.2.subtitle"),
+      image: require("@/assets/images/splash/splash_2.png"),
+    },
+    {
+      id: "4",
+      title: t("splash.3.title"),
+      subtitle: t("splash.3.subtitle"),
+    },
+  ];
 
   const scrollTo = async () => {
     if (currentIndex < slides.length - 1) {
@@ -96,19 +122,27 @@ export default function Onboarding() {
       <View
         style={{
           position: "absolute",
-          bottom: -29,
+          bottom: -100,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 20,
           width: "100%",
+          height: 300,
         }}
       >
-        <NextButton
-          scrollTo={scrollTo}
-          percentage={(currentIndex + 1) * (100 / slides.length)}
-        />
-        <Paginator data={slidesToRender} scrollX={scrollX} />
+        <View style={{ display: "flex", flexDirection: "column", height: 300 }}>
+          <View style={{ height: "50%" }}>
+            <NextButton
+              scrollTo={scrollTo}
+              percentage={(currentIndex + 1) * (100 / slides.length)}
+            />
+          </View>
+          <View style={{ height: "50%" }}>
+            {currentIndex !== 0 && (
+              <Paginator data={slides} scrollX={scrollX} />
+            )}
+          </View>
+        </View>
       </View>
     </View>
   );

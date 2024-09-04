@@ -1,5 +1,5 @@
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, StyleSheet, Pressable } from "react-native";
@@ -68,10 +68,11 @@ const Onboarding2: React.FC = () => {
           backgroundColor: "#13293D",
           padding: 10,
           borderRadius: 30,
+          marginTop: 20,
           height: 50,
           justifyContent: "center",
           alignItems: "center",
-          width: 335,
+          width: "100%",
         }}
         onPress={handleContinuePress}
       >
@@ -89,12 +90,15 @@ const Onboarding2: React.FC = () => {
       <Text
         style={{
           ...globalFonts.subtitle,
+          width: "100%",
           textAlign: "center",
           fontSize: 14,
           fontFamily: "Poppins_500Medium",
         }}
       >
-        {t("pages.onboarding_1.has_account")}
+        <Link href={"/(onboarding)/onboarding_3"} style={{ width: "100%" }}>
+          {t("pages.onboarding_1.has_account")}
+        </Link>
       </Text>
     </View>
   );
