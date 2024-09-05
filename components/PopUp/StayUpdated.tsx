@@ -59,7 +59,6 @@ const StayUpdated = forwardRef(({}, ref: any) => {
   // renders
   return (
     <>
-      <Button title="Stay Updated" onPress={handlePresentModalPress} />
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={0}

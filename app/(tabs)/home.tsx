@@ -53,6 +53,23 @@ export default function HomeScreen() {
     fetchCurrency();
   }, []);
 
+  useEffect(() => {
+    const checkFirstVisit = async () => {
+      try {
+        const hasSeenStayUpdated =
+          await AsyncStorage.getItem("hasSeenStayUpdated");
+        if (!hasSeenStayUpdated) {
+          stayUpdatedModalRef.current?.present();
+          await AsyncStorage.setItem("hasSeenStayUpdated", "true");
+        }
+      } catch (error) {
+        console.error("Error checking first visit:", error);
+      }
+    };
+
+    checkFirstVisit();
+  }, []);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
