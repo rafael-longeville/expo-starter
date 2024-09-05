@@ -1,12 +1,11 @@
 import React, {
   useCallback,
-  useMemo,
   useRef,
-  useState,
   forwardRef,
   useImperativeHandle,
+  useMemo,
 } from "react";
-import { View, Text, Button, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetView,
@@ -18,31 +17,20 @@ import { globalFonts } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Href, Link } from "expo-router";
 
-const StayUpdated = forwardRef(({}, ref: any) => {
+const MainAccountPopup = forwardRef(({ modalPress }: any, ref: any) => {
   const { t } = useTranslation();
-  // refs
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ["60%"], []);
 
-  // state to track if modal is open
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // variables
-  const snapPoints = useMemo(() => ["20%", "45%"], []);
-
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    setIsModalOpen(true);
-    bottomSheetModalRef.current?.present();
-  }, []);
-
+  // Handle modal dismiss
   const handleDismissModal = useCallback(() => {
-    setIsModalOpen(false);
+    bottomSheetModalRef.current?.dismiss();
   }, []);
 
+  // Handle sheet changes
   const handleSheetChanges = useCallback(
     (index: number) => {
       if (index === -1) {
-        // Modal dismissed
         handleDismissModal();
       }
       console.log("handleSheetChanges", index);
@@ -50,24 +38,25 @@ const StayUpdated = forwardRef(({}, ref: any) => {
     [handleDismissModal]
   );
 
+  // Expose methods to parent component
   useImperativeHandle(ref, () => ({
-    present: handlePresentModalPress,
+    present: () => {
+      bottomSheetModalRef.current?.present();
+    },
     dismiss: handleDismissModal,
   }));
 
-  // renders
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}
-      index={1}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      onDismiss={handleDismissModal} // Handle modal dismiss
+      index={0} // Start at the first snap point (index 0)
+      snapPoints={snapPoints} // Fixed snap points
+      enableDynamicSizing={false} // Disable dynamic sizing for fixed height
       backdropComponent={(props) => (
         <BottomSheetBackdrop
           {...props}
           pressBehavior="close"
-          opacity={0.7} // Set to 1 for full opacity, you can adjust as needed
+          opacity={0.7} // Adjust opacity as needed
           style={StyleSheet.absoluteFill}
         >
           <BlurView intensity={30} style={StyleSheet.absoluteFill} />
@@ -81,23 +70,10 @@ const StayUpdated = forwardRef(({}, ref: any) => {
         </Text>
         <Image
           source={require("@/assets/images/pop-ups/swipe-down.png")}
-          style={{
-            marginTop: 30,
-          }}
+          style={{ marginTop: 30 }}
         />
-        <View
-          style={{
-            marginTop: 30,
-            width: "100%",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              ...globalFonts.disclaimerText,
-              width: "60%",
-            }}
-          >
+        <View style={{ marginTop: 30, width: "100%", alignItems: "center" }}>
+          <Text style={{ ...globalFonts.disclaimerText, width: "60%" }}>
             {t("pop-ups.stay_updated.disclaimer.description")}
           </Text>
           <Text
@@ -112,25 +88,8 @@ const StayUpdated = forwardRef(({}, ref: any) => {
             </Link>
           </Text>
         </View>
-        <Pressable
-          style={{
-            backgroundColor: "#13293D",
-            padding: 10,
-            borderRadius: 30,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-            width: 335,
-          }}
-          onPress={handleDismissModal}
-        >
-          <Text
-            style={{
-              ...globalFonts.subtitle,
-              textAlign: "center",
-              color: "white",
-            }}
-          >
+        <Pressable style={styles.button} onPress={handleDismissModal}>
+          <Text style={styles.buttonText}>
             {t("pop-ups.stay_updated.button")}
           </Text>
         </Pressable>
@@ -140,20 +99,14 @@ const StayUpdated = forwardRef(({}, ref: any) => {
 });
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   contentContainer: {
     flex: 1,
     alignItems: "center",
     borderRadius: 30,
     flexDirection: "column",
     gap: 10,
+    paddingHorizontal: 24,
   },
-  // Fonts
   title: {
     fontFamily: "Poppins_600SemiBold",
     fontSize: 24,
@@ -164,6 +117,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#13293D",
   },
+  button: {
+    backgroundColor: "#13293D",
+    padding: 10,
+    borderRadius: 30,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 335,
+    marginTop: 20,
+  },
+  buttonText: {
+    ...globalFonts.subtitle,
+    textAlign: "center",
+    color: "white",
+  },
 });
 
-export default StayUpdated;
+export default MainAccountPopup;

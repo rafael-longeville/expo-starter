@@ -1,9 +1,20 @@
 import { globalFonts } from "@/app/styles/globalFonts";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 
-export default function MainAccount() {
+export default function MainAccount({
+  modalPress,
+}: {
+  modalPress: () => void;
+}) {
   const main_account_balance = "133,64";
   const { t } = useTranslation();
 
@@ -13,12 +24,12 @@ export default function MainAccount() {
         <Text style={globalFonts.mediumSubtitle}>
           {t("pages.home.your_main_account")}
         </Text>
-        <Image
-          source={require("@/assets/images/info-icon.png")}
-          style={{
-            marginBottom: 5,
-          }}
-        />
+        <Pressable onPress={modalPress}>
+          <Image
+            source={require("@/assets/images/info-icon.png")}
+            style={{ width: 20, height: 20 }}
+          />
+        </Pressable>
       </View>
       <View
         style={{

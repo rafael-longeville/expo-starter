@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { StyleSheet, ScrollView, RefreshControl, View } from "react-native";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
@@ -12,12 +12,16 @@ import TransactionHistory from "@/components/Homepage/TransactionHistory";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StayUpdated from "@/components/PopUp/StayUpdated";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 
 export default function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
-  const [transactionObject, setTransactionObject] = useState<any>(null);
-  const [currency, setCurrency] = useState<string>("$"); // Default to dollar
+  const [currency, setCurrency] = useState<string>("$");
 
   const { data, refetch } = useWalletBalance({
     chain: chain,
@@ -30,15 +34,17 @@ export default function HomeScreen() {
     refetch().finally(() => setRefreshing(false));
   }, []);
 
+  const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
+  const mainAccountModalRef = useRef<BottomSheetModal>(null);
+  const handleMainAccountModalPress = useCallback(() => {
+    mainAccountModalRef.current?.present();
+  }, []);
+
   useEffect(() => {
     const fetchCurrency = async () => {
       try {
         const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
-        if (storedCurrency === "euro") {
-          setCurrency("€");
-        } else {
-          setCurrency("$");
-        }
+        setCurrency(storedCurrency === "euro" ? "€" : "$");
       } catch (error) {
         console.error("Error fetching currency:", error);
       }
@@ -49,33 +55,40 @@ export default function HomeScreen() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView
-          style={styles.scrollView}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <AccountDetails currency={currency} />
-          <MainAccount />
-          <InvestmentAccount />
-          <View
-            style={{
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingHorizontal: 20,
-              gap: 20,
-            }}
+      <BottomSheetModalProvider>
+        <SafeAreaView style={styles.container}>
+          <ScrollView
+            style={styles.scrollView}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
-            <InvestmentCard investment={`DOLLAR US (${currency})`} investing />
-            <InvestmentCard investment={`EURO (${currency})`} investing />
-          </View>
-          <TransactionHistory />
-          <StayUpdated />
+            <AccountDetails currency={currency} />
+            <MainAccount modalPress={handleMainAccountModalPress} />
+            <InvestmentAccount />
+            <View
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingHorizontal: 20,
+                gap: 20,
+              }}
+            >
+              <InvestmentCard
+                investment={`DOLLAR US (${currency})`}
+                investing
+              />
+              <InvestmentCard investment={`EURO (${currency})`} investing />
+            </View>
+            <TransactionHistory />
+          </ScrollView>
+
+          <MainAccountPopup ref={mainAccountModalRef} />
+          <StayUpdated ref={stayUpdatedModalRef} />
           <TransactionPOC account={account} refetch={refetch} />
-        </ScrollView>
-      </SafeAreaView>
+        </SafeAreaView>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 }
@@ -84,16 +97,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  smallNumber: {
-    fontSize: 18,
-    fontFamily: "Poppins_700Bold",
-  },
-  whiteSubtitle: {
-    fontSize: 18,
-    width: "100%",
-    color: "white",
-    fontFamily: "Poppins_400Regular",
   },
   scrollView: {
     backgroundColor: "#fff",
