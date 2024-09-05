@@ -9,7 +9,6 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetView,
-  BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
@@ -56,7 +55,7 @@ const MainAccountPopup = forwardRef(({ modalPress }: any, ref: any) => {
         <BottomSheetBackdrop
           {...props}
           pressBehavior="close"
-          opacity={0.7} // Adjust opacity as needed
+          opacity={1} // Adjust opacity as needed
           style={StyleSheet.absoluteFill}
         >
           <BlurView intensity={30} style={StyleSheet.absoluteFill} />
@@ -64,17 +63,18 @@ const MainAccountPopup = forwardRef(({ modalPress }: any, ref: any) => {
       )}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <Text style={styles.title}>{t("pop-ups.stay_updated.title")}</Text>
-        <Text style={styles.subtitle}>
-          {t("pop-ups.stay_updated.subtitle")}
-        </Text>
         <Image
           source={require("@/assets/images/pop-ups/swipe-down.png")}
           style={{ marginTop: 30 }}
         />
+        <Text style={styles.title}>{t("pop-ups.main_account.title")}</Text>
+
         <View style={{ marginTop: 30, width: "100%", alignItems: "center" }}>
           <Text style={{ ...globalFonts.disclaimerText, width: "60%" }}>
-            {t("pop-ups.stay_updated.disclaimer.description")}
+            {t("pop-ups.main_account.disclaimer.description_1")}
+          </Text>
+          <Text style={{ ...globalFonts.disclaimerText, width: "60%" }}>
+            {t("pop-ups.main_account.disclaimer.description_2")}
           </Text>
           <Text
             style={{
@@ -83,14 +83,14 @@ const MainAccountPopup = forwardRef(({ modalPress }: any, ref: any) => {
               textDecorationLine: "underline",
             }}
           >
-            <Link href={t("pop-ups.stay_updated.disclaimer.href_link") as Href}>
-              {t("pop-ups.stay_updated.disclaimer.link")}
+            <Link href={t("pop-ups.main_account.disclaimer.href_link") as Href}>
+              {t("pop-ups.main_account.disclaimer.link")}
             </Link>
           </Text>
         </View>
         <Pressable style={styles.button} onPress={handleDismissModal}>
           <Text style={styles.buttonText}>
-            {t("pop-ups.stay_updated.button")}
+            {t("pop-ups.main_account.button")}
           </Text>
         </Pressable>
       </BottomSheetView>
@@ -110,11 +110,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Poppins_600SemiBold",
     fontSize: 24,
-    color: "#13293D",
-  },
-  subtitle: {
-    fontFamily: "Poppins_500Medium",
-    fontSize: 16,
     color: "#13293D",
   },
   button: {

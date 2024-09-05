@@ -27,7 +27,7 @@ const StayUpdated = forwardRef(({}, ref: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // variables
-  const snapPoints = useMemo(() => ["20%", "45%"], []);
+  const snapPoints = useMemo(() => ["60%"], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -37,6 +37,7 @@ const StayUpdated = forwardRef(({}, ref: any) => {
 
   const handleDismissModal = useCallback(() => {
     setIsModalOpen(false);
+    bottomSheetModalRef.current?.dismiss();
   }, []);
 
   const handleSheetChanges = useCallback(
@@ -57,85 +58,90 @@ const StayUpdated = forwardRef(({}, ref: any) => {
 
   // renders
   return (
-    <BottomSheetModal
-      ref={bottomSheetModalRef}
-      index={1}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      onDismiss={handleDismissModal} // Handle modal dismiss
-      backdropComponent={(props) => (
-        <BottomSheetBackdrop
-          {...props}
-          pressBehavior="close"
-          opacity={0.7} // Set to 1 for full opacity, you can adjust as needed
-          style={StyleSheet.absoluteFill}
-        >
-          <BlurView intensity={30} style={StyleSheet.absoluteFill} />
-        </BottomSheetBackdrop>
-      )}
-    >
-      <BottomSheetView style={styles.contentContainer}>
-        <Text style={styles.title}>{t("pop-ups.stay_updated.title")}</Text>
-        <Text style={styles.subtitle}>
-          {t("pop-ups.stay_updated.subtitle")}
-        </Text>
-        <Image
-          source={require("@/assets/images/pop-ups/swipe-down.png")}
-          style={{
-            marginTop: 30,
-          }}
-        />
-        <View
-          style={{
-            marginTop: 30,
-            width: "100%",
-            alignItems: "center",
-          }}
-        >
-          <Text
+    <>
+      <Button title="Stay Updated" onPress={handlePresentModalPress} />
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        onDismiss={handleDismissModal} // Handle modal dismiss
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop
+            {...props}
+            pressBehavior="close"
+            opacity={0.7} // Set to 1 for full opacity, you can adjust as needed
+            style={StyleSheet.absoluteFill}
+          >
+            <BlurView intensity={30} style={StyleSheet.absoluteFill} />
+          </BottomSheetBackdrop>
+        )}
+      >
+        <BottomSheetView style={styles.contentContainer}>
+          <Text style={styles.title}>{t("pop-ups.stay_updated.title")}</Text>
+          <Text style={styles.subtitle}>
+            {t("pop-ups.stay_updated.subtitle")}
+          </Text>
+          <Image
+            source={require("@/assets/images/pop-ups/swipe-down.png")}
             style={{
-              ...globalFonts.disclaimerText,
-              width: "60%",
+              marginTop: 30,
+            }}
+          />
+          <View
+            style={{
+              marginTop: 30,
+              width: "100%",
+              alignItems: "center",
             }}
           >
-            {t("pop-ups.stay_updated.disclaimer.description")}
-          </Text>
-          <Text
+            <Text
+              style={{
+                ...globalFonts.disclaimerText,
+                width: "60%",
+              }}
+            >
+              {t("pop-ups.stay_updated.disclaimer.description")}
+            </Text>
+            <Text
+              style={{
+                ...globalFonts.disclaimerText,
+                width: "60%",
+                textDecorationLine: "underline",
+              }}
+            >
+              <Link
+                href={t("pop-ups.stay_updated.disclaimer.href_link") as Href}
+              >
+                {t("pop-ups.stay_updated.disclaimer.link")}
+              </Link>
+            </Text>
+          </View>
+          <Pressable
             style={{
-              ...globalFonts.disclaimerText,
-              width: "60%",
-              textDecorationLine: "underline",
+              backgroundColor: "#13293D",
+              padding: 10,
+              borderRadius: 30,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center",
+              width: 335,
             }}
+            onPress={handleDismissModal}
           >
-            <Link href={t("pop-ups.stay_updated.disclaimer.href_link") as Href}>
-              {t("pop-ups.stay_updated.disclaimer.link")}
-            </Link>
-          </Text>
-        </View>
-        <Pressable
-          style={{
-            backgroundColor: "#13293D",
-            padding: 10,
-            borderRadius: 30,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-            width: 335,
-          }}
-          onPress={handleDismissModal}
-        >
-          <Text
-            style={{
-              ...globalFonts.subtitle,
-              textAlign: "center",
-              color: "white",
-            }}
-          >
-            {t("pop-ups.stay_updated.button")}
-          </Text>
-        </Pressable>
-      </BottomSheetView>
-    </BottomSheetModal>
+            <Text
+              style={{
+                ...globalFonts.subtitle,
+                textAlign: "center",
+                color: "white",
+              }}
+            >
+              {t("pop-ups.stay_updated.button")}
+            </Text>
+          </Pressable>
+        </BottomSheetView>
+      </BottomSheetModal>
+    </>
   );
 });
 

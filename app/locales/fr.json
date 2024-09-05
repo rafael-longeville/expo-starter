@@ -90,6 +90,14 @@
         "href_link": "https://moncomptesouverain.fr/"
       },
       "button": "J'ai compris"
+    },
+    "main_account": {
+      "title": "Votre compte courant",
+      "description_1": "Félicitation, vous êtes enfin le réél propriétaire de vos fonds et vous seul avez la possibilité d’intéragir avec. ",
+      "description_2": "Vous pouvez maintenant le placer dans un produit qui rapporte !",
+      "link": "En savoir plus.",
+      "href_link": "https://moncomptesouverain.fr/",
+      "button": "J'ai compris"
     }
   }
 }

@@ -24,7 +24,7 @@ export default function MainAccount({
         <Text style={globalFonts.mediumSubtitle}>
           {t("pages.home.your_main_account")}
         </Text>
-        <Pressable onPress={modalPress}>
+        <Pressable /* onPress={modalPress} */>
           <Image
             source={require("@/assets/images/info-icon.png")}
             style={{ width: 20, height: 20 }}
