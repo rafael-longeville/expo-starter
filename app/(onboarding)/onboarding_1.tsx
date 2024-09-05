@@ -138,6 +138,7 @@ const Onboarding1: React.FC = () => {
       level: "info",
     });
     setSelectedLanguage(language);
+    i18n.changeLanguage(language);
   };
 
   const handleContinuePress = async () => {

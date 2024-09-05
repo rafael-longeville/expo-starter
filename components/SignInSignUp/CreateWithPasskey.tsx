@@ -1,4 +1,5 @@
-import { Pressable, Text, Alert } from "react-native";
+import React, { useState } from "react";
+import { Pressable, Text, Alert, View, Modal, ActivityIndicator, StyleSheet } from "react-native";
 import { chain, client } from "@/constants/thirdweb";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { router } from "expo-router";
@@ -18,7 +19,11 @@ export default function CreateWithPasskey({
   account,
   isOnboarding,
 }: CreateWithPasskeyProps) {
+  const [loading, setLoading] = useState(false); // State to manage the loading
+
   const handlePress = async () => {
+    setLoading(true); // Show loader when the process starts
+
     try {
       Sentry.addBreadcrumb({
         category: "action",
@@ -44,9 +49,11 @@ export default function CreateWithPasskey({
             pathname: "/(onboarding)/onboarding_4",
           });
           Sentry.captureMessage(`Wallet connected using sign-up strategy`);
+          setLoading(false); // Hide loader after successful wallet creation
           return wallet;
         } catch (connectError: any) {
           Sentry.captureException(connectError);
+          setLoading(false); // Hide loader on error
           throw connectError;
         }
       });
@@ -66,6 +73,7 @@ export default function CreateWithPasskey({
       }
     } catch (err: any) {
       Sentry.captureException(err);
+      setLoading(false); // Hide loader on error
       Alert.alert(
         "Error",
         "An error occurred during the wallet creation process. Please try again."
@@ -74,28 +82,70 @@ export default function CreateWithPasskey({
   };
 
   return (
-    <Pressable
-      style={{
-        backgroundColor: "#13293D",
-        padding: 10,
-        borderRadius: 30,
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        width: 335,
-      }}
-      onPress={handlePress}
-    >
-      <Text
-        style={{
-          ...globalFonts.whiteSubtitle,
-          textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
-        }}
+    <View>
+      <Pressable
+        style={styles.button}
+        onPress={handlePress}
+        disabled={loading} // Disable the button while loading
       >
-        Créez votre portefeuille
-      </Text>
-    </Pressable>
+        <Text style={styles.buttonText}>
+          Créez votre portefeuille
+        </Text>
+      </Pressable>
+
+      {loading && ( // Modal for the centered loader overlay
+        <Modal
+          transparent={true}
+          animationType="fade"
+          visible={loading}
+          onRequestClose={() => setLoading(false)}
+        >
+          <View style={styles.overlay}>
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color="#ffffff" />
+              <Text style={styles.loaderText}>Creating wallet, please wait...</Text>
+            </View>
+          </View>
+        </Modal>
+      )}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#13293D",
+    padding: 10,
+    borderRadius: 30,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 335,
+  },
+  buttonText: {
+    ...globalFonts.whiteSubtitle,
+    textAlign: "center",
+    fontSize: 14,
+    fontFamily: "Poppins_500Medium",
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background to dim the screen
+  },
+  loaderContainer: {
+    backgroundColor: "#13293D",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  loaderText: {
+    color: "#ffffff",
+    marginTop: 10,
+  },
+});

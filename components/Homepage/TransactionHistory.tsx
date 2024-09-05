@@ -118,7 +118,9 @@ function TransactionHistoryComponent() {
                 paddingVertical: 15,
                 borderRadius: 30,
                 width: "100%",
-                marginBottom: 12,
+                marginBottom: 8,
+                marginTop: 8,
+
               }}
               key={item.id}
             >
