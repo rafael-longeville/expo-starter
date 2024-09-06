@@ -70,7 +70,9 @@ export default function OnboardingItem({ item }: any) {
       </Text>
 
       {item.id === "4" ? (
-        <View style={{ flexDirection: "column", gap: 5, alignItems: "center" }}>
+        <View
+          style={{ flexDirection: "column", gap: 20, alignItems: "center" }}
+        >
           <Text
             style={{
               fontFamily: "Poppins_400Regular",
