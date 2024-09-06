@@ -2,6 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { getLocales } from "expo-localization";
 import "intl-pluralrules";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Import your translation files
 import en from "./locales/en.json";
@@ -24,5 +25,16 @@ i18n
       escapeValue: false, // React already escapes values
     },
   });
+
+// Check if "selectedLanguage" is already set in AsyncStorage
+const setInitialLanguage = async () => {
+  const selectedLanguage = await AsyncStorage.getItem("selectedLanguage");
+  if (!selectedLanguage) {
+    await AsyncStorage.setItem("selectedLanguage", preferredLocale || "en");
+  }
+};
+
+// Call the function to set the initial language
+setInitialLanguage();
 
 export default i18n;
