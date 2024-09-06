@@ -42,7 +42,8 @@ const Onboarding4: React.FC = () => {
             fiatAmount: "100",
             productsAvailed: ["BUY"],
             network: "arbitrum",
-            paymentMethod: "credit_debit_card",
+            defaultPaymentMethod: "credit_debit_card",
+            disablePaymentMethods: ["gbp_bank_transfer", "sepa_bank_transfer"],
             // hideExchangeScreen: true,
             walletAddress: account.address,
             disableWalletAddressForm: true,
@@ -51,7 +52,7 @@ const Onboarding4: React.FC = () => {
             partnerOrderId: "123456",
           };
 
-          if (method === "onRamp" && onboardingValue) {
+          if (onboardingValue) {
             params = {
               ...params,
               fiatAmount: onboardingValue,
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
   webview: {
     marginTop: 20,
     width: "100%",
-    height: 600,
+    height: 500,
   },
   containercompte: {
     height: 60,

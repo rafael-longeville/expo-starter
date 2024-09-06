@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from "react-i18next";
 import {
   ApolloClient,
@@ -35,6 +36,7 @@ const GET_TRANSACTIONS = gql`
       transaction_method
       transaction_status
       transaction_created_at
+      transaction_hash
     }
   }
 `;
@@ -85,7 +87,7 @@ function TransactionHistoryComponent() {
       date: formattedDate,
       status:
         item.transaction_status === "PENDING_DELIVERY_FROM_TRANSAK" ||
-        item.transaction_status === "PROCESSING"
+          item.transaction_status === "PROCESSING"
           ? "En cours"
           : item.transaction_status === "EXPIRED"
             ? "Echouée"
@@ -93,7 +95,8 @@ function TransactionHistoryComponent() {
       from,
       to,
       amount: item.transaction_amount.toFixed(2),
-      txId: shortenHex(item.wallet_address), // Assuming wallet_address serves as a transaction ID
+      txId: shortenHex(item.transaction_hash || "0x0"),
+      fullHash: item.transaction_hash ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash : "Transaction en attente.",
     };
   });
 
@@ -174,9 +177,14 @@ function TransactionHistoryComponent() {
                       <Text style={{ ...styles.secondRowText, fontSize: 12 }}>
                         ID: {item.txId}
                       </Text>
-                      <Image
-                        source={require("@/assets/images/tx-copy-icon.png")}
-                      />
+                      <TouchableOpacity
+                        onPress={() => Clipboard.setString(item.fullHash)} // Copy txId to clipboard
+                      >
+                        <Image
+                          source={require("@/assets/images/tx-copy-icon.png")}
+                          style={{ width: 20, height: 20 }} // Adjust image size if necessary
+                        />
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </View>

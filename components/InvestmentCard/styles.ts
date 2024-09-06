@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
   },
   input: {
-    fontSize: 20,
+    fontSize: 18,
     color: "#13293D",
     fontFamily: "Poppins_600SemiBold",
     paddingHorizontal: 20,
