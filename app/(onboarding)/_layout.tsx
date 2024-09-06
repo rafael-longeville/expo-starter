@@ -9,8 +9,6 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useSegments } from "expo-router";
-import { useTranslation } from "react-i18next";
-import i18n from "../i18n";
 import Onboarding1 from "./onboarding_1";
 import Onboarding2 from "./onboarding_2";
 import Onboarding3 from "./onboarding_3";
@@ -27,27 +25,7 @@ const IMAGES = {
 
 export default function OnboardingLayout() {
   const segments = useSegments();
-  const { t } = useTranslation();
   const currentSegment = segments[segments.length - 1];
-
-  const handleChangeLanguage = (language: "fr" | "en") => {
-    i18n.changeLanguage(language);
-  };
-
-  const navigateToPage = (offset: number) => {
-    const number = Math.min(
-      Math.max(parseInt(currentSegment.split("_")[1]) + offset, 1),
-      4
-    );
-    const path = `/onboarding_${number}`;
-    router.push({
-      pathname: path as
-        | `/onboarding_1`
-        | `/onboarding_2`
-        | `/onboarding_3`
-        | `/onboarding_4`,
-    });
-  };
 
   const renderCurrentScreen = () => {
     switch (currentSegment) {

@@ -28,8 +28,6 @@ export default function AccountDetails({ currency }: AccountDetailsProps) {
 
   return (
     <View style={styles.account_details}>
-      <Text style={globalFonts.bigTitle}>{t("welcome")} !</Text>
-      <Text style={globalFonts.subtitle}>{t("pages.home.total_balance")}</Text>
       <View
         style={{
           flexDirection: "row",
@@ -37,17 +35,9 @@ export default function AccountDetails({ currency }: AccountDetailsProps) {
           alignItems: "baseline",
         }}
       >
-        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-          <Text style={globalFonts.bigNumber}>{total_balance} </Text>
-          <Text
-            style={{
-              ...globalFonts.bigNumber,
-              fontFamily: "Poppins_700Bold_Italic",
-            }}
-          >
-            {currency}
-          </Text>
-        </View>
+        <Text style={globalFonts.subtitle}>
+          {t("pages.home.total_balance")}
+        </Text>
         <View
           style={{
             flexDirection: "row",
@@ -73,62 +63,91 @@ export default function AccountDetails({ currency }: AccountDetailsProps) {
           </Pressable>
         </View>
       </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+          <Text style={globalFonts.bigNumber}>{total_balance} </Text>
+          <Text
+            style={{
+              ...globalFonts.bigNumber,
+              fontFamily: "Poppins_700Bold_Italic",
+            }}
+          >
+            {currency}
+          </Text>
+        </View>
+      </View>
 
       <Collapsible title="Transaction" isOpen={isOpen}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 5,
+            flexDirection: "column",
+            alignItems: "flex-start",
           }}
         >
-          <Text style={styles.smallNumber}>
-            {" "}
-            {main_account_balance}{" "}
-            <Text
-              style={{
-                ...styles.smallNumber,
-                fontFamily: "Poppins_700Bold_Italic",
-              }}
-            >
-              {currency}
-            </Text>
-          </Text>
-          <Text
+          <View
             style={{
-              ...globalFonts.subtitle,
-              fontSize: 14,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 5,
+              width: "100%",
             }}
           >
-            {t("pages.home.on_main_account")}
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 5,
-          }}
-        >
-          <Text style={styles.smallNumber}>
-            {investment_account_balance}{" "}
+            <Text style={styles.smallNumber}>
+              {main_account_balance}{" "}
+              <Text
+                style={{
+                  ...styles.smallNumber,
+                  fontFamily: "Poppins_700Bold_Italic",
+                }}
+              >
+                {currency}
+              </Text>
+            </Text>
             <Text
               style={{
-                ...styles.smallNumber,
-                fontFamily: "Poppins_700Bold_Italic",
+                ...globalFonts.subtitle,
+                fontSize: 14,
               }}
             >
-              {currency}
+              {t("pages.home.on_main_account")}
             </Text>
-          </Text>
-          <Text
+          </View>
+          <View
             style={{
-              ...globalFonts.subtitle,
-              fontSize: 14,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              gap: 5,
             }}
           >
-            {t("pages.home.on_investments")}
-          </Text>
+            <Text style={styles.smallNumber}>
+              {investment_account_balance}{" "}
+              <Text
+                style={{
+                  ...styles.smallNumber,
+                  fontFamily: "Poppins_700Bold_Italic",
+                }}
+              >
+                {currency}
+              </Text>
+            </Text>
+            <Text
+              style={{
+                ...globalFonts.subtitle,
+                fontSize: 14,
+              }}
+            >
+              {t("pages.home.on_investments")}
+            </Text>
+          </View>
         </View>
       </Collapsible>
     </View>
@@ -149,6 +168,7 @@ const styles = StyleSheet.create({
   smallNumber: {
     fontSize: 18,
     fontFamily: "Poppins_700Bold",
+    color: "#13293D",
   },
   whiteSubtitle: {
     fontSize: 18,

@@ -6,18 +6,17 @@ import {
   Image,
   useWindowDimensions,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function OnboardingItem({ item }: any) {
-  const { width } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      paddingTop: 100,
-      flexDirection: "column",
       justifyContent: "flex-start",
       alignItems: "center",
-      gap: 20,
+      padding: 20, // Added padding to ensure content doesn't touch the edges
     },
     initialContainer: {
       flex: 1,
@@ -29,17 +28,17 @@ export default function OnboardingItem({ item }: any) {
       justifyContent: "center",
     },
     image: {
-      height: 105,
-      width: 101,
+      width: width * 0.6, // Responsive width
+      height: 105, // Fixed height for other images
+      resizeMode: "contain", // Ensure the image scales without distortion
     },
     title: {
       fontFamily: "Alegreya_500Medium",
-      paddingTop: 20,
       fontSize: 32,
       marginBottom: 10,
       color: "#fff",
       textAlign: "center",
-      width: item.id === 0 ? "60%" : "80%",
+      width: "80%", // Responsive width
     },
     subtitle: {
       fontFamily: "Poppins_400Regular",
@@ -54,12 +53,8 @@ export default function OnboardingItem({ item }: any) {
       <Image source={item.image} style={[styles.initialImage, { width }]} />
     </View>
   ) : (
-    <View
-      style={{
-        ...styles.container,
-        width,
-        backgroundColor: "#13293D",
-      }}
+    <SafeAreaView
+      style={[styles.container, { width, backgroundColor: "#13293D" }]}
     >
       <Image
         source={require("@/assets/images/splash/ibex.png")}
@@ -68,14 +63,14 @@ export default function OnboardingItem({ item }: any) {
       <Text
         style={{
           ...styles.title,
-          marginTop: item.id === "4" ? 150 : 0,
+          marginTop: item.id === "4" ? "50%" : "10%",
         }}
       >
         {item.title}
       </Text>
 
       {item.id === "4" ? (
-        <View style={{ flexDirection: "column", gap: 3, alignItems: "center" }}>
+        <View style={{ flexDirection: "column", gap: 5, alignItems: "center" }}>
           <Text
             style={{
               fontFamily: "Poppins_400Regular",
@@ -96,9 +91,12 @@ export default function OnboardingItem({ item }: any) {
           source={item.image}
           style={{
             marginTop: 50,
+            width: width * 0.9, // Responsive width
+            height: height * 0.3, // Fixed height for other images
+            resizeMode: "contain", // Ensure the image scales without distortion
           }}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 }

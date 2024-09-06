@@ -16,8 +16,8 @@ export default function Onboarding() {
   const { t } = useTranslation();
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  // Explicitly type the slidesRef as a reference to FlatList
   const slidesRef = useRef<FlatList<any>>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null); // Timer reference
 
   // Check if the user has seen the splash screen
   useEffect(() => {
@@ -35,19 +35,39 @@ export default function Onboarding() {
     checkIfSeenSplash();
   }, []);
 
-  // Reset the onboarding process to the first slide whenever the screen is focused
-  useFocusEffect(
-    React.useCallback(() => {
-      if (slidesRef.current) {
-        slidesRef.current.scrollToIndex({ index: 0, animated: true });
-        setCurrentIndex(0); // Reset the index as well
-      }
-    }, [])
-  );
+  // Set up a timer to navigate to the next slide after 3 seconds of inactivity
+  // useEffect(() => {
+  //   // Clear any existing timer
+  //   if (timerRef.current) {
+  //     clearTimeout(timerRef.current);
+  //   }
+
+  //   // Set a new timer
+  //   timerRef.current = setTimeout(() => {
+  //     scrollTo();
+  //   }, 3000);
+
+  //   // Clear the timer on component unmount
+  //   return () => {
+  //     if (timerRef.current) {
+  //       clearTimeout(timerRef.current);
+  //     }
+  //   };
+  // }, [currentIndex]); // Run the effect when currentIndex changes
 
   const viewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
       setCurrentIndex(viewableItems[0].index);
+
+      // // Clear the timer if user interacts with the scroll view
+      // if (timerRef.current) {
+      //   clearTimeout(timerRef.current);
+      // }
+
+      // // Restart the timer
+      // timerRef.current = setTimeout(() => {
+      //   scrollTo();
+      // }, 3000);
     }
   }).current;
 

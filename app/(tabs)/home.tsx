@@ -32,10 +32,11 @@ export default function HomeScreen() {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     refetch().finally(() => setRefreshing(false));
-  }, []);
+  }, [refetch]);
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
   const mainAccountModalRef = useRef<BottomSheetModal>(null);
+
   const handleMainAccountModalPress = useCallback(() => {
     mainAccountModalRef.current?.present();
   }, []);
@@ -81,8 +82,8 @@ export default function HomeScreen() {
             }
           >
             <AccountDetails currency={currency} />
-            <MainAccount modalPress={handleMainAccountModalPress} />
-            <InvestmentAccount />
+            <MainAccount currency={currency} />
+            <InvestmentAccount currency={currency} />
             <View
               style={{
                 flexDirection: "column",
@@ -92,11 +93,8 @@ export default function HomeScreen() {
                 gap: 20,
               }}
             >
-              <InvestmentCard
-                investment={`DOLLAR US (${currency})`}
-                investing
-              />
-              <InvestmentCard investment={`EURO (${currency})`} investing />
+              <InvestmentCard investment={`DOLLAR US`} investing />
+              <InvestmentCard investment={`EURO`} investing />
             </View>
             <TransactionHistory />
           </ScrollView>

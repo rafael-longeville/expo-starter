@@ -12,37 +12,38 @@ import {
   EventTypes,
   Order,
 } from "@transak/react-native-sdk";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const Onboarding4: React.FC = () => {
+const Checkout: React.FC = () => {
   const account = useActiveAccount();
   const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
   const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
   const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
-  const [currency, setCurrency] = useState<string>("EUR"); // Default currency
   const { t } = useTranslation();
 
+  const onTransakEventHandler = (event: EventTypes, data: Order) => {
+    switch (event) {
+      case Events.ORDER_CREATED:
+        console.log(event, data);
+        break;
+
+      case Events.ORDER_PROCESSING:
+        console.log(event, data);
+        router.push("/(tabs)/home");
+        break;
+
+      default:
+        console.log(event, data);
+    }
+  };
+
   useEffect(() => {
-    const loadOnboardingData = async () => {
+    const loadTransakParams = async () => {
       try {
-        // Fetch currency and onboarding data from AsyncStorage
-        const value = await AsyncStorage.getItem("onboardingValue");
-        const method = await AsyncStorage.getItem("onboardingMethod");
-        const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
-
-        setOnboardingValue(value);
-        setOnboardingMethod(method);
-        setCurrency(storedCurrency === "euro" ? "EUR" : "USD"); // Update currency
-
-        Sentry.addBreadcrumb({
-          category: "storage",
-          message: `Retrieved onboardingValue: ${value}, onboardingMethod: ${method}, currency: ${storedCurrency}`,
-          level: "info",
-        });
-
         if (account?.address) {
           let params = {
             apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
-            fiatCurrency: currency, // Use the selected currency
+            fiatCurrency: "EUR",
             cryptoCurrencyCode: "USDC",
             fiatAmount: "100",
             productsAvailed: ["BUY"],
@@ -56,13 +57,6 @@ const Onboarding4: React.FC = () => {
             environment: "STAGING",
             partnerOrderId: "123456",
           };
-
-          if (onboardingValue) {
-            params = {
-              ...params,
-              fiatAmount: onboardingValue,
-            };
-          }
 
           setTransakParams(params);
 
@@ -78,32 +72,11 @@ const Onboarding4: React.FC = () => {
       }
     };
 
-    loadOnboardingData();
-  }, [account, onboardingMethod, onboardingValue, currency]); // Added currency as dependency
-
-  const onTransakEventHandler = (event: EventTypes, data: Order) => {
-    switch (event) {
-      case Events.ORDER_CREATED:
-        console.log(event, data);
-        break;
-
-      case Events.ORDER_PROCESSING:
-        console.log(event, data);
-        router.push("/(tabs)/home");
-        break;
-
-      case Events.ORDER_COMPLETED:
-        router.push("/(onboarding)/onboarding_2?transactionSuccess=true");
-        console.log(event, data);
-        break;
-
-      default:
-        console.log(event, data);
-    }
-  };
+    loadTransakParams();
+  }, [account, onboardingMethod, onboardingValue]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.containercompte}>
         <Image
           source={require("@/assets/images/lock-icon.png")}
@@ -111,10 +84,9 @@ const Onboarding4: React.FC = () => {
         />
         <Text style={styles.textcompte}>
           <Text style={globalFonts.whiteSubtitle}>
-            {t("pages.onboarding_3.account")}{" "}
-            {currency === "EUR" ? "EURO" : "DOLLAR US"}:
+            {t("pages.onboarding_3.account")} DOLLAR US :
           </Text>
-          <Text style={styles.amount}> 0 {currency === "USD" ? "$" : "€"}</Text>
+          <Text style={styles.amount}> 0 €*</Text>
         </Text>
       </View>
       <Text style={globalFonts.title}>{t("pages.onboarding_3.title")}</Text>
@@ -152,7 +124,7 @@ const Onboarding4: React.FC = () => {
       >
         {t("pages.onboarding_3.cancel")}
       </Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -160,15 +132,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  webview: {
-    marginTop: 20,
-    width: "100%",
-    height: 500,
+    padding: 20,
   },
   containercompte: {
     height: 60,
@@ -180,6 +144,16 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     marginBottom: 30,
   },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  webview: {
+    marginTop: 20,
+    width: "100%",
+    height: 500,
+  },
+
   icon: {
     marginRight: 10,
   },
@@ -196,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Onboarding4;
+export default Checkout;

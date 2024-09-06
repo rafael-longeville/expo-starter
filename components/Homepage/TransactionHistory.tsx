@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import Clipboard from '@react-native-clipboard/clipboard';
+import Clipboard from "@react-native-clipboard/clipboard";
 import { useTranslation } from "react-i18next";
 import {
   ApolloClient,
@@ -13,6 +13,7 @@ import { shortenHex } from "thirdweb/utils";
 import { globalFonts } from "@/app/styles/globalFonts";
 import moment from "moment"; // Import moment.js for date formatting
 import { useActiveAccount } from "thirdweb/react"; // Import the useActiveAccount hook
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Step 1: Set up Apollo Client
 const client = new ApolloClient({
@@ -44,6 +45,20 @@ const GET_TRANSACTIONS = gql`
 function TransactionHistoryComponent() {
   const { t } = useTranslation();
   const activeAccount = useActiveAccount(); // Get the active account
+  const [currency, setCurrency] = useState<string>("EUR"); // Default currency
+
+  useEffect(() => {
+    const fetchCurrency = async () => {
+      try {
+        const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
+        setCurrency(storedCurrency === "usd" ? "USD" : "EUR");
+      } catch (error) {
+        console.error("Error fetching currency from AsyncStorage", error);
+      }
+    };
+
+    fetchCurrency();
+  }, []);
 
   if (!activeAccount?.address) {
     return <Text>No active account found.</Text>;
@@ -82,21 +97,30 @@ function TransactionHistoryComponent() {
       "DD/MM/YYYY"
     );
 
+    // Format the amount based on the selected currency
+    const amount =
+      currency === "USD"
+        ? item.transaction_amount.toFixed(2)
+        : item.transaction_amount.toFixed(2);
+    const currencySymbol = currency === "USD" ? "$" : "€";
+
     return {
       id: item.id,
       date: formattedDate,
       status:
         item.transaction_status === "PENDING_DELIVERY_FROM_TRANSAK" ||
-          item.transaction_status === "PROCESSING"
+        item.transaction_status === "PROCESSING"
           ? "En cours"
           : item.transaction_status === "EXPIRED"
             ? "Echouée"
             : "Terminée",
       from,
       to,
-      amount: item.transaction_amount.toFixed(2),
+      amount: `${amount} ${currencySymbol}`,
       txId: shortenHex(item.transaction_hash || "0x0"),
-      fullHash: item.transaction_hash ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash : "Transaction en attente.",
+      fullHash: item.transaction_hash
+        ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash
+        : "Transaction en attente.",
     };
   });
 
@@ -123,7 +147,6 @@ function TransactionHistoryComponent() {
                 width: "100%",
                 marginBottom: 8,
                 marginTop: 8,
-
               }}
               key={item.id}
             >
@@ -150,7 +173,7 @@ function TransactionHistoryComponent() {
                   >
                     <Text style={styles.topRowText}>{item.date}</Text>
                     <Text style={styles.secondRowText}>{item.from}</Text>
-                    <Text style={styles.amount}>{item.amount} €*</Text>
+                    <Text style={styles.amount}>{item.amount}</Text>
                   </View>
                   <Image
                     source={require("@/assets/images/tx-middle-icon.png")}

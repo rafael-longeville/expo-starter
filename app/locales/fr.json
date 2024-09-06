@@ -21,8 +21,12 @@
     },
     "onboarding_1": {
       "title": "Faites fructifier votre argent",
-      "subtitle": "Placez vos fonds et soyez rémunéré dès la première seconde :",
-      "second_subtitle": "Ou sécurisez les dans votre compte courant souverain :",
+      "subtitle_1": "Placez vos fonds dans un",
+      "subtitle_2": "Compte rémunéré, ",
+      "subtitle_3": "touchez des intérêts dès la première seconde :",
+      "second_subtitle_1": "Ou sécurisez les dans votre",
+      "second_subtitle_2": "Compte courant ",
+      "second_subtitle_3": "souverain :",
       "continue_button": "Continuer sans alimenter",
       "has_account": "J'ai déjà un compte"
     },
@@ -52,8 +56,8 @@
     "home": {
       "total_balance": "Solde total",
       "balance": "Solde",
-      "on_main_account": "sur le compte courant",
-      "on_investments": "sur le livret rémunéré",
+      "on_main_account": "Compte courant",
+      "on_investments": "Comptes rémunérés",
       "your_main_account": "Votre compte courant",
       "your_investment_account": "Votre livret rémunéré",
       "details": "En détails",

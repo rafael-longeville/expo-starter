@@ -10,11 +10,7 @@ import {
   Pressable,
 } from "react-native";
 
-export default function MainAccount({
-  modalPress,
-}: {
-  modalPress: () => void;
-}) {
+export default function MainAccount({ currency }: { currency: string }) {
   const main_account_balance = "133,64";
   const { t } = useTranslation();
 
@@ -59,7 +55,7 @@ export default function MainAccount({
             includeFontPadding: false,
           }}
         >
-          {main_account_balance} €*
+          {main_account_balance} {currency}
         </Text>
       </View>
       <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>

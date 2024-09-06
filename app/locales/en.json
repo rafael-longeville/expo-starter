@@ -3,45 +3,49 @@
   "splash": {
     "1": {
       "title": "Fund your checking account",
-      "subtitle": "AND REGAIN CONTROL OF YOUR MONEY"
+      "subtitle": "AND TAKE CONTROL OF YOUR MONEY"
     },
     "2": {
       "title": "Or invest your money",
-      "subtitle": "AND EARN FROM THE FIRST SECOND"
+      "subtitle": "AND EARN INTEREST FROM THE VERY FIRST SECOND"
     },
     "3": {
       "title": "Stay informed",
-      "subtitle": "ABOUT THE PRODUCTS OFFERED BY CLICKING ON THE INFO POINTS:"
+      "subtitle": "ABOUT THE NATURE OF THE PRODUCTS OFFERED BY CLICKING ON THE INFO POINTS:"
     }
   },
   "pages": {
     "login": {
       "title": "Welcome",
-      "subtitle": "You are just one step away from creating your sovereign account for free!"
+      "subtitle": "You are just a step away from creating your free sovereign account!"
     },
     "onboarding_1": {
       "title": "Grow your money",
-      "subtitle": "Invest your funds and earn from the first second:",
-      "second_subtitle": "Or secure them in your sovereign checking account:",
+      "subtitle_1": "Invest your funds in a",
+      "subtitle_2": "Interest-bearing account,",
+      "subtitle_3": "earn interest from the very first second:",
+      "second_subtitle_1": "Or secure them in your",
+      "second_subtitle_2": "Checking account",
+      "second_subtitle_3": "sovereign account:",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
     },
     "onboarding_2": {
       "title": "Access your account",
-      "subtitle": "Open or access an existing account with one click:",
+      "subtitle": "Open or access an existing account with a single click:",
       "sign-in": "Use an existing wallet",
       "create-account": "Create a new wallet"
     },
     "onboarding_3": {
       "account": "Account",
       "title": "Fund your account",
-      "subtitle": "Place your funds into one of the accounts funded via credit card, Apple Pay, or Google Pay.",
+      "subtitle": "Deposit your funds into one of the interest-bearing accounts via credit card, Apple Pay, or Google Pay.",
       "cancel": "Cancel"
     },
     "onboarding_4": {
-      "title": "Set display currency and notifications",
+      "title": "Set up currency display and notifications",
       "money_question": "Would you like a general display of amounts in Euro or Dollar?",
-      "money_question_helper": "For your convenience, converted amounts (according to the chosen currency) will be preceded by an asterisk (*).",
+      "money_question_helper": "To help you, amounts converted for display (according to the chosen currency) will be preceded by an asterisk (*).",
       "notifications_question": "Would you like to enable notifications?",
       "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
       "language_question": "In which language would you like to use the app?",
@@ -52,8 +56,8 @@
     "home": {
       "total_balance": "Total balance",
       "balance": "Balance",
-      "on_main_account": "on the checking account",
-      "on_investments": "on the interest-bearing account",
+      "on_main_account": "Checking account",
+      "on_investments": "Interest-bearing accounts",
       "your_main_account": "Your checking account",
       "your_investment_account": "Your interest-bearing account",
       "details": "Details",
@@ -63,12 +67,12 @@
         "title": "Transaction history",
         "in_progress": "In progress",
         "seeAll": "See all",
-        "no_transactions_1": "You have not yet made any transactions.",
+        "no_transactions_1": "You haven't made any transactions yet.",
         "no_transactions_2": "Fund your checking account or make an investment to get started."
       }
     }
   },
-  "disclaimer": "By continuing, you confirm that you have read and accepted ",
+  "disclaimer": "By continuing, you confirm that you have read and accepted",
   "disclaimer_link": "our terms and conditions.",
   "components": {
     "investment_card": {
@@ -93,7 +97,7 @@
     },
     "main_account": {
       "title": "Your checking account",
-      "description_1": "Congratulations, you are now the actual owner of your funds and only you have the ability to interact with them.",
+      "description_1": "Congratulations, you are now the real owner of your funds and only you can interact with them.",
       "description_2": "You can now invest them in a profitable product!",
       "link": "Learn more.",
       "href_link": "https://moncomptesouverain.fr/",

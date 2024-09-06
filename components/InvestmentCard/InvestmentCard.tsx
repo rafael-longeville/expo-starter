@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
@@ -22,8 +22,18 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  // State for the amount entered in the TextInput
+  // State for the currency symbol and amount entered in the TextInput
+  const [currencySymbol, setCurrencySymbol] = useState<string>("€");
   const [amount, setAmount] = useState<string>("");
+
+  useEffect(() => {
+    const fetchCurrencySymbol = async () => {
+      const symbol = await getCurrencySymbol();
+      setCurrencySymbol(symbol);
+    };
+
+    fetchCurrencySymbol();
+  }, []);
 
   const parseAmount = (value: string): number => {
     // Replace comma with a dot and parse to a floating-point number
@@ -33,15 +43,21 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
 
   return (
     <View style={styles.cardContainer}>
-      <View style={styles.header}>
-        <Image
-          style={styles.euroIcon}
-          source={getIconSource(investing, investment)}
-        />
-        <Text style={styles.headerText}>
-          {t("components.investment_card.investment")} {investment} :{" "}
-          <Text style={styles.headerAmount}>0 €*</Text>
-        </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <View style={styles.header}>
+          <Image
+            style={styles.euroIcon}
+            source={getIconSource(investing, investment)}
+          />
+          <Text style={styles.headerText}>{investment}</Text>
+        </View>
+        <Image source={require("@/assets/images/info-icon.png")} />
       </View>
 
       <View style={styles.flexContainer}>
@@ -56,9 +72,7 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
               onChangeText={(text) => setAmount(text)} // Update the state on text change
             />
           </View>
-          <Text style={styles.asideInputText}>
-            {getCurrencySymbol(investing, investment)}
-          </Text>
+          <Text style={styles.asideInputText}>{currencySymbol}</Text>
         </View>
         <View style={gainContainerStyle(investing)}>
           <Text style={styles.rendementText}>

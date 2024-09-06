@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(19, 41, 61, .5)",
   },
   isSelectedButtonStyle: {
-    backgroundColor: "#ECFF78",
+    backgroundColor: "#DFE6FF",
     borderColor: "#13293D",
   },
   switchContainer: {
