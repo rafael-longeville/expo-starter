@@ -36,38 +36,38 @@ export default function Onboarding() {
   }, []);
 
   // Set up a timer to navigate to the next slide after 3 seconds of inactivity
-  // useEffect(() => {
-  //   // Clear any existing timer
-  //   if (timerRef.current) {
-  //     clearTimeout(timerRef.current);
-  //   }
+  useEffect(() => {
+    // Clear any existing timer
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
 
-  //   // Set a new timer
-  //   timerRef.current = setTimeout(() => {
-  //     scrollTo();
-  //   }, 3000);
+    // Set a new timer
+    timerRef.current = setTimeout(() => {
+      scrollTo();
+    }, 3000);
 
-  //   // Clear the timer on component unmount
-  //   return () => {
-  //     if (timerRef.current) {
-  //       clearTimeout(timerRef.current);
-  //     }
-  //   };
-  // }, [currentIndex]); // Run the effect when currentIndex changes
+    // Clear the timer on component unmount
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [currentIndex]); // Run the effect when currentIndex changes
 
   const viewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
       setCurrentIndex(viewableItems[0].index);
 
-      // // Clear the timer if user interacts with the scroll view
-      // if (timerRef.current) {
-      //   clearTimeout(timerRef.current);
-      // }
+      // Clear the timer if user interacts with the scroll view
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
 
-      // // Restart the timer
-      // timerRef.current = setTimeout(() => {
-      //   scrollTo();
-      // }, 3000);
+      // Restart the timer
+      timerRef.current = setTimeout(() => {
+        scrollTo();
+      }, 3000);
     }
   }).current;
 
