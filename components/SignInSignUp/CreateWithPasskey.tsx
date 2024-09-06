@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Pressable, Text, Alert, View, Modal, ActivityIndicator, StyleSheet } from "react-native";
+import {
+  Pressable,
+  Text,
+  Alert,
+  View,
+  Modal,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 import { chain, client } from "@/constants/thirdweb";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { router } from "expo-router";
@@ -11,6 +19,7 @@ interface CreateWithPasskeyProps {
   isConnecting: boolean;
   account: any;
   isOnboarding: boolean;
+  withoutFunding: string | null;
 }
 
 export default function CreateWithPasskey({
@@ -18,6 +27,7 @@ export default function CreateWithPasskey({
   isConnecting,
   account,
   isOnboarding,
+  withoutFunding,
 }: CreateWithPasskeyProps) {
   const [loading, setLoading] = useState(false); // State to manage the loading
 
@@ -46,7 +56,9 @@ export default function CreateWithPasskey({
             type: "sign-up",
           });
           router.push({
-            pathname: "/(onboarding)/onboarding_4",
+            pathname: withoutFunding
+              ? "/(tabs)/home"
+              : "/(onboarding)/onboarding_4",
           });
           Sentry.captureMessage(`Wallet connected using sign-up strategy`);
           setLoading(false); // Hide loader after successful wallet creation
@@ -88,9 +100,7 @@ export default function CreateWithPasskey({
         onPress={handlePress}
         disabled={loading} // Disable the button while loading
       >
-        <Text style={styles.buttonText}>
-          Créez votre portefeuille
-        </Text>
+        <Text style={styles.buttonText}>Créez votre portefeuille</Text>
       </Pressable>
 
       {loading && ( // Modal for the centered loader overlay
@@ -103,7 +113,9 @@ export default function CreateWithPasskey({
           <View style={styles.overlay}>
             <View style={styles.loaderContainer}>
               <ActivityIndicator size="large" color="#ffffff" />
-              <Text style={styles.loaderText}>Creating wallet, please wait...</Text>
+              <Text style={styles.loaderText}>
+                Creating wallet, please wait...
+              </Text>
             </View>
           </View>
         </Modal>

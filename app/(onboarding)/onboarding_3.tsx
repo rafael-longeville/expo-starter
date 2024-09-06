@@ -67,12 +67,14 @@ const Onboarding3: React.FC = () => {
           isConnecting={isConnecting}
           account={account}
           isOnboarding={true}
+          withoutFunding={storedValue}
         />
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
           account={account}
           isOnboarding={true}
+          withoutFunding={storedValue}
         />
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
           <ConnectWithGoogle

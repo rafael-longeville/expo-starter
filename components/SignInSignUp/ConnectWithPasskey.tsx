@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { router } from "expo-router";
-import { Pressable, Text, Alert, View, Modal, ActivityIndicator, StyleSheet } from "react-native";
+import {
+  Pressable,
+  Text,
+  Alert,
+  View,
+  Modal,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
@@ -11,6 +19,7 @@ interface ConnectWithPasskeyProps {
   isConnecting: boolean;
   account: any;
   isOnboarding: boolean;
+  withoutFunding: string | null;
 }
 
 export default function ConnectWithPasskey({
@@ -18,6 +27,7 @@ export default function ConnectWithPasskey({
   isConnecting,
   account,
   isOnboarding,
+  withoutFunding,
 }: ConnectWithPasskeyProps) {
   const [loading, setLoading] = useState(false); // State to manage the loading
 
@@ -46,7 +56,9 @@ export default function ConnectWithPasskey({
             type: "sign-in",
           });
           router.push({
-            pathname: "/(onboarding)/onboarding_4",
+            pathname: withoutFunding
+              ? "/(tabs)/home"
+              : "/(onboarding)/onboarding_4",
           });
           Sentry.captureMessage(`Wallet connected using sign-in strategy`);
           setLoading(false); // Hide loader after successful connection
