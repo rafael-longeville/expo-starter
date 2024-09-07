@@ -6,19 +6,18 @@ import { globalFonts } from "@/app/styles/globalFonts";
 
 interface AccountDetailsProps {
   currency: string; // Currency symbol passed from HomeScreen
+  main_account_balance: string;
+  investment_account_balance: string;
+  total_balance: string;
 }
 
-export default function AccountDetails({ currency }: AccountDetailsProps) {
+export default function AccountDetails({ currency, main_account_balance, investment_account_balance, total_balance }: AccountDetailsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
   const chevronIcon = isOpen
     ? require("../../assets/images/chevron-up-icon.png")
     : require("../../assets/images/chevron-down-icon.png");
-
-  const total_balance = "1073,04";
-  const main_account_balance = "133,64";
-  const investment_account_balance = "939,40";
 
   const collapsibleText = !isOpen ? (
     <Text style={globalFonts.subtitle}>{t("pages.home.details")}</Text>

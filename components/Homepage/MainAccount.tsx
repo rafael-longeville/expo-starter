@@ -10,8 +10,7 @@ import {
   Pressable,
 } from "react-native";
 
-export default function MainAccount({ currency }: { currency: string }) {
-  const main_account_balance = "133,64";
+export default function MainAccount({ currency, main_account_balance }: { currency: string, main_account_balance : string }) {
   const { t } = useTranslation();
 
   return (

@@ -3,8 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function InvestmentAccount({ currency }: { currency: string }) {
-  const main_account_balance = "133,64";
+export default function InvestmentAccount({ currency, investment_account_balance }: { currency: string, investment_account_balance: string }) {
   const { t } = useTranslation();
 
   return (
@@ -39,7 +38,7 @@ export default function InvestmentAccount({ currency }: { currency: string }) {
             includeFontPadding: false,
           }}
         >
-          {main_account_balance} {currency}
+          {investment_account_balance} {currency}
         </Text>
         <Text
           style={{

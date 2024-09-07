@@ -26,16 +26,40 @@ import {
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
+const formatBalance = (balance: any, eurBalance: number, usdBalance: number) => {
+  // Convert balance and investment balances to numbers
+  const balanceNum = parseFloat(balance);
+  const totalInvestmentBalance = eurBalance + usdBalance;
+
+  // Subtract the investment balances from the main balance
+  const finalBalance = balanceNum - totalInvestmentBalance;
+
+  // Return the final balance formatted with two decimal places
+  return finalBalance.toFixed(2).replace(".", ",");
+};
+
 export default function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
   const [currency, setCurrency] = useState<string>("$");
+  const [eurBalance, setEurBalance] = useState<number>(0);
+  const [usdBalance, setUsdBalance] = useState<number>(0);
 
-  const { data, refetch } = useWalletBalance({
-    chain: chain,
-    address: account?.address,
+  const tokenAddress = "0x0c86a754a29714c4fe9c6f1359fa7099ed174c0b"; // the ERC20 token address
+
+  const { data, isLoading, isError, error, refetch } = useWalletBalance({
+    chain,
+    address: account?.address, // Use active account address
     client,
+    tokenAddress,
   });
+
+  if (!isLoading && data) {
+    console.log(data);
+  }
+  if (isError) {
+    console.log(error);
+  }
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -82,6 +106,37 @@ export default function HomeScreen() {
     checkFirstVisit();
   }, []);
 
+  useEffect(() => {
+    const fetchInvestmentBalances = async () => {
+      try {
+        let eurBalance = await AsyncStorage.getItem(
+          "investment_account_balance_eur"
+        );
+        let usdBalance = await AsyncStorage.getItem(
+          "investment_account_balance_usd"
+        );
+
+        // If balances don't exist, set them to 100
+        if (!eurBalance) {
+          await AsyncStorage.setItem("investment_account_balance_eur", "0");
+          eurBalance = "0";
+        }
+        if (!usdBalance) {
+          await AsyncStorage.setItem("investment_account_balance_usd", "0");
+          usdBalance = "0";
+        }
+
+        // Update state with parsed values
+        setEurBalance(parseFloat(eurBalance));
+        setUsdBalance(parseFloat(usdBalance));
+      } catch (error) {
+        console.error("Error fetching investment balances:", error);
+      }
+    };
+
+    fetchInvestmentBalances();
+  }, []);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
@@ -92,18 +147,24 @@ export default function HomeScreen() {
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
           >
-            <AccountDetails currency={currency} />
-            <MainAccount currency={currency} />
-            {/* <Pressable
-              onPress={() => {
-                stayUpdatedModalRef.current?.present();
-                setIsModalOpen(true);
-                console.log("Stay Updated Modal Opened", isModalOpen);
-              }}
-            >
-              <Text>Open Stay Updated Modal</Text>
-            </Pressable> */}
-            <InvestmentAccount currency={currency} />
+            <AccountDetails
+              currency={currency}
+              main_account_balance={
+                data ? formatBalance(data?.displayValue, eurBalance, usdBalance) : "0.00"
+              }
+              investment_account_balance={(eurBalance + usdBalance).toFixed(2).replace(".", ",")}
+              total_balance={
+                data ? parseFloat(data?.displayValue).toFixed(2).replace(".", ",") : "0.00"
+              }
+            />
+            <MainAccount
+              currency={currency}
+              main_account_balance={
+                data ? formatBalance(data?.displayValue, eurBalance, usdBalance) : "0.00"
+              }
+            />
+            <InvestmentAccount currency={currency} investment_account_balance={(eurBalance + usdBalance).toFixed(2).replace(".", ",")}
+            />
             <View
               style={{
                 flexDirection: "column",
