@@ -1,12 +1,16 @@
-import { router, Tabs } from "expo-router";
-import React from "react";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { Colors } from "@/constants/Colors";
+import { Tabs } from "expo-router";
+import React, { useEffect } from "react";
 import { View, StyleSheet, Image } from "react-native";
+import {
+  StayUpdatedModalContentProvider,
+  useStayUpdatedModalContext,
+} from "@/context/StayUpdatedModalContext";
 
 type TabRoutes = "home" | "checkout" | "settings" | "account";
 
 export default function TabLayout() {
+  const { isModalOpen } = useStayUpdatedModalContext();
+
   const TABS: Record<TabRoutes, { active?: any; inactive: any }> = {
     home: {
       active: require("../../assets/images/tabs/home-active.png"),
@@ -25,6 +29,36 @@ export default function TabLayout() {
     },
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      borderRadius: 30,
+    },
+    tabBar: {
+      display: isModalOpen ? "none" : "flex",
+      position: "absolute",
+      bottom: 20,
+      left: 20,
+      right: 20,
+      height: 80,
+      backgroundColor: "#DFE6FF",
+      borderWidth: 1,
+      borderTopWidth: 1,
+      borderRadius: 30,
+      borderColor: "#13293D",
+      padding: 0,
+      margin: 0,
+      shadowColor: "transparent", // Remove shadow for iOS
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0,
+      shadowRadius: 0,
+      elevation: 0, // Remove shadow for Android
+    },
+  });
+
+  useEffect(() => {
+    console.log("isModalOpen", isModalOpen);
+  }, [isModalOpen]);
   return (
     <View style={styles.container}>
       <Tabs
@@ -65,29 +99,3 @@ export default function TabLayout() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 30,
-  },
-  tabBar: {
-    position: "absolute",
-    bottom: 20,
-    left: 20,
-    right: 20,
-    height: 80,
-    backgroundColor: "#DFE6FF",
-    borderWidth: 1,
-    borderTopWidth: 1,
-    borderRadius: 30,
-    borderColor: "#13293D",
-    padding: 0,
-    margin: 0,
-    shadowColor: "transparent", // Remove shadow for iOS
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0, // Remove shadow for Android
-  },
-});

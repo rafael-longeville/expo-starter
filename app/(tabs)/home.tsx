@@ -1,5 +1,12 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { StyleSheet, ScrollView, RefreshControl, View } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+  View,
+  Pressable,
+  Text,
+} from "react-native";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,6 +24,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
+import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
 export default function HomeScreen() {
   const account = useActiveAccount();
@@ -36,6 +44,8 @@ export default function HomeScreen() {
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
   const mainAccountModalRef = useRef<BottomSheetModal>(null);
+
+  const { setIsModalOpen, isModalOpen } = useStayUpdatedModalContext();
 
   const handleMainAccountModalPress = useCallback(() => {
     mainAccountModalRef.current?.present();
@@ -61,6 +71,7 @@ export default function HomeScreen() {
           await AsyncStorage.getItem("hasSeenStayUpdated");
         if (!hasSeenStayUpdated) {
           stayUpdatedModalRef.current?.present();
+          setIsModalOpen(true);
           await AsyncStorage.setItem("hasSeenStayUpdated", "true");
         }
       } catch (error) {
@@ -83,6 +94,15 @@ export default function HomeScreen() {
           >
             <AccountDetails currency={currency} />
             <MainAccount currency={currency} />
+            <Pressable
+              onPress={() => {
+                stayUpdatedModalRef.current?.present();
+                setIsModalOpen(true);
+                console.log("Stay Updated Modal Opened", isModalOpen);
+              }}
+            >
+              <Text>Open Stay Updated Modal</Text>
+            </Pressable>
             <InvestmentAccount currency={currency} />
             <View
               style={{
