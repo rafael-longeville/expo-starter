@@ -138,7 +138,7 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, paddingBottom: 100 }}>
       <BottomSheetModalProvider>
         <SafeAreaView style={styles.container}>
           <ScrollView
