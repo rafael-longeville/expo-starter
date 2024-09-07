@@ -94,7 +94,7 @@ export default function HomeScreen() {
           >
             <AccountDetails currency={currency} />
             <MainAccount currency={currency} />
-            <Pressable
+            {/* <Pressable
               onPress={() => {
                 stayUpdatedModalRef.current?.present();
                 setIsModalOpen(true);
@@ -102,7 +102,7 @@ export default function HomeScreen() {
               }}
             >
               <Text>Open Stay Updated Modal</Text>
-            </Pressable>
+            </Pressable> */}
             <InvestmentAccount currency={currency} />
             <View
               style={{
