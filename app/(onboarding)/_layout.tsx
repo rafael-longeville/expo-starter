@@ -65,39 +65,29 @@ export default function OnboardingLayout() {
         )}
         {renderCurrentScreen()}
 
-        {/* <NavigationButton
-          label="Back to home page"
-          onPress={() => router.push("/(tabs)/home")}
-        />
-        <NavigationButton
-          label="Go + 1 page"
-          onPress={() => navigateToPage(1)}
-        />
-        <NavigationButton
-          label="Go - 1 page"
-          onPress={() => navigateToPage(-1)}
-        /> */}
-        <View style={styles.languageSwitcher}>
-          <LanguageButton
-            label="To T"
-            onPress={() => router.push("/(onboarding)/onboarding_4")}
-          />
-          <LanguageButton
-            label="To home"
-            onPress={() => router.push("/(tabs)/home")}
-          />
-          <LanguageButton
-            label="Clear cache"
-            onPress={async () => {
-              try {
-                await AsyncStorage.clear();
-                console.log("All async storage data cleared.");
-              } catch (error) {
-                console.error("Error clearing async storage: ", error);
-              }
-            }}
-          />
-        </View>
+        {process.env.EXPO_PUBLIC_IS_DEVELOPMENT && (
+          <View style={styles.languageSwitcher}>
+            <LanguageButton
+              label="To T"
+              onPress={() => router.push("/(onboarding)/onboarding_4")}
+            />
+            <LanguageButton
+              label="To home"
+              onPress={() => router.push("/(tabs)/home")}
+            />
+            <LanguageButton
+              label="Clear cache"
+              onPress={async () => {
+                try {
+                  await AsyncStorage.clear();
+                  console.log("All async storage data cleared.");
+                } catch (error) {
+                  console.error("Error clearing async storage: ", error);
+                }
+              }}
+            />
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
