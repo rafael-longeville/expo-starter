@@ -24,7 +24,6 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
-import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
 const formatBalance = (
   balance: any,
@@ -73,8 +72,6 @@ export default function HomeScreen() {
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
   const mainAccountModalRef = useRef<BottomSheetModal>(null);
 
-  const { setIsModalOpen, isModalOpen } = useStayUpdatedModalContext();
-
   const handleMainAccountModalPress = useCallback(() => {
     mainAccountModalRef.current?.present();
   }, []);
@@ -99,7 +96,6 @@ export default function HomeScreen() {
           await AsyncStorage.getItem("hasSeenStayUpdated");
         if (!hasSeenStayUpdated) {
           stayUpdatedModalRef.current?.present();
-          setIsModalOpen(true);
           await AsyncStorage.setItem("hasSeenStayUpdated", "true");
         }
       } catch (error) {

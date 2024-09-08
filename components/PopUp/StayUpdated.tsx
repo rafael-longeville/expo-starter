@@ -17,7 +17,6 @@ import { BlurView } from "expo-blur";
 import { globalFonts } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Href, Link } from "expo-router";
-import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
 const StayUpdated = forwardRef(({}, ref: any) => {
   const { t } = useTranslation();
@@ -25,19 +24,16 @@ const StayUpdated = forwardRef(({}, ref: any) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // state to track if modal is open
-  const { isModalOpen, setIsModalOpen } = useStayUpdatedModalContext();
 
   // variables
   const snapPoints = useMemo(() => ["60%"], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
-    setIsModalOpen(true);
     bottomSheetModalRef.current?.present();
   }, []);
 
   const handleDismissModal = useCallback(() => {
-    setIsModalOpen(false);
     bottomSheetModalRef.current?.dismiss();
   }, []);
 

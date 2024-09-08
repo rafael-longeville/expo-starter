@@ -9,8 +9,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native";
 import Onboarding from "@/components/Onboarding/Onboarding";
-import { StatusBar } from "expo-status-bar";
-import { StayUpdatedModalContentProvider } from "@/context/StayUpdatedModalContext";
 
 const Splash = () => {
   return (

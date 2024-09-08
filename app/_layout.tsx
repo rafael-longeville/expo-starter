@@ -20,7 +20,6 @@ import {
   Poppins_400Regular_Italic,
 } from "@expo-google-fonts/poppins";
 import * as Sentry from "@sentry/react-native";
-import { StayUpdatedModalContentProvider } from "@/context/StayUpdatedModalContext";
 
 // Initialize Sentry
 Sentry.init({
@@ -54,17 +53,12 @@ function RootLayout() {
   return (
     <ThirdwebProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <StayUpdatedModalContentProvider>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="(onboarding)"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </StayUpdatedModalContentProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
       </ThemeProvider>
     </ThirdwebProvider>
   );
