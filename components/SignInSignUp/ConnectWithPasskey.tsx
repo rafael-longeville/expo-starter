@@ -19,7 +19,7 @@ interface ConnectWithPasskeyProps {
   isConnecting: boolean;
   account: any;
   isOnboarding: boolean;
-  withoutFunding: string | null;
+  withoutFunding?: string | null;
 }
 
 export default function ConnectWithPasskey({
@@ -56,9 +56,11 @@ export default function ConnectWithPasskey({
             type: "sign-in",
           });
           router.push({
-            pathname: withoutFunding
+            pathname:
+              // Test if that is fn up the onboarding
+              /* withoutFunding
               ? "/(tabs)/home"
-              : "/(onboarding)/onboarding_4",
+              : */ "/(onboarding)/onboarding_4",
           });
           setLoading(false); // Hide loader after successful connection
           return wallet;

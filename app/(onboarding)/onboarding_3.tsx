@@ -22,6 +22,7 @@ const Onboarding3: React.FC = () => {
     const getValueFromAsyncStorage = async () => {
       try {
         const value = await AsyncStorage.getItem("continueWithoutFunding");
+
         if (value !== null) {
           setStoredValue(value); // Set the value if it exists
           Sentry.addBreadcrumb({
@@ -48,6 +49,14 @@ const Onboarding3: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <Text
+        style={{
+          ...globalFonts.disclaimerText,
+          width: "80%",
+        }}
+      >
+        (DEBUG | ContinueWithoutFunding) :{storedValue}
+      </Text>
       <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
       <Text
         style={{
@@ -67,14 +76,14 @@ const Onboarding3: React.FC = () => {
           isConnecting={isConnecting}
           account={account}
           isOnboarding={true}
-          withoutFunding={storedValue}
+          // withoutFunding={storedValue}
         />
         <CreateWithPasskey
           connect={connect}
           isConnecting={isConnecting}
           account={account}
           isOnboarding={true}
-          withoutFunding={storedValue}
+          // withoutFunding={storedValue}
         />
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
           <ConnectWithGoogle
