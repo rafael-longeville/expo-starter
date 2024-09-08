@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, FlatList, Animated } from "react-native";
-import { useTranslation } from "react-i18next";
-import { router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, StyleSheet, FlatList, Animated, Text } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 import OnboardingItem from "./OnboardingItem";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
+
+import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTranslation } from "react-i18next";
 
 export default function Onboarding() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,7 +17,7 @@ export default function Onboarding() {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const slidesRef = useRef<FlatList<any>>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null); // Timer reference
 
   // Check if the user has seen the splash screen
   useEffect(() => {
@@ -33,37 +35,39 @@ export default function Onboarding() {
     checkIfSeenSplash();
   }, []);
 
-  // Timer to navigate to the next slide after 3 seconds of inactivity
+  // Set up a timer to navigate to the next slide after 3 seconds of inactivity
   useEffect(() => {
+    // Clear any existing timer
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
 
+    // Set a new timer
     timerRef.current = setTimeout(() => {
       scrollTo();
     }, 3000);
 
+    // Clear the timer on component unmount
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
     };
-  }, [currentIndex]);
+  }, [currentIndex]); // Run the effect when currentIndex changes
 
   const viewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
-      const newIndex = viewableItems[0].index;
-      setCurrentIndex(newIndex);
+      setCurrentIndex(viewableItems[0].index);
 
+      // Clear the timer if user interacts with the scroll view
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
 
-      if (slidesToRender.length > 1) {
-        timerRef.current = setTimeout(() => {
-          scrollTo();
-        }, 3000);
-      }
+      // Restart the timer
+      timerRef.current = setTimeout(() => {
+        scrollTo();
+      }, 3000);
     }
   }).current;
 
@@ -93,9 +97,19 @@ export default function Onboarding() {
     },
   ];
 
+  // Render only the first slide if the user has already seen the splash
+  const slidesToRender = hasSeenSplash ? [slides[0]] : slides;
+
   const scrollTo = async () => {
-    if (slidesToRender.length > 1 && currentIndex < slidesToRender.length - 1) {
-      slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
+    if (currentIndex < slides.length - 1) {
+      try {
+        slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
+      } catch (error) {
+        console.log("Error scrolling to next slide: ", error);
+        router.push({
+          pathname: "/(onboarding)/onboarding_1",
+        });
+      }
     } else {
       router.push({
         pathname: "/(onboarding)/onboarding_1",
@@ -107,8 +121,6 @@ export default function Onboarding() {
       }
     }
   };
-
-  const slidesToRender = hasSeenSplash ? [slides[0]] : slides;
 
   return (
     <View style={styles.container}>
@@ -123,7 +135,9 @@ export default function Onboarding() {
           keyExtractor={(item) => item.id}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: false }
+            {
+              useNativeDriver: false,
+            }
           )}
           scrollEventThrottle={32}
           onViewableItemsChanged={viewableItemsChanged}
@@ -145,8 +159,14 @@ export default function Onboarding() {
       >
         <View style={{ display: "flex", flexDirection: "column", height: 300 }}>
           <View style={{ height: "50%" }}>
+            <Text>{slidesToRender.length}</Text>
             <NextButton
-              scrollTo={scrollTo}
+              scrollTo={
+                slidesToRender.length === 0
+                  ? () =>
+                      router.push({ pathname: "/(onboarding)/onboarding_1" })
+                  : scrollTo
+              }
               percentage={(currentIndex + 1) * (100 / slides.length)}
             />
           </View>

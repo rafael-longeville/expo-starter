@@ -79,6 +79,7 @@ export default function OnboardingItem({ item }: any) {
               fontSize: 20,
               color: "#ECFF78",
               textAlign: "center",
+              height: 100,
             }}
           >
             {item.subtitle}{" "}
