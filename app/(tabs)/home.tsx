@@ -26,7 +26,11 @@ import {
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
-const formatBalance = (balance: any, eurBalance: number, usdBalance: number) => {
+const formatBalance = (
+  balance: any,
+  eurBalance: number,
+  usdBalance: number
+) => {
   // Convert balance and investment balances to numbers
   const balanceNum = parseFloat(balance);
   const totalInvestmentBalance = eurBalance + usdBalance;
@@ -138,7 +142,7 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, paddingBottom: 100 }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <SafeAreaView style={styles.container}>
           <ScrollView
@@ -150,20 +154,32 @@ export default function HomeScreen() {
             <AccountDetails
               currency={currency}
               main_account_balance={
-                data ? formatBalance(data?.displayValue, eurBalance, usdBalance) : "0.00"
+                data
+                  ? formatBalance(data?.displayValue, eurBalance, usdBalance)
+                  : "0.00"
               }
-              investment_account_balance={(eurBalance + usdBalance).toFixed(2).replace(".", ",")}
+              investment_account_balance={(eurBalance + usdBalance)
+                .toFixed(2)
+                .replace(".", ",")}
               total_balance={
-                data ? parseFloat(data?.displayValue).toFixed(2).replace(".", ",") : "0.00"
+                data
+                  ? parseFloat(data?.displayValue).toFixed(2).replace(".", ",")
+                  : "0.00"
               }
             />
             <MainAccount
               currency={currency}
               main_account_balance={
-                data ? formatBalance(data?.displayValue, eurBalance, usdBalance) : "0.00"
+                data
+                  ? formatBalance(data?.displayValue, eurBalance, usdBalance)
+                  : "0.00"
               }
             />
-            <InvestmentAccount currency={currency} investment_account_balance={(eurBalance + usdBalance).toFixed(2).replace(".", ",")}
+            <InvestmentAccount
+              currency={currency}
+              investment_account_balance={(eurBalance + usdBalance)
+                .toFixed(2)
+                .replace(".", ",")}
             />
             <View
               style={{
@@ -182,7 +198,7 @@ export default function HomeScreen() {
 
           <MainAccountPopup ref={mainAccountModalRef} />
           <StayUpdated ref={stayUpdatedModalRef} />
-          <TransactionPOC account={account} refetch={refetch} />
+          {/* <TransactionPOC account={account} refetch={refetch} /> */}
         </SafeAreaView>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

@@ -69,14 +69,6 @@ export default function NextButton({ percentage, scrollTo }) {
     };
   }, []);
 
-  const handlePress = () => {
-    if (hasSeenSplash) {
-      router.push("/(onboarding)/onboarding_1");
-    } else {
-      scrollTo();
-    }
-  };
-
   return (
     <View style={styles.container}>
       <Svg width={size} height={size}>
@@ -101,7 +93,7 @@ export default function NextButton({ percentage, scrollTo }) {
         </G>
       </Svg>
       <TouchableOpacity
-        onPress={handlePress}
+        onPress={scrollTo}
         style={styles.button}
         activeOpacity={0.6}
       >

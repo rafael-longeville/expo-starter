@@ -258,6 +258,7 @@ function TransactionHistoryComponent() {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    marginBottom: 100,
   },
   topRowText: {
     color: "#AFC0FF",

@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, FlatList, Animated, Text } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { View, StyleSheet, FlatList, Animated, LogBox } from "react-native";
+import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import OnboardingItem from "./OnboardingItem";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
 
-import { router } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useTranslation } from "react-i18next";
+LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notifications from FlatList
 
 export default function Onboarding() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,6 +18,7 @@ export default function Onboarding() {
 
   const slidesRef = useRef<FlatList<any>>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null); // Timer reference
+  const isScrolling = useRef(false); // To track ongoing scroll operations
 
   // Check if the user has seen the splash screen
   useEffect(() => {
@@ -37,34 +38,29 @@ export default function Onboarding() {
 
   // Set up a timer to navigate to the next slide after 3 seconds of inactivity
   useEffect(() => {
-    // Clear any existing timer
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
 
-    // Set a new timer
     timerRef.current = setTimeout(() => {
       scrollTo();
     }, 3000);
 
-    // Clear the timer on component unmount
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
     };
-  }, [currentIndex]); // Run the effect when currentIndex changes
+  }, [currentIndex]);
 
   const viewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
       setCurrentIndex(viewableItems[0].index);
 
-      // Clear the timer if user interacts with the scroll view
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
 
-      // Restart the timer
       timerRef.current = setTimeout(() => {
         scrollTo();
       }, 3000);
@@ -97,29 +93,44 @@ export default function Onboarding() {
     },
   ];
 
-  // Render only the first slide if the user has already seen the splash
   const slidesToRender = hasSeenSplash ? [slides[0]] : slides;
-
   const scrollTo = async () => {
-    if (currentIndex < slides.length - 1) {
-      try {
+    console.log("scrollTo called", {
+      isScrolling: isScrolling.current,
+      currentIndex,
+    });
+
+    if (isScrolling.current) return; // Prevent multiple scroll operations
+    isScrolling.current = true; // Set the flag to true
+
+    try {
+      if (currentIndex < slides.length - 1) {
+        console.log("Scrolling to next index:", currentIndex + 1);
         slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
-      } catch (error) {
-        console.log("Error scrolling to next slide: ", error);
-        router.push({
-          pathname: "/(onboarding)/onboarding_1",
-        });
-      }
-    } else {
-      router.push({
-        pathname: "/(onboarding)/onboarding_1",
-      });
-      try {
+      } else {
+        console.log("Navigating to /onboarding_1");
+        router.push({ pathname: "/(onboarding)/onboarding_1" });
         await AsyncStorage.setItem("hasSeenSplash", "true");
-      } catch (error) {
-        console.error("Error storing data: ", error);
       }
+    } catch (error) {
+      console.error("Error scrolling to next slide: ", error);
+      router.push({ pathname: "/(onboarding)/onboarding_1" });
+    } finally {
+      isScrolling.current = false; // Reset the flag
+      console.log("scrollTo completed", { isScrolling: isScrolling.current });
     }
+  };
+
+  const handleNextButtonPress = () => {
+    console.log("Next button pressed", { isScrolling: isScrolling.current });
+
+    if (isScrolling.current) return; // Prevent multiple triggers
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    scrollTo();
   };
 
   return (
@@ -160,12 +171,7 @@ export default function Onboarding() {
         <View style={{ display: "flex", flexDirection: "column", height: 300 }}>
           <View style={{ height: "50%" }}>
             <NextButton
-              scrollTo={
-                slidesToRender.length === 0
-                  ? () =>
-                      router.push({ pathname: "/(onboarding)/onboarding_1" })
-                  : scrollTo
-              }
+              scrollTo={handleNextButtonPress}
               percentage={(currentIndex + 1) * (100 / slides.length)}
             />
           </View>
