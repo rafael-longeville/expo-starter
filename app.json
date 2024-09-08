@@ -15,23 +15,17 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.civicpower.ibexwallet",
-      "associatedDomains": [
-        "webcredentials:moncomptesouverain.fr"
-      ],
-      "buildNumber": "25",
+      "associatedDomains": ["webcredentials:moncomptesouverain.fr"],
+      "buildNumber": "26",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos.",
-        "UIBackgroundModes": [
-          "fetch",
-          "remote-notification"
-        ],
+        "UIBackgroundModes": ["fetch", "remote-notification"],
         "UIUserNotificationSettings": {
           "UIUserNotificationTypeAlert": true,
           "UIUserNotificationTypeBadge": true,
           "UIUserNotificationTypeSound": true
         }
-      },
-      "minimumOSVersion": "16.4"
+      }
     },
     "android": {
       "package": "com.mcs_ibex.app",
@@ -47,10 +41,7 @@
             "scheme": "https",
             "host": "moncomptesouverain.fr"
           },
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
       "versionCode": 24
@@ -72,10 +63,7 @@
             "extraPods": [
               {
                 "name": "OpenSSL-Universal",
-                "configurations": [
-                  "Release",
-                  "Debug"
-                ],
+                "configurations": ["Release", "Debug"],
                 "modular_headers": true,
                 "version": "3.1.5004"
               }
@@ -86,9 +74,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/Poppins-Black.ttf"
-          ]
+          "fonts": ["./assets/fonts/Poppins-Black.ttf"]
         }
       ],
       "expo-localization",

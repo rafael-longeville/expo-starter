@@ -60,7 +60,6 @@ export default function ConnectWithPasskey({
               ? "/(tabs)/home"
               : "/(onboarding)/onboarding_4",
           });
-          Sentry.captureMessage(`Wallet connected using sign-in strategy`);
           setLoading(false); // Hide loader after successful connection
           return wallet;
         } catch (connectError: any) {
@@ -69,20 +68,6 @@ export default function ConnectWithPasskey({
           throw connectError;
         }
       });
-
-      if (!isConnecting && account) {
-        Sentry.addBreadcrumb({
-          category: "navigation",
-          message: "Navigating after successful connection",
-          level: "info",
-        });
-
-        router.push({
-          pathname: !isOnboarding
-            ? "/(tabs)/home"
-            : "/(onboarding)/onboarding_3",
-        });
-      }
     } catch (err: any) {
       Sentry.captureException(err);
       setLoading(false); // Hide loader on error
