@@ -159,7 +159,6 @@ export default function Onboarding() {
       >
         <View style={{ display: "flex", flexDirection: "column", height: 300 }}>
           <View style={{ height: "50%" }}>
-            <Text>{slidesToRender.length}</Text>
             <NextButton
               scrollTo={
                 slidesToRender.length === 0
