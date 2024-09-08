@@ -3,7 +3,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function InvestmentAccount({ currency, investment_account_balance }: { currency: string, investment_account_balance: string }) {
+export default function InvestmentAccount({
+  currency,
+  investment_account_balance,
+}: {
+  currency: string;
+  investment_account_balance: string;
+}) {
   const { t } = useTranslation();
 
   return (
@@ -38,14 +44,22 @@ export default function InvestmentAccount({ currency, investment_account_balance
             includeFontPadding: false,
           }}
         >
-          {investment_account_balance} {currency}
+          {investment_account_balance}
+          <Text style={{ fontFamily: "Poppins_600SemiBold_Italic" }}>
+            {" "}
+            {currency}
+          </Text>
         </Text>
         <Text
           style={{
             ...globalFonts.subtitle,
           }}
         >
-          {t("pages.home.including_gains")} : 15,67 {currency}
+          {t("pages.home.including_gains")} : {investment_account_balance}{" "}
+          <Text style={{ fontFamily: "Poppins_400Regular_Italic" }}>
+            {" "}
+            {currency}
+          </Text>
         </Text>
       </View>
     </View>

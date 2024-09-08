@@ -16,6 +16,8 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold,
   Poppins_700Bold_Italic,
+  Poppins_600SemiBold_Italic,
+  Poppins_400Regular_Italic,
 } from "@expo-google-fonts/poppins";
 import * as Sentry from "@sentry/react-native";
 import { StayUpdatedModalContentProvider } from "@/context/StayUpdatedModalContext";
@@ -35,8 +37,10 @@ function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     Poppins_400Regular,
+    Poppins_400Regular_Italic,
     Poppins_500Medium,
     Poppins_600SemiBold,
+    Poppins_600SemiBold_Italic,
     Poppins_700Bold,
     Poppins_700Bold_Italic,
   });

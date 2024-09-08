@@ -89,7 +89,7 @@ const Onboarding3: React.FC = () => {
         {t("disclaimer")}
         <Link href={"https://moncomptesouverain.fr"}>
           <Text style={{ textDecorationLine: "underline" }}>
-            nos conditions générales de ventes.
+            {t("disclaimer_link")}
           </Text>
         </Link>
       </Text>
