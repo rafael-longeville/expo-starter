@@ -36,6 +36,8 @@ export default function TabLayout() {
     },
     tabBar: {
       display: isModalOpen ? "none" : "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
       position: "absolute",
       bottom: 20,
       left: 20,

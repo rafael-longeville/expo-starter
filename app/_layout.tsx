@@ -52,11 +52,9 @@ function RootLayout() {
   }, [loaded]);
 
   return (
-    <StayUpdatedModalContentProvider>
-      <ThirdwebProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
+    <ThirdwebProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <StayUpdatedModalContentProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen
@@ -66,9 +64,9 @@ function RootLayout() {
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
           </Stack>
-        </ThemeProvider>
-      </ThirdwebProvider>
-    </StayUpdatedModalContentProvider>
+        </StayUpdatedModalContentProvider>
+      </ThemeProvider>
+    </ThirdwebProvider>
   );
 }
 
