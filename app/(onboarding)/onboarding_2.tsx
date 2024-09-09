@@ -45,13 +45,13 @@ const Onboarding2: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
+      <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
       <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_1.subtitle_1")}{" "}
+        {t("pages.onboarding_2.subtitle_1")}{" "}
         <Text style={{ fontFamily: "Poppins_700Bold" }}>
-          {t("pages.onboarding_1.subtitle_2")}
+          {t("pages.onboarding_2.subtitle_2")}
         </Text>{" "}
-        {t("pages.onboarding_1.subtitle_3")}
+        {t("pages.onboarding_2.subtitle_3")}
       </Text>
       <InvestmentCard investment={"DOLLAR US"} investing={true} />
       <InvestmentCard investment={"EURO"} investing={true} />
@@ -64,11 +64,11 @@ const Onboarding2: React.FC = () => {
         }}
       />
       <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_1.second_subtitle_1")}{" "}
+        {t("pages.onboarding_2.second_subtitle_1")}{" "}
         <Text style={{ fontFamily: "Poppins_700Bold" }}>
-          {t("pages.onboarding_1.second_subtitle_2")}
+          {t("pages.onboarding_2.second_subtitle_2")}
         </Text>{" "}
-        {t("pages.onboarding_1.second_subtitle_3")}
+        {t("pages.onboarding_2.second_subtitle_3")}
       </Text>
       <InvestmentCard investment={"DOLLAR US"} investing={false} />
       <Pressable
@@ -92,7 +92,7 @@ const Onboarding2: React.FC = () => {
             fontFamily: "Poppins_500Medium",
           }}
         >
-          {t("pages.onboarding_1.continue_button")}
+          {t("pages.onboarding_2.continue_button")}
         </Text>
       </Pressable>
       <Text
@@ -105,7 +105,7 @@ const Onboarding2: React.FC = () => {
         }}
       >
         <Link href={"/(onboarding)/onboarding_3"} style={{ width: "100%" }}>
-          {t("pages.onboarding_1.has_account")}
+          {t("pages.onboarding_2.has_account")}
         </Link>
       </Text>
     </View>

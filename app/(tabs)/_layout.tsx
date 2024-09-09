@@ -59,6 +59,12 @@ export default function TabLayout() {
         <Tabs.Screen name="checkout" />
         <Tabs.Screen name="settings" />
         <Tabs.Screen name="account" />
+        <Tabs.Screen
+          name="login"
+          options={{
+            href: null,
+          }}
+        />
       </Tabs>
     </View>
   );
@@ -85,10 +91,10 @@ const styles = StyleSheet.create({
     borderColor: "#13293D",
     padding: 0,
     margin: 0,
-    shadowColor: "transparent", // Remove shadow for iOS
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    elevation: 0, // Remove shadow for Android
+    // shadowColor: "transparent", // Remove shadow for iOS
+    // shadowOffset: { width: 0, height: 0 },
+    // shadowOpacity: 0,
+    // shadowRadius: 0,
+    // elevation: 0, // Remove shadow for Android
   },
 });

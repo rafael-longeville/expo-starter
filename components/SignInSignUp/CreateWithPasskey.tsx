@@ -16,18 +16,12 @@ import * as Sentry from "@sentry/react-native";
 
 interface CreateWithPasskeyProps {
   connect: any;
-  isConnecting: boolean;
-  account: any;
-  isOnboarding: boolean;
-  withoutFunding?: string | null;
+  redirectionUrl: string;
 }
 
 export default function CreateWithPasskey({
   connect,
-  isConnecting,
-  account,
-  isOnboarding,
-  withoutFunding,
+  redirectionUrl,
 }: CreateWithPasskeyProps) {
   const [loading, setLoading] = useState(false); // State to manage the loading
 
@@ -56,12 +50,9 @@ export default function CreateWithPasskey({
             type: "sign-up",
           });
           router.push({
-            pathname:
-              // Test if that is fn up the onboarding
-
-              /* withoutFunding
-              ? "/(tabs)/home"
-              :  */ "/(onboarding)/onboarding_4",
+            pathname: redirectionUrl as
+              | "/(onboarding)/onboarding_4"
+              | "/(tabs)/home",
           });
           setLoading(false); // Hide loader after successful wallet creation
           return wallet;

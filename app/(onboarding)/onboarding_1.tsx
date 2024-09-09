@@ -171,15 +171,15 @@ const Onboarding1: React.FC = () => {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
+        <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
       </View>
       <View style={{ flexDirection: "column", gap: 15, width: "100%" }}>
         <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
           <Text style={styles.questionText}>
-            {t("pages.onboarding_4.money_question")}
+            {t("pages.onboarding_1.money_question")}
           </Text>
           <Text style={styles.descriptionText}>
-            {t("pages.onboarding_4.money_question_helper")}
+            {t("pages.onboarding_1.money_question_helper")}
           </Text>
         </View>
 
@@ -227,7 +227,7 @@ const Onboarding1: React.FC = () => {
                 fontFamily: "Poppins_600SemiBold",
               }}
             >
-              Dollar US ($)
+              {t("pages.onboarding_1.dollar")} ($)
             </Text>
           </TouchableOpacity>
         </View>
@@ -242,7 +242,7 @@ const Onboarding1: React.FC = () => {
             }}
           >
             <Text style={styles.questionText}>
-              {t("pages.onboarding_4.notifications_question")}
+              {t("pages.onboarding_1.notifications_question")}
             </Text>
             <CustomSwitch
               value={notifications}
@@ -252,13 +252,13 @@ const Onboarding1: React.FC = () => {
             />
           </View>
           <Text style={styles.descriptionText}>
-            {t("pages.onboarding_4.notifications_question_helper")}
+            {t("pages.onboarding_1.notifications_question_helper")}
           </Text>
         </View>
         <Divider style={{ width: "100%", height: 1.5 }} />
         <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
           <Text style={styles.questionText}>
-            {t("pages.onboarding_4.language_question")}
+            {t("pages.onboarding_1.language_question")}
           </Text>
           <View
             style={{
@@ -288,7 +288,7 @@ const Onboarding1: React.FC = () => {
                     fontFamily: "Poppins_600SemiBold",
                   }}
                 >
-                  {t("pages.onboarding_4.french")}
+                  Français
                 </Text>
               </View>
             </TouchableOpacity>
@@ -313,7 +313,7 @@ const Onboarding1: React.FC = () => {
                     fontFamily: "Poppins_600SemiBold",
                   }}
                 >
-                  {t("pages.onboarding_4.english")}
+                  English
                 </Text>
               </View>
             </TouchableOpacity>
@@ -339,7 +339,7 @@ const Onboarding1: React.FC = () => {
                 fontFamily: "Poppins_500Medium",
               }}
             >
-              {t("pages.onboarding_4.save_button")}
+              {t("pages.onboarding_1.save_button")}
             </Text>
           </Pressable>
         </View>

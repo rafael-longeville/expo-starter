@@ -47,6 +47,9 @@ const Onboarding3: React.FC = () => {
     }
   }, [error]);
 
+  const continueWithoutFundingUrl =
+    storedValue === "true" ? "/(tabs)/home" : "/(onboarding)/onboarding_4";
+
   return (
     <View style={styles.container}>
       <Text
@@ -55,16 +58,24 @@ const Onboarding3: React.FC = () => {
           width: "80%",
         }}
       >
-        (DEBUG | ContinueWithoutFunding) :{storedValue}
+        (DEBUG | ContinueWithoutFunding) : {storedValue}
       </Text>
-      <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
+      <Text
+        style={{
+          ...globalFonts.disclaimerText,
+          width: "80%",
+        }}
+      >
+        (DEBUG | RedirectionURL) : {continueWithoutFundingUrl}
+      </Text>
+      <Text style={globalFonts.title}>{t("pages.onboarding_3.title")}</Text>
       <Text
         style={{
           ...globalFonts.subtitle,
           width: "80%",
         }}
       >
-        {t("pages.onboarding_2.subtitle")}
+        {t("pages.onboarding_3.subtitle")}
       </Text>
       <View style={styles.buttonContainer}>
         <Image
@@ -73,16 +84,12 @@ const Onboarding3: React.FC = () => {
         />
         <ConnectWithPasskey
           connect={connect}
-          isConnecting={isConnecting}
-          account={account}
-          isOnboarding={true}
+          redirectionUrl={continueWithoutFundingUrl}
           // withoutFunding={storedValue}
         />
         <CreateWithPasskey
           connect={connect}
-          isConnecting={isConnecting}
-          account={account}
-          isOnboarding={true}
+          redirectionUrl={continueWithoutFundingUrl}
           // withoutFunding={storedValue}
         />
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (

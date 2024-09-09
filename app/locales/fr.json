@@ -20,6 +20,16 @@
       "subtitle": "Vous êtes à un doigt de créer votre compte souverain gratuitement !"
     },
     "onboarding_1": {
+      "title": "Paramètrez l'affichage de la devise et les notifications",
+      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
+      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
+      "notifications_question": "Souhaitez-vous activer les notifications ?",
+      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
+      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
+      "dollar": "Dollar US",
+      "save_button": "Enregistrer"
+    },
+    "onboarding_2": {
       "title": "Faites fructifier votre argent",
       "subtitle_1": "Placez vos fonds dans un",
       "subtitle_2": "Compte rémunéré, ",
@@ -30,28 +40,17 @@
       "continue_button": "Continuer sans alimenter",
       "has_account": "J'ai déjà un compte"
     },
-    "onboarding_2": {
+    "onboarding_3": {
       "title": "Accédez à votre compte",
       "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
       "sign-in": "Utiliser un portefeuille existant",
       "create-account": "Créer un nouveau portefeuille"
     },
-    "onboarding_3": {
+    "onboarding_4": {
       "account": "Compte",
       "title": "Alimentez votre compte",
       "subtitle": "Placez vos fonds dans un des compte rémunéré via carte bancaire, Apple Pay ou Google Pay.",
       "cancel": "Annuler"
-    },
-    "onboarding_4": {
-      "title": "Paramètrez l'affichage de la devise et les notifications",
-      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
-      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
-      "notifications_question": "Souhaitez-vous activer les notifications ?",
-      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
-      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
-      "french": "Français",
-      "english": "Anglais",
-      "save_button": "Enregistrer"
     },
     "home": {
       "total_balance": "Solde total",
