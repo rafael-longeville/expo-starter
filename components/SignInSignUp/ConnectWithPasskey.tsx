@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { router } from "expo-router";
 import {
   Pressable,
@@ -10,6 +10,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
+import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 import { client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
@@ -24,10 +25,24 @@ export default function ConnectWithPasskey({
   redirectionUrl,
 }: ConnectWithPasskeyProps) {
   const [loading, setLoading] = useState(false); // State to manage the loading
+  const [hasPasskey, setHasPasskey] = useState(false); // State to manage whether a passkey exists
+
+  useEffect(() => {
+    // Check if a passkey is stored when the component mounts
+    const checkPasskey = async () => {
+      try {
+        const result = await hasStoredPasskey(client);
+        setHasPasskey(result);
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    };
+
+    checkPasskey();
+  }, []);
 
   const handlePress = async () => {
     setLoading(true); // Show loader when the process starts
-
     try {
       Sentry.addBreadcrumb({
         category: "action",
@@ -71,6 +86,11 @@ export default function ConnectWithPasskey({
       );
     }
   };
+
+  // Only render the view if a passkey is stored
+  if (!hasPasskey) {
+    return null; // Do not render anything if no passkey is found
+  }
 
   return (
     <View>
