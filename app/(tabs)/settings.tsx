@@ -84,14 +84,14 @@ const Checkout: React.FC = () => {
         />
         <Text style={styles.textcompte}>
           <Text style={globalFonts.whiteSubtitle}>
-            {t("pages.onboarding_3.account")} DOLLAR US :
+            {t("pages.onboarding_4.account")} DOLLAR US :
           </Text>
           <Text style={styles.amount}> 0 €*</Text>
         </Text>
       </View>
-      <Text style={globalFonts.title}>{t("pages.onboarding_3.title")}</Text>
+      <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
       <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_3.subtitle")}
+        {t("pages.onboarding_4.subtitle")}
       </Text>
       {transakParams ? (
         <TransakWebView
@@ -122,7 +122,7 @@ const Checkout: React.FC = () => {
           router.push("/(tabs)/home");
         }}
       >
-        {t("pages.onboarding_3.cancel")}
+        {t("pages.onboarding_4.cancel")}
       </Text>
     </SafeAreaView>
   );
