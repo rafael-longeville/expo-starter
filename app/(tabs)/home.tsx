@@ -24,6 +24,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
+import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
 const formatBalance = (
   balance: any,
@@ -56,6 +57,8 @@ export default function HomeScreen() {
     client,
     tokenAddress,
   });
+
+  const { setIsModalOpen, isModalOpen } = useStayUpdatedModalContext();
 
   if (!isLoading && data) {
     console.log(data);
@@ -96,6 +99,7 @@ export default function HomeScreen() {
           await AsyncStorage.getItem("hasSeenStayUpdated");
         if (!hasSeenStayUpdated) {
           stayUpdatedModalRef.current?.present();
+          setIsModalOpen(true);
           await AsyncStorage.setItem("hasSeenStayUpdated", "true");
         }
       } catch (error) {
@@ -163,6 +167,15 @@ export default function HomeScreen() {
                   : "0.00"
               }
             />
+            <Pressable
+              onPress={() => {
+                stayUpdatedModalRef.current?.present();
+                setIsModalOpen(true);
+                console.log("Stay Updated Modal Opened", isModalOpen);
+              }}
+            >
+              <Text>Open Stay Updated Modal</Text>
+            </Pressable>
             <MainAccount
               currency={currency}
               main_account_balance={
