@@ -53,10 +53,6 @@ export default function TabLayout() {
     },
   });
 
-  useEffect(() => {
-    console.log("isModalOpen", isModalOpen);
-  }, [isModalOpen]);
-
   return (
     <View style={styles.container}>
       <Tabs

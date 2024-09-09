@@ -2,7 +2,6 @@ import React, {
   useCallback,
   useMemo,
   useRef,
-  useState,
   forwardRef,
   useImperativeHandle,
 } from "react";
@@ -10,7 +9,6 @@ import { View, Text, Button, StyleSheet, Image, Pressable } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetView,
-  BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
@@ -18,7 +16,7 @@ import { globalFonts } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Href, Link } from "expo-router";
 
-const StayUpdated = forwardRef(({}, ref: any) => {
+const StayUpdated = forwardRef(({ setIsModalOpen }: any, ref: any) => {
   const { t } = useTranslation();
   // refs
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -35,6 +33,7 @@ const StayUpdated = forwardRef(({}, ref: any) => {
 
   const handleDismissModal = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
+    setIsModalOpen(false);
   }, []);
 
   const handleSheetChanges = useCallback(
@@ -43,7 +42,6 @@ const StayUpdated = forwardRef(({}, ref: any) => {
         // Modal dismissed
         handleDismissModal();
       }
-      console.log("handleSheetChanges", index);
     },
     [handleDismissModal]
   );
@@ -55,89 +53,85 @@ const StayUpdated = forwardRef(({}, ref: any) => {
 
   // renders
   return (
-    <>
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        onDismiss={handleDismissModal} // Handle modal dismiss
-        backdropComponent={(props) => (
-          <BottomSheetBackdrop
-            {...props}
-            pressBehavior="close"
-            opacity={0.7} // Set to 1 for full opacity, you can adjust as needed
-            style={StyleSheet.absoluteFill}
+    <BottomSheetModal
+      ref={bottomSheetModalRef}
+      index={0}
+      snapPoints={snapPoints}
+      onChange={handleSheetChanges}
+      onDismiss={handleDismissModal} // Handle modal dismiss
+      backdropComponent={(props) => (
+        <BottomSheetBackdrop
+          {...props}
+          pressBehavior="close"
+          opacity={1} // Adjust opacity as needed
+          style={StyleSheet.absoluteFill}
+        >
+          <BlurView intensity={30} style={StyleSheet.absoluteFill} />
+        </BottomSheetBackdrop>
+      )}
+    >
+      <BottomSheetView style={styles.contentContainer}>
+        <Text style={styles.title}>{t("pop-ups.stay_updated.title")}</Text>
+        <Text style={styles.subtitle}>
+          {t("pop-ups.stay_updated.subtitle")}
+        </Text>
+        <Image
+          source={require("@/assets/images/pop-ups/swipe-down.png")}
+          style={{
+            marginTop: 30,
+          }}
+        />
+        <View
+          style={{
+            marginTop: 30,
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              ...globalFonts.disclaimerText,
+              width: "60%",
+            }}
           >
-            <BlurView intensity={30} style={StyleSheet.absoluteFill} />
-          </BottomSheetBackdrop>
-        )}
-      >
-        <BottomSheetView style={styles.contentContainer}>
-          <Text style={styles.title}>{t("pop-ups.stay_updated.title")}</Text>
-          <Text style={styles.subtitle}>
-            {t("pop-ups.stay_updated.subtitle")}
+            {t("pop-ups.stay_updated.disclaimer.description")}
           </Text>
-          <Image
-            source={require("@/assets/images/pop-ups/swipe-down.png")}
+          <Text
             style={{
-              marginTop: 30,
-            }}
-          />
-          <View
-            style={{
-              marginTop: 30,
-              width: "100%",
-              alignItems: "center",
+              ...globalFonts.disclaimerText,
+              width: "60%",
+              textDecorationLine: "underline",
             }}
           >
-            <Text
-              style={{
-                ...globalFonts.disclaimerText,
-                width: "60%",
-              }}
-            >
-              {t("pop-ups.stay_updated.disclaimer.description")}
-            </Text>
-            <Text
-              style={{
-                ...globalFonts.disclaimerText,
-                width: "60%",
-                textDecorationLine: "underline",
-              }}
-            >
-              <Link
-                href={t("pop-ups.stay_updated.disclaimer.href_link") as Href}
-              >
-                {t("pop-ups.stay_updated.disclaimer.link")}
-              </Link>
-            </Text>
-          </View>
-          <Pressable
+            <Link href={t("pop-ups.stay_updated.disclaimer.href_link") as Href}>
+              {t("pop-ups.stay_updated.disclaimer.link")}
+            </Link>
+          </Text>
+        </View>
+        <Pressable
+          style={{
+            backgroundColor: "#13293D",
+            padding: 10,
+            borderRadius: 30,
+            height: 50,
+            justifyContent: "center",
+            alignItems: "center",
+            width: 335,
+          }}
+          onPress={handleDismissModal}
+        >
+          <Text
             style={{
-              backgroundColor: "#13293D",
-              padding: 10,
-              borderRadius: 30,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              width: 335,
+              ...globalFonts.subtitle,
+              textAlign: "center",
+              color: "white",
             }}
-            onPress={handleDismissModal}
           >
-            <Text
-              style={{
-                ...globalFonts.subtitle,
-                textAlign: "center",
-                color: "white",
-              }}
-            >
-              {t("pop-ups.stay_updated.button")}
-            </Text>
-          </Pressable>
-        </BottomSheetView>
-      </BottomSheetModal>
-    </>
+            {t("pop-ups.stay_updated.button")}
+          </Text>
+        </Pressable>
+      </BottomSheetView>
+    </BottomSheetModal>
   );
 });
 

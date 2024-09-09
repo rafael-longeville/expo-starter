@@ -32,7 +32,6 @@ const MainAccountPopup = forwardRef(({ modalPress }: any, ref: any) => {
       if (index === -1) {
         handleDismissModal();
       }
-      console.log("handleSheetChanges", index);
     },
     [handleDismissModal]
   );

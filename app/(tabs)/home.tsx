@@ -25,6 +25,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
+import TestBlurModal from "@/components/PopUp/TestBlurModal";
 
 const formatBalance = (
   balance: any,
@@ -74,10 +75,6 @@ export default function HomeScreen() {
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
   const mainAccountModalRef = useRef<BottomSheetModal>(null);
-
-  const handleMainAccountModalPress = useCallback(() => {
-    mainAccountModalRef.current?.present();
-  }, []);
 
   useEffect(() => {
     const fetchCurrency = async () => {
@@ -167,11 +164,11 @@ export default function HomeScreen() {
                   : "0.00"
               }
             />
+            <TestBlurModal></TestBlurModal>
             <Pressable
               onPress={() => {
                 stayUpdatedModalRef.current?.present();
                 setIsModalOpen(true);
-                console.log("Stay Updated Modal Opened", isModalOpen);
               }}
             >
               <Text>Open Stay Updated Modal</Text>
@@ -204,9 +201,12 @@ export default function HomeScreen() {
             </View>
             <TransactionHistory />
           </ScrollView>
-
           <MainAccountPopup ref={mainAccountModalRef} />
-          <StayUpdated ref={stayUpdatedModalRef} />
+          <StayUpdated
+            ref={stayUpdatedModalRef}
+            setIsModalOpen={setIsModalOpen}
+          />
+
           {/* <TransactionPOC account={account} refetch={refetch} /> */}
         </SafeAreaView>
       </BottomSheetModalProvider>
