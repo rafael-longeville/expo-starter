@@ -376,6 +376,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderColor: "rgba(19, 41, 61, .5)",
+    backgroundColor: "#FFFFFF",
   },
   isSelectedButtonStyle: {
     backgroundColor: "#DFE6FF",
