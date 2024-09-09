@@ -13,6 +13,9 @@ import {
   Order,
 } from "@transak/react-native-sdk";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import TestBlurModal from "@/components/PopUp/TestBlurModal";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Checkout: React.FC = () => {
   const account = useActiveAccount();
@@ -76,69 +79,24 @@ const Checkout: React.FC = () => {
   }, [account, onboardingMethod, onboardingValue]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.containercompte}>
-        <Image
-          source={require("@/assets/images/lock-icon.png")}
-          style={styles.icon}
-        />
-        <Text style={styles.textcompte}>
-          <Text style={globalFonts.whiteSubtitle}>
-            {t("pages.onboarding_4.account")} DOLLAR US :
-          </Text>
-          <Text style={styles.amount}> 0 €*</Text>
-        </Text>
-      </View>
-      <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
-      <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_4.subtitle")}
-      </Text>
-      {transakParams ? (
-        <TransakWebView
-          onError={(error) => {
-            console.error("Transak error", error);
-          }}
-          style={styles.webview}
-          transakConfig={transakParams}
-          onTransakEvent={onTransakEventHandler}
-        />
-      ) : (
-        <Text style={globalFonts.subtitle}>Put a loader here or something</Text>
-      )}
-      <Text
-        style={{
-          ...globalFonts.subtitle,
-          textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
-          marginTop: 20,
-        }}
-        onPress={() => {
-          Sentry.addBreadcrumb({
-            category: "navigation",
-            message: "User navigated to home from Onboarding3",
-            level: "info",
-          });
-          router.push("/(tabs)/home");
-        }}
-      >
-        {t("pages.onboarding_4.cancel")}
-      </Text>
-    </SafeAreaView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <TestBlurModal></TestBlurModal>
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 20,
+    padding: 24,
+    backgroundColor: "grey",
   },
   containercompte: {
     height: 60,
     borderRadius: 30,
     width: "100%",
-    backgroundColor: "#13293D",
     flexDirection: "row",
     alignItems: "center",
     paddingLeft: 20,

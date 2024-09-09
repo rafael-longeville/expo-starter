@@ -164,15 +164,7 @@ export default function HomeScreen() {
                   : "0.00"
               }
             />
-            <TestBlurModal></TestBlurModal>
-            <Pressable
-              onPress={() => {
-                stayUpdatedModalRef.current?.present();
-                setIsModalOpen(true);
-              }}
-            >
-              <Text>Open Stay Updated Modal</Text>
-            </Pressable>
+
             <MainAccount
               currency={currency}
               main_account_balance={
@@ -202,10 +194,10 @@ export default function HomeScreen() {
             <TransactionHistory />
           </ScrollView>
           <MainAccountPopup ref={mainAccountModalRef} />
-          <StayUpdated
+          {/* <StayUpdated
             ref={stayUpdatedModalRef}
             setIsModalOpen={setIsModalOpen}
-          />
+          /> */}
 
           {/* <TransactionPOC account={account} refetch={refetch} /> */}
         </SafeAreaView>
