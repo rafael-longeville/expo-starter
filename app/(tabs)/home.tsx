@@ -20,6 +20,17 @@ import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { BlurView } from "@react-native-community/blur"; // Import BlurView
 import OnRampModal from "@/components/PopUp/OnRampModal";
 
+const formatBalance = (
+  balance: any,
+  eurBalance: number,
+  usdBalance: number
+) => {
+  const balanceNum = parseFloat(balance);
+  const totalInvestmentBalance = eurBalance + usdBalance;
+  const finalBalance = balanceNum - totalInvestmentBalance;
+  return finalBalance.toFixed(2).replace(".", ",");
+};
+
 export default function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
@@ -69,8 +80,18 @@ export default function HomeScreen() {
           "investment_account_balance_usd"
         );
 
-        setEurBalance(parseFloat(eurBalance || "0"));
-        setUsdBalance(parseFloat(usdBalance || "0"));
+        // If balances don't exist, set them to 0
+        if (!eurBalance) {
+          await AsyncStorage.setItem("investment_account_balance_eur", "0");
+          eurBalance = "0";
+        }
+        if (!usdBalance) {
+          await AsyncStorage.setItem("investment_account_balance_usd", "0");
+          usdBalance = "0";
+        }
+
+        setEurBalance(parseFloat(eurBalance));
+        setUsdBalance(parseFloat(usdBalance));
       } catch (error) {
         console.error("Error fetching investment balances:", error);
       }
@@ -139,9 +160,41 @@ export default function HomeScreen() {
               currency={currency}
               investment_account_balance={(eurBalance + usdBalance).toFixed(2)}
             />
-            <View style={styles.investmentContainer}>
-              <InvestmentCard investment={`DOLLAR US`} investing />
-              <InvestmentCard investment={`EURO`} investing />
+            <View
+              style={{
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingHorizontal: 20,
+                gap: 20,
+              }}
+            >
+              <InvestmentCard
+                investment={`DOLLAR US`}
+                investing
+                main_account_balance={
+                  data
+                    ? formatBalance(data?.displayValue, eurBalance, usdBalance)
+                    : "0.00"
+                }
+                eurBalance={eurBalance}
+                usdBalance={usdBalance}
+                setEurBalance={setEurBalance}
+                setUsdBalance={setUsdBalance}
+              />
+              <InvestmentCard
+                investment={`EURO`}
+                investing
+                main_account_balance={
+                  data
+                    ? formatBalance(data?.displayValue, eurBalance, usdBalance)
+                    : "0.00"
+                }
+                eurBalance={eurBalance}
+                usdBalance={usdBalance}
+                setEurBalance={setEurBalance}
+                setUsdBalance={setUsdBalance}
+              />
             </View>
             <TransactionHistory />
           </ScrollView>
