@@ -1,173 +1,248 @@
-import { router } from "expo-router";
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
-import { useActiveAccount } from "thirdweb/react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useTranslation } from "react-i18next";
-import * as Sentry from "@sentry/react-native";
+import React, { useState } from "react";
 import {
-  TransakWebView,
-  Events,
-  EventTypes,
-  Order,
-} from "@transak/react-native-sdk";
+  View,
+  Text,
+  Image,
+  Pressable,
+  StyleSheet,
+  Linking,
+} from "react-native";
+import { useTranslation } from "react-i18next";
+import { globalFonts } from "@/app/styles/globalFonts";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  useActiveAccount,
+  useActiveWallet,
+  useDisconnect,
+} from "thirdweb/react";
+import { router } from "expo-router";
+import { Wallet, WalletId } from "thirdweb/wallets";
 
-const Checkout: React.FC = () => {
-  const account = useActiveAccount();
-  const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
-  const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
-  const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
+interface AccountDetailsProps {
+  currency: string;
+  main_account_balance: string;
+  investment_account_balance: string;
+  total_balance: string;
+}
+
+export default function Account({
+  currency,
+  main_account_balance,
+  investment_account_balance,
+  total_balance,
+}: AccountDetailsProps) {
   const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const onTransakEventHandler = (event: EventTypes, data: Order) => {
-    switch (event) {
-      case Events.ORDER_CREATED:
-        console.log(event, data);
-        break;
+  // Always call hooks at the top level
+  const account = useActiveAccount();
+  const wallet = useActiveWallet();
+  const { disconnect } = useDisconnect();
 
-      case Events.ORDER_PROCESSING:
-        console.log(event, data);
-        router.push("/(tabs)/home");
-        break;
-
-      default:
-        console.log(event, data);
-    }
-  };
-
-  useEffect(() => {
-    const loadTransakParams = async () => {
-      try {
-        if (account?.address) {
-          let params = {
-            apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
-            fiatCurrency: "EUR",
-            cryptoCurrencyCode: "USDC",
-            fiatAmount: "100",
-            productsAvailed: ["BUY"],
-            network: "arbitrum",
-            defaultPaymentMethod: "credit_debit_card",
-            disablePaymentMethods: ["gbp_bank_transfer", "sepa_bank_transfer"],
-            // hideExchangeScreen: true,
-            walletAddress: account.address,
-            disableWalletAddressForm: true,
-            isFeeCalculationHidden: true,
-            environment: "STAGING",
-            partnerOrderId: "123456",
-          };
-
-          setTransakParams(params);
-
-          Sentry.addBreadcrumb({
-            category: "navigation",
-            message: `Set Transak params: ${JSON.stringify(params)}`,
-            level: "info",
-          });
-        }
-      } catch (error) {
-        Sentry.captureException(error);
-        console.error("Error loading onboarding data from AsyncStorage", error);
-      }
-    };
-
-    loadTransakParams();
-  }, [account, onboardingMethod, onboardingValue]);
-
+  // Render conditionally based on the state but avoid conditional hooks
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.containercompte}>
-        <Image
-          source={require("@/assets/images/lock-icon.png")}
-          style={styles.icon}
-        />
-        <Text style={styles.textcompte}>
-          <Text style={globalFonts.whiteSubtitle}>
-            {t("pages.onboarding_4.account")} DOLLAR US :
-          </Text>
-          <Text style={styles.amount}> 0 €*</Text>
-        </Text>
-      </View>
-      <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
-      <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_4.subtitle")}
-      </Text>
-      {transakParams ? (
-        <TransakWebView
-          onError={(error) => {
-            console.error("Transak error", error);
+      <View style={styles.account_details}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
-          style={styles.webview}
-          transakConfig={transakParams}
-          onTransakEvent={onTransakEventHandler}
-        />
-      ) : (
-        <Text style={globalFonts.subtitle}>Put a loader here or something</Text>
-      )}
-      <Text
+        >
+          <Text style={{ ...globalFonts.title, fontSize: 28 }}>
+            {t("pages.account.title")}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 5,
+            }}
+          >
+            <Pressable
+              onPress={() => setIsOpen(!isOpen)}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 5,
+              }}
+            >
+              <Image
+                source={require("../../assets/images/account/interrogation-icon.png")}
+                style={{
+                  width: 28,
+                  height: 28,
+                }}
+              />
+            </Pressable>
+          </View>
+        </View>
+      </View>
+
+      <View
         style={{
-          ...globalFonts.subtitle,
-          textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
-          marginTop: 20,
-        }}
-        onPress={() => {
-          Sentry.addBreadcrumb({
-            category: "navigation",
-            message: "User navigated to home from Onboarding3",
-            level: "info",
-          });
-          router.push("/(tabs)/home");
+          padding: 20,
+          flexDirection: "column",
+          gap: 20,
+          alignItems: "center",
         }}
       >
-        {t("pages.onboarding_4.cancel")}
-      </Text>
+        <View style={styles.optionsContainer}>
+          <OptionRow label={"pages.account.rate_wallet"} t={t} isTopRow />
+          <OptionRow label={"pages.account.help_center"} t={t} />
+          <OptionRow label={"pages.account.contact_us"} t={t} />
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 20,
+            gap: 8,
+            marginBottom: 40,
+          }}
+        >
+          <Image
+            source={require("../../assets/images/account/heart.png")}
+            style={styles.heartIcon}
+          />
+          <Text style={{ ...globalFonts.mediumSubtitle, fontSize: 14 }}>
+            {t("pages.account.make_a_donation")}
+          </Text>
+
+          <Image
+            source={require("../../assets/images/account/heart.png")}
+            style={styles.heartIcon}
+          />
+        </View>
+
+        {/* Conditional rendering for account information */}
+        {account ? (
+          <View>
+            <Text style={{ ...globalFonts.disclaimerText, fontSize: 14 }}>
+              {t("pages.account.public_adress")}
+            </Text>
+            <Pressable
+              onPress={() => {
+                if (account.address) {
+                  Linking.openURL(
+                    `https://sepolia.arbiscan.io/address/${account.address}`
+                  );
+                }
+              }}
+            >
+              <Text
+                style={{
+                  ...globalFonts.disclaimerText,
+                  textDecorationLine: "underline",
+                }}
+              >
+                {account.address}
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
+
+        {/* Conditional rendering for wallet */}
+        {wallet && (
+          <Pressable
+            style={styles.button}
+            onPress={() => {
+              disconnect(wallet);
+              router.push("/(onboarding)/onboarding_3");
+            }}
+          >
+            <Text style={styles.buttonText}>
+              {t("pages.account.disconnect")}
+            </Text>
+          </Pressable>
+        )}
+      </View>
     </SafeAreaView>
+  );
+}
+
+// OptionRow Component for each row in the list
+const OptionRow = ({
+  label,
+  t,
+  isTopRow,
+}: {
+  label: string;
+  t: any;
+  isTopRow?: boolean;
+}) => {
+  const url = t(`${label}.href`);
+  const handlePress = () => {
+    Linking.openURL(url);
+  };
+
+  return (
+    <Pressable style={styles.optionRow} onPress={handlePress}>
+      <Text style={globalFonts.mediumTitle}>{t(`${label}.title`)}</Text>
+      <Image
+        source={require("../../assets/images/account/arrow.png")}
+        style={styles.arrowIcon}
+      />
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#13293D",
+    padding: 10,
+    borderRadius: 30,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 335,
+  },
+  buttonText: {
+    ...globalFonts.whiteSubtitle,
+    textAlign: "center",
+    fontSize: 14,
+    fontFamily: "Poppins_500Medium",
+  },
+  account_details: {
+    backgroundColor: "#ECFF78",
+    padding: 20,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    paddingBottom: 30,
+  },
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: 20,
+    backgroundColor: "#fff",
   },
-  containercompte: {
-    height: 60,
-    borderRadius: 30,
-    width: "100%",
-    backgroundColor: "#13293D",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingLeft: 20,
-    marginBottom: 30,
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  webview: {
+  optionsContainer: {
     marginTop: 20,
+    marginBottom: 20,
+    paddingVertical: 10,
+    borderTopWidth: 0,
     width: "100%",
-    height: 500,
   },
-
-  icon: {
-    marginRight: 10,
-  },
-  textcompte: {
+  optionRow: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    fontFamily: "Poppins",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E0E0E0",
   },
-  amount: {
-    color: "#ECFF78",
-    fontSize: 20,
-    fontWeight: "700",
-    fontFamily: "Poppins",
+  optionText: {
+    fontSize: 16,
+    fontFamily: "Poppins_500Medium",
+    color: "#13293D",
+  },
+  heartIcon: {
+    width: 20,
+    height: 20,
+  },
+  arrowIcon: {
+    width: 20,
+    height: 20,
   },
 });
-
-export default Checkout;

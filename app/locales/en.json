@@ -7,22 +7,22 @@
     },
     "2": {
       "title": "Or invest your money",
-      "subtitle": "AND EARN RETURNS FROM THE VERY FIRST SECOND"
+      "subtitle": "AND EARN INTEREST FROM THE VERY FIRST SECOND"
     },
     "3": {
       "title": "Stay informed",
-      "subtitle": "ABOUT THE PRODUCTS OFFERED BY CLICKING ON THE INFO POINTS:"
+      "subtitle": "ABOUT THE NATURE OF THE PRODUCTS OFFERED BY CLICKING ON THE INFO POINTS:"
     }
   },
   "pages": {
     "login": {
       "title": "Welcome",
-      "subtitle": "You're just a step away from creating your sovereign account for free!"
+      "subtitle": "You are just a step away from creating your sovereign account for free!"
     },
     "onboarding_1": {
       "title": "Set up currency display and notifications",
-      "money_question": "Would you like a general display of amounts in Euros or Dollars?",
-      "money_question_helper": "To assist you, converted amounts (based on the chosen currency) will be preceded by an asterisk (*).",
+      "money_question": "Would you like a general display of amounts in Euro or Dollar?",
+      "money_question_helper": "To help you, amounts converted for display (according to the chosen currency) will be preceded by an asterisk (*).",
       "notifications_question": "Would you like to enable notifications?",
       "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
       "language_question": "In which language would you like to use the app?",
@@ -32,34 +32,34 @@
     "onboarding_2": {
       "title": "Grow your money",
       "subtitle_1": "Invest your funds in a",
-      "subtitle_2": "Yield account,",
-      "subtitle_3": "and earn interest from the very first second:",
+      "subtitle_2": "Interest-bearing account,",
+      "subtitle_3": "earn interest from the very first second:",
       "second_subtitle_1": "Or secure them in your",
       "second_subtitle_2": "Current account",
-      "second_subtitle_3": "sovereign account:",
+      "second_subtitle_3": "sovereign:",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
     },
     "onboarding_3": {
       "title": "Access your account",
-      "subtitle": "Open or access an existing account with just one click:",
+      "subtitle": "Open or access an existing account, with one click:",
       "sign-in": "Use an existing wallet",
       "create-account": "Create a new wallet"
     },
     "onboarding_4": {
       "account": "Account",
       "title": "Fund your account",
-      "subtitle": "Deposit your funds into a yield account via credit card, Apple Pay, or Google Pay.",
+      "subtitle": "Place your funds in one of the interest-bearing accounts via credit card, Apple Pay, or Google Pay.",
       "cancel": "Cancel"
     },
     "home": {
       "total_balance": "Total balance",
       "balance": "Balance",
       "on_main_account": "Current account",
-      "on_investments": "Yield accounts",
+      "on_investments": "Interest-bearing accounts",
       "your_main_account": "Your current account",
-      "your_investment_account": "Your yield account",
-      "details": "Details",
+      "your_investment_account": "Your interest-bearing account",
+      "details": "In detail",
       "hide_details": "Hide",
       "including_gains": "Including gains",
       "transactions": {
@@ -69,9 +69,24 @@
         "no_transactions_1": "You haven't made any transactions yet.",
         "no_transactions_2": "Fund your current account or make an investment to get started."
       }
+    },
+    "account": {
+      "title": "My account",
+      "rate_wallet": {
+        "title": "Rate IBEx Wallet",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "help_center": {
+        "title": "Help Center",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "contact_us": {
+        "title": "Contact us",
+        "href": "https://moncomptesouverain.fr/"
+      }
     }
   },
-  "disclaimer": "By continuing, you confirm that you have read and accepted ",
+  "disclaimer": "By continuing, you confirm that you have read and accepted",
   "disclaimer_link": "our terms and conditions.",
   "components": {
     "investment_card": {
@@ -92,15 +107,15 @@
         "link": "Learn more.",
         "href_link": "https://moncomptesouverain.fr/"
       },
-      "button": "Got it"
+      "button": "I understand"
     },
     "main_account": {
       "title": "Your current account",
-      "description_1": "Congratulations, you are now the real owner of your funds and only you can interact with them.",
-      "description_2": "You can now invest them in a product that earns you money!",
+      "description_1": "Congratulations, you are now the true owner of your funds and only you can interact with them.",
+      "description_2": "You can now invest them in a profitable product!",
       "link": "Learn more.",
       "href_link": "https://moncomptesouverain.fr/",
-      "button": "Got it"
+      "button": "I understand"
     }
   }
 }

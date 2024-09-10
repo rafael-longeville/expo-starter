@@ -52,22 +52,6 @@ const Onboarding3: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          ...globalFonts.disclaimerText,
-          width: "80%",
-        }}
-      >
-        (DEBUG | ContinueWithoutFunding) : {storedValue}
-      </Text>
-      <Text
-        style={{
-          ...globalFonts.disclaimerText,
-          width: "80%",
-        }}
-      >
-        (DEBUG | RedirectionURL) : {continueWithoutFundingUrl}
-      </Text>
       <Text style={globalFonts.title}>{t("pages.onboarding_3.title")}</Text>
       <Text
         style={{

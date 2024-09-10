@@ -69,6 +69,24 @@
         "no_transactions_1": "Vous n'avez pas encore réalisé d'opération.",
         "no_transactions_2": "Alimentez votre compte courant  ou effectuez un placement pour commencer."
       }
+    },
+    "account": {
+      "title": "Mon compte",
+      "rate_wallet": {
+        "title": "Notez IBEx Wallet",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "help_center": {
+        "title": "Centre d'aide",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "contact_us": {
+        "title": "Contactez-nous",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "make_a_donation": "Faire un don",
+      "public_adress": "Votre adresse publique IBEx Wallet",
+      "disconnect": "Se déconnecter"
     }
   },
   "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",
