@@ -1,131 +1,191 @@
-import { router } from "expo-router";
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
-import { useActiveAccount } from "thirdweb/react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState } from "react";
+import { View, Text, Image, Pressable, StyleSheet } from "react-native";
+import { Collapsible } from "@/components/Collapsible";
 import { useTranslation } from "react-i18next";
-import * as Sentry from "@sentry/react-native";
-import {
-  TransakWebView,
-  Events,
-  EventTypes,
-  Order,
-} from "@transak/react-native-sdk";
+import { globalFonts } from "@/app/styles/globalFonts";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import TestBlurModal from "@/components/PopUp/TestBlurModal";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-const Checkout: React.FC = () => {
-  const account = useActiveAccount();
-  const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
-  const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
-  const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
+interface AccountDetailsProps {
+  currency: string; // Currency symbol passed from HomeScreen
+  main_account_balance: string;
+  investment_account_balance: string;
+  total_balance: string;
+}
+
+export default function Account({
+  currency,
+  main_account_balance,
+  investment_account_balance,
+  total_balance,
+}: AccountDetailsProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
-  const onTransakEventHandler = (event: EventTypes, data: Order) => {
-    switch (event) {
-      case Events.ORDER_CREATED:
-        console.log(event, data);
-        break;
+  const chevronIcon = isOpen
+    ? require("../../assets/images/chevron-up-icon.png")
+    : require("../../assets/images/chevron-down-icon.png");
 
-      case Events.ORDER_PROCESSING:
-        console.log(event, data);
-        router.push("/(tabs)/home");
-        break;
-
-      default:
-        console.log(event, data);
-    }
-  };
-
-  useEffect(() => {
-    const loadTransakParams = async () => {
-      try {
-        if (account?.address) {
-          let params = {
-            apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
-            fiatCurrency: "EUR",
-            cryptoCurrencyCode: "USDC",
-            fiatAmount: "100",
-            productsAvailed: ["BUY"],
-            network: "arbitrum",
-            defaultPaymentMethod: "credit_debit_card",
-            disablePaymentMethods: ["gbp_bank_transfer", "sepa_bank_transfer"],
-            // hideExchangeScreen: true,
-            walletAddress: account.address,
-            disableWalletAddressForm: true,
-            isFeeCalculationHidden: true,
-            environment: "STAGING",
-            partnerOrderId: "123456",
-          };
-
-          setTransakParams(params);
-
-          Sentry.addBreadcrumb({
-            category: "navigation",
-            message: `Set Transak params: ${JSON.stringify(params)}`,
-            level: "info",
-          });
-        }
-      } catch (error) {
-        Sentry.captureException(error);
-        console.error("Error loading onboarding data from AsyncStorage", error);
-      }
-    };
-
-    loadTransakParams();
-  }, [account, onboardingMethod, onboardingValue]);
+  const collapsibleText = !isOpen ? (
+    <Text style={globalFonts.subtitle}>{t("pages.home.details")}</Text>
+  ) : (
+    <Text style={globalFonts.subtitle}>{t("pages.home.hide_details")}</Text>
+  );
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView style={styles.container}>
-        <TestBlurModal></TestBlurModal>
-      </SafeAreaView>
-    </GestureHandlerRootView>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.account_details}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+          }}
+        >
+          <Text style={globalFonts.subtitle}>
+            {t("pages.home.total_balance")}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 5,
+            }}
+          >
+            <Pressable
+              onPress={() => setIsOpen(!isOpen)}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 5,
+              }}
+            >
+              {collapsibleText}
+              <Image
+                source={chevronIcon}
+                style={{
+                  marginTop: isOpen ? 3 : -10,
+                }}
+              />
+            </Pressable>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+          }}
+        >
+          <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+            <Text style={globalFonts.bigNumber}>{total_balance} </Text>
+            <Text
+              style={{
+                ...globalFonts.bigNumber,
+                fontFamily: "Poppins_700Bold_Italic",
+              }}
+            >
+              {currency}
+            </Text>
+          </View>
+        </View>
+
+        <Collapsible title="Transaction" isOpen={isOpen}>
+          <View
+            style={{
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 5,
+                width: "100%",
+              }}
+            >
+              <Text style={styles.smallNumber}>
+                {main_account_balance}{" "}
+                <Text
+                  style={{
+                    ...styles.smallNumber,
+                    fontFamily: "Poppins_700Bold_Italic",
+                  }}
+                >
+                  {currency}
+                </Text>
+              </Text>
+              <Text
+                style={{
+                  ...globalFonts.subtitle,
+                  fontSize: 14,
+                }}
+              >
+                {t("pages.home.on_main_account")}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                gap: 5,
+              }}
+            >
+              <Text style={styles.smallNumber}>
+                {investment_account_balance}{" "}
+                <Text
+                  style={{
+                    ...styles.smallNumber,
+                    fontFamily: "Poppins_700Bold_Italic",
+                  }}
+                >
+                  {currency}
+                </Text>
+              </Text>
+              <Text
+                style={{
+                  ...globalFonts.subtitle,
+                  fontSize: 14,
+                }}
+              >
+                {t("pages.home.on_investments")}
+              </Text>
+            </View>
+          </View>
+        </Collapsible>
+      </View>
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
+  account_details: {
+    backgroundColor: "#ECFF78",
+    padding: 20,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+  },
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: "grey",
+    backgroundColor: "#fff",
+    // backgroundColor: "#ECFF78",
   },
-  containercompte: {
-    height: 60,
-    borderRadius: 30,
+  smallNumber: {
+    fontSize: 18,
+    fontFamily: "Poppins_700Bold",
+    color: "#13293D",
+  },
+  whiteSubtitle: {
+    fontSize: 18,
     width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingLeft: 20,
-    marginBottom: 30,
+    color: "white",
+    fontFamily: "Poppins_400Regular",
   },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  webview: {
-    marginTop: 20,
-    width: "100%",
-    height: 500,
-  },
-
-  icon: {
-    marginRight: 10,
-  },
-  textcompte: {
-    flexDirection: "row",
-    alignItems: "center",
-    fontFamily: "Poppins",
-  },
-  amount: {
-    color: "#ECFF78",
-    fontSize: 20,
-    fontWeight: "700",
-    fontFamily: "Poppins",
+  scrollView: {
+    backgroundColor: "#fff",
+    height: "100%",
   },
 });
-
-export default Checkout;

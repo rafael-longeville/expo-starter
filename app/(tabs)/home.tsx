@@ -194,10 +194,10 @@ export default function HomeScreen() {
             <TransactionHistory />
           </ScrollView>
           <MainAccountPopup ref={mainAccountModalRef} />
-          {/* <StayUpdated
+          <StayUpdated
             ref={stayUpdatedModalRef}
             setIsModalOpen={setIsModalOpen}
-          /> */}
+          />
 
           {/* <TransactionPOC account={account} refetch={refetch} /> */}
         </SafeAreaView>

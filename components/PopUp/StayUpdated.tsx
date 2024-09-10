@@ -21,7 +21,6 @@ import { Href, Link } from "expo-router";
 const StayUpdated = forwardRef(({ setIsModalOpen }: any, ref: any) => {
   const { t } = useTranslation();
   // refs
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // state to track if modal is open
 
@@ -30,12 +29,12 @@ const StayUpdated = forwardRef(({ setIsModalOpen }: any, ref: any) => {
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
+    ref.current?.present();
   }, []);
 
   const handleDismissModal = useCallback(() => {
     setIsModalOpen(false);
-    bottomSheetModalRef.current?.dismiss();
+    ref.current?.dismiss();
   }, []);
 
   // const handleSheetChanges = useCallback(
@@ -67,7 +66,7 @@ const StayUpdated = forwardRef(({ setIsModalOpen }: any, ref: any) => {
         color="black"
       />
       <BottomSheetModal
-        ref={bottomSheetModalRef}
+        ref={ref}
         index={0}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
