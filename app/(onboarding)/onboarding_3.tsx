@@ -80,6 +80,7 @@ const Onboarding3: React.FC = () => {
           <ConnectWithGoogle
             connect={connect}
             isConnecting={isConnecting}
+            redirectUrl={continueWithoutFundingUrl}
             account={account}
             error={error}
           />

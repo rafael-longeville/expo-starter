@@ -1,20 +1,18 @@
-import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
+import React from "react";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Tabs } from "expo-router";
-import React, { useEffect } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
+import CustomTabBar from "@/components/CustomTabBar";
 
-type TabRoutes = "home" | "checkout" | "settings" | "account";
+type TabRoutes = "home" | "settings" | "account";
 
 export default function TabLayout() {
-  const { isModalOpen } = useStayUpdatedModalContext();
+  const { isModalOpen, isCheckoutModalOpen } = useStayUpdatedModalContext();
 
   const TABS: Record<TabRoutes, { active?: any; inactive: any }> = {
     home: {
       active: require("../../assets/images/tabs/home-active.png"),
       inactive: require("../../assets/images/tabs/home.png"),
-    },
-    checkout: {
-      inactive: require("../../assets/images/tabs/checkout.png"),
     },
     settings: {
       active: require("../../assets/images/tabs/settings-active.png"),
@@ -32,7 +30,10 @@ export default function TabLayout() {
       borderRadius: 30,
     },
     tabBar: {
-      display: isModalOpen ? "none" : "flex",
+      display: isCheckoutModalOpen || isModalOpen ? "none" : "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
       position: "absolute",
       bottom: 20,
       left: 20,
@@ -45,11 +46,20 @@ export default function TabLayout() {
       borderColor: "#13293D",
       padding: 0,
       margin: 0,
-      shadowColor: "transparent", // Remove shadow for iOS
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 0,
-      shadowRadius: 0,
-      elevation: 0, // Remove shadow for Android
+    },
+    checkoutButton: {
+      position: "absolute",
+      bottom: 20,
+      right: 20,
+      width: 45,
+      height: 30,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    checkoutImage: {
+      width: 45,
+      height: 30,
+      resizeMode: "contain",
     },
   });
 
@@ -58,73 +68,43 @@ export default function TabLayout() {
       <Tabs
         screenOptions={({ route }) => ({
           headerShown: false,
-          tabBarShowLabel: false, // Hide labels
-          tabBarStyle: styles.tabBar, // Apply custom tabBar style
+          tabBarShowLabel: false,
+          tabBarStyle: styles.tabBar,
           tabBarIcon: ({ focused }) => {
             const tabName = route.name as TabRoutes;
             return (
               <Image
                 source={TABS[tabName]?.[focused ? "active" : "inactive"]}
                 style={{
-                  width:
-                    route.name === "checkout"
-                      ? 45
-                      : route.name === "settings"
-                        ? 37
-                        : 35,
-                  height:
-                    route.name === "checkout"
-                      ? 30
-                      : route.name === "settings"
-                        ? 36
-                        : 35,
+                  width: route.name === "settings" ? 37 : 35,
+                  height: route.name === "settings" ? 36 : 35,
                   resizeMode: "contain",
                 }}
               />
             );
           },
+          tabBarButton: (props) => {
+            if (route.name === "checkout") {
+              return null; // Hide default tab button for checkout
+            }
+            return <View {...props} />;
+          },
         })}
       >
         <Tabs.Screen name="home" />
-        <Tabs.Screen name="checkout" />
         <Tabs.Screen name="settings" />
-        <Tabs.Screen name="account" />
-        <Tabs.Screen
-          name="login"
-          options={{
-            href: null,
-          }}
-        />
+        <Tabs.Screen name="login" options={{ href: null }} />
+        {/* Custom Checkout Button */}
       </Tabs>
+      {/* <TouchableOpacity
+        style={styles.checkoutButton}
+        onPress={() => setIsCheckoutModalOpen(true)}
+      >
+        <Image
+          source={require("../../assets/images/tabs/checkout.png")}
+          style={styles.checkoutImage}
+        />
+      </TouchableOpacity> */}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 30,
-  },
-  tabBar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    position: "absolute",
-    bottom: 20,
-    left: 20,
-    right: 20,
-    height: 80,
-    backgroundColor: "#DFE6FF",
-    borderWidth: 1,
-    borderTopWidth: 1,
-    borderRadius: 30,
-    borderColor: "#13293D",
-    padding: 0,
-    margin: 0,
-    // shadowColor: "transparent", // Remove shadow for iOS
-    // shadowOffset: { width: 0, height: 0 },
-    // shadowOpacity: 0,
-    // shadowRadius: 0,
-    // elevation: 0, // Remove shadow for Android
-  },
-});

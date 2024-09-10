@@ -18,17 +18,7 @@ import {
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { BlurView } from "@react-native-community/blur"; // Import BlurView
-
-const formatBalance = (
-  balance: any,
-  eurBalance: number,
-  usdBalance: number
-) => {
-  const balanceNum = parseFloat(balance);
-  const totalInvestmentBalance = eurBalance + usdBalance;
-  const finalBalance = balanceNum - totalInvestmentBalance;
-  return finalBalance.toFixed(2).replace(".", ",");
-};
+import OnRampModal from "@/components/PopUp/OnRampModal";
 
 export default function HomeScreen() {
   const account = useActiveAccount();
@@ -36,21 +26,25 @@ export default function HomeScreen() {
   const [currency, setCurrency] = useState<string>("$");
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
-  const [blurred, setBlurred] = useState(false); // State to control blur
 
   const tokenAddress = "0x0c86a754a29714c4fe9c6f1359fa7099ed174c0b";
 
-  const { data, isLoading, isError, error, refetch } = useWalletBalance({
+  const { data, refetch } = useWalletBalance({
     chain,
     address: account?.address,
     client,
     tokenAddress,
   });
 
-  const { setIsModalOpen } = useStayUpdatedModalContext();
+  const {
+    isCheckoutModalOpen,
+    setIsCheckoutModalOpen,
+    setIsBlurred,
+    isBlurred,
+  } = useStayUpdatedModalContext();
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
-  const mainAccountModalRef = useRef<BottomSheetModal>(null);
+  const onRampModalRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     const fetchCurrency = async () => {
@@ -66,25 +60,6 @@ export default function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    const checkFirstVisit = async () => {
-      try {
-        const hasSeenStayUpdated =
-          await AsyncStorage.getItem("hasSeenStayUpdated");
-        if (!hasSeenStayUpdated) {
-          stayUpdatedModalRef.current?.present();
-          setIsModalOpen(true);
-          setBlurred(true); // Enable blur when modal opens
-          await AsyncStorage.setItem("hasSeenStayUpdated", "true");
-        }
-      } catch (error) {
-        console.error("Error checking first visit:", error);
-      }
-    };
-
-    checkFirstVisit();
-  }, []);
-
-  useEffect(() => {
     const fetchInvestmentBalances = async () => {
       try {
         let eurBalance = await AsyncStorage.getItem(
@@ -94,17 +69,8 @@ export default function HomeScreen() {
           "investment_account_balance_usd"
         );
 
-        if (!eurBalance) {
-          await AsyncStorage.setItem("investment_account_balance_eur", "0");
-          eurBalance = "0";
-        }
-        if (!usdBalance) {
-          await AsyncStorage.setItem("investment_account_balance_usd", "0");
-          usdBalance = "0";
-        }
-
-        setEurBalance(parseFloat(eurBalance));
-        setUsdBalance(parseFloat(usdBalance));
+        setEurBalance(parseFloat(eurBalance || "0"));
+        setUsdBalance(parseFloat(usdBalance || "0"));
       } catch (error) {
         console.error("Error fetching investment balances:", error);
       }
@@ -114,7 +80,7 @@ export default function HomeScreen() {
   }, []);
 
   const handleCloseModal = () => {
-    setBlurred(false); // Disable blur when modal is closed
+    setIsBlurred(false); // Disable blur when modal is closed
   };
 
   const onRefresh = useCallback(() => {
@@ -126,7 +92,7 @@ export default function HomeScreen() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <SafeAreaView style={styles.container}>
-          {blurred && (
+          {isBlurred && (
             <BlurView
               style={styles.absolute}
               blurType="dark"
@@ -144,16 +110,16 @@ export default function HomeScreen() {
               currency={currency}
               main_account_balance={
                 data
-                  ? formatBalance(data?.displayValue, eurBalance, usdBalance)
+                  ? (
+                      parseFloat(data?.displayValue) -
+                      eurBalance -
+                      usdBalance
+                    ).toFixed(2)
                   : "0.00"
               }
-              investment_account_balance={(eurBalance + usdBalance)
-                .toFixed(2)
-                .replace(".", ",")}
+              investment_account_balance={(eurBalance + usdBalance).toFixed(2)}
               total_balance={
-                data
-                  ? parseFloat(data?.displayValue).toFixed(2).replace(".", ",")
-                  : "0.00"
+                data ? parseFloat(data?.displayValue).toFixed(2) : "0.00"
               }
             />
 
@@ -161,36 +127,35 @@ export default function HomeScreen() {
               currency={currency}
               main_account_balance={
                 data
-                  ? formatBalance(data?.displayValue, eurBalance, usdBalance)
+                  ? (
+                      parseFloat(data?.displayValue) -
+                      eurBalance -
+                      usdBalance
+                    ).toFixed(2)
                   : "0.00"
               }
             />
             <InvestmentAccount
               currency={currency}
-              investment_account_balance={(eurBalance + usdBalance)
-                .toFixed(2)
-                .replace(".", ",")}
+              investment_account_balance={(eurBalance + usdBalance).toFixed(2)}
             />
-            <View
-              style={{
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingHorizontal: 20,
-                gap: 20,
-              }}
-            >
+            <View style={styles.investmentContainer}>
               <InvestmentCard investment={`DOLLAR US`} investing />
               <InvestmentCard investment={`EURO`} investing />
             </View>
             <TransactionHistory />
           </ScrollView>
-          <MainAccountPopup ref={mainAccountModalRef} />
           <StayUpdated
             ref={stayUpdatedModalRef}
-            setIsModalOpen={setIsModalOpen}
-            setBlurred={setBlurred}
-            onDismiss={handleCloseModal} // Close modal and remove blur
+            setIsModalOpen={setIsCheckoutModalOpen}
+            setBlurred={setIsBlurred}
+            onDismiss={handleCloseModal}
+          />
+          <OnRampModal
+            ref={onRampModalRef}
+            setIsModalOpen={setIsCheckoutModalOpen}
+            setBlurred={setIsBlurred}
+            account={account}
           />
         </SafeAreaView>
       </BottomSheetModalProvider>
@@ -213,6 +178,13 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-    zIndex: 1, // Ensure blur appears below modal
+    zIndex: 1,
+  },
+  investmentContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    gap: 20,
   },
 });

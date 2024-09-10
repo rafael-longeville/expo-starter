@@ -56,6 +56,7 @@ const Checkout: React.FC = () => {
             isFeeCalculationHidden: true,
             environment: "STAGING",
             partnerOrderId: "123456",
+            widgetHeight: "50%",
           };
 
           setTransakParams(params);
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
   webview: {
     marginTop: 20,
     width: "100%",
-    height: 500,
+    height: 400,
   },
 
   icon: {

@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { globalFonts } from "../styles/globalFonts";
 import { useActiveAccount } from "thirdweb/react";
@@ -13,8 +13,19 @@ import {
   Order,
 } from "@transak/react-native-sdk";
 import { SafeAreaView } from "react-native-safe-area-context";
+import OnRampModal from "@/components/PopUp/OnRampModal";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Checkout: React.FC = () => {
+  const onRampModalRef = useRef<BottomSheetModal>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [blurred, setBlurred] = useState(false);
+  ///////----------------------////////
+
   const account = useActiveAccount();
   const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
   const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
@@ -77,53 +88,116 @@ const Checkout: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.containercompte}>
-        <Image
-          source={require("@/assets/images/lock-icon.png")}
-          style={styles.icon}
-        />
-        <Text style={styles.textcompte}>
-          <Text style={globalFonts.whiteSubtitle}>
-            {t("pages.onboarding_4.account")} DOLLAR US :
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <BottomSheetModalProvider>
+          {/*  <View style={styles.containercompte}>
+            <Image
+              source={require("@/assets/images/lock-icon.png")}
+              style={styles.icon}
+            />
+            <Text style={styles.textcompte}>
+              <Text style={globalFonts.whiteSubtitle}>
+                {t("pages.onboarding_4.account")} DOLLAR US :
+              </Text>
+              <Text style={styles.amount}> 0 €*</Text>
+            </Text>
+          </View>
+          <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
+          <Text style={globalFonts.subtitle}>
+            {t("pages.onboarding_4.subtitle")}
           </Text>
-          <Text style={styles.amount}> 0 €*</Text>
+          {transakParams ? (
+            <TransakWebView
+              onError={(error) => {
+                console.error("Transak error", error);
+              }}
+              style={styles.webview}
+              transakConfig={transakParams}
+              onTransakEvent={onTransakEventHandler}
+            />
+          ) : (
+            <Text style={globalFonts.subtitle}>
+              Put a loader here or something
+            </Text>
+          )}
+          <Text
+            style={{
+              ...globalFonts.subtitle,
+              textAlign: "center",
+              fontSize: 14,
+              fontFamily: "Poppins_500Medium",
+              marginTop: 20,
+            }}
+            onPress={() => {
+              Sentry.addBreadcrumb({
+                category: "navigation",
+                message: "User navigated to home from Onboarding3",
+                level: "info",
+              });
+              router.push("/(tabs)/home");
+            }}
+          >
+            {t("pages.onboarding_4.cancel")}
+          </Text> */}
+          {/* <View>
+        <View style={styles.containercompte}>
+          <Image
+            source={require("@/assets/images/lock-icon.png")}
+            style={styles.icon}
+          />
+          <Text style={styles.textcompte}>
+            <Text style={globalFonts.whiteSubtitle}>
+              {t("pages.onboarding_4.account")} DOLLAR US :
+            </Text>
+            <Text style={styles.amount}> 0 €*</Text>
+          </Text>
+        </View>
+        <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
+        <Text style={globalFonts.subtitle}>
+          {t("pages.onboarding_4.subtitle")}
         </Text>
-      </View>
-      <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
-      <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_4.subtitle")}
-      </Text>
-      {transakParams ? (
-        <TransakWebView
-          onError={(error) => {
-            console.error("Transak error", error);
+        {transakParams ? (
+          <TransakWebView
+            onError={(error) => {
+              console.error("Transak error", error);
+            }}
+            style={styles.webview}
+            transakConfig={transakParams}
+            onTransakEvent={onTransakEventHandler}
+          />
+        ) : (
+          <Text style={globalFonts.subtitle}>
+            Put a loader here or something
+          </Text>
+        )}
+        <Text
+          style={{
+            ...globalFonts.subtitle,
+            textAlign: "center",
+            fontSize: 14,
+            fontFamily: "Poppins_500Medium",
+            marginTop: 20,
           }}
-          style={styles.webview}
-          transakConfig={transakParams}
-          onTransakEvent={onTransakEventHandler}
-        />
-      ) : (
-        <Text style={globalFonts.subtitle}>Put a loader here or something</Text>
-      )}
-      <Text
-        style={{
-          ...globalFonts.subtitle,
-          textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
-          marginTop: 20,
-        }}
-        onPress={() => {
-          Sentry.addBreadcrumb({
-            category: "navigation",
-            message: "User navigated to home from Onboarding3",
-            level: "info",
-          });
-          router.push("/(tabs)/home");
-        }}
-      >
-        {t("pages.onboarding_4.cancel")}
-      </Text>
+          onPress={() => {
+            Sentry.addBreadcrumb({
+              category: "navigation",
+              message: "User navigated to home from Onboarding3",
+              level: "info",
+            });
+            router.push("/(tabs)/home");
+          }}
+        >
+          {t("pages.onboarding_4.cancel")}
+        </Text>
+      </View> */}
+          <OnRampModal
+            ref={onRampModalRef}
+            setIsModalOpen={setIsModalOpen}
+            setBlurred={setBlurred}
+            account={account}
+          />
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
     </SafeAreaView>
   );
 };
