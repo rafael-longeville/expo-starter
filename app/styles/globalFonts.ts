@@ -30,6 +30,11 @@ export const globalFonts = StyleSheet.create({
     fontSize: scaledFontSize(22),
     color: "#13293D",
   },
+  mediumTitle: {
+    fontFamily: "Poppins_500Medium",
+    fontSize: scaledFontSize(22),
+    color: "#13293D",
+  },
   mediumSubtitle: {
     fontFamily: "Poppins_500Medium",
     fontSize: scaledFontSize(18),

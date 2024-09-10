@@ -60,25 +60,26 @@ function TransactionHistoryComponent() {
     fetchCurrency();
   }, []);
 
-  if (!activeAccount?.address) {
-    return <Text>No active account found.</Text>;
-  }
-
   // Step 3: Fetch transactions using the useQuery hook with pollInterval for auto refetch
   const { loading, error, data, refetch } = useQuery(GET_TRANSACTIONS, {
     variables: {
       excludedStatus: "AWAITING_PAYMENT_FROM_USER",
-      walletAddress: activeAccount.address, // Filter by the active account address
+      walletAddress: activeAccount?.address || "", // Use an empty string as a fallback
     },
     client,
     pollInterval: 10000, // Set poll interval to 10 seconds (10000 milliseconds)
+    skip: !activeAccount?.address, // Skip the query if no active account address
   });
+
+  if (!activeAccount?.address) {
+    return <Text>No active account found.</Text>;
+  }
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error loading transactions.</Text>;
 
   // Use fetched transactions instead of static history
-  const transactions = data.transaction.map((item: any) => {
+  const transactions = data?.transaction.map((item: any) => {
     let from, to;
 
     if (item.transaction_type === "BUY") {

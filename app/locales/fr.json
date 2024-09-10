@@ -72,20 +72,21 @@
     },
     "account": {
       "title": "Mon compte",
-      "links": [
-        {
-          "title": "Notez IBEx Wallet",
-          "href": "https://moncomptesouverain.fr/"
-        },
-        {
-          "title": "Centre d'aide",
-          "href": "https://moncomptesouverain.fr/"
-        },
-        {
-          "title": "Contactez-nous",
-          "href": "https://moncomptesouverain.fr/"
-        }
-      ]
+      "rate_wallet": {
+        "title": "Notez IBEx Wallet",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "help_center": {
+        "title": "Centre d'aide",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "contact_us": {
+        "title": "Contactez-nous",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "make_a_donation": "Faire un don",
+      "public_adress": "Votre adresse publique IBEx Wallet",
+      "disconnect": "Se déconnecter"
     }
   },
   "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",
