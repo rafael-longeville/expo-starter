@@ -106,4 +106,26 @@ export const styles = StyleSheet.create({
     height: 26,
     width: 26,
   },
+  withdrawButtonText: {
+    position: "absolute", // Overlay the text on top of the image
+    color: "#13293D",
+    fontSize: 14,
+    fontFamily: "Poppins_500Medium",
+    left: 85, // Adjust this value to position the text towards the left
+    textAlign: "left", // Ensure the text aligns to the left
+  },
+  buttonContainer2: {
+    position: "relative",
+    width: "48%",
+    height: 53, // Match the height of your image
+    justifyContent: "center",
+  },
+  depositButtonText2: {
+    position: "absolute", // Overlay the text on top of the image
+    color: "#13293D",
+    fontSize: 14,
+    fontFamily: "Poppins_500Medium",
+    left: 25, // Adjust this value to position the text towards the left
+    textAlign: "left", // Ensure the text aligns to the left
+  },
 });

@@ -117,7 +117,7 @@ export default function HomeScreen() {
           "investment_account_balance_usd"
         );
 
-        // If balances don't exist, set them to 100
+        // If balances don't exist, set them to 0
         if (!eurBalance) {
           await AsyncStorage.setItem("investment_account_balance_eur", "0");
           eurBalance = "0";
@@ -196,8 +196,33 @@ export default function HomeScreen() {
                 gap: 20,
               }}
             >
-              <InvestmentCard investment={`DOLLAR US`} investing />
-              <InvestmentCard investment={`EURO`} investing />
+              <InvestmentCard
+                investment={`DOLLAR US`}
+                investing
+                main_account_balance={
+                  data
+                    ? formatBalance(data?.displayValue, eurBalance, usdBalance)
+                    : "0.00"
+
+                }
+                eurBalance={eurBalance}
+                usdBalance={usdBalance}
+                setEurBalance={setEurBalance}
+                setUsdBalance={setUsdBalance}
+              />
+              <InvestmentCard
+                investment={`EURO`}
+                investing
+                main_account_balance={
+                  data
+                    ? formatBalance(data?.displayValue, eurBalance, usdBalance)
+                    : "0.00"
+                }
+                eurBalance={eurBalance}
+                usdBalance={usdBalance}
+                setEurBalance={setEurBalance}
+                setUsdBalance={setUsdBalance}
+              />
             </View>
             <TransactionHistory />
           </ScrollView>

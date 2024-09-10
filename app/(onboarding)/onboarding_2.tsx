@@ -53,8 +53,8 @@ const Onboarding2: React.FC = () => {
         </Text>{" "}
         {t("pages.onboarding_2.subtitle_3")}
       </Text>
-      <InvestmentCard investment={"DOLLAR US"} investing={true} />
-      <InvestmentCard investment={"EURO"} investing={true} />
+      <InvestmentCard investment={"DOLLAR US"} investing={true} isOnboarding/>
+      <InvestmentCard investment={"EURO"} investing={true} isOnboarding/>
 
       <Divider
         style={{
@@ -70,7 +70,7 @@ const Onboarding2: React.FC = () => {
         </Text>{" "}
         {t("pages.onboarding_2.second_subtitle_3")}
       </Text>
-      <InvestmentCard investment={"DOLLAR US"} investing={false} />
+      <InvestmentCard investment={"DOLLAR US"} investing={false} isOnboarding/>
       <Pressable
         style={{
           backgroundColor: "#13293D",
