@@ -1,18 +1,10 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-  View,
-  Pressable,
-  Text,
-} from "react-native";
+import { StyleSheet, ScrollView, RefreshControl, View } from "react-native";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AccountDetails from "@/components/Homepage/AccountDetails";
 import MainAccount from "@/components/Homepage/MainAccount";
-import TransactionPOC from "@/components/Homepage/TransactionsPOC";
 import InvestmentAccount from "@/components/Homepage/InvestmentAccount";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import TransactionHistory from "@/components/Homepage/TransactionHistory";
@@ -25,21 +17,16 @@ import {
 } from "@gorhom/bottom-sheet";
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
-import TestBlurModal from "@/components/PopUp/TestBlurModal";
+import { BlurView } from "@react-native-community/blur"; // Import BlurView
 
 const formatBalance = (
   balance: any,
   eurBalance: number,
   usdBalance: number
 ) => {
-  // Convert balance and investment balances to numbers
   const balanceNum = parseFloat(balance);
   const totalInvestmentBalance = eurBalance + usdBalance;
-
-  // Subtract the investment balances from the main balance
   const finalBalance = balanceNum - totalInvestmentBalance;
-
-  // Return the final balance formatted with two decimal places
   return finalBalance.toFixed(2).replace(".", ",");
 };
 
@@ -49,29 +36,18 @@ export default function HomeScreen() {
   const [currency, setCurrency] = useState<string>("$");
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
+  const [blurred, setBlurred] = useState(false); // State to control blur
 
-  const tokenAddress = "0x0c86a754a29714c4fe9c6f1359fa7099ed174c0b"; // the ERC20 token address
+  const tokenAddress = "0x0c86a754a29714c4fe9c6f1359fa7099ed174c0b";
 
   const { data, isLoading, isError, error, refetch } = useWalletBalance({
     chain,
-    address: account?.address, // Use active account address
+    address: account?.address,
     client,
     tokenAddress,
   });
 
-  const { setIsModalOpen, isModalOpen } = useStayUpdatedModalContext();
-
-  if (!isLoading && data) {
-    console.log(data);
-  }
-  if (isError) {
-    console.log(error);
-  }
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    refetch().finally(() => setRefreshing(false));
-  }, [refetch]);
+  const { setIsModalOpen } = useStayUpdatedModalContext();
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
   const mainAccountModalRef = useRef<BottomSheetModal>(null);
@@ -97,6 +73,7 @@ export default function HomeScreen() {
         if (!hasSeenStayUpdated) {
           stayUpdatedModalRef.current?.present();
           setIsModalOpen(true);
+          setBlurred(true); // Enable blur when modal opens
           await AsyncStorage.setItem("hasSeenStayUpdated", "true");
         }
       } catch (error) {
@@ -117,7 +94,6 @@ export default function HomeScreen() {
           "investment_account_balance_usd"
         );
 
-        // If balances don't exist, set them to 100
         if (!eurBalance) {
           await AsyncStorage.setItem("investment_account_balance_eur", "0");
           eurBalance = "0";
@@ -127,7 +103,6 @@ export default function HomeScreen() {
           usdBalance = "0";
         }
 
-        // Update state with parsed values
         setEurBalance(parseFloat(eurBalance));
         setUsdBalance(parseFloat(usdBalance));
       } catch (error) {
@@ -138,10 +113,27 @@ export default function HomeScreen() {
     fetchInvestmentBalances();
   }, []);
 
+  const handleCloseModal = () => {
+    setBlurred(false); // Disable blur when modal is closed
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch().finally(() => setRefreshing(false));
+  }, [refetch]);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <SafeAreaView style={styles.container}>
+          {blurred && (
+            <BlurView
+              style={styles.absolute}
+              blurType="dark"
+              blurAmount={10}
+              reducedTransparencyFallbackColor="white"
+            />
+          )}
           <ScrollView
             style={styles.scrollView}
             refreshControl={
@@ -197,9 +189,9 @@ export default function HomeScreen() {
           <StayUpdated
             ref={stayUpdatedModalRef}
             setIsModalOpen={setIsModalOpen}
+            setBlurred={setBlurred}
+            onDismiss={handleCloseModal} // Close modal and remove blur
           />
-
-          {/* <TransactionPOC account={account} refetch={refetch} /> */}
         </SafeAreaView>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
@@ -214,5 +206,13 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: "#fff",
     height: "100%",
+  },
+  absolute: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 1, // Ensure blur appears below modal
   },
 });
