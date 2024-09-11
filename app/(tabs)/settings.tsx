@@ -1,247 +1,438 @@
-import { router } from "expo-router";
-import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
-import { useActiveAccount } from "thirdweb/react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  StyleSheet,
+  Linking,
+  Alert,
+} from "react-native";
 import { useTranslation } from "react-i18next";
-import * as Sentry from "@sentry/react-native";
-import {
-  TransakWebView,
-  Events,
-  EventTypes,
-  Order,
-} from "@transak/react-native-sdk";
+import { globalFonts } from "@/app/styles/globalFonts";
 import { SafeAreaView } from "react-native-safe-area-context";
-import OnRampModal from "@/components/PopUp/OnRampModal";
 import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+  useActiveAccount,
+  useActiveWallet,
+  useDisconnect,
+} from "thirdweb/react";
+import { router } from "expo-router";
+import { Wallet, WalletId } from "thirdweb/wallets";
+import {
+  GestureHandlerRootView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
+import { Divider } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18n from "../i18n";
+import * as Sentry from "@sentry/react-native";
+import * as Notifications from "expo-notifications";
 
-const Checkout: React.FC = () => {
-  const onRampModalRef = useRef<BottomSheetModal>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [blurred, setBlurred] = useState(false);
-  ///////----------------------////////
+interface AccountDetailsProps {
+  currency: string;
+  main_account_balance: string;
+  investment_account_balance: string;
+  total_balance: string;
+}
+const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
+  value,
+  onValueChange,
+}) => {
+  const handlePress = async () => {
+    Sentry.addBreadcrumb({
+      category: "action",
+      message: `User toggled notifications switch to ${value ? "off" : "on"}`,
+      level: "info",
+    });
 
-  const account = useActiveAccount();
-  const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
-  const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
-  const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
-  const { t } = useTranslation();
-
-  const onTransakEventHandler = (event: EventTypes, data: Order) => {
-    switch (event) {
-      case Events.ORDER_CREATED:
-        console.log(event, data);
-        break;
-
-      case Events.ORDER_PROCESSING:
-        console.log(event, data);
-        router.push("/(tabs)/home");
-        break;
-
-      default:
-        console.log(event, data);
+    if (value) {
+      onValueChange();
+    } else {
+      // Request notification permissions
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status === "granted") {
+        onValueChange();
+      } else {
+        Alert.alert(
+          "Permission Required",
+          "This app needs permission to show notifications.",
+          [{ text: "OK" }]
+        );
+      }
     }
   };
 
+  return (
+    <TouchableOpacity
+      style={[styles.switchContainer, styles.switch]}
+      onPress={handlePress}
+      activeOpacity={0.8}
+    >
+      <View
+        style={[
+          styles.switchThumb,
+          value ? styles.switchThumbOn : styles.switchThumbOff,
+        ]}
+      >
+        {value ? (
+          <Image source={require("../../assets/images/check-icon.png")} />
+        ) : (
+          <Image source={require("../../assets/images/cross-icon.png")} />
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
+export default function Settings({
+  currency,
+  main_account_balance,
+  investment_account_balance,
+  total_balance,
+}: AccountDetailsProps) {
+  const { t } = useTranslation();
+
+  const [selectedCurrency, setSelectedCurrency] = useState<
+    "euro" | "dollar" | null
+  >("dollar");
+  const [selectedLanguage, setSelectedLanguage] = useState<"fr" | "en" | null>(
+    "en"
+  );
+  const [notifications, setNotifications] = useState<boolean>(false);
+
   useEffect(() => {
-    const loadTransakParams = async () => {
+    const fetchStoredSettings = async () => {
       try {
-        if (account?.address) {
-          let params = {
-            apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
-            fiatCurrency: "EUR",
-            cryptoCurrencyCode: "USDC",
-            fiatAmount: "100",
-            productsAvailed: ["BUY"],
-            network: "arbitrum",
-            defaultPaymentMethod: "credit_debit_card",
-            disablePaymentMethods: ["gbp_bank_transfer", "sepa_bank_transfer"],
-            // hideExchangeScreen: true,
-            walletAddress: account.address,
-            disableWalletAddressForm: true,
-            isFeeCalculationHidden: true,
-            environment: "STAGING",
-            partnerOrderId: "123456",
-          };
+        const storedLanguage = await AsyncStorage.getItem("selectedLanguage");
+        const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
+        const storedNotifications = await AsyncStorage.getItem("notifications");
 
-          setTransakParams(params);
-
-          Sentry.addBreadcrumb({
-            category: "navigation",
-            message: `Set Transak params: ${JSON.stringify(params)}`,
-            level: "info",
-          });
+        if (storedLanguage) {
+          i18n.changeLanguage(storedLanguage);
+          setSelectedLanguage(storedLanguage as "fr" | "en");
+        }
+        if (storedCurrency) {
+          setSelectedCurrency(storedCurrency as "euro" | "dollar");
+        }
+        if (storedNotifications !== null) {
+          setNotifications(storedNotifications === "true");
         }
       } catch (error) {
         Sentry.captureException(error);
-        console.error("Error loading onboarding data from AsyncStorage", error);
+        console.error("Error retrieving settings from AsyncStorage:", error);
       }
     };
 
-    loadTransakParams();
-  }, [account, onboardingMethod, onboardingValue]);
+    fetchStoredSettings();
+  }, []);
+
+  useEffect(() => {
+    // Add notification listeners
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log(notification);
+      }
+    );
+
+    Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  const handleCurrencySelection = (currency: "euro" | "dollar") => {
+    Sentry.addBreadcrumb({
+      category: "selection",
+      message: `User selected currency: ${currency}`,
+      level: "info",
+    });
+    setSelectedCurrency(currency);
+  };
+
+  const handleLanguageSelection = (language: "fr" | "en") => {
+    Sentry.addBreadcrumb({
+      category: "selection",
+      message: `User selected language: ${language}`,
+      level: "info",
+    });
+    setSelectedLanguage(language);
+    i18n.changeLanguage(language);
+  };
+
+  const handleContinuePress = async () => {
+    try {
+      Sentry.addBreadcrumb({
+        category: "action",
+        message: "User clicked save button",
+        level: "info",
+      });
+
+      // Save all settings to AsyncStorage
+      await AsyncStorage.setItem("selectedLanguage", selectedLanguage || "en");
+      await AsyncStorage.setItem(
+        "selectedCurrency",
+        selectedCurrency || "dollar"
+      );
+      await AsyncStorage.setItem(
+        "notifications",
+        notifications ? "true" : "false"
+      );
+
+      // Navigate to the next screen
+      router.push("/(onboarding)/onboarding_2");
+    } catch (error) {
+      Sentry.captureException(error);
+      console.error("Error storing data or navigating:", error);
+    }
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <BottomSheetModalProvider>
-          {/*  <View style={styles.containercompte}>
-            <Image
-              source={require("@/assets/images/lock-icon.png")}
-              style={styles.icon}
-            />
-            <Text style={styles.textcompte}>
-              <Text style={globalFonts.whiteSubtitle}>
-                {t("pages.onboarding_4.account")} DOLLAR US :
-              </Text>
-              <Text style={styles.amount}> 0 €*</Text>
-            </Text>
-          </View>
-          <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
-          <Text style={globalFonts.subtitle}>
-            {t("pages.onboarding_4.subtitle")}
+    <View style={styles.container}>
+      <View>
+        <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
+      </View>
+      <View
+        style={{ flexDirection: "column", gap: 15, width: "100%", padding: 20 }}
+      >
+        <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
+          <Text style={styles.questionText}>
+            {t("pages.onboarding_1.money_question")}
           </Text>
-          {transakParams ? (
-            <TransakWebView
-              onError={(error) => {
-                console.error("Transak error", error);
-              }}
-              style={styles.webview}
-              transakConfig={transakParams}
-              onTransakEvent={onTransakEventHandler}
-            />
-          ) : (
-            <Text style={globalFonts.subtitle}>
-              Put a loader here or something
-            </Text>
-          )}
-          <Text
-            style={{
-              ...globalFonts.subtitle,
-              textAlign: "center",
-              fontSize: 14,
-              fontFamily: "Poppins_500Medium",
-              marginTop: 20,
-            }}
-            onPress={() => {
-              Sentry.addBreadcrumb({
-                category: "navigation",
-                message: "User navigated to home from Onboarding3",
-                level: "info",
-              });
-              router.push("/(tabs)/home");
-            }}
-          >
-            {t("pages.onboarding_4.cancel")}
-          </Text> */}
-          {/* <View>
-        <View style={styles.containercompte}>
-          <Image
-            source={require("@/assets/images/lock-icon.png")}
-            style={styles.icon}
-          />
-          <Text style={styles.textcompte}>
-            <Text style={globalFonts.whiteSubtitle}>
-              {t("pages.onboarding_4.account")} DOLLAR US :
-            </Text>
-            <Text style={styles.amount}> 0 €*</Text>
+          <Text style={styles.descriptionText}>
+            {t("pages.onboarding_1.money_question_helper")}
           </Text>
         </View>
-        <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
-        <Text style={globalFonts.subtitle}>
-          {t("pages.onboarding_4.subtitle")}
-        </Text>
-        {transakParams ? (
-          <TransakWebView
-            onError={(error) => {
-              console.error("Transak error", error);
-            }}
-            style={styles.webview}
-            transakConfig={transakParams}
-            onTransakEvent={onTransakEventHandler}
-          />
-        ) : (
-          <Text style={globalFonts.subtitle}>
-            Put a loader here or something
-          </Text>
-        )}
-        <Text
+
+        <View
           style={{
-            ...globalFonts.subtitle,
-            textAlign: "center",
-            fontSize: 14,
-            fontFamily: "Poppins_500Medium",
-            marginTop: 20,
-          }}
-          onPress={() => {
-            Sentry.addBreadcrumb({
-              category: "navigation",
-              message: "User navigated to home from Onboarding3",
-              level: "info",
-            });
-            router.push("/(tabs)/home");
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
           }}
         >
-          {t("pages.onboarding_4.cancel")}
-        </Text>
-      </View> */}
-          <OnRampModal
-            ref={onRampModalRef}
-            setIsModalOpen={setIsModalOpen}
-            setBlurred={setBlurred}
-            account={account}
-          />
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-    </SafeAreaView>
+          <TouchableOpacity
+            style={[
+              styles.commonButtonStyle,
+              selectedCurrency === "euro" && styles.isSelectedButtonStyle,
+            ]}
+            onPress={() => handleCurrencySelection("euro")}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                color:
+                  selectedCurrency === "euro"
+                    ? "#13293D"
+                    : "rgba(19, 41, 61, .7)",
+                fontFamily: "Poppins_600SemiBold",
+              }}
+            >
+              Euro (€)
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.commonButtonStyle,
+              selectedCurrency === "dollar" && styles.isSelectedButtonStyle,
+            ]}
+            onPress={() => handleCurrencySelection("dollar")}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                color:
+                  selectedCurrency === "dollar"
+                    ? "#13293D"
+                    : "rgba(19, 41, 61, .7)",
+                fontFamily: "Poppins_600SemiBold",
+              }}
+            >
+              {t("pages.onboarding_1.dollar")} ($)
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <Divider style={{ width: "100%", height: 1.5 }} />
+        <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.questionText}>
+              {t("pages.onboarding_1.notifications_question")}
+            </Text>
+            <CustomSwitch
+              value={notifications}
+              onValueChange={() => {
+                setNotifications(!notifications);
+              }}
+            />
+          </View>
+          <Text style={styles.descriptionText}>
+            {t("pages.onboarding_1.notifications_question_helper")}
+          </Text>
+        </View>
+        <Divider style={{ width: "100%", height: 1.5 }} />
+        <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
+          <Text style={styles.questionText}>
+            {t("pages.onboarding_1.language_question")}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <TouchableOpacity
+              style={[
+                styles.commonButtonStyle,
+                selectedLanguage === "fr" && styles.isSelectedButtonStyle,
+              ]}
+              onPress={() => handleLanguageSelection("fr")}
+            >
+              <View
+                style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+              >
+                <Image source={require("../../assets/images/flags/fr.png")} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color:
+                      selectedLanguage === "fr"
+                        ? "#13293D"
+                        : "rgba(19, 41, 61, .7)",
+                    fontFamily: "Poppins_600SemiBold",
+                  }}
+                >
+                  Français
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.commonButtonStyle,
+                selectedLanguage === "en" && styles.isSelectedButtonStyle,
+              ]}
+              onPress={() => handleLanguageSelection("en")}
+            >
+              <View
+                style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+              >
+                <Image source={require("../../assets/images/flags/usa.png")} />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color:
+                      selectedLanguage === "en"
+                        ? "#13293D"
+                        : "rgba(19, 41, 61, .7)",
+                    fontFamily: "Poppins_600SemiBold",
+                  }}
+                >
+                  English
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Pressable
+            style={{
+              backgroundColor: "#13293D",
+              padding: 10,
+              borderRadius: 30,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              marginTop: 30,
+            }}
+            onPress={handleContinuePress}
+          >
+            <Text
+              style={{
+                ...globalFonts.whiteSubtitle,
+                textAlign: "center",
+                fontSize: 14,
+                fontFamily: "Poppins_500Medium",
+              }}
+            >
+              {t("pages.onboarding_1.save_button")}
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 20,
+    alignItems: "flex-start",
+    gap: 20,
   },
-  containercompte: {
+  questionText: {
+    fontSize: 14,
+    color: "#13293D",
+    fontFamily: "Poppins_600SemiBold",
+    width: "80%",
+  },
+  descriptionText: {
+    fontSize: 12,
+    color: "#13293D",
+    opacity: 0.7,
+    fontFamily: "Poppins_400Regular",
+    width: "100%",
+  },
+  commonButtonStyle: {
+    // width: "47%",
+    borderWidth: 2,
     height: 60,
-    borderRadius: 30,
-    width: "100%",
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "rgba(19, 41, 61, .5)",
+    backgroundColor: "#FFFFFF",
+  },
+  isSelectedButtonStyle: {
+    backgroundColor: "#DFE6FF",
+    borderColor: "#13293D",
+  },
+  switchContainer: {
+    width: 70,
+    height: 40,
+    borderRadius: 65,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    padding: 2,
+  },
+  switch: {
     backgroundColor: "#13293D",
-    flexDirection: "row",
+  },
+  switchThumb: {
+    width: 30,
+    height: 30,
+    borderRadius: 52.5,
+    justifyContent: "center",
     alignItems: "center",
-    paddingLeft: 20,
-    marginBottom: 30,
   },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
+  switchThumbOn: {
+    backgroundColor: "#FFF",
+    transform: [{ translateX: 15 }],
   },
-  webview: {
-    marginTop: 20,
-    width: "100%",
-    height: 500,
+  switchThumbOff: {
+    backgroundColor: "#FFF",
+    transform: [{ translateX: -15 }],
   },
-
-  icon: {
-    marginRight: 10,
-  },
-  textcompte: {
-    flexDirection: "row",
-    alignItems: "center",
-    fontFamily: "Poppins",
-  },
-  amount: {
-    color: "#ECFF78",
-    fontSize: 20,
-    fontWeight: "700",
-    fontFamily: "Poppins",
+  switchIcon: {
+    fontSize: 16,
+    color: "#13293D",
   },
 });
-
-export default Checkout;
