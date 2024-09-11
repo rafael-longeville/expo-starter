@@ -25,21 +25,21 @@ export default function ConnectWithPasskey({
   redirectionUrl,
 }: ConnectWithPasskeyProps) {
   const [loading, setLoading] = useState(false); // State to manage the loading
-  const [hasPasskey, setHasPasskey] = useState(false); // State to manage whether a passkey exists
+  // const [hasPasskey, setHasPasskey] = useState(false); // State to manage whether a passkey exists
 
-  useEffect(() => {
-    // Check if a passkey is stored when the component mounts
-    const checkPasskey = async () => {
-      try {
-        const result = await hasStoredPasskey(client);
-        setHasPasskey(result);
-      } catch (error) {
-        Sentry.captureException(error);
-      }
-    };
+  // useEffect(() => {
+  //   // Check if a passkey is stored when the component mounts
+  //   const checkPasskey = async () => {
+  //     try {
+  //       const result = await hasStoredPasskey(client);
+  //       setHasPasskey(result);
+  //     } catch (error) {
+  //       Sentry.captureException(error);
+  //     }
+  //   };
 
-    checkPasskey();
-  }, []);
+  //   checkPasskey();
+  // }, []);
 
   const handlePress = async () => {
     setLoading(true); // Show loader when the process starts
@@ -87,10 +87,10 @@ export default function ConnectWithPasskey({
     }
   };
 
-  // Only render the view if a passkey is stored
-  if (!hasPasskey) {
-    return null; // Do not render anything if no passkey is found
-  }
+  // // Only render the view if a passkey is stored
+  // if (!hasPasskey) {
+  //   return null; // Do not render anything if no passkey is found
+  // }
 
   return (
     <View>
