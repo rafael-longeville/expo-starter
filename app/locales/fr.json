@@ -6,8 +6,8 @@
       "subtitle": "ET REPRENEZ LE CONTRÔLE DE VOTRE ARGENT"
     },
     "2": {
-      "title": "Ou placez votre argent",
-      "subtitle": "ET SOYEZ REMUNÉRÉ DÈS LA PREMIÈRE SECONDE "
+      "title": "Placez vos fonds dans un compte rémunéré",
+      "subtitle": "SOYEZ REMUNÉRÉ DÈS LA PREMIÈRE SECONDE ET GAGNEZ DES INTÉRÊTS SUR VOS INTÉRÊTS"
     },
     "3": {
       "title": "Restez informé",
@@ -30,13 +30,15 @@
       "save_button": "Enregistrer"
     },
     "onboarding_2": {
-      "title": "Faites fructifier votre argent",
-      "subtitle_1": "Placez vos fonds dans un",
-      "subtitle_2": "Compte rémunéré, ",
-      "subtitle_3": "touchez des intérêts dès la première seconde :",
-      "second_subtitle_1": "Ou sécurisez les dans votre",
+      "title": "Votre argent travaille pour vous.",
+      "subtitle_1": "Placez dans un",
+      "subtitle_2": "Compte rémunéré ",
+      "subtitle_3": " et touchez dès la première seconde des intérêts liquide et non exposé au taux de change.",
+      "disclaimer": "Maximum 100€ pour le premier dépôt",
+      "second_title": "Débancarisez vos liquidités",
+      "second_subtitle_1": "Et conservez les dans votre",
       "second_subtitle_2": "Compte courant ",
-      "second_subtitle_3": "souverain :",
+      "second_subtitle_3": "souverain dont vous seul avez l’accès.",
       "continue_button": "Continuer sans alimenter",
       "has_account": "J'ai déjà un compte"
     },

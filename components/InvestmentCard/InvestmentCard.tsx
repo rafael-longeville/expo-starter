@@ -68,7 +68,9 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
             style={styles.euroIcon}
             source={getIconSource(investing, investment)}
           />
-          <Text style={styles.headerText}>{investment}</Text>
+          <Text style={styles.headerText}>
+            {investing ? "CR" : "CC"} - {investment}
+          </Text>
         </View>
         <Image
           source={require("@/assets/images/info-icon.png")}

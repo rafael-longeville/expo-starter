@@ -45,16 +45,21 @@ const Onboarding2: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
-      <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_2.subtitle_1")}{" "}
-        <Text style={{ fontFamily: "Poppins_700Bold" }}>
-          {t("pages.onboarding_2.subtitle_2")}
-        </Text>{" "}
-        {t("pages.onboarding_2.subtitle_3")}
-      </Text>
-      <InvestmentCard investment={"DOLLAR US"} investing={true} isOnboarding/>
-      <InvestmentCard investment={"EURO"} investing={true} isOnboarding/>
+      <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
+        <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
+        <Text style={globalFonts.subtitle}>
+          {t("pages.onboarding_2.subtitle_1")}{" "}
+          <Text style={{ fontFamily: "Poppins_700Bold" }}>
+            {t("pages.onboarding_2.subtitle_2")}
+          </Text>{" "}
+          {t("pages.onboarding_2.subtitle_3")}
+        </Text>
+        <Text style={{ ...globalFonts.disclaimerText }}>
+          {t("pages.onboarding_2.disclaimer")}
+        </Text>
+      </View>
+      <InvestmentCard investment={"DOLLAR US"} investing={true} isOnboarding />
+      <InvestmentCard investment={"EURO"} investing={true} isOnboarding />
 
       <Divider
         style={{
@@ -63,6 +68,10 @@ const Onboarding2: React.FC = () => {
           height: 1.5,
         }}
       />
+      <Text style={globalFonts.title}>
+        {t("pages.onboarding_2.second_title")}
+      </Text>
+
       <Text style={globalFonts.subtitle}>
         {t("pages.onboarding_2.second_subtitle_1")}{" "}
         <Text style={{ fontFamily: "Poppins_700Bold" }}>
@@ -70,7 +79,7 @@ const Onboarding2: React.FC = () => {
         </Text>{" "}
         {t("pages.onboarding_2.second_subtitle_3")}
       </Text>
-      <InvestmentCard investment={"DOLLAR US"} investing={false} isOnboarding/>
+      <InvestmentCard investment={"DOLLAR US"} investing={false} isOnboarding />
       <Pressable
         style={{
           backgroundColor: "#13293D",
