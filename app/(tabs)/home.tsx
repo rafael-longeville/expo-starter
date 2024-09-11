@@ -75,6 +75,7 @@ export default function HomeScreen() {
     setIsCheckoutModalOpen,
     setIsBlurred,
     isBlurred,
+    setIsModalOpen,
   } = useStayUpdatedModalContext();
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
@@ -148,6 +149,32 @@ export default function HomeScreen() {
     refetch().finally(() => setRefreshing(false));
   }, [refetch]);
 
+  useEffect(() => {
+    const checkFirstVisit = async () => {
+      try {
+        const hasSeenStayUpdated =
+          await AsyncStorage.getItem("hasSeenStayUpdated");
+        if (!hasSeenStayUpdated) {
+          stayUpdatedModalRef.current?.present();
+          setIsModalOpen(true);
+          setIsBlurred(true); // Enable blur when modal is open
+          await AsyncStorage.setItem("hasSeenStayUpdated", "true");
+        }
+      } catch (error) {
+        console.error("Error checking first visit:", error);
+      }
+    };
+
+    checkFirstVisit();
+  }, []);
+
+  useEffect(() => {
+    if (isCheckoutModalOpen) {
+      onRampModalRef.current?.present();
+      setIsBlurred(true); // Enable blur when modal is open
+    }
+  }, [isCheckoutModalOpen]);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
@@ -215,7 +242,7 @@ export default function HomeScreen() {
           </ScrollView>
           <StayUpdated
             ref={stayUpdatedModalRef}
-            setIsModalOpen={setIsCheckoutModalOpen}
+            setIsModalOpen={setIsModalOpen}
             setBlurred={setIsBlurred}
             onDismiss={handleCloseModal}
           />

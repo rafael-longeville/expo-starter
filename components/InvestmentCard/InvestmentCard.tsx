@@ -70,32 +70,53 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
           />
           <Text style={styles.headerText}>{investment}</Text>
         </View>
-        <Image source={require("@/assets/images/info-icon.png")} />
+        <Image
+          source={require("@/assets/images/info-icon.png")}
+          style={{
+            width: 20,
+            height: 20,
+            marginRight: 20,
+          }}
+        />
       </View>
-      {(eurBalance != undefined && !isOnboarding && eurBalance > 0 && investment === "EURO") &&
-        <><View style={styles.flexContainer}>
-          <Text
-            style={{
-              ...globalFonts.mediumSubtitle,
-              color: "#ECFF78",
-              includeFontPadding: false,
-              marginLeft: 20
-            }}
-          >{eurBalance} €</Text>
-        </View></>
-      }
-      {(usdBalance != undefined && !isOnboarding && usdBalance > 0 && investment === "DOLLAR US") &&
-        <><View style={styles.flexContainer}>
-          <Text
-            style={{
-              ...globalFonts.mediumSubtitle,
-              color: "#ECFF78",
-              includeFontPadding: false,
-              marginLeft: 20
-            }}
-          >{usdBalance} $</Text>
-        </View></>
-      }
+      {eurBalance != undefined &&
+        !isOnboarding &&
+        eurBalance > 0 &&
+        investment === "EURO" && (
+          <>
+            <View style={styles.flexContainer}>
+              <Text
+                style={{
+                  ...globalFonts.mediumSubtitle,
+                  color: "#ECFF78",
+                  includeFontPadding: false,
+                  marginLeft: 20,
+                }}
+              >
+                {eurBalance} €
+              </Text>
+            </View>
+          </>
+        )}
+      {usdBalance != undefined &&
+        !isOnboarding &&
+        usdBalance > 0 &&
+        investment === "DOLLAR US" && (
+          <>
+            <View style={styles.flexContainer}>
+              <Text
+                style={{
+                  ...globalFonts.mediumSubtitle,
+                  color: "#ECFF78",
+                  includeFontPadding: false,
+                  marginLeft: 20,
+                }}
+              >
+                {usdBalance} $
+              </Text>
+            </View>
+          </>
+        )}
       <View style={styles.flexContainer}>
         <View style={styles.flexInputContainer}>
           <View style={styles.inputContainer}>
@@ -117,90 +138,120 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
           <Text style={styles.rendementValue}>7,85 %</Text>
         </View>
       </View>
-      {(setEurBalance != undefined && setUsdBalance != undefined && eurBalance != undefined && usdBalance != undefined && !isOnboarding && ((eurBalance > 0 && investment === "EURO") || (usdBalance > 0 && investment === "DOLLAR US"))) ? (<>
+      {setEurBalance != undefined &&
+      setUsdBalance != undefined &&
+      eurBalance != undefined &&
+      usdBalance != undefined &&
+      !isOnboarding &&
+      ((eurBalance === 0 && investment === "EURO") ||
+        (usdBalance > 0 && investment === "DOLLAR US")) ? (
+        <>
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              marginTop: 10,
+              justifyContent: "space-between",
+            }}
+          >
+            <TouchableOpacity
+              style={styles.buttonContainer2}
+              activeOpacity={0.6}
+              onPress={async () => {
+                const numericAmount = parseAmount(amount); // Convert amount to number
 
-        <View style={{ flexDirection: "row", width: "100%", marginTop: 10, justifyContent: "space-between" }}>
-          <TouchableOpacity style={styles.buttonContainer2} activeOpacity={0.6} onPress={async () => {
-            const numericAmount = parseAmount(amount); // Convert amount to number
+                if (numericAmount <= 0) {
+                  console.error(
+                    "Invalid amount. Please enter a number greater than 0."
+                  );
+                  return;
+                }
 
-            if (numericAmount <= 0) {
-              console.error(
-                "Invalid amount. Please enter a number greater than 0."
-              );
-              return;
-            }
+                //EURO
+                if (investing === true && investment === "EURO") {
+                  let newEurBalance = eurBalance - numericAmount;
+                  if (newEurBalance < 0) {
+                    console.error("Amount too high.");
+                    return;
+                  }
+                  setEurBalance(newEurBalance);
+                  await AsyncStorage.setItem(
+                    "investment_account_balance_eur",
+                    newEurBalance.toString()
+                  );
+                }
+                //DOLLAR US
+                if (investing === true && investment === "DOLLAR US") {
+                  let newUsdBalance = usdBalance - numericAmount;
+                  if (newUsdBalance < 0) {
+                    console.error("Amount too high.");
+                    return;
+                  }
+                  setUsdBalance(newUsdBalance);
+                  await AsyncStorage.setItem(
+                    "investment_account_balance_usd",
+                    newUsdBalance.toString()
+                  );
+                }
+              }}
+            >
+              <Image
+                source={require("@/assets/images/small-withdraw-button-shape.png")}
+                style={styles.buttonImage}
+              />
+              <Text style={styles.withdrawButtonText}>
+                {t("components.investment_card.withdraw")}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonContainer2}
+              activeOpacity={0.6}
+              onPress={async () => {
+                const numericAmount = parseAmount(amount); // Convert amount to number
 
-            //EURO
-            if (investing === true && investment === "EURO") {
-              let newEurBalance = eurBalance - numericAmount
-              if (newEurBalance < 0) {
-                console.error(
-                  "Amount too high."
-                );
-                return;
-              }
-              setEurBalance(newEurBalance);
-              await AsyncStorage.setItem("investment_account_balance_eur", newEurBalance.toString());
-            }
-            //DOLLAR US
-            if (investing === true && investment === "DOLLAR US") {
-              let newUsdBalance = usdBalance - numericAmount
-              if (newUsdBalance < 0) {
-                console.error(
-                  "Amount too high."
-                );
-                return;
-              }
-              setUsdBalance(newUsdBalance);
-              await AsyncStorage.setItem("investment_account_balance_usd", newUsdBalance.toString());
-            }
-          }}>
-            <Image
-              source={require("@/assets/images/small-withdraw-button-shape.png")}
-              style={styles.buttonImage}
-            />
-            <Text style={styles.withdrawButtonText}>
-              {t("components.investment_card.withdraw")}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonContainer2} activeOpacity={0.6} onPress={async () => {
-            const numericAmount = parseAmount(amount); // Convert amount to number
+                if (numericAmount <= 0) {
+                  console.error(
+                    "Invalid amount. Please enter a number greater than 0."
+                  );
+                  return;
+                }
 
-            if (numericAmount <= 0) {
-              console.error(
-                "Invalid amount. Please enter a number greater than 0."
-              );
-              return;
-            }
-
-            if (parseFloat(main_account_balance) < parseFloat(amount)) {
-              console.error(
-                "Amount too high."
-              );
-              return;
-            }
-            //EURO
-            if (investing === true && investment === "EURO") {
-              let newEurBalance = eurBalance + numericAmount
-              setEurBalance(newEurBalance);
-              await AsyncStorage.setItem("investment_account_balance_eur", newEurBalance.toString());
-            }
-            //DOLLAR US
-            if (investing === true && investment === "DOLLAR US") {
-              let newUsdBalance = usdBalance + numericAmount
-              setUsdBalance(newUsdBalance);
-              await AsyncStorage.setItem("investment_account_balance_usd", newUsdBalance.toString());
-            }
-          }}>
-            <Image
-              source={require("@/assets/images/small-deposit-button-shape.png")}
-              style={styles.buttonImage}
-            />
-            <Text style={styles.depositButtonText2}>
-              {t("components.investment_card.deposit")}
-            </Text>
-          </TouchableOpacity>
-        </View></>) : (<TouchableOpacity
+                if (parseFloat(main_account_balance) < parseFloat(amount)) {
+                  console.error("Amount too high.");
+                  return;
+                }
+                //EURO
+                if (investing === true && investment === "EURO") {
+                  let newEurBalance = eurBalance + numericAmount;
+                  setEurBalance(newEurBalance);
+                  await AsyncStorage.setItem(
+                    "investment_account_balance_eur",
+                    newEurBalance.toString()
+                  );
+                }
+                //DOLLAR US
+                if (investing === true && investment === "DOLLAR US") {
+                  let newUsdBalance = usdBalance + numericAmount;
+                  setUsdBalance(newUsdBalance);
+                  await AsyncStorage.setItem(
+                    "investment_account_balance_usd",
+                    newUsdBalance.toString()
+                  );
+                }
+              }}
+            >
+              <Image
+                source={require("@/assets/images/small-deposit-button-shape.png")}
+                style={styles.buttonImage}
+              />
+              <Text style={styles.depositButtonText2}>
+                {t("components.investment_card.deposit")}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : (
+        <TouchableOpacity
           style={styles.buttonContainer}
           activeOpacity={0.6}
           onPress={async () => {
@@ -245,8 +296,12 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
               router.push({
                 pathname: "/(onboarding)/onboarding_3",
               });
-            }
-            else if(eurBalance !=undefined && setEurBalance !=undefined && usdBalance != undefined && setUsdBalance != undefined) {
+            } else if (
+              eurBalance != undefined &&
+              setEurBalance != undefined &&
+              usdBalance != undefined &&
+              setUsdBalance != undefined
+            ) {
               const numericAmount = parseAmount(amount); // Convert amount to number
 
               if (numericAmount <= 0) {
@@ -257,22 +312,26 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
               }
 
               if (parseFloat(main_account_balance) < parseFloat(amount)) {
-                console.error(
-                  "Amount too high."
-                );
+                console.error("Amount too high.");
                 return;
               }
               //EURO
               if (investing === true && investment === "EURO") {
-                let newEurBalance = eurBalance + numericAmount
+                let newEurBalance = eurBalance + numericAmount;
                 setEurBalance(newEurBalance);
-                await AsyncStorage.setItem("investment_account_balance_eur", newEurBalance.toString());
+                await AsyncStorage.setItem(
+                  "investment_account_balance_eur",
+                  newEurBalance.toString()
+                );
               }
               //DOLLAR US
               if (investing === true && investment === "DOLLAR US") {
-                let newUsdBalance = usdBalance + numericAmount
+                let newUsdBalance = usdBalance + numericAmount;
                 setUsdBalance(newUsdBalance);
-                await AsyncStorage.setItem("investment_account_balance_usd", newUsdBalance.toString());
+                await AsyncStorage.setItem(
+                  "investment_account_balance_usd",
+                  newUsdBalance.toString()
+                );
               }
             }
           }}
@@ -284,7 +343,8 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
           <Text style={styles.depositButtonText}>
             {t("components.investment_card.deposit")}
           </Text>
-        </TouchableOpacity>)}
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

@@ -111,12 +111,12 @@ export const styles = StyleSheet.create({
     color: "#13293D",
     fontSize: 14,
     fontFamily: "Poppins_500Medium",
-    left: 85, // Adjust this value to position the text towards the left
+    left: 78, // Adjust this value to position the text towards the left
     textAlign: "left", // Ensure the text aligns to the left
   },
   buttonContainer2: {
     position: "relative",
-    width: "48%",
+    width: "50%",
     height: 53, // Match the height of your image
     justifyContent: "center",
   },

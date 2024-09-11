@@ -18,12 +18,6 @@ export default function InvestmentAccount({
         <Text style={globalFonts.mediumSubtitle}>
           {t("pages.home.your_investment_account")}
         </Text>
-        <Image
-          source={require("@/assets/images/info-icon.png")}
-          style={{
-            marginBottom: 5,
-          }}
-        />
       </View>
       <View
         style={{
