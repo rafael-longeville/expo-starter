@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { Tabs } from "expo-router";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import CustomTabBar from "@/components/CustomTabBar";
@@ -7,7 +13,39 @@ import CustomTabBar from "@/components/CustomTabBar";
 type TabRoutes = "home" | "settings" | "account";
 
 export default function TabLayout() {
-  const { isModalOpen, isCheckoutModalOpen } = useStayUpdatedModalContext();
+  return (
+    <View style={styles.container}>
+      <Tabs
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarShowLabel: false,
+          // tabBarIcon: ({ focused }) => {
+          //   const tabName = route.name as TabRoutes;
+          //   return (
+          //     <Image
+          //       source={TABS[tabName]?.[focused ? "active" : "inactive"]}
+          //       style={{
+          //         width: route.name === "settings" ? 37 : 35,
+          //         height: route.name === "settings" ? 36 : 35,
+          //         resizeMode: "contain",
+          //       }}
+          //     />
+          //   );
+          // },
+        })}
+        tabBar={(props) => <TabBar {...props} />}
+      >
+        <Tabs.Screen name="home" />
+        <Tabs.Screen name="settings" />
+        <Tabs.Screen name="login" options={{ href: null }} />
+      </Tabs>
+    </View>
+  );
+}
+
+const TabBar = ({ state, descriptors, navigation }: any) => {
+  const { isModalOpen, isCheckoutModalOpen, setIsCheckoutModalOpen } =
+    useStayUpdatedModalContext();
 
   const TABS: Record<TabRoutes, { active?: any; inactive: any }> = {
     home: {
@@ -25,36 +63,37 @@ export default function TabLayout() {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      borderRadius: 30,
-    },
     tabBar: {
       display: isCheckoutModalOpen || isModalOpen ? "none" : "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
       position: "absolute",
       bottom: 20,
       left: 20,
       right: 20,
       height: 80,
-      backgroundColor: "#DFE6FF",
+      backgroundColor: "#DFE6FF", // Ensure this color matches your design
       borderWidth: 1,
-      borderTopWidth: 1,
       borderRadius: 30,
       borderColor: "#13293D",
-      padding: 0,
-      margin: 0,
+      flexDirection: "row",
+      justifyContent: "center",
+      gap: 40,
+      alignItems: "center",
+      elevation: 10, // For Android shadow
+      shadowColor: "#000", // For iOS shadow
+      shadowOffset: { width: 0, height: 10 },
+      shadowOpacity: 0.2,
+      shadowRadius: 10,
+    },
+    tabItem: {
+      alignItems: "center",
+      justifyContent: "center",
     },
     checkoutButton: {
-      position: "absolute",
-      bottom: 20,
-      right: 20,
       width: 45,
       height: 30,
       justifyContent: "center",
       alignItems: "center",
+      flexShrink: 0, // Prevent shrinking
     },
     checkoutImage: {
       width: 45,
@@ -63,42 +102,104 @@ export default function TabLayout() {
     },
   });
 
+  // Define routes to exclude
+  const routesToExclude = ["checkout", "login"];
+
+  // Filter out the excluded routes
+  const filteredRoutes = state.routes.filter(
+    (route: any) => !routesToExclude.includes(route.name)
+  );
+
+  // Add checkout button after the first two routes and before the last route
+  const firstTwoRoutes = filteredRoutes.slice(0, 1);
+  const lastRoute = filteredRoutes.slice(1);
+
   return (
-    <View style={styles.container}>
-      <Tabs
-        screenOptions={({ route }) => ({
-          headerShown: false,
-          tabBarShowLabel: false,
-          tabBarStyle: styles.tabBar,
-          tabBarIcon: ({ focused }) => {
-            const tabName = route.name as TabRoutes;
-            return (
-              <Image
-                source={TABS[tabName]?.[focused ? "active" : "inactive"]}
-                style={{
-                  width: route.name === "settings" ? 37 : 35,
-                  height: route.name === "settings" ? 36 : 35,
-                  resizeMode: "contain",
-                }}
-              />
-            );
-          },
-        })}
-      >
-        <Tabs.Screen name="home" />
-        <Tabs.Screen name="settings" />
-        <Tabs.Screen name="login" options={{ href: null }} />
-        {/* Custom Checkout Button */}
-      </Tabs>
-      {/* <TouchableOpacity
+    <View style={styles.tabBar}>
+      {/* Render the first two routes */}
+      {firstTwoRoutes.map((route: any) => (
+        <Pressable
+          key={route.key}
+          onPress={() => navigation.navigate(route.name)}
+          style={styles.tabItem}
+        >
+          <Image
+            source={
+              TABS[route.name as TabRoutes]?.[
+                route.key === state.routes[state.index].key
+                  ? "active"
+                  : "inactive"
+              ]
+            }
+            style={{
+              width: route.name === "settings" ? 37 : 35,
+              height: route.name === "settings" ? 36 : 35,
+              resizeMode: "contain",
+            }}
+          />
+        </Pressable>
+      ))}
+
+      {/* Checkout button */}
+      <Pressable
+        key="checkout"
+        onPress={() => {
+          navigation.navigate("home");
+          setIsCheckoutModalOpen(true);
+        }}
         style={styles.checkoutButton}
-        onPress={() => setIsCheckoutModalOpen(true)}
       >
         <Image
           source={require("../../assets/images/tabs/checkout.png")}
           style={styles.checkoutImage}
         />
-      </TouchableOpacity> */}
+      </Pressable>
+
+      {/* Render the last route */}
+      {lastRoute.map((route: any) => (
+        <Pressable
+          key={route.key}
+          onPress={() => navigation.navigate(route.name)}
+          style={styles.tabItem}
+        >
+          <Image
+            source={
+              TABS[route.name as TabRoutes]?.[
+                route.key === state.routes[state.index].key
+                  ? "active"
+                  : "inactive"
+              ]
+            }
+            style={{
+              width: route.name === "settings" ? 37 : 35,
+              height: route.name === "settings" ? 36 : 35,
+              resizeMode: "contain",
+            }}
+          />
+        </Pressable>
+      ))}
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    borderRadius: 30,
+  },
+  tabBar: {
+    bottom: 25,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "white",
+    marginHorizontal: 20,
+    paddingVertical: 15,
+    borderRadius: 25,
+    borderCurve: "continuous",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 10 },
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
+  },
+});

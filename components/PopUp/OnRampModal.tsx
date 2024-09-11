@@ -21,10 +21,6 @@ import {
   EventTypes,
   Order,
 } from "@transak/react-native-sdk";
-import { router } from "expo-router";
-import { useActiveAccount } from "thirdweb/react";
-import { ScrollView } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
 
 const OnRampModal = forwardRef(
   ({ setIsModalOpen, setBlurred, account }: any, ref: any) => {
@@ -116,7 +112,7 @@ const OnRampModal = forwardRef(
 
     return (
       <>
-        <Button
+        {/* <Button
           style={{
             backgroundColor: "#F1F1F1",
             borderRadius: 30,
@@ -129,7 +125,7 @@ const OnRampModal = forwardRef(
           onPress={handlePresentModalPress}
         >
           <Text style={globalFonts.subtitle}>Open Checkout</Text>
-        </Button>
+        </Button> */}
 
         <BottomSheetModal
           ref={ref}

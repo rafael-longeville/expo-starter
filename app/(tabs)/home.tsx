@@ -129,6 +129,13 @@ export default function HomeScreen() {
     checkFirstVisit();
   }, []);
 
+  useEffect(() => {
+    if (isCheckoutModalOpen) {
+      onRampModalRef.current?.present();
+      setIsBlurred(true); // Enable blur when modal is open
+    }
+  }, [isCheckoutModalOpen]);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
