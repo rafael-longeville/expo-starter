@@ -31,6 +31,11 @@ const setInitialLanguage = async () => {
   const selectedLanguage = await AsyncStorage.getItem("selectedLanguage");
   if (!selectedLanguage) {
     await AsyncStorage.setItem("selectedLanguage", preferredLocale || "en");
+    if (preferredLocale == "fr") {
+      await AsyncStorage.setItem("selectedCurrency", "euro");
+    }
+    else
+      await AsyncStorage.setItem("selectedCurrency", "dollar");
   }
 };
 
