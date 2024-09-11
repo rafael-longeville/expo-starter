@@ -190,7 +190,9 @@ export default function Settings({
 
   return (
     <View style={styles.container}>
-      <View>
+      <Text>WIP</Text>
+
+      {/*     <View>
         <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
       </View>
       <View
@@ -365,7 +367,7 @@ export default function Settings({
             </Text>
           </Pressable>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -374,7 +376,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "flex-start",
+    alignItems: "center",
     gap: 20,
   },
   questionText: {
