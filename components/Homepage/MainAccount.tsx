@@ -10,7 +10,13 @@ import {
   Pressable,
 } from "react-native";
 
-export default function MainAccount({ currency, main_account_balance }: { currency: string, main_account_balance : string }) {
+export default function MainAccount({
+  currency,
+  main_account_balance,
+}: {
+  currency: string;
+  main_account_balance: string;
+}) {
   const { t } = useTranslation();
 
   return (
@@ -19,12 +25,6 @@ export default function MainAccount({ currency, main_account_balance }: { curren
         <Text style={globalFonts.mediumSubtitle}>
           {t("pages.home.your_main_account")}
         </Text>
-        <Pressable /* onPress={modalPress} */>
-          <Image
-            source={require("@/assets/images/info-icon.png")}
-            style={{ width: 20, height: 20 }}
-          />
-        </Pressable>
       </View>
       <View
         style={{
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     position: "relative",
     width: "50%",
-    height: 53, // Match the height of your image
+    height: 62, // Match the height of your image
     justifyContent: "center",
   },
   buttonImage: {

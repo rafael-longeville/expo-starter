@@ -83,12 +83,6 @@ export default function TabLayout() {
               />
             );
           },
-          tabBarButton: (props) => {
-            if (route.name === "checkout") {
-              return null; // Hide default tab button for checkout
-            }
-            return <View {...props} />;
-          },
         })}
       >
         <Tabs.Screen name="home" />

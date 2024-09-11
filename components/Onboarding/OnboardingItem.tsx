@@ -84,7 +84,13 @@ export default function OnboardingItem({ item }: any) {
           >
             {item.subtitle}{" "}
           </Text>
-          <Image source={require("@/assets/images/info-icon.png")} />
+          <Image
+            source={require("@/assets/images/info-icon.png")}
+            style={{
+              width: 20,
+              height: 20,
+            }}
+          />
         </View>
       ) : (
         <Text style={styles.subtitle}>{item.subtitle} </Text>
