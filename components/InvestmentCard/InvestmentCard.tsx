@@ -145,7 +145,7 @@ const InvestmentCard: React.FC<InvestmentCardProps> = ({
       eurBalance != undefined &&
       usdBalance != undefined &&
       !isOnboarding &&
-      ((eurBalance === 0 && investment === "EURO") ||
+      ((eurBalance > 0 && investment === "EURO") ||
         (usdBalance > 0 && investment === "DOLLAR US")) ? (
         <>
           <View
