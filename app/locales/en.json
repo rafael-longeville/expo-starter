@@ -34,6 +34,7 @@
     },
     "onboarding_2": {
       "title": "Grow your money",
+      "second_title": "Debank your liquidity",
       "subtitle_1": "Invest your funds in a",
       "subtitle_2": "Interest-bearing account,",
       "subtitle_3": "earn interest from the very first second:",
@@ -41,7 +42,8 @@
       "second_subtitle_2": "Current account",
       "second_subtitle_3": "sovereign:",
       "continue_button": "Continue without funding",
-      "has_account": "I already have an account"
+      "has_account": "I already have an account",
+      "disclaimer": "Maximum €100 for the first deposit"
     },
     "onboarding_3": {
       "title": "Access your account",
@@ -86,7 +88,10 @@
       "contact_us": {
         "title": "Contact us",
         "href": "https://moncomptesouverain.fr/"
-      }
+      },
+      "make_a_donation": "Make a donation",
+      "public_adress": "Your public IBEx Wallet address",
+      "disconnect": "Disconnect"
     }
   },
   "disclaimer": "By continuing, you confirm that you have read and accepted",
