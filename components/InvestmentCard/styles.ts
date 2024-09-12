@@ -116,7 +116,7 @@ export const styles = StyleSheet.create({
   },
   buttonContainer2: {
     position: "relative",
-    width: "50%",
+    width: "48%",
     height: 53, // Match the height of your image
     justifyContent: "center",
   },

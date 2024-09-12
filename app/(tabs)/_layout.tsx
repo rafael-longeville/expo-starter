@@ -74,15 +74,13 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
       borderWidth: 1,
       borderRadius: 30,
       borderColor: "#13293D",
+    },
+    tabBarContainer: {
       flexDirection: "row",
-      justifyContent: "center",
-      gap: 40,
+      justifyContent: "space-between",
       alignItems: "center",
-      elevation: 10, // For Android shadow
-      shadowColor: "#000", // For iOS shadow
-      shadowOffset: { width: 0, height: 10 },
-      shadowOpacity: 0.2,
-      shadowRadius: 10,
+      height: "100%",
+      width: "80%",
     },
     tabItem: {
       alignItems: "center",
@@ -116,68 +114,79 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
 
   return (
     <View style={styles.tabBar}>
-      {/* Render the first two routes */}
-      {firstTwoRoutes.map((route: any) => (
-        <Pressable
-          key={route.key}
-          onPress={() => navigation.navigate(route.name)}
-          style={styles.tabItem}
-        >
-          <Image
-            source={
-              TABS[route.name as TabRoutes]?.[
-                route.key === state.routes[state.index].key
-                  ? "active"
-                  : "inactive"
-              ]
-            }
-            style={{
-              width: route.name === "settings" ? 37 : 35,
-              height: route.name === "settings" ? 36 : 35,
-              resizeMode: "contain",
-            }}
-          />
-        </Pressable>
-      ))}
-
-      {/* Checkout button */}
-      <Pressable
-        key="checkout"
-        onPress={() => {
-          navigation.navigate("home");
-          setIsCheckoutModalOpen(true);
+      <View
+        style={{
+          flexDirection: "row",
+          width: "100%",
+          justifyContent: "center",
+          height: "100%",
         }}
-        style={styles.checkoutButton}
       >
-        <Image
-          source={require("../../assets/images/tabs/checkout.png")}
-          style={styles.checkoutImage}
-        />
-      </Pressable>
+        <View style={styles.tabBarContainer}>
+          {/* Render the first two routes */}
+          {firstTwoRoutes.map((route: any) => (
+            <Pressable
+              key={route.key}
+              onPress={() => navigation.navigate(route.name)}
+              style={styles.tabItem}
+            >
+              <Image
+                source={
+                  TABS[route.name as TabRoutes]?.[
+                    route.key === state.routes[state.index].key
+                      ? "active"
+                      : "inactive"
+                  ]
+                }
+                style={{
+                  width: route.name === "settings" ? 37 : 35,
+                  height: route.name === "settings" ? 36 : 35,
+                  resizeMode: "contain",
+                }}
+              />
+            </Pressable>
+          ))}
 
-      {/* Render the last route */}
-      {lastRoute.map((route: any) => (
-        <Pressable
-          key={route.key}
-          onPress={() => navigation.navigate(route.name)}
-          style={styles.tabItem}
-        >
-          <Image
-            source={
-              TABS[route.name as TabRoutes]?.[
-                route.key === state.routes[state.index].key
-                  ? "active"
-                  : "inactive"
-              ]
-            }
-            style={{
-              width: route.name === "settings" ? 37 : 35,
-              height: route.name === "settings" ? 36 : 35,
-              resizeMode: "contain",
+          {/* Checkout button */}
+          <Pressable
+            key="checkout"
+            onPress={() => {
+              navigation.navigate("home");
+              setIsCheckoutModalOpen(true);
             }}
-          />
-        </Pressable>
-      ))}
+            style={styles.checkoutButton}
+          >
+            <Image
+              source={require("../../assets/images/tabs/checkout.png")}
+              style={styles.checkoutImage}
+            />
+          </Pressable>
+
+          {/* Render the last route */}
+          {lastRoute.map((route: any) => (
+            <Pressable
+              key={route.key}
+              onPress={() => navigation.navigate(route.name)}
+              style={styles.tabItem}
+            >
+              <Image
+                source={
+                  TABS[route.name as TabRoutes]?.[
+                    route.key === state.routes[state.index].key
+                      ? "active"
+                      : "inactive"
+                  ]
+                }
+                style={{
+                  width: route.name === "settings" ? 37 : 35,
+                  height: route.name === "settings" ? 36 : 35,
+                  resizeMode: "contain",
+                }}
+              />
+            </Pressable>
+          ))}
+        </View>
+      </View>
     </View>
   );
 };

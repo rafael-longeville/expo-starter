@@ -57,7 +57,14 @@ export default function MainAccount({
           {main_account_balance} {currency}
         </Text>
       </View>
-      <View style={{ flexDirection: "row", width: "100%", marginTop: 10 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          width: "100%",
+          marginTop: 10,
+          justifyContent: "space-between",
+        }}
+      >
         <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.6}>
           <Image
             source={require("@/assets/images/small-withdraw-button-shape.png")}
@@ -92,7 +99,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: "relative",
-    width: "50%",
+    width: "48%",
     height: 62, // Match the height of your image
     justifyContent: "center",
   },
