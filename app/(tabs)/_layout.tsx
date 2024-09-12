@@ -105,17 +105,8 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
     },
   });
 
-  // Define routes to exclude
-  const routesToExclude = ["checkout", "login"];
-
-  // Filter out the excluded routes
-  const filteredRoutes = state.routes.filter(
-    (route: any) => !routesToExclude.includes(route.name)
-  );
-
-  // Add checkout button after the first two routes and before the last route
-  const firstTwoRoutes = filteredRoutes.slice(0, 1);
-  const lastRoute = filteredRoutes.slice(1);
+  const firstTwoRoutes = state.routes.slice(0, 1);
+  const lastRoute = state.routes.slice(1);
 
   return (
     <View style={styles.tabBar}>
