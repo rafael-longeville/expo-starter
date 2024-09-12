@@ -102,7 +102,7 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
       justifyContent: "space-between",
       alignItems: "center",
       height: "100%",
-      width: "80%",
+      width: "90%",
     },
     tabItem: {
       alignItems: "center",
