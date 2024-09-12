@@ -1,14 +1,7 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import { View, StyleSheet, Image, Pressable } from "react-native";
 import { Tabs } from "expo-router";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
-import CustomTabBar from "@/components/CustomTabBar";
 
 type TabRoutes = "home" | "settings" | "account";
 
