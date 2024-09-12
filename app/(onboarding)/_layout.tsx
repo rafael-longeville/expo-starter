@@ -57,12 +57,14 @@ export default function OnboardingLayout() {
         style={styles.backgroundImage}
       />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        {currentSegment !== "onboarding_3" && (
-          <Image
-            source={IMAGES[currentSegment as keyof typeof IMAGES]}
-            style={styles.image}
-          />
-        )}
+        {currentSegment !== "onboarding_3" &&
+          IMAGES[currentSegment as keyof typeof IMAGES] && (
+            <Image
+              source={IMAGES[currentSegment as keyof typeof IMAGES]}
+              style={styles.image}
+            />
+          )}
+
         {renderCurrentScreen()}
 
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT && (
