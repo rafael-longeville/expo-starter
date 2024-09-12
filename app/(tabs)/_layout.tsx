@@ -37,7 +37,7 @@ export default function TabLayout() {
       >
         <Tabs.Screen name="home" />
         <Tabs.Screen name="settings" />
-        <Tabs.Screen name="login" options={{ href: null }} />
+        <Tabs.Screen name="account" />
       </Tabs>
     </View>
   );
@@ -66,15 +66,17 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
     tabBar: {
       display: isCheckoutModalOpen || isModalOpen ? "none" : "flex",
       position: "absolute",
-      bottom: 20,
+      bottom: 25,
       left: 20,
       right: 20,
+      paddingHorizontal: 20, // Use padding instead of absolute positioning
       height: 80,
-      backgroundColor: "#DFE6FF", // Ensure this color matches your design
+      backgroundColor: "#DFE6FF",
       borderWidth: 1,
       borderRadius: 30,
       borderColor: "#13293D",
     },
+
     tabBarContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -82,10 +84,13 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
       height: "100%",
       width: "80%",
     },
+
     tabItem: {
       alignItems: "center",
       justifyContent: "center",
+      flexShrink: 0, // Prevent shrinking of icons or content
     },
+
     checkoutButton: {
       width: 45,
       height: 30,
@@ -139,8 +144,8 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
                   ]
                 }
                 style={{
-                  width: route.name === "settings" ? 37 : 35,
-                  height: route.name === "settings" ? 36 : 35,
+                  width: 36,
+                  height: 36,
                   resizeMode: "contain",
                 }}
               />
