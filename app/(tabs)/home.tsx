@@ -17,14 +17,16 @@ import {
 } from "@gorhom/bottom-sheet";
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
-import { BlurView } from "@react-native-community/blur"; 
+import { BlurView } from "@react-native-community/blur";
 import OnRampModal from "@/components/PopUp/OnRampModal";
 
 // Function to get conversion rate
 const getConversionRate = async () => {
   try {
     // Primary API - Frankfurter
-    const response = await fetch("https://api.frankfurter.app/latest?from=USD&to=EUR");
+    const response = await fetch(
+      "https://api.frankfurter.app/latest?from=USD&to=EUR"
+    );
     const data = await response.json();
     return data.rates.EUR;
   } catch (error) {
@@ -32,7 +34,9 @@ const getConversionRate = async () => {
 
     // Fallback API - FreeCurrencyAPI
     try {
-      const response = await fetch("https://api.freecurrencyapi.com/v1/latest?base_currency=USD&apikey=YOUR_API_KEY");
+      const response = await fetch(
+        "https://api.freecurrencyapi.com/v1/latest?base_currency=USD&apikey=YOUR_API_KEY"
+      );
       const data = await response.json();
       return data.data.EUR;
     } catch (fallbackError) {
@@ -125,7 +129,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     const fetchBalanceWithConversion = async () => {
-      if(data != undefined) {
+      if (data != undefined) {
         let balance = parseFloat(data?.displayValue) || 0;
         if (currency === "€") {
           const conversionRate = await getConversionRate();
@@ -197,14 +201,20 @@ export default function HomeScreen() {
               currency={currency}
               main_account_balance={mainAccountBalance}
               investment_account_balance={(eurBalance + usdBalance).toFixed(2)}
-              total_balance={
-                (parseFloat(mainAccountBalance) + eurBalance + usdBalance).toFixed(2)
-              }
+              total_balance={(
+                parseFloat(mainAccountBalance) +
+                eurBalance +
+                usdBalance
+              ).toFixed(2)}
             />
 
             <MainAccount
               currency={currency}
               main_account_balance={mainAccountBalance}
+              ref={onRampModalRef}
+              setIsModalOpen={setIsCheckoutModalOpen}
+              setBlurred={setIsBlurred}
+              onDismiss={handleCloseModal}
             />
             <InvestmentAccount
               currency={currency}
@@ -222,7 +232,11 @@ export default function HomeScreen() {
               <InvestmentCard
                 investment={`DOLLAR US`}
                 investing
-                main_account_balance={formatBalance(data?.displayValue, eurBalance, usdBalance)}
+                main_account_balance={formatBalance(
+                  data?.displayValue,
+                  eurBalance,
+                  usdBalance
+                )}
                 eurBalance={eurBalance}
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
@@ -231,7 +245,11 @@ export default function HomeScreen() {
               <InvestmentCard
                 investment={`EURO`}
                 investing
-                main_account_balance={formatBalance(data?.displayValue, eurBalance, usdBalance)}
+                main_account_balance={formatBalance(
+                  data?.displayValue,
+                  eurBalance,
+                  usdBalance
+                )}
                 eurBalance={eurBalance}
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
