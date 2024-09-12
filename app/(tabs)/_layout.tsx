@@ -1,11 +1,32 @@
 import React from "react";
-import { View, StyleSheet, Image, Pressable } from "react-native";
+import { View, StyleSheet, Image, Pressable, Text } from "react-native";
 import { Tabs } from "expo-router";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
 type TabRoutes = "home" | "settings" | "account";
 
 export default function TabLayout() {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      borderRadius: 30,
+    },
+    tabBar: {
+      bottom: 25,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: "white",
+      marginHorizontal: 20,
+      paddingVertical: 15,
+      borderRadius: 25,
+      borderCurve: "continuous",
+      shadowColor: "black",
+      shadowOffset: { width: 0, height: 10 },
+      shadowRadius: 10,
+      shadowOpacity: 0.1,
+    },
+  });
   return (
     <View style={styles.container}>
       <Tabs
@@ -62,14 +83,13 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
       bottom: 25,
       left: 20,
       right: 20,
-      paddingHorizontal: 20, // Use padding instead of absolute positioning
+      paddingHorizontal: 20,
       height: 80,
       backgroundColor: "#DFE6FF",
       borderWidth: 1,
       borderRadius: 30,
       borderColor: "#13293D",
     },
-
     tabBarContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -77,19 +97,17 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
       height: "100%",
       width: "80%",
     },
-
     tabItem: {
       alignItems: "center",
       justifyContent: "center",
-      flexShrink: 0, // Prevent shrinking of icons or content
+      flexShrink: 0,
     },
-
     checkoutButton: {
       width: 45,
       height: 30,
       justifyContent: "center",
       alignItems: "center",
-      flexShrink: 0, // Prevent shrinking
+      flexShrink: 0,
     },
     checkoutImage: {
       width: 45,
@@ -98,8 +116,9 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
     },
   });
 
-  const firstTwoRoutes = state.routes.slice(0, 1);
-  const lastRoute = state.routes.slice(1);
+  // Separate the first route and the last two routes
+  const firstRoute = state.routes[0];
+  const lastTwoRoutes = state.routes.slice(1);
 
   return (
     <View style={styles.tabBar}>
@@ -112,31 +131,27 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
         }}
       >
         <View style={styles.tabBarContainer}>
-          {/* Render the first two routes */}
-          {firstTwoRoutes.map((route: any) => (
-            <Pressable
-              key={route.key}
-              onPress={() => navigation.navigate(route.name)}
-              style={styles.tabItem}
-            >
-              <Image
-                source={
-                  TABS[route.name as TabRoutes]?.[
-                    route.key === state.routes[state.index].key
-                      ? "active"
-                      : "inactive"
-                  ]
-                }
-                style={{
-                  width: 36,
-                  height: 36,
-                  resizeMode: "contain",
-                }}
-              />
-            </Pressable>
-          ))}
+          {/* Render the first route */}
+          <Pressable
+            key={firstRoute.key}
+            onPress={() => navigation.navigate(firstRoute.name)}
+            style={styles.tabItem}
+          >
+            <Image
+              source={
+                state.index === 0
+                  ? TABS[firstRoute.name as TabRoutes].active
+                  : TABS[firstRoute.name as TabRoutes].inactive
+              }
+              style={{
+                width: 35,
+                height: 35,
+                resizeMode: "contain",
+              }}
+            />
+          </Pressable>
 
-          {/* Checkout button */}
+          {/* Render the checkout button */}
           <Pressable
             key="checkout"
             onPress={() => {
@@ -151,53 +166,34 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
             />
           </Pressable>
 
-          {/* Render the last route */}
-          {lastRoute.map((route: any) => (
-            <Pressable
-              key={route.key}
-              onPress={() => navigation.navigate(route.name)}
-              style={styles.tabItem}
-            >
-              <Image
-                source={
-                  TABS[route.name as TabRoutes]?.[
-                    route.key === state.routes[state.index].key
-                      ? "active"
-                      : "inactive"
-                  ]
-                }
-                style={{
-                  width: route.name === "settings" ? 37 : 35,
-                  height: route.name === "settings" ? 36 : 35,
-                  resizeMode: "contain",
-                }}
-              />
-            </Pressable>
-          ))}
+          {/* Render the last two routes */}
+          {lastTwoRoutes.map((route: any, index: number) => {
+            const isFocused = state.index === index + 1; // Adjust index for last routes
+            const tabName = route.name as TabRoutes;
+            const icon = isFocused
+              ? TABS[tabName].active
+              : TABS[tabName].inactive;
+
+            if (!route) return null; // Ensure the route is not undefined
+            return (
+              <Pressable
+                key={route.key}
+                onPress={() => navigation.navigate(route.name)}
+                style={styles.tabItem}
+              >
+                <Image
+                  source={icon}
+                  style={{
+                    width: 35,
+                    height: 35,
+                    resizeMode: "contain",
+                  }}
+                />
+              </Pressable>
+            );
+          })}
         </View>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 30,
-  },
-  tabBar: {
-    bottom: 25,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "white",
-    marginHorizontal: 20,
-    paddingVertical: 15,
-    borderRadius: 25,
-    borderCurve: "continuous",
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 10 },
-    shadowRadius: 10,
-    shadowOpacity: 0.1,
-  },
-});
