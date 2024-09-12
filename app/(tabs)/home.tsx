@@ -137,7 +137,7 @@ export default function HomeScreen() {
             balance *= conversionRate; // Convert USD to EUR
           }
         }
-        setMainAccountBalance(balance.toFixed(2));
+        setMainAccountBalance((balance - eurBalance - usdBalance).toFixed(2));
       }
     };
 
@@ -232,11 +232,8 @@ export default function HomeScreen() {
               <InvestmentCard
                 investment={`DOLLAR US`}
                 investing
-                main_account_balance={formatBalance(
-                  data?.displayValue,
-                  eurBalance,
-                  usdBalance
-                )}
+                main_account_balance={mainAccountBalance}
+
                 eurBalance={eurBalance}
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
@@ -245,11 +242,8 @@ export default function HomeScreen() {
               <InvestmentCard
                 investment={`EURO`}
                 investing
-                main_account_balance={formatBalance(
-                  data?.displayValue,
-                  eurBalance,
-                  usdBalance
-                )}
+                main_account_balance={mainAccountBalance}
+
                 eurBalance={eurBalance}
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
