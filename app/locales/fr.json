@@ -124,6 +124,12 @@
       "link": "En savoir plus.",
       "href_link": "https://moncomptesouverain.fr/",
       "button": "J'ai compris"
+    },
+    "transaction": {
+      "title": "Cette opération requiert votre attention",
+      "description": "Vous allez déplacer {{amount}}{{currency}} de votre compte courant vers votre compte rémunéré. Êtes-vous sûr de vouloir continuer ?",
+      "cancel": "Annuler",
+      "confirm": "Confirmer"
     }
   }
 }

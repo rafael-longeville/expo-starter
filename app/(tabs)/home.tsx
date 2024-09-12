@@ -19,6 +19,7 @@ import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { BlurView } from "@react-native-community/blur";
 import OnRampModal from "@/components/PopUp/OnRampModal";
+import TransactionValidationModal from "@/components/PopUp/TransactionValidationModal";
 
 // Function to get conversion rate
 const getConversionRate = async () => {
@@ -77,13 +78,16 @@ export default function HomeScreen() {
   const {
     isCheckoutModalOpen,
     setIsCheckoutModalOpen,
-    setIsBlurred,
     isBlurred,
+    setIsBlurred,
     setIsModalOpen,
+    isValidationModalOpen,
+    setIsValidationModalOpen,
   } = useStayUpdatedModalContext();
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
   const onRampModalRef = useRef<BottomSheetModal>(null);
+  const transactionValidationModalRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     const fetchCurrency = async () => {
@@ -173,7 +177,7 @@ export default function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    if (isCheckoutModalOpen) {
+    if (isCheckoutModalOpen || isValidationModalOpen) {
       onRampModalRef.current?.present();
       setIsBlurred(true); // Enable blur when modal is open
     }
@@ -233,7 +237,6 @@ export default function HomeScreen() {
                 investment={`DOLLAR US`}
                 investing
                 main_account_balance={mainAccountBalance}
-
                 eurBalance={eurBalance}
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
@@ -243,7 +246,6 @@ export default function HomeScreen() {
                 investment={`EURO`}
                 investing
                 main_account_balance={mainAccountBalance}
-
                 eurBalance={eurBalance}
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
@@ -263,6 +265,13 @@ export default function HomeScreen() {
             setIsModalOpen={setIsCheckoutModalOpen}
             setBlurred={setIsBlurred}
             account={account}
+          />
+          <TransactionValidationModal
+            ref={transactionValidationModalRef}
+            setIsModalOpen={setIsValidationModalOpen}
+            setBlurred={setIsBlurred}
+            account={account}
+            currency={currency}
           />
         </SafeAreaView>
       </BottomSheetModalProvider>

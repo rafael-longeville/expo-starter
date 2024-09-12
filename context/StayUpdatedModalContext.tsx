@@ -7,6 +7,8 @@ interface StayUpdatedModalContentProps {
   setIsCheckoutModalOpen: (isOpen: boolean) => void;
   isBlurred: boolean;
   setIsBlurred: (isBlurred: boolean) => void;
+  isValidationModalOpen: boolean;
+  setIsValidationModalOpen: (isOpen: boolean) => void;
 }
 
 const StayUpdatedModalContent = createContext<StayUpdatedModalContentProps>({
@@ -16,6 +18,8 @@ const StayUpdatedModalContent = createContext<StayUpdatedModalContentProps>({
   setIsCheckoutModalOpen: () => {},
   isBlurred: false,
   setIsBlurred: () => {},
+  isValidationModalOpen: false,
+  setIsValidationModalOpen: () => {},
 });
 
 export const StayUpdatedModalContentProvider: React.FC<{
@@ -24,6 +28,7 @@ export const StayUpdatedModalContentProvider: React.FC<{
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isBlurred, setIsBlurred] = useState(false); // Add this line to declare isBlurred state
+  const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
 
   return (
     <StayUpdatedModalContent.Provider
@@ -33,7 +38,9 @@ export const StayUpdatedModalContentProvider: React.FC<{
         isCheckoutModalOpen,
         setIsCheckoutModalOpen,
         isBlurred, // Pass the isBlurred state
-        setIsBlurred, // Pass the setIsBlurred state updater
+        setIsBlurred, // Pass the setIsBlurred state updater*
+        isValidationModalOpen,
+        setIsValidationModalOpen,
       }}
     >
       {children}

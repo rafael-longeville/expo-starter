@@ -28,7 +28,7 @@ const OnRampModal = forwardRef(
     const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
 
     // variables
-    const snapPoints = useMemo(() => ["85%"], []);
+    const snapPoints = useMemo(() => ["95%"], []);
 
     // callbacks
     const handlePresentModalPress = useCallback(() => {

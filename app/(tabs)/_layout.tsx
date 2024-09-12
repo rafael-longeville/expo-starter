@@ -58,8 +58,12 @@ export default function TabLayout() {
 }
 
 const TabBar = ({ state, descriptors, navigation }: any) => {
-  const { isModalOpen, isCheckoutModalOpen, setIsCheckoutModalOpen } =
-    useStayUpdatedModalContext();
+  const {
+    isModalOpen,
+    isCheckoutModalOpen,
+    isValidationModalOpen,
+    setIsCheckoutModalOpen,
+  } = useStayUpdatedModalContext();
 
   const TABS: Record<TabRoutes, { active?: any; inactive: any }> = {
     home: {
@@ -78,7 +82,10 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
 
   const styles = StyleSheet.create({
     tabBar: {
-      display: isCheckoutModalOpen || isModalOpen ? "none" : "flex",
+      display:
+        isCheckoutModalOpen || isModalOpen || isValidationModalOpen
+          ? "none"
+          : "flex",
       position: "absolute",
       bottom: 25,
       left: 20,
