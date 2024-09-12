@@ -19,6 +19,9 @@
       "title": "Bienvenue",
       "subtitle": "Vous êtes à un doigt de créer votre compte souverain gratuitement !"
     },
+    "settings": {
+      "title": "Réglages"
+    },
     "onboarding_1": {
       "title": "Paramètrez l'affichage de la devise et les notifications",
       "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
@@ -89,9 +92,6 @@
       "make_a_donation": "Faire un don",
       "public_adress": "Votre adresse publique IBEx Wallet",
       "disconnect": "Se déconnecter"
-    },
-    "settings": {
-      "title": "Réglages"
     }
   },
   "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",

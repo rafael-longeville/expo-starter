@@ -2,38 +2,24 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
+  StyleSheet,
+  TouchableOpacity,
   Image,
   Pressable,
-  StyleSheet,
-  Linking,
   Alert,
+  ScrollView
 } from "react-native";
+import { globalFonts } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
-import { globalFonts } from "@/app/styles/globalFonts";
-import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  useActiveAccount,
-  useActiveWallet,
-  useDisconnect,
-} from "thirdweb/react";
-import { router } from "expo-router";
-import { Wallet, WalletId } from "thirdweb/wallets";
-import {
-  GestureHandlerRootView,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
 import { Divider } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import i18n from "../i18n";
 import * as Sentry from "@sentry/react-native";
+import i18n from "../i18n";
+import { router } from "expo-router";
 import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-interface AccountDetailsProps {
-  currency: string;
-  main_account_balance: string;
-  investment_account_balance: string;
-  total_balance: string;
-}
+// Custom Switch component to toggle notifications
 const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
   value,
   onValueChange,
@@ -83,12 +69,8 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
     </TouchableOpacity>
   );
 };
-export default function Settings({
-  currency,
-  main_account_balance,
-  investment_account_balance,
-  total_balance,
-}: AccountDetailsProps) {
+
+const Settings: React.FC = () => {
   const { t } = useTranslation();
 
   const [selectedCurrency, setSelectedCurrency] = useState<
@@ -98,6 +80,7 @@ export default function Settings({
     "en"
   );
   const [notifications, setNotifications] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchStoredSettings = async () => {
@@ -189,195 +172,248 @@ export default function Settings({
   };
 
   return (
-    <View style={styles.container}>
-      <Text>WIP</Text>
-
-      {/*     <View>
-        <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
-      </View>
-      <View
-        style={{ flexDirection: "column", gap: 15, width: "100%", padding: 20 }}
-      >
-        <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
-          <Text style={styles.questionText}>
-            {t("pages.onboarding_1.money_question")}
-          </Text>
-          <Text style={styles.descriptionText}>
-            {t("pages.onboarding_1.money_question_helper")}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <TouchableOpacity
-            style={[
-              styles.commonButtonStyle,
-              selectedCurrency === "euro" && styles.isSelectedButtonStyle,
-            ]}
-            onPress={() => handleCurrencySelection("euro")}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color:
-                  selectedCurrency === "euro"
-                    ? "#13293D"
-                    : "rgba(19, 41, 61, .7)",
-                fontFamily: "Poppins_600SemiBold",
-              }}
-            >
-              Euro (€)
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.commonButtonStyle,
-              selectedCurrency === "dollar" && styles.isSelectedButtonStyle,
-            ]}
-            onPress={() => handleCurrencySelection("dollar")}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color:
-                  selectedCurrency === "dollar"
-                    ? "#13293D"
-                    : "rgba(19, 41, 61, .7)",
-                fontFamily: "Poppins_600SemiBold",
-              }}
-            >
-              {t("pages.onboarding_1.dollar")} ($)
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <Divider style={{ width: "100%", height: 1.5 }} />
-        <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
+    <SafeAreaView style={styles.safe}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <View style={styles.account_details}>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-              width: "100%",
               alignItems: "center",
             }}
           >
-            <Text style={styles.questionText}>
-              {t("pages.onboarding_1.notifications_question")}
+            <Text style={{ ...globalFonts.title, fontSize: 28 }}>
+              {t("pages.settings.title")}
             </Text>
-            <CustomSwitch
-              value={notifications}
-              onValueChange={() => {
-                setNotifications(!notifications);
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 5,
               }}
-            />
-          </View>
-          <Text style={styles.descriptionText}>
-            {t("pages.onboarding_1.notifications_question_helper")}
-          </Text>
-        </View>
-        <Divider style={{ width: "100%", height: 1.5 }} />
-        <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
-          <Text style={styles.questionText}>
-            {t("pages.onboarding_1.language_question")}
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "100%",
-            }}
-          >
-            <TouchableOpacity
-              style={[
-                styles.commonButtonStyle,
-                selectedLanguage === "fr" && styles.isSelectedButtonStyle,
-              ]}
-              onPress={() => handleLanguageSelection("fr")}
             >
-              <View
-                style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+              <Pressable
+                onPress={() => setIsOpen(!isOpen)}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 5,
+                }}
               >
-                <Image source={require("../../assets/images/flags/fr.png")} />
+                <Image
+                  source={require("../../assets/images/account/interrogation-icon.png")}
+                  style={{
+                    width: 28,
+                    height: 28,
+                  }}
+                />
+              </Pressable>
+            </View>
+          </View>
+        </View>
+        <View style={styles.container}>
+          <View>
+            <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
+          </View>
+          <View style={{ flexDirection: "column", gap: 15, width: "100%" }}>
+            <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
+              <Text style={styles.questionText}>
+                {t("pages.onboarding_1.money_question")}
+              </Text>
+              <Text style={styles.descriptionText}>
+                {t("pages.onboarding_1.money_question_helper")}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <TouchableOpacity
+                style={[
+                  styles.commonButtonStyle,
+                  selectedCurrency === "euro" && styles.isSelectedButtonStyle,
+                ]}
+                onPress={() => handleCurrencySelection("euro")}
+              >
                 <Text
                   style={{
                     fontSize: 16,
                     color:
-                      selectedLanguage === "fr"
+                      selectedCurrency === "euro"
                         ? "#13293D"
                         : "rgba(19, 41, 61, .7)",
                     fontFamily: "Poppins_600SemiBold",
                   }}
                 >
-                  Français
+                  Euro (€)
                 </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.commonButtonStyle,
-                selectedLanguage === "en" && styles.isSelectedButtonStyle,
-              ]}
-              onPress={() => handleLanguageSelection("en")}
-            >
-              <View
-                style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.commonButtonStyle,
+                  selectedCurrency === "dollar" && styles.isSelectedButtonStyle,
+                ]}
+                onPress={() => handleCurrencySelection("dollar")}
               >
-                <Image source={require("../../assets/images/flags/usa.png")} />
                 <Text
                   style={{
                     fontSize: 16,
                     color:
-                      selectedLanguage === "en"
+                      selectedCurrency === "dollar"
                         ? "#13293D"
                         : "rgba(19, 41, 61, .7)",
                     fontFamily: "Poppins_600SemiBold",
                   }}
                 >
-                  English
+                  {t("pages.onboarding_1.dollar")} ($)
                 </Text>
+              </TouchableOpacity>
+            </View>
+            <Divider style={{ width: "100%", height: 1.5 }} />
+            <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={styles.questionText}>
+                  {t("pages.onboarding_1.notifications_question")}
+                </Text>
+                <CustomSwitch
+                  value={notifications}
+                  onValueChange={() => {
+                    setNotifications(!notifications);
+                  }}
+                />
               </View>
-            </TouchableOpacity>
+              <Text style={styles.descriptionText}>
+                {t("pages.onboarding_1.notifications_question_helper")}
+              </Text>
+            </View>
+            <Divider style={{ width: "100%", height: 1.5 }} />
+            <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
+              <Text style={styles.questionText}>
+                {t("pages.onboarding_1.language_question")}
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <TouchableOpacity
+                  style={[
+                    styles.commonButtonStyle,
+                    selectedLanguage === "fr" && styles.isSelectedButtonStyle,
+                  ]}
+                  onPress={() => handleLanguageSelection("fr")}
+                >
+                  <View
+                    style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+                  >
+                    <Image source={require("../../assets/images/flags/fr.png")} />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color:
+                          selectedLanguage === "fr"
+                            ? "#13293D"
+                            : "rgba(19, 41, 61, .7)",
+                        fontFamily: "Poppins_600SemiBold",
+                      }}
+                    >
+                      Français
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.commonButtonStyle,
+                    selectedLanguage === "en" && styles.isSelectedButtonStyle,
+                  ]}
+                  onPress={() => handleLanguageSelection("en")}
+                >
+                  <View
+                    style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+                  >
+                    <Image source={require("../../assets/images/flags/usa.png")} />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color:
+                          selectedLanguage === "en"
+                            ? "#13293D"
+                            : "rgba(19, 41, 61, .7)",
+                        fontFamily: "Poppins_600SemiBold",
+                      }}
+                    >
+                      English
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <Pressable
+                style={{
+                  backgroundColor: "#13293D",
+                  padding: 10,
+                  borderRadius: 30,
+                  height: 50,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  marginTop: 30,
+                }}
+                onPress={handleContinuePress}
+              >
+                <Text
+                  style={{
+                    ...globalFonts.whiteSubtitle,
+                    textAlign: "center",
+                    fontSize: 14,
+                    fontFamily: "Poppins_500Medium",
+                  }}
+                >
+                  {t("pages.onboarding_1.save_button")}
+                </Text>
+              </Pressable>
+            </View>
           </View>
-          <Pressable
-            style={{
-              backgroundColor: "#13293D",
-              padding: 10,
-              borderRadius: 30,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              marginTop: 30,
-            }}
-            onPress={handleContinuePress}
-          >
-            <Text
-              style={{
-                ...globalFonts.whiteSubtitle,
-                textAlign: "center",
-                fontSize: 14,
-                fontFamily: "Poppins_500Medium",
-              }}
-            >
-              {t("pages.onboarding_1.save_button")}
-            </Text>
-          </Pressable>
         </View>
-      </View> */}
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
+  account_details: {
+    backgroundColor: "#ECFF78",
+    padding: 20,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    paddingBottom: 30,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: 20,
+    padding: 30,
+    paddingBottom: 150
+  },
+  safe: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  scrollViewContainer: {
+    backgroundColor: "#fff",
   },
   questionText: {
     fontSize: 14,
@@ -393,7 +429,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   commonButtonStyle: {
-    // width: "47%",
+    width: "47%",
     borderWidth: 2,
     height: 60,
     borderRadius: 20,
@@ -438,3 +474,5 @@ const styles = StyleSheet.create({
     color: "#13293D",
   },
 });
+
+export default Settings;

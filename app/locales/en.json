@@ -19,6 +19,9 @@
       "title": "Welcome",
       "subtitle": "You are just a step away from creating your sovereign account for free!"
     },
+    "settings": {
+      "title": "Settings"
+    },
     "onboarding_1": {
       "title": "Set up currency display and notifications",
       "money_question": "Would you like a general display of amounts in Euro or Dollar?",
