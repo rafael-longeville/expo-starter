@@ -23,11 +23,34 @@ import {
 } from "@transak/react-native-sdk";
 
 const OnRampModal = forwardRef(
-  ({ setIsModalOpen, setBlurred, account, isOffRamp, currency, mainAccountBalance }: any, ref: any) => {
+  (
+    {
+      setIsModalOpen,
+      setBlurred,
+      account,
+      isOffRamp,
+      currency,
+      mainAccountBalance,
+    }: any,
+    ref: any
+  ) => {
     const { t } = useTranslation();
     const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
     // variables
-    const snapPoints = useMemo(() => ["95%"], []);
+    const snapPoints = useMemo(() => ["91%"], []);
+    // Custom handle component
+    const CustomHandle = () => {
+      const source = isOffRamp
+        ? require("@/assets/images/withdraw-icon.png")
+        : require("@/assets/images/deposit-icon.png");
+      return (
+        <View style={styles.customHandleContainer}>
+          <View style={styles.customHandle}>
+            <Image source={source} style={{ width: 80, height: 80 }} />
+          </View>
+        </View>
+      );
+    };
 
     // callbacks
     const handlePresentModalPress = useCallback(() => {
@@ -69,7 +92,7 @@ const OnRampModal = forwardRef(
     useEffect(() => {
       const loadTransakParams = async () => {
         try {
-          if (account?.address && isOffRamp==false) {
+          if (account?.address && isOffRamp == false) {
             let params = {
               apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
               fiatCurrency: "EUR",
@@ -96,8 +119,7 @@ const OnRampModal = forwardRef(
               message: `Set Transak params: ${JSON.stringify(params)}`,
               level: "info",
             });
-          }
-          else if (account?.address && isOffRamp==true) {
+          } else if (account?.address && isOffRamp == true) {
             let params = {
               apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
               fiatCurrency: "EUR",
@@ -163,12 +185,15 @@ const OnRampModal = forwardRef(
           backdropComponent={(props) => (
             <BottomSheetBackdrop {...props} enableTouchThrough={false} />
           )}
+          handleComponent={CustomHandle} // Use custom handle
         >
           <BottomSheetScrollView style={styles.container}>
             <View style={{ flexDirection: "column", gap: 20 }}>
               <View style={{ flexDirection: "column", alignItems: "center" }}>
                 <Text style={globalFonts.title}>
-                  {isOffRamp ? t("offramp.title") : t("pages.onboarding_4.title")}
+                  {isOffRamp
+                    ? t("offramp.title")
+                    : t("pages.onboarding_4.title")}
                 </Text>
                 <View style={styles.containercompte}>
                   <Image
@@ -179,12 +204,17 @@ const OnRampModal = forwardRef(
                     <Text style={globalFonts.whiteSubtitle}>
                       {t("pages.onboarding_4.account")} DOLLAR US :
                     </Text>
-                    <Text style={styles.amount}> {mainAccountBalance} {currency}*</Text>
+                    <Text style={styles.amount}>
+                      {" "}
+                      {mainAccountBalance} {currency}*
+                    </Text>
                   </Text>
                 </View>
               </View>
               <Text style={{ ...globalFonts.subtitle, fontSize: 14 }}>
-                {isOffRamp ? t("offramp.subtitle") : t("pages.onboarding_4.subtitle")}
+                {isOffRamp
+                  ? t("offramp.subtitle")
+                  : t("pages.onboarding_4.subtitle")}
               </Text>
             </View>
             {transakParams ? (
@@ -231,6 +261,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    marginTop: 35, // Adjust this to move the content upwards as it was before
   },
   containercompte: {
     justifyContent: "center",
@@ -266,6 +297,23 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  customHandleContainer: {
+    position: "absolute",
+    top: -40, // Positioning for the icon
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    zIndex: 1,
+  },
+  customHandle: {
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5, // For Android
   },
 });
 
