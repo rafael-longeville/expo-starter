@@ -12,7 +12,14 @@ import {
 
 const MainAccount = forwardRef(
   (
-    { main_account_balance, currency, setIsModalOpen, setBlurred }: any,
+    {
+      main_account_balance,
+      currency,
+      setIsModalOpen,
+      setBlurred,
+      handleOpenModal,
+      setIsOffRamp,
+    }: any,
     ref: any
   ) => {
     const { t } = useTranslation();
@@ -73,14 +80,29 @@ const MainAccount = forwardRef(
             width: "100%",
           }}
         >
-          <Text
+          <View
             style={{
-              ...globalFonts.subtitle,
-              color: "white",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+              alignItems: "center",
             }}
           >
-            {t("pages.home.balance")}
-          </Text>
+            <Text
+              style={{
+                ...globalFonts.subtitle,
+                color: "white",
+              }}
+            >
+              {t("pages.home.balance")}
+            </Text>
+            <Pressable onPress={handleOpenModal}>
+              <Image
+                source={require("@/assets/images/info-icon.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            </Pressable>
+          </View>
           {/* Replace with async storage currency */}
           <Text
             style={{
@@ -100,7 +122,16 @@ const MainAccount = forwardRef(
             justifyContent: "space-between",
           }}
         >
-          <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.6}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            activeOpacity={0.6}
+            onPress={() => {
+              setIsModalOpen(true);
+              setBlurred(true);
+              ref.current?.present();
+              setIsOffRamp(true);
+            }}
+          >
             <Image
               source={require("@/assets/images/small-withdraw-button-shape.png")}
               style={styles.buttonImage}
@@ -116,6 +147,7 @@ const MainAccount = forwardRef(
               setIsModalOpen(true);
               setBlurred(true);
               ref.current?.present();
+              setIsOffRamp(false);
             }}
           >
             <Image

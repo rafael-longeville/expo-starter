@@ -101,7 +101,7 @@ export default function OnboardingItem({ item }: any) {
           style={{
             marginTop: 50,
             width: width * 0.9, // Responsive width
-            height: height * 0.3, // Fixed height for other images
+            height: height * 0.2, // Fixed height for other images
             resizeMode: "contain", // Ensure the image scales without distortion
           }}
         />

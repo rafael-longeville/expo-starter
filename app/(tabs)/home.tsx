@@ -6,7 +6,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AccountDetails from "@/components/Homepage/AccountDetails";
 import MainAccount from "@/components/Homepage/MainAccount";
 import InvestmentAccount from "@/components/Homepage/InvestmentAccount";
-import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import TransactionHistory from "@/components/Homepage/TransactionHistory";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StayUpdated from "@/components/PopUp/StayUpdated";
@@ -20,6 +19,8 @@ import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { BlurView } from "@react-native-community/blur";
 import OnRampModal from "@/components/PopUp/OnRampModal";
 import TransactionValidationModal from "@/components/PopUp/TransactionValidationModal";
+import InvestmentAccountPopup from "@/components/PopUp/InvestmentAccountPopup";
+import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 
 // Function to get conversion rate
 const getConversionRate = async () => {
@@ -61,6 +62,7 @@ const formatBalance = (
 export default function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
+  const [isOffRamp, setIsOffRamp] = useState(false);
   const [currency, setCurrency] = useState<string>("$");
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
@@ -86,8 +88,25 @@ export default function HomeScreen() {
   } = useStayUpdatedModalContext();
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
+  const currentAccountModalRef = useRef<BottomSheetModal>(null);
+  const investmentAccountModalRef = useRef<BottomSheetModal>(null);
   const onRampModalRef = useRef<BottomSheetModal>(null);
   const transactionValidationModalRef = useRef<BottomSheetModal>(null);
+
+  // Modal handling
+
+  const handleOpenModal = (
+    ref: React.MutableRefObject<BottomSheetModal | undefined> | undefined
+  ) => {
+    ref?.current?.present();
+    setIsModalOpen(true);
+    setIsBlurred(true);
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetch().finally(() => setRefreshing(false));
+  }, [refetch]);
 
   useEffect(() => {
     const fetchCurrency = async () => {
@@ -147,15 +166,6 @@ export default function HomeScreen() {
 
     fetchBalanceWithConversion();
   }, [currency, data, eurBalance, usdBalance]);
-
-  const handleCloseModal = () => {
-    setIsBlurred(false);
-  };
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    refetch().finally(() => setRefreshing(false));
-  }, [refetch]);
 
   useEffect(() => {
     const checkFirstVisit = async () => {
@@ -218,7 +228,14 @@ export default function HomeScreen() {
               ref={onRampModalRef}
               setIsModalOpen={setIsCheckoutModalOpen}
               setBlurred={setIsBlurred}
-              onDismiss={handleCloseModal}
+              handleOpenModal={() =>
+                handleOpenModal(
+                  currentAccountModalRef as React.MutableRefObject<
+                    BottomSheetModal | undefined
+                  >
+                )
+              }
+              setIsOffRamp={setIsOffRamp}
             />
             <InvestmentAccount
               currency={currency}
@@ -241,6 +258,13 @@ export default function HomeScreen() {
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
                 setUsdBalance={setUsdBalance}
+                handleOpenModal={() =>
+                  handleOpenModal(
+                    investmentAccountModalRef as React.MutableRefObject<
+                      BottomSheetModal | undefined
+                    >
+                  )
+                }
               />
               <InvestmentCard
                 investment={`EURO`}
@@ -250,21 +274,40 @@ export default function HomeScreen() {
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
                 setUsdBalance={setUsdBalance}
+                handleOpenModal={() =>
+                  handleOpenModal(
+                    investmentAccountModalRef as React.MutableRefObject<
+                      BottomSheetModal | undefined
+                    >
+                  )
+                }
               />
             </View>
             <TransactionHistory />
           </ScrollView>
+          <MainAccountPopup
+            ref={currentAccountModalRef}
+            setIsModalOpen={setIsModalOpen}
+            setBlurred={setIsBlurred}
+          />
+          <InvestmentAccountPopup
+            ref={investmentAccountModalRef}
+            setIsModalOpen={setIsModalOpen}
+            setBlurred={setIsBlurred}
+          />
           <StayUpdated
             ref={stayUpdatedModalRef}
             setIsModalOpen={setIsModalOpen}
             setBlurred={setIsBlurred}
-            onDismiss={handleCloseModal}
           />
           <OnRampModal
             ref={onRampModalRef}
             setIsModalOpen={setIsCheckoutModalOpen}
             setBlurred={setIsBlurred}
             account={account}
+            isOffRamp={isOffRamp}
+            currency={currency}
+            mainAccountBalance={mainAccountBalance}
           />
           <TransactionValidationModal
             ref={transactionValidationModalRef}
