@@ -61,6 +61,7 @@ const formatBalance = (
 export default function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
+  const [isOffRamp, setIsOffRamp] = useState(false);
   const [currency, setCurrency] = useState<string>("$");
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
@@ -219,6 +220,7 @@ export default function HomeScreen() {
               setIsModalOpen={setIsCheckoutModalOpen}
               setBlurred={setIsBlurred}
               onDismiss={handleCloseModal}
+              setIsOffRamp={setIsOffRamp}
             />
             <InvestmentAccount
               currency={currency}
@@ -265,6 +267,9 @@ export default function HomeScreen() {
             setIsModalOpen={setIsCheckoutModalOpen}
             setBlurred={setIsBlurred}
             account={account}
+            isOffRamp={isOffRamp}
+            currency={currency}
+            mainAccountBalance={mainAccountBalance}
           />
           <TransactionValidationModal
             ref={transactionValidationModalRef}

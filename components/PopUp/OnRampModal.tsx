@@ -23,10 +23,9 @@ import {
 } from "@transak/react-native-sdk";
 
 const OnRampModal = forwardRef(
-  ({ setIsModalOpen, setBlurred, account }: any, ref: any) => {
+  ({ setIsModalOpen, setBlurred, account, isOffRamp, currency, mainAccountBalance }: any, ref: any) => {
     const { t } = useTranslation();
     const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
-
     // variables
     const snapPoints = useMemo(() => ["95%"], []);
 
@@ -70,13 +69,41 @@ const OnRampModal = forwardRef(
     useEffect(() => {
       const loadTransakParams = async () => {
         try {
-          if (account?.address) {
+          if (account?.address && isOffRamp==false) {
             let params = {
               apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
               fiatCurrency: "EUR",
               cryptoCurrencyCode: "USDC",
               fiatAmount: "100",
               productsAvailed: ["BUY"],
+              network: "arbitrum",
+              defaultPaymentMethod: "credit_debit_card",
+              disablePaymentMethods: [
+                "gbp_bank_transfer",
+                "sepa_bank_transfer",
+              ],
+              walletAddress: account.address,
+              disableWalletAddressForm: true,
+              isFeeCalculationHidden: true,
+              environment: "STAGING",
+              partnerOrderId: "123456",
+            };
+
+            setTransakParams(params);
+
+            Sentry.addBreadcrumb({
+              category: "navigation",
+              message: `Set Transak params: ${JSON.stringify(params)}`,
+              level: "info",
+            });
+          }
+          else if (account?.address && isOffRamp==true) {
+            let params = {
+              apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
+              fiatCurrency: "EUR",
+              cryptoCurrencyCode: "USDC",
+              fiatAmount: "100",
+              productsAvailed: ["SELL"],
               network: "arbitrum",
               defaultPaymentMethod: "credit_debit_card",
               disablePaymentMethods: [
@@ -108,7 +135,7 @@ const OnRampModal = forwardRef(
       };
 
       loadTransakParams();
-    }, [account]);
+    }, [account, isOffRamp]);
 
     return (
       <>
@@ -141,7 +168,7 @@ const OnRampModal = forwardRef(
             <View style={{ flexDirection: "column", gap: 20 }}>
               <View style={{ flexDirection: "column", alignItems: "center" }}>
                 <Text style={globalFonts.title}>
-                  {t("pages.onboarding_4.title")}
+                  {isOffRamp ? t("offramp.title") : t("pages.onboarding_4.title")}
                 </Text>
                 <View style={styles.containercompte}>
                   <Image
@@ -152,12 +179,12 @@ const OnRampModal = forwardRef(
                     <Text style={globalFonts.whiteSubtitle}>
                       {t("pages.onboarding_4.account")} DOLLAR US :
                     </Text>
-                    <Text style={styles.amount}> 0 €*</Text>
+                    <Text style={styles.amount}> {mainAccountBalance} {currency}*</Text>
                   </Text>
                 </View>
               </View>
               <Text style={{ ...globalFonts.subtitle, fontSize: 14 }}>
-                {t("pages.onboarding_4.subtitle")}
+                {isOffRamp ? t("offramp.subtitle") : t("pages.onboarding_4.subtitle")}
               </Text>
             </View>
             {transakParams ? (

@@ -133,5 +133,9 @@
       "cancel": "Annuler",
       "confirm": "Confirmer"
     }
+  },
+  "offramp": {
+    "title": "Retirez de votre compte",
+    "subtitle": "Vous pouvez récupérer les fonds de votre compte en retirant via carte bancaire, virement ou Google Pay."
   }
 }
