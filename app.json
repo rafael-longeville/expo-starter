@@ -111,6 +111,12 @@
         "projectId": "cb471d7b-fc40-4a02-b7fd-8beae6ebc6c0"
       }
     },
-    "owner": "sneakydev"
+    "owner": "sneakydev",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cb471d7b-fc40-4a02-b7fd-8beae6ebc6c0"
+    }
   }
 }

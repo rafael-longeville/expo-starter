@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
   Alert,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { globalFonts } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
@@ -164,7 +164,7 @@ const Settings: React.FC = () => {
       );
 
       // Navigate to the next screen
-      router.push("/(onboarding)/onboarding_2");
+      router.push("/(tabs)/home");
     } catch (error) {
       Sentry.captureException(error);
       console.error("Error storing data or navigating:", error);
@@ -213,7 +213,9 @@ const Settings: React.FC = () => {
         </View>
         <View style={styles.container}>
           <View>
-            <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
+            <Text style={globalFonts.title}>
+              {t("pages.onboarding_1.title")}
+            </Text>
           </View>
           <View style={{ flexDirection: "column", gap: 15, width: "100%" }}>
             <View style={{ flexDirection: "column", gap: 5, width: "100%" }}>
@@ -317,9 +319,15 @@ const Settings: React.FC = () => {
                   onPress={() => handleLanguageSelection("fr")}
                 >
                   <View
-                    style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+                    style={{
+                      flexDirection: "row",
+                      gap: 5,
+                      alignItems: "center",
+                    }}
                   >
-                    <Image source={require("../../assets/images/flags/fr.png")} />
+                    <Image
+                      source={require("../../assets/images/flags/fr.png")}
+                    />
                     <Text
                       style={{
                         fontSize: 16,
@@ -342,9 +350,15 @@ const Settings: React.FC = () => {
                   onPress={() => handleLanguageSelection("en")}
                 >
                   <View
-                    style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+                    style={{
+                      flexDirection: "row",
+                      gap: 5,
+                      alignItems: "center",
+                    }}
                   >
-                    <Image source={require("../../assets/images/flags/usa.png")} />
+                    <Image
+                      source={require("../../assets/images/flags/usa.png")}
+                    />
                     <Text
                       style={{
                         fontSize: 16,
@@ -406,7 +420,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     gap: 20,
     padding: 30,
-    paddingBottom: 150
+    paddingBottom: 150,
   },
   safe: {
     flex: 1,
