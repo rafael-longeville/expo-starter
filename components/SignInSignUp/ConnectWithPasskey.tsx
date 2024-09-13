@@ -105,7 +105,7 @@ export default function ConnectWithPasskey({
             textAlign: "center",
           }}
         >
-          Utilisez un portefeuille existant
+          Use an existing wallet
         </Text>
       </Pressable>
 
