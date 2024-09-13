@@ -398,6 +398,28 @@ const Settings: React.FC = () => {
                   {t("pages.onboarding_1.save_button")}
                 </Text>
               </Pressable>
+              <Pressable
+                onPress={async () => {
+                  try {
+                    await AsyncStorage.clear();
+                    console.log("All async storage data cleared.");
+                  } catch (error) {
+                    console.error("Error clearing async storage: ", error);
+                  }
+                }}
+              >
+                <Text
+                  style={{
+                    ...globalFonts.subtitle,
+                    textAlign: "center",
+                    fontSize: 14,
+                    fontFamily: "Poppins_500Medium",
+                    marginTop: 20,
+                  }}
+                >
+                  Clear Cache
+                </Text>
+              </Pressable>
             </View>
           </View>
         </View>

@@ -77,19 +77,19 @@ export default function OnboardingLayout() {
               label="To home"
               onPress={() => router.push("/(tabs)/home")}
             />
+            <LanguageButton
+              label="Clear cache"
+              onPress={async () => {
+                try {
+                  await AsyncStorage.clear();
+                  console.log("All async storage data cleared.");
+                } catch (error) {
+                  console.error("Error clearing async storage: ", error);
+                }
+              }}
+            />
           </View>
         )}
-        <LanguageButton
-          label="Clear cache"
-          onPress={async () => {
-            try {
-              await AsyncStorage.clear();
-              console.log("All async storage data cleared.");
-            } catch (error) {
-              console.error("Error clearing async storage: ", error);
-            }
-          }}
-        />
       </ScrollView>
     </SafeAreaView>
   );
