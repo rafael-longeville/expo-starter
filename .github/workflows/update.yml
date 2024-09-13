@@ -31,5 +31,13 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Set Environment Variables
+        run: |
+          export EXPO_PUBLIC_THIRDWEB_CLIENT_ID=${{ secrets.EXPO_PUBLIC_THIRDWEB_CLIENT_ID }}
+          export SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+
       - name: Publish update
         run: eas update --auto
+        env:
+          EXPO_PUBLIC_THIRDWEB_CLIENT_ID: ${{ secrets.EXPO_PUBLIC_THIRDWEB_CLIENT_ID }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
