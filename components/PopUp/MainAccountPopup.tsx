@@ -27,7 +27,7 @@ const CustomHandle = () => {
 };
 
 const MainAccountPopup = forwardRef(
-  ({ setIsModalOpen, setBlurred, handleOpenModal }: any, ref: any) => {
+  ({ setIsModalOpen, setBlurred }: any, ref: any) => {
     const { t } = useTranslation();
     const snapPoints = useMemo(() => ["45%"], []);
 
