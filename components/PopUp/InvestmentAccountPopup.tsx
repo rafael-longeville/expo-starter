@@ -26,8 +26,8 @@ const CustomHandle = () => {
   );
 };
 
-const MainAccountPopup = forwardRef(
-  ({ setIsModalOpen, setBlurred, handleOpenModal }: any, ref: any) => {
+const InvestmentAccountPopup = forwardRef(
+  ({ setIsModalOpen, setBlurred }: any, ref: any) => {
     const { t } = useTranslation();
     const snapPoints = useMemo(() => ["45%"], []);
 
@@ -56,7 +56,9 @@ const MainAccountPopup = forwardRef(
         handleComponent={CustomHandle} // Use custom handle
       >
         <BottomSheetView style={styles.contentContainer}>
-          <Text style={styles.title}>{t("pop-ups.main_account.title")}</Text>
+          <Text style={styles.title}>
+            {t("pop-ups.investment_account.title")}
+          </Text>
 
           <View
             style={{
@@ -75,7 +77,7 @@ const MainAccountPopup = forwardRef(
                 textAlign: "center",
               }}
             >
-              {t("pop-ups.main_account.description_1")}
+              {t("pop-ups.investment_account.description_1")}
             </Text>
             <Text
               style={{
@@ -87,7 +89,10 @@ const MainAccountPopup = forwardRef(
                 width: "80%",
               }}
             >
-              {t("pop-ups.main_account.description_2")}
+              {t("pop-ups.investment_account.description_2")}
+            </Text>
+            <Text style={globalFonts.disclaimerText}>
+              {t("pop-ups.investment_account.disclaimer")}
             </Text>
             <Text
               style={{
@@ -99,14 +104,14 @@ const MainAccountPopup = forwardRef(
                 textAlign: "center",
               }}
             >
-              <Link href={t("pop-ups.main_account.href_link") as Href}>
-                {t("pop-ups.main_account.link")}
+              <Link href={t("pop-ups.investment_account.href_link") as Href}>
+                {t("pop-ups.investment_account.link")}
               </Link>
             </Text>
           </View>
           <Pressable style={styles.button} onPress={handleDismissModal}>
             <Text style={styles.buttonText}>
-              {t("pop-ups.main_account.button")}
+              {t("pop-ups.investment_account.button")}
             </Text>
           </Pressable>
         </BottomSheetView>
@@ -164,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainAccountPopup;
+export default InvestmentAccountPopup;

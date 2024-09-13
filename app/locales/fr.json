@@ -121,10 +121,19 @@
     },
     "main_account": {
       "title": "Votre compte courant",
-      "description_1": "Félicitation, vous êtes enfin le réél propriétaire de vos fonds et vous seul avez la possibilité d’intéragir avec. ",
-      "description_2": "Vous pouvez maintenant le placer dans un produit qui rapporte !",
+      "description_1": "Soyez le réél propriétaire de vos fonds, vous seul avez la possibilité d’intéragir avec votre Compte courant souverain. ",
+      "description_2": "Vous pouvez déplacer l’argent de celui-ci, vers vos comptes rémunérés.",
       "link": "En savoir plus.",
-      "href_link": "https://moncomptesouverain.fr/",
+      "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
+      "button": "J'ai compris"
+    },
+    "investment_account": {
+      "title": "Vos placements",
+      "description_1": "Ce placement se comporte comme un compte épargne, en mieux ! ",
+      "description_2": "Immobilisez vos fonds et percevez un intéret dès la première minute. Sortez à tout moment.",
+      "disclaimer": "Rendement estimé à l’année et non garanti. ",
+      "link": "En savoir plus.",
+      "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
       "button": "J'ai compris"
     },
     "transaction": {
