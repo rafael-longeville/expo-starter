@@ -172,7 +172,7 @@ const Onboarding1: React.FC = () => {
     <View style={styles.container}>
       <View>
         <Text style={globalFonts.subtitle}>
-          Hello from expo automatic update 4
+          Hello from expo automatic update 5
         </Text>
         <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
       </View>
