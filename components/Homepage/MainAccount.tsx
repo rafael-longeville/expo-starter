@@ -18,6 +18,7 @@ const MainAccount = forwardRef(
       setIsModalOpen,
       setBlurred,
       handleOpenModal,
+      setIsOffRamp,
     }: any,
     ref: any
   ) => {
@@ -121,7 +122,16 @@ const MainAccount = forwardRef(
             justifyContent: "space-between",
           }}
         >
-          <TouchableOpacity style={styles.buttonContainer} activeOpacity={0.6}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            activeOpacity={0.6}
+            onPress={() => {
+              setIsModalOpen(true);
+              setBlurred(true);
+              ref.current?.present();
+              setIsOffRamp(true);
+            }}
+          >
             <Image
               source={require("@/assets/images/small-withdraw-button-shape.png")}
               style={styles.buttonImage}
@@ -137,6 +147,7 @@ const MainAccount = forwardRef(
               setIsModalOpen(true);
               setBlurred(true);
               ref.current?.present();
+              setIsOffRamp(false);
             }}
           >
             <Image

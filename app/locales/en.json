@@ -142,5 +142,9 @@
       "cancel": "Cancel",
       "confirm": "Confirm"
     }
+  },
+  "offramp": {
+    "title": "Withdraw from your account",
+    "subtitle": "You can withdraw funds from your account using a bank card, bank transfer, or Google Pay."
   }
 }
