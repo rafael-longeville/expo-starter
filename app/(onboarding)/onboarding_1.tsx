@@ -171,9 +171,6 @@ const Onboarding1: React.FC = () => {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={globalFonts.subtitle}>
-          Hello from expo automatic update 5
-        </Text>
         <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
       </View>
       <View style={{ flexDirection: "column", gap: 15, width: "100%" }}>
