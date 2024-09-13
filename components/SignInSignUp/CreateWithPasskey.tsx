@@ -14,6 +14,7 @@ import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 import { router } from "expo-router";
 import { globalFonts } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
+import { useTranslation } from "react-i18next";
 
 interface CreateWithPasskeyProps {
   connect: any;
@@ -25,21 +26,7 @@ export default function CreateWithPasskey({
   redirectionUrl,
 }: CreateWithPasskeyProps) {
   const [loading, setLoading] = useState(false); // State to manage the loading
-  // const [hasPasskey, setHasPasskey] = useState(true); // State to manage whether a passkey exists
-
-  // useEffect(() => {
-  //   // Check if a passkey is stored when the component mounts
-  //   const checkPasskey = async () => {
-  //     try {
-  //       const result = await hasStoredPasskey(client);
-  //       setHasPasskey(result); // If passkey exists, update state to true
-  //     } catch (error) {
-  //       Sentry.captureException(error);
-  //     }
-  //   };
-
-  //   checkPasskey();
-  // }, []);
+  const { t } = useTranslation();
 
   const handlePress = async () => {
     setLoading(true); // Show loader when the process starts
@@ -100,7 +87,9 @@ export default function CreateWithPasskey({
         onPress={handlePress}
         disabled={loading} // Disable the button while loading
       >
-        <Text style={styles.buttonText}>Créez votre portefeuille</Text>
+        <Text style={styles.buttonText}>
+          {t("pages.onboarding_3.create-account")}
+        </Text>
       </Pressable>
 
       {loading && ( // Modal for the centered loader overlay
@@ -114,7 +103,7 @@ export default function CreateWithPasskey({
             <View style={styles.loaderContainer}>
               <ActivityIndicator size="large" color="#ffffff" />
               <Text style={styles.loaderText}>
-                Creating wallet, please wait...
+                {t("pages.onboarding_3.create-account-pending")}
               </Text>
             </View>
           </View>

@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "flex-start",
-    gap: 20,
+    gap: 15,
   },
   buttonContainer: {
     flexDirection: "column",

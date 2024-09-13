@@ -14,6 +14,7 @@ import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 import { client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
+import { useTranslation } from "react-i18next";
 
 interface ConnectWithPasskeyProps {
   connect: any;
@@ -25,21 +26,8 @@ export default function ConnectWithPasskey({
   redirectionUrl,
 }: ConnectWithPasskeyProps) {
   const [loading, setLoading] = useState(false); // State to manage the loading
-  // const [hasPasskey, setHasPasskey] = useState(false); // State to manage whether a passkey exists
 
-  // useEffect(() => {
-  //   // Check if a passkey is stored when the component mounts
-  //   const checkPasskey = async () => {
-  //     try {
-  //       const result = await hasStoredPasskey(client);
-  //       setHasPasskey(result);
-  //     } catch (error) {
-  //       Sentry.captureException(error);
-  //     }
-  //   };
-
-  //   checkPasskey();
-  // }, []);
+  const { t } = useTranslation();
 
   const handlePress = async () => {
     setLoading(true); // Show loader when the process starts
@@ -87,11 +75,6 @@ export default function ConnectWithPasskey({
     }
   };
 
-  // // Only render the view if a passkey is stored
-  // if (!hasPasskey) {
-  //   return null; // Do not render anything if no passkey is found
-  // }
-
   return (
     <View>
       <Pressable
@@ -105,7 +88,7 @@ export default function ConnectWithPasskey({
             textAlign: "center",
           }}
         >
-          Use an existing wallet
+          {t("pages.onboarding_3.sign-in")}
         </Text>
       </Pressable>
 
@@ -119,7 +102,9 @@ export default function ConnectWithPasskey({
           <View style={styles.overlay}>
             <View style={styles.loaderContainer}>
               <ActivityIndicator size="large" color="#ffffff" />
-              <Text style={styles.loaderText}>Connecting, please wait...</Text>
+              <Text style={styles.loaderText}>
+                {t("pages.onboarding_3.sign-in-pending")}
+              </Text>
             </View>
           </View>
         </Modal>

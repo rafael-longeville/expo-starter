@@ -49,7 +49,9 @@
       "title": "Accédez à votre compte",
       "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
       "sign-in": "Utiliser un portefeuille existant",
-      "create-account": "Créer un nouveau portefeuille"
+      "sign-in-pending": "Connexion en cours, veuillez patienter...",
+      "create-account": "Créer un nouveau portefeuille",
+      "create-account-pending": "Création en cours, veuillez patienter..."
     },
     "onboarding_4": {
       "account": "Compte",
