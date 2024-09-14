@@ -97,7 +97,6 @@ const OnRampModal = forwardRef(
               apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
               fiatCurrency: "EUR",
               cryptoCurrencyCode: "USDC",
-              fiatAmount: "100",
               productsAvailed: ["BUY"],
               network: "arbitrum",
               defaultPaymentMethod: "credit_debit_card",
@@ -124,7 +123,6 @@ const OnRampModal = forwardRef(
               apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
               fiatCurrency: "EUR",
               cryptoCurrencyCode: "USDC",
-              fiatAmount: "100",
               productsAvailed: ["SELL"],
               network: "arbitrum",
               defaultPaymentMethod: "credit_debit_card",
@@ -196,17 +194,22 @@ const OnRampModal = forwardRef(
                     : t("pages.onboarding_4.title")}
                 </Text>
                 <View style={styles.containercompte}>
-                  <Image
-                    source={require("@/assets/images/lock-icon.png")}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.textcompte}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Image
+                      source={require("@/assets/images/lock-icon.png")}
+                      style={styles.icon}
+                    />
                     <Text style={globalFonts.whiteSubtitle}>
                       {t("pages.onboarding_4.account")} DOLLAR US :
                     </Text>
+                  </View>
+                  <Text style={styles.textcompte}>
                     <Text style={styles.amount}>
                       {" "}
-                      {mainAccountBalance} {currency}*
+                      {mainAccountBalance === "0.00"
+                        ? "0"
+                        : mainAccountBalance}{" "}
+                      {currency}
                     </Text>
                   </Text>
                 </View>
@@ -264,7 +267,7 @@ const styles = StyleSheet.create({
     marginTop: 35, // Adjust this to move the content upwards as it was before
   },
   containercompte: {
-    justifyContent: "center",
+    justifyContent: "space-between",
     height: 60,
     borderRadius: 30,
     width: "100%",
@@ -272,6 +275,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingLeft: 20,
+    paddingRight: 20,
   },
   contentContainer: {
     flex: 1,

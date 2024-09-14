@@ -130,7 +130,18 @@ const InvestmentCard = forwardRef(
                 placeholder="0"
                 placeholderTextColor="rgba(19, 41, 61, 0.60)"
                 value={amount} // Bind the state to the TextInput
-                onChangeText={(text) => setAmount(text)} // Update the state on text change
+                onChangeText={(text) => {
+                  // Parse the text as a number and check if it is less than or equal to 100
+                  const numericValue = parseFloat(text);
+                  if (isOnboarding && numericValue > 100) {
+                    // Allow clearing the input
+                    setAmount("100");
+                  } else if (numericValue < 5 && numericValue > 0) {
+                    setAmount("5");
+                  } else {
+                    setAmount(text);
+                  }
+                }}
               />
             </View>
             <Text style={styles.asideInputText}>{currencySymbol}</Text>

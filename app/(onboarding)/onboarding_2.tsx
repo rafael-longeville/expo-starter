@@ -112,10 +112,9 @@ const Onboarding2: React.FC = () => {
           fontSize: 14,
           fontFamily: "Poppins_500Medium",
         }}
+        onPress={handleContinuePress}
       >
-        <Link href={"/(onboarding)/onboarding_3"} style={{ width: "100%" }}>
-          {t("pages.onboarding_2.has_account")}
-        </Link>
+        {t("pages.onboarding_2.has_account")}
       </Text>
     </View>
   );

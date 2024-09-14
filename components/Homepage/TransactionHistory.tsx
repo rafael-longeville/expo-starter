@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useTranslation } from "react-i18next";
 import {
@@ -42,7 +49,7 @@ const GET_TRANSACTIONS = gql`
   }
 `;
 
-function TransactionHistoryComponent(refetchBalance: any) {
+function TransactionHistoryComponent({ refetchBalance }: any) {
   const { t } = useTranslation();
   const activeAccount = useActiveAccount(); // Get the active account
   const [currency, setCurrency] = useState<string>("EUR"); // Default currency
@@ -69,24 +76,12 @@ function TransactionHistoryComponent(refetchBalance: any) {
     client,
     pollInterval: 10000, // Set poll interval to 10 seconds (10000 milliseconds)
     skip: !activeAccount?.address, // Skip the query if no active account address
-    onCompleted: (fetchedData) => {
-      // This will be called every time the query is successfully refetched
-      console.log("Query refetched successfully", fetchedData);
-      // Add your custom logic here
-      refetchBalance();
-    },
+
     onError: (error) => {
       // Handle errors if necessary
       console.error("Error refetching query:", error);
     },
   });
-
-  if (!activeAccount?.address) {
-    return <Text>No active account found.</Text>;
-  }
-
-  if (loading) return <Text>Loading...</Text>;
-  if (!loading && error) return <Text>Error loading transactions.</Text>;
 
   // Use fetched transactions instead of static history
   const transactions = data?.transaction.map((item: any) => {
@@ -135,8 +130,36 @@ function TransactionHistoryComponent(refetchBalance: any) {
     };
   });
 
+  useEffect(() => {
+    const fetchNewBalance = async () => {
+      try {
+        await refetchBalance();
+      } catch (error) {
+        console.error("Error refetching balance:", error);
+      }
+    };
+    fetchNewBalance();
+  }, [transactions]);
+
+  if (!activeAccount?.address) {
+    return <Text>No active account found.</Text>;
+  }
+
+  if (loading) return <Text>Loading...</Text>;
+  if (!loading && error) return <Text>Error loading transactions.</Text>;
+
   return (
     <View style={styles.container}>
+      <Pressable
+        onPress={() => {
+          refetchBalance().then(() => {
+            console.log("Balance refetched successfully.");
+          });
+          console.log("Refetching balance...");
+        }}
+      >
+        <Text style={globalFonts.mediumSubtitle}>Refetch</Text>
+      </Pressable>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <Text style={globalFonts.mediumSubtitle}>
           {t("pages.home.transactions.title")}
@@ -290,7 +313,7 @@ const styles = StyleSheet.create({
 });
 
 // Step 5: Wrap the component in ApolloProvider and export
-export default function TransactionHistory(refetchBalance: any) {
+export default function TransactionHistory({ refetchBalance }: any) {
   return (
     <ApolloProvider client={client}>
       <TransactionHistoryComponent refetchBalance={refetchBalance} />

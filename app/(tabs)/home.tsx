@@ -154,6 +154,7 @@ function HomeScreen() {
   useEffect(() => {
     const fetchBalanceWithConversion = async () => {
       if (data != undefined) {
+        console.log("New balance", data);
         let balance = parseFloat(data?.displayValue) || 0;
         if (currency === "€") {
           const conversionRate = await getConversionRate();

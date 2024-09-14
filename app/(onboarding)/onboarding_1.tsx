@@ -80,11 +80,12 @@ const Onboarding1: React.FC = () => {
   const [notifications, setNotifications] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchStoredSettings = async () => {
+    const fetchStoredAndResetSettings = async () => {
       try {
         const storedLanguage = await AsyncStorage.getItem("selectedLanguage");
         const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
         const storedNotifications = await AsyncStorage.getItem("notifications");
+        await AsyncStorage.setItem("continueWithoutFunding", "false");
 
         if (storedLanguage) {
           i18n.changeLanguage(storedLanguage);
@@ -96,13 +97,28 @@ const Onboarding1: React.FC = () => {
         if (storedNotifications !== null) {
           setNotifications(storedNotifications === "true");
         }
+
+        // Checking all JWT tokens stored on the device
+        const allKeys = await AsyncStorage.getAllKeys();
+
+        if (allKeys.length > 0) {
+          const tokens = await AsyncStorage.multiGet(allKeys);
+          tokens.forEach(([key, value]) => {
+            console.log(`JWT Token found - Key: ${key}, Value: ${value}`);
+          });
+        } else {
+          console.log("No JWT tokens found on the device.");
+        }
       } catch (error) {
         Sentry.captureException(error);
-        console.error("Error retrieving settings from AsyncStorage:", error);
+        console.error(
+          "Error retrieving settings or JWT tokens from AsyncStorage:",
+          error
+        );
       }
     };
 
-    fetchStoredSettings();
+    fetchStoredAndResetSettings();
   }, []);
 
   useEffect(() => {
