@@ -21,6 +21,7 @@ import OnRampModal from "@/components/PopUp/OnRampModal";
 import TransactionValidationModal from "@/components/PopUp/TransactionValidationModal";
 import InvestmentAccountPopup from "@/components/PopUp/InvestmentAccountPopup";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
+import withFadeIn from "@/components/effects/withFadeIn";
 
 // Function to get conversion rate
 const getConversionRate = async () => {
@@ -59,7 +60,7 @@ const formatBalance = (
   return finalBalance.toFixed(2).replace(".", ",");
 };
 
-export default function HomeScreen() {
+function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
   const [isOffRamp, setIsOffRamp] = useState(false);
@@ -283,7 +284,7 @@ export default function HomeScreen() {
                 }
               />
             </View>
-            <TransactionHistory />
+            <TransactionHistory refetchBalance={refetch} />
           </ScrollView>
           <MainAccountPopup
             ref={currentAccountModalRef}
@@ -347,3 +348,5 @@ const styles = StyleSheet.create({
     gap: 20,
   },
 });
+
+export default withFadeIn(HomeScreen);

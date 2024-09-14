@@ -1,11 +1,42 @@
-import React from "react";
-import { View, StyleSheet, Image, Pressable, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Pressable,
+  Text,
+  Keyboard,
+} from "react-native";
 import { Tabs } from "expo-router";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
+import withFadeIn from "@/components/effects/withFadeIn";
 
 type TabRoutes = "home" | "settings" | "account";
 
-export default function TabLayout() {
+function TabLayout() {
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    // Cleanup listeners on unmount
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -46,8 +77,11 @@ export default function TabLayout() {
           //     />
           //   );
           // },
+          tabBarHideOnKeyboard: true,
         })}
-        tabBar={(props) => <TabBar {...props} />}
+        tabBar={(props) => (
+          <TabBar {...props} keyboardVisible={keyboardVisible} />
+        )}
       >
         <Tabs.Screen name="home" />
         <Tabs.Screen name="settings" />
@@ -57,7 +91,7 @@ export default function TabLayout() {
   );
 }
 
-const TabBar = ({ state, descriptors, navigation }: any) => {
+const TabBar = ({ state, descriptors, navigation, keyboardVisible }: any) => {
   const {
     isModalOpen,
     isCheckoutModalOpen,
@@ -83,7 +117,10 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
   const styles = StyleSheet.create({
     tabBar: {
       display:
-        isCheckoutModalOpen || isModalOpen || isValidationModalOpen
+        isCheckoutModalOpen ||
+        isModalOpen ||
+        isValidationModalOpen ||
+        keyboardVisible
           ? "none"
           : "flex",
       position: "absolute",
@@ -204,3 +241,4 @@ const TabBar = ({ state, descriptors, navigation }: any) => {
     </View>
   );
 };
+export default /* withFadeIn( */ TabLayout /* ) */;

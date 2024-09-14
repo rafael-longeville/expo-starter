@@ -17,6 +17,7 @@ import {
 } from "thirdweb/react";
 import { router } from "expo-router";
 import { Wallet, WalletId } from "thirdweb/wallets";
+import withFadeIn from "@/components/effects/withFadeIn";
 
 interface AccountDetailsProps {
   currency: string;
@@ -25,7 +26,7 @@ interface AccountDetailsProps {
   total_balance: string;
 }
 
-export default function Account({
+function Account({
   currency,
   main_account_balance,
   investment_account_balance,
@@ -246,3 +247,5 @@ const styles = StyleSheet.create({
     height: 20,
   },
 });
+
+export default withFadeIn(Account);
