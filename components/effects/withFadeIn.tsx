@@ -14,7 +14,7 @@ export default function withFadeIn(WrappedComponent: any) {
         opacity.setValue(0);
         Animated.timing(opacity, {
           toValue: 1,
-          duration: 1000,
+          duration: 100,
           useNativeDriver: true,
         }).start();
       } else {
