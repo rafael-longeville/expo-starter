@@ -14,7 +14,7 @@ export default function withFadeIn(WrappedComponent: any) {
         opacity.setValue(0);
         Animated.timing(opacity, {
           toValue: 1,
-          duration: 100,
+          duration: 50, // Adjust the duration if needed
           useNativeDriver: true,
         }).start();
       } else {
@@ -28,7 +28,7 @@ export default function withFadeIn(WrappedComponent: any) {
     }
 
     return (
-      <Animated.View style={{ flex: 1, opacity, backgroundColor: "white" }}>
+      <Animated.View style={{ flex: 1, opacity }}>
         <WrappedComponent {...props} />
       </Animated.View>
     );
