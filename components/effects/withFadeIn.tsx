@@ -28,7 +28,7 @@ export default function withFadeIn(WrappedComponent: any) {
     }
 
     return (
-      <Animated.View style={{ flex: 1, opacity }}>
+      <Animated.View style={{ flex: 1, opacity, backgroundColor: "white" }}>
         <WrappedComponent {...props} />
       </Animated.View>
     );
