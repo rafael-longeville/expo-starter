@@ -18,6 +18,7 @@ import { router } from "expo-router";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
+import withFadeIn from "@/components/effects/withFadeIn";
 
 // Custom Switch component to toggle notifications
 const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
@@ -511,4 +512,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Settings;
+export default withFadeIn(Settings);

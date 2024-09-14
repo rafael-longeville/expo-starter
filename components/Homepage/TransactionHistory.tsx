@@ -42,7 +42,7 @@ const GET_TRANSACTIONS = gql`
   }
 `;
 
-function TransactionHistoryComponent() {
+function TransactionHistoryComponent(refetchBalance: any) {
   const { t } = useTranslation();
   const activeAccount = useActiveAccount(); // Get the active account
   const [currency, setCurrency] = useState<string>("EUR"); // Default currency
@@ -69,6 +69,16 @@ function TransactionHistoryComponent() {
     client,
     pollInterval: 10000, // Set poll interval to 10 seconds (10000 milliseconds)
     skip: !activeAccount?.address, // Skip the query if no active account address
+    onCompleted: (fetchedData) => {
+      // This will be called every time the query is successfully refetched
+      console.log("Query refetched successfully", fetchedData);
+      // Add your custom logic here
+      refetchBalance();
+    },
+    onError: (error) => {
+      // Handle errors if necessary
+      console.error("Error refetching query:", error);
+    },
   });
 
   if (!activeAccount?.address) {
@@ -76,7 +86,7 @@ function TransactionHistoryComponent() {
   }
 
   if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error loading transactions.</Text>;
+  if (!loading && error) return <Text>Error loading transactions.</Text>;
 
   // Use fetched transactions instead of static history
   const transactions = data?.transaction.map((item: any) => {
@@ -280,10 +290,10 @@ const styles = StyleSheet.create({
 });
 
 // Step 5: Wrap the component in ApolloProvider and export
-export default function App() {
+export default function TransactionHistory(refetchBalance: any) {
   return (
     <ApolloProvider client={client}>
-      <TransactionHistoryComponent />
+      <TransactionHistoryComponent refetchBalance={refetchBalance} />
     </ApolloProvider>
   );
 }
