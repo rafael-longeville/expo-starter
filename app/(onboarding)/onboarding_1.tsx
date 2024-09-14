@@ -97,18 +97,6 @@ const Onboarding1: React.FC = () => {
         if (storedNotifications !== null) {
           setNotifications(storedNotifications === "true");
         }
-
-        // Checking all JWT tokens stored on the device
-        const allKeys = await AsyncStorage.getAllKeys();
-
-        if (allKeys.length > 0) {
-          const tokens = await AsyncStorage.multiGet(allKeys);
-          tokens.forEach(([key, value]) => {
-            console.log(`JWT Token found - Key: ${key}, Value: ${value}`);
-          });
-        } else {
-          console.log("No JWT tokens found on the device.");
-        }
       } catch (error) {
         Sentry.captureException(error);
         console.error(

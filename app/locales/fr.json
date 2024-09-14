@@ -93,7 +93,9 @@
       },
       "make_a_donation": "Faire un don",
       "public_adress": "Votre adresse publique IBEx Wallet",
-      "disconnect": "Se déconnecter"
+      "disconnect": "Se déconnecter",
+      "show_qr_code": "Afficher le QR code",
+      "close": "Fermer"
     }
   },
   "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",

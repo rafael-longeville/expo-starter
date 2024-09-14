@@ -1,5 +1,11 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { StyleSheet, ScrollView, RefreshControl, View } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+  View,
+  Text,
+} from "react-native";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -349,5 +355,8 @@ const styles = StyleSheet.create({
     gap: 20,
   },
 });
+const EnhancedHomeScreen = withFadeIn(HomeScreen);
 
-export default withFadeIn(HomeScreen);
+export default process.env.EXPO_PUBLIC_IS_DEVELOPMENT
+  ? HomeScreen
+  : EnhancedHomeScreen;

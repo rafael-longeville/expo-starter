@@ -512,4 +512,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withFadeIn(Settings);
+const EnhancedSettings = withFadeIn(Settings);
+
+export default process.env.EXPO_PUBLIC_IS_DEVELOPMENT
+  ? Settings
+  : EnhancedSettings;
