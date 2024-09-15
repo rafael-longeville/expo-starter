@@ -52,12 +52,12 @@ const GET_TRANSACTIONS = gql`
 
 function TransactionHistoryComponent({
   refetchBalance,
-  getConversionRate,
+  // getConversionRate,
 }: any) {
   const { t } = useTranslation();
   const activeAccount = useActiveAccount(); // Get the active account
   const [currency, setCurrency] = useState<string>("EUR"); // Default currency
-  const [conversionRate, setConversionRate] = useState<number | null>(null);
+  // const [conversionRate, setConversionRate] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCurrency = async () => {
@@ -88,13 +88,13 @@ function TransactionHistoryComponent({
     },
   });
 
-  useEffect(() => {
-    const fetchConversionRate = async () => {
-      const rate = await getConversionRate();
-      setConversionRate(rate);
-    };
-    fetchConversionRate();
-  }, [getConversionRate]);
+  // useEffect(() => {
+  //   const fetchConversionRate = async () => {
+  //     const rate = await getConversionRate();
+  //     setConversionRate(rate);
+  //   };
+  //   fetchConversionRate();
+  // }, [getConversionRate]);
 
   // Use fetched transactions instead of static history
   const transactions = data?.transaction.map((item: any) => {
@@ -135,7 +135,7 @@ function TransactionHistoryComponent({
             : "Terminée",
       from,
       to,
-      amount: `${amount * (conversionRate ?? 1)} ${currencySymbol}`,
+      amount: `${amount} ${currencySymbol}`,
       txId: shortenHex(item.transaction_hash || "0x0"),
       fullHash: item.transaction_hash
         ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash
