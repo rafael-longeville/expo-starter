@@ -70,12 +70,6 @@
           }
         }
       ],
-      [
-        "expo-font",
-        {
-          "fonts": ["./assets/fonts/Poppins-Black.ttf"]
-        }
-      ],
       "expo-localization",
       [
         "@sentry/react-native/expo",
