@@ -52,25 +52,12 @@ const GET_TRANSACTIONS = gql`
 
 function TransactionHistoryComponent({
   refetchBalance,
+  currency,
   // getConversionRate,
 }: any) {
   const { t } = useTranslation();
   const activeAccount = useActiveAccount(); // Get the active account
-  const [currency, setCurrency] = useState<string>("EUR"); // Default currency
   // const [conversionRate, setConversionRate] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchCurrency = async () => {
-      try {
-        const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
-        setCurrency(storedCurrency === "usd" ? "USD" : "EUR");
-      } catch (error) {
-        console.error("Error fetching currency from AsyncStorage", error);
-      }
-    };
-
-    fetchCurrency();
-  }, []);
 
   // Step 3: Fetch transactions using the useQuery hook with pollInterval for auto refetch
   const { loading, error, data, refetch } = useQuery(GET_TRANSACTIONS, {
@@ -117,11 +104,7 @@ function TransactionHistoryComponent({
     );
 
     // Format the amount based on the selected currency
-    const amount =
-      currency === "USD"
-        ? item.transaction_amount.toFixed(2)
-        : item.transaction_amount.toFixed(2);
-    const currencySymbol = currency === "USD" ? "$" : "€";
+    const amount = item.transaction_amount.toFixed(2);
 
     return {
       id: item.id,
@@ -135,7 +118,7 @@ function TransactionHistoryComponent({
             : "Terminée",
       from,
       to,
-      amount: `${amount} ${currencySymbol}`,
+      amount: `${amount} ${currency}`,
       txId: shortenHex(item.transaction_hash || "0x0"),
       fullHash: item.transaction_hash
         ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash
@@ -155,7 +138,7 @@ function TransactionHistoryComponent({
   }, [transactions]);
 
   if (!activeAccount?.address) {
-    return <Text>No active account found.</Text>;
+    return <View style={{ marginBottom: 120 }}></View>;
   }
 
   if (loading) return <Text>Loading...</Text>;
@@ -330,12 +313,14 @@ const styles = StyleSheet.create({
 // Step 5: Wrap the component in ApolloProvider and export
 export default function TransactionHistory({
   refetchBalance,
+  currency,
   getConversionRate,
 }: any) {
   return (
     <ApolloProvider client={client}>
       <TransactionHistoryComponent
         refetchBalance={refetchBalance}
+        currency={currency}
         getConversionRate={getConversionRate}
       />
     </ApolloProvider>

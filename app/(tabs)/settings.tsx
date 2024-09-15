@@ -163,7 +163,6 @@ const Settings: React.FC = () => {
         "notifications",
         notifications ? "true" : "false"
       );
-
       // Navigate to the next screen
       router.push("/(tabs)/home");
     } catch (error) {

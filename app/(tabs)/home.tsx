@@ -287,6 +287,7 @@ function HomeScreen() {
             </View>
             <TransactionHistory
               refetchBalance={refetch}
+              currency={currency}
               getConversionRate={getConversionRate}
             />
           </ScrollView>
