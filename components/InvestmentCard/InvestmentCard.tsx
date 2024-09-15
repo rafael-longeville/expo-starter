@@ -22,8 +22,8 @@ const InvestmentCard = forwardRef(
   (
     {
       investment,
-      investing = false,
-      isOnboarding = false,
+      investing,
+      isOnboarding,
       main_account_balance = "0",
       eurBalance,
       setEurBalance,
@@ -121,6 +121,7 @@ const InvestmentCard = forwardRef(
               </View>
             </>
           )}
+
         <View style={styles.flexContainer}>
           <View style={styles.flexInputContainer}>
             <View style={styles.inputContainer}>
@@ -131,15 +132,23 @@ const InvestmentCard = forwardRef(
                 placeholderTextColor="rgba(19, 41, 61, 0.60)"
                 value={amount} // Bind the state to the TextInput
                 onChangeText={(text) => {
-                  // Parse the text as a number and check if it is less than or equal to 100
-                  const numericValue = parseFloat(text);
-                  if (isOnboarding && numericValue > 100) {
-                    // Allow clearing the input
-                    setAmount("100");
-                  } else if (numericValue < 5 && numericValue > 0) {
-                    setAmount("5");
+                  // Remove any non-numeric characters
+                  const numericText = text.replace(/[^0-9]/g, "");
+
+                  // Convert to number, or 0 if empty
+                  const numericValue =
+                    numericText === "" ? 0 : parseInt(numericText, 10);
+
+                  if (isOnboarding && !investing) {
+                    // For onboarding and not investing, cap at 100 and min at 5
+                    const cappedValue = Math.min(
+                      Math.max(numericValue, 5),
+                      100
+                    );
+                    setAmount(cappedValue.toString());
                   } else {
-                    setAmount(text);
+                    // For all other cases, don't limit the amount
+                    setAmount(numericText);
                   }
                 }}
               />

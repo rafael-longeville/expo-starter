@@ -1,11 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-  View,
-  Text,
-} from "react-native";
+import { StyleSheet, ScrollView, RefreshControl, View } from "react-native";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -291,7 +285,10 @@ function HomeScreen() {
                 }
               />
             </View>
-            <TransactionHistory refetchBalance={refetch} />
+            <TransactionHistory
+              refetchBalance={refetch}
+              getConversionRate={getConversionRate}
+            />
           </ScrollView>
           <MainAccountPopup
             ref={currentAccountModalRef}

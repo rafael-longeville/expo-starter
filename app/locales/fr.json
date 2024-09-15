@@ -74,7 +74,9 @@
         "in_progress": "En cours",
         "seeAll": "Tout voir",
         "no_transactions_1": "Vous n'avez pas encore réalisé d'opération.",
-        "no_transactions_2": "Alimentez votre compte courant  ou effectuez un placement pour commencer."
+        "no_transactions_2": "Alimentez votre compte courant  ou effectuez un placement pour commencer.",
+        "copied": "Copié",
+        "copied_link": "Un lien vers la transaction a été copié dans votre presse-papier"
       }
     },
     "account": {

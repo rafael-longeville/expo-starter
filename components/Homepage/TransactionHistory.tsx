@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from "react-native";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useTranslation } from "react-i18next";
@@ -49,10 +50,14 @@ const GET_TRANSACTIONS = gql`
   }
 `;
 
-function TransactionHistoryComponent({ refetchBalance }: any) {
+function TransactionHistoryComponent({
+  refetchBalance,
+  getConversionRate,
+}: any) {
   const { t } = useTranslation();
   const activeAccount = useActiveAccount(); // Get the active account
   const [currency, setCurrency] = useState<string>("EUR"); // Default currency
+  const [conversionRate, setConversionRate] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCurrency = async () => {
@@ -82,6 +87,14 @@ function TransactionHistoryComponent({ refetchBalance }: any) {
       console.error("Error refetching query:", error);
     },
   });
+
+  useEffect(() => {
+    const fetchConversionRate = async () => {
+      const rate = await getConversionRate();
+      setConversionRate(rate);
+    };
+    fetchConversionRate();
+  }, [getConversionRate]);
 
   // Use fetched transactions instead of static history
   const transactions = data?.transaction.map((item: any) => {
@@ -122,7 +135,7 @@ function TransactionHistoryComponent({ refetchBalance }: any) {
             : "Terminée",
       from,
       to,
-      amount: `${amount} ${currencySymbol}`,
+      amount: `${amount * (conversionRate ?? 1)} ${currencySymbol}`,
       txId: shortenHex(item.transaction_hash || "0x0"),
       fullHash: item.transaction_hash
         ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash
@@ -150,16 +163,6 @@ function TransactionHistoryComponent({ refetchBalance }: any) {
 
   return (
     <View style={styles.container}>
-      <Pressable
-        onPress={() => {
-          refetchBalance().then(() => {
-            console.log("Balance refetched successfully.");
-          });
-          console.log("Refetching balance...");
-        }}
-      >
-        <Text style={globalFonts.mediumSubtitle}>Refetch</Text>
-      </Pressable>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 15 }}>
         <Text style={globalFonts.mediumSubtitle}>
           {t("pages.home.transactions.title")}
@@ -231,17 +234,29 @@ function TransactionHistoryComponent({ refetchBalance }: any) {
                     </Text>
                     <Text style={styles.secondRowText}>{item.to}</Text>
                     <View style={{ flexDirection: "row", gap: 2 }}>
-                      <Text style={{ ...styles.secondRowText, fontSize: 12 }}>
-                        ID: {item.txId}
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => Clipboard.setString(item.fullHash)} // Copy txId to clipboard
-                      >
-                        <Image
-                          source={require("@/assets/images/tx-copy-icon.png")}
-                          style={{ width: 20, height: 20 }} // Adjust image size if necessary
-                        />
-                      </TouchableOpacity>
+                      {item.txId && (
+                        <>
+                          <Text
+                            style={{ ...styles.secondRowText, fontSize: 12 }}
+                          >
+                            ID: {item.txId}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() => {
+                              Clipboard.setString(item.fullHash);
+                              Alert.alert(
+                                t("pages.home.transactions.copied"),
+                                t("pages.home.transactions.copied_link")
+                              );
+                            }}
+                          >
+                            <Image
+                              source={require("@/assets/images/tx-copy-icon.png")}
+                              style={{ width: 20, height: 20 }}
+                            />
+                          </TouchableOpacity>
+                        </>
+                      )}
                     </View>
                   </View>
                 </View>
@@ -313,10 +328,16 @@ const styles = StyleSheet.create({
 });
 
 // Step 5: Wrap the component in ApolloProvider and export
-export default function TransactionHistory({ refetchBalance }: any) {
+export default function TransactionHistory({
+  refetchBalance,
+  getConversionRate,
+}: any) {
   return (
     <ApolloProvider client={client}>
-      <TransactionHistoryComponent refetchBalance={refetchBalance} />
+      <TransactionHistoryComponent
+        refetchBalance={refetchBalance}
+        getConversionRate={getConversionRate}
+      />
     </ApolloProvider>
   );
 }

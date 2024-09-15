@@ -58,8 +58,16 @@ const Onboarding2: React.FC = () => {
           {t("pages.onboarding_2.disclaimer")}
         </Text>
       </View>
-      <InvestmentCard investment={"DOLLAR US"} investing={true} isOnboarding />
-      <InvestmentCard investment={"EURO"} investing={true} isOnboarding />
+      <InvestmentCard
+        investment={"DOLLAR US"}
+        investing={true}
+        isOnboarding={true}
+      />
+      <InvestmentCard
+        investment={"EURO"}
+        investing={true}
+        isOnboarding={true}
+      />
 
       <Divider
         style={{
@@ -79,7 +87,11 @@ const Onboarding2: React.FC = () => {
         </Text>{" "}
         {t("pages.onboarding_2.second_subtitle_3")}
       </Text>
-      <InvestmentCard investment={"DOLLAR US"} investing={false} isOnboarding />
+      <InvestmentCard
+        investment={"DOLLAR US"}
+        investing={false}
+        isOnboarding={true}
+      />
       <Pressable
         style={{
           backgroundColor: "#13293D",

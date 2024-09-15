@@ -2,83 +2,85 @@
   "welcome": "Welcome",
   "splash": {
     "1": {
-      "title": "Fund your current account",
-      "subtitle": "AND TAKE BACK CONTROL OF YOUR MONEY"
+      "title": "Fund Your Checking Account",
+      "subtitle": "AND TAKE CONTROL OF YOUR MONEY"
     },
     "2": {
-      "title": "Invest your funds in an interest-bearing account",
-      "subtitle": "EARN FROM THE VERY FIRST SECOND AND GAIN INTEREST ON YOUR INTEREST"
+      "title": "Place Your Funds in a Rewarding Account",
+      "subtitle": "BE REWARDED FROM THE FIRST SECOND AND EARN INTEREST ON YOUR INTEREST"
     },
     "3": {
-      "title": "Stay informed",
-      "subtitle": "ABOUT THE PRODUCTS OFFERED BY CLICKING ON THE INFO POINTS:"
+      "title": "Stay Informed",
+      "subtitle": "ABOUT THE NATURE OF THE PRODUCTS OFFERED BY CLICKING ON THE INFO POINTS:"
     }
   },
   "pages": {
     "login": {
       "title": "Welcome",
-      "subtitle": "You're one step away from creating your sovereign account for free!"
+      "subtitle": "You are one step away from creating your sovereign account for free!"
     },
     "settings": {
       "title": "Settings"
     },
     "onboarding_1": {
-      "title": "Set currency display and notifications",
-      "money_question": "Would you prefer amounts to be displayed in Euro or Dollar?",
-      "money_question_helper": "To assist you, converted amounts (based on the chosen currency) will be marked with an asterisk (*).",
-      "notifications_question": "Do you want to enable notifications?",
-      "notifications_question_helper": "Stay ahead and seize the best investment opportunities.",
-      "language_question": "Which language would you like to use for the app?",
+      "title": "Set Up Currency Display and Notifications",
+      "money_question": "Would you like to display amounts in Euros or Dollars?",
+      "money_question_helper": "To assist you, converted amounts (based on the chosen currency) will be preceded by an asterisk (*).",
+      "notifications_question": "Would you like to enable notifications?",
+      "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
+      "language_question": "In which language would you like to use the application?",
       "dollar": "US Dollar",
       "save_button": "Save"
     },
     "onboarding_2": {
-      "title": "Your money works for you.",
-      "subtitle_1": "Invest in a",
-      "subtitle_2": "Interest-bearing account",
-      "subtitle_3": " and start earning liquid interest from the first second, without exposure to exchange rates.",
-      "disclaimer": "Maximum of €100 for the first deposit",
-      "second_title": "Unbank your liquid assets",
-      "second_subtitle_1": "And keep them in your",
-      "second_subtitle_2": "Sovereign current account",
-      "second_subtitle_3": "that only you can access.",
+      "title": "Your Money Works for You.",
+      "subtitle_1": "Place in a",
+      "subtitle_2": "Rewarding Account",
+      "subtitle_3": " and earn liquid interest from the first second, not exposed to exchange rates.",
+      "disclaimer": "Maximum €100 for the first deposit",
+      "second_title": "Decentralize Your Liquidity",
+      "second_subtitle_1": "And keep it in your",
+      "second_subtitle_2": "Sovereign Checking Account",
+      "second_subtitle_3": " which only you have access to.",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
     },
     "onboarding_3": {
-      "title": "Access your account",
+      "title": "Access Your Account",
       "subtitle": "Open or access an existing account with one click:",
       "sign-in": "Use an existing wallet",
-      "sign-in-pending": "Signing in, please wait...",
+      "sign-in-pending": "Connecting, please wait...",
       "create-account": "Create a new wallet",
-      "create-account-pending": "Creating account, please wait..."
+      "create-account-pending": "Creating, please wait..."
     },
     "onboarding_4": {
       "account": "Account",
-      "title": "Fund your account",
-      "subtitle": "Deposit your funds into an interest-bearing account using a bank card, Apple Pay, or Google Pay.",
+      "title": "Fund Your Account",
+      "subtitle": "Place your funds in a rewarding account via debit card, Apple Pay, or Google Pay.",
       "cancel": "Cancel"
     },
     "home": {
-      "total_balance": "Total balance",
+      "total_balance": "Total Balance",
       "balance": "Balance",
-      "on_main_account": "Current account",
-      "on_investments": "Interest-bearing accounts",
-      "your_main_account": "Current account",
-      "your_investment_account": "Interest-bearing accounts",
-      "details": "See details",
+      "on_main_account": "Checking Account",
+      "on_investments": "Rewarding Accounts",
+      "your_main_account": "Checking Account",
+      "your_investment_account": "Rewarding Accounts",
+      "details": "Details",
       "hide_details": "Hide",
-      "including_gains": "Including gains",
+      "including_gains": "Including Gains",
       "transactions": {
-        "title": "Your transaction history",
-        "in_progress": "In progress",
-        "seeAll": "View all",
+        "title": "Your Transaction History",
+        "in_progress": "In Progress",
+        "seeAll": "See All",
         "no_transactions_1": "You haven't made any transactions yet.",
-        "no_transactions_2": "Fund your current account or make an investment to get started."
+        "no_transactions_2": "Fund your checking account or make an investment to get started.",
+        "copied": "Copied",
+        "copied_link": "A link to the transaction has been copied to your clipboard"
       }
     },
     "account": {
-      "title": "My account",
+      "title": "My Account",
       "rate_wallet": {
         "title": "Rate IBEx Wallet",
         "href": "https://moncomptesouverain.fr/"
@@ -88,18 +90,18 @@
         "href": "https://moncomptesouverain.fr/"
       },
       "contact_us": {
-        "title": "Contact us",
+        "title": "Contact Us",
         "href": "https://moncomptesouverain.fr/"
       },
-      "make_a_donation": "Make a donation",
-      "public_adress": "Your public IBEx Wallet address",
-      "disconnect": "Log out",
-      "show_qr_code": "Show QR code",
+      "make_a_donation": "Make a Donation",
+      "public_adress": "Your IBEx Wallet Public Address",
+      "disconnect": "Disconnect",
+      "show_qr_code": "Show QR Code",
       "close": "Close"
     }
   },
-  "disclaimer": "By continuing, you confirm that you have read and accepted",
-  "disclaimer_link": "our terms and conditions.",
+  "disclaimer": "By continuing, you confirm that you have read and accepted ",
+  "disclaimer_link": "our general sales conditions.",
   "components": {
     "investment_card": {
       "investment": "Investment",
@@ -112,41 +114,41 @@
   },
   "pop-ups": {
     "stay_updated": {
-      "title": "Stay updated!",
+      "title": "Stay Updated!",
       "subtitle": "Swipe down to refresh.",
       "disclaimer": {
         "description": "Amounts are rounded to the nearest cent (2 decimal places).",
         "link": "Learn more.",
         "href_link": "https://moncomptesouverain.fr/"
       },
-      "button": "Got it"
+      "button": "I Understand"
     },
     "main_account": {
-      "title": "Your current account",
-      "description_1": "Be the real owner of your funds, only you can interact with your sovereign current account.",
-      "description_2": "You can move money from it to your interest-bearing accounts.",
+      "title": "Your Checking Account",
+      "description_1": "Be the true owner of your funds; only you have the ability to interact with your sovereign checking account.",
+      "description_2": "You can move money from it to your rewarding accounts.",
       "link": "Learn more.",
       "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
-      "button": "Got it"
+      "button": "I Understand"
     },
     "investment_account": {
-      "title": "Your investments",
-      "description_1": "This investment behaves like a savings account, only better!",
-      "description_2": "Lock in your funds and earn interest from the first minute. Withdraw anytime.",
-      "disclaimer": "Estimated annual yield, not guaranteed.",
+      "title": "Your Investments",
+      "description_1": "This investment behaves like a savings account, but better!",
+      "description_2": "Lock in your funds and earn interest from the first minute. Exit at any time.",
+      "disclaimer": "Estimated annual yield and not guaranteed.",
       "link": "Learn more.",
       "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
-      "button": "Got it"
+      "button": "I Understand"
     },
     "transaction": {
-      "title": "This operation requires your attention",
-      "description": "You are about to move {{amount}}{{currency}} from your current account to your interest-bearing account. Are you sure you want to proceed?",
+      "title": "This Operation Requires Your Attention",
+      "description": "You are about to move {{amount}}{{currency}} from your checking account to your rewarding account. Are you sure you want to continue?",
       "cancel": "Cancel",
       "confirm": "Confirm"
     }
   },
   "offramp": {
-    "title": "Withdraw from your account",
-    "subtitle": "You can withdraw your funds via bank card, bank transfer, or Google Pay."
+    "title": "Withdraw from Your Account",
+    "subtitle": "You can retrieve funds from your account by withdrawing via debit card, bank transfer, or Google Pay."
   }
 }
