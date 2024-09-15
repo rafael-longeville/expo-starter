@@ -39,7 +39,7 @@ const Onboarding4: React.FC = () => {
           level: "info",
         });
 
-        if (account?.address) {
+        if (account?.address && currency) {
           let params = {
             apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
             fiatCurrency: currency, // Use the selected currency
