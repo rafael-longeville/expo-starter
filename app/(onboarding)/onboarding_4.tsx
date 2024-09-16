@@ -112,7 +112,7 @@ const Onboarding4: React.FC = () => {
         <Text style={styles.textcompte}>
           <Text style={globalFonts.whiteSubtitle}>
             {t("pages.onboarding_4.account")}{" "}
-            {currency === "EUR" ? "EURO" : "DOLLAR US"}:
+            {onboardingMethod === "angleEUR" ? "EURO " : "DOLLAR US "}:
           </Text>
           <Text style={styles.amount}> 0 {currency === "USD" ? "$" : "€"}</Text>
         </Text>
