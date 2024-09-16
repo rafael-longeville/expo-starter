@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 20,
+    marginBottom: 120,
   },
   text: {
     fontSize: 24,
