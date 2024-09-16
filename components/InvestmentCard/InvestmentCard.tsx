@@ -31,6 +31,7 @@ const InvestmentCard = forwardRef(
       usdBalance,
       setUsdBalance,
       handleOpenModal,
+      setAsset,
     }: any,
     ref: any
   ) => {
@@ -73,7 +74,12 @@ const InvestmentCard = forwardRef(
               {investing ? "CR" : "CC"} - {investment}
             </Text>
           </View>
-          <Pressable onPress={handleOpenModal}>
+          <Pressable
+            onPress={() => {
+              setAsset(investment);
+              handleOpenModal();
+            }}
+          >
             <Image
               source={require("@/assets/images/info-icon.png")}
               style={{

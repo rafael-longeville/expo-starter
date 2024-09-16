@@ -141,7 +141,8 @@
       "description_2": "Immobilisez vos fonds et percevez un intéret dès la première minute. Sortez à tout moment.",
       "disclaimer": "Rendement estimé à l’année et non garanti. ",
       "link": "En savoir plus.",
-      "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
+      "DOLLAR US_href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/fond-en-dollar",
+      "EURO_href_link": "https://docs.wallet.civicpower.org/fr-fr/placements/compte_courant_usd/",
       "button": "J'ai compris"
     },
     "transaction": {

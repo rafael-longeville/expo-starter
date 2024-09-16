@@ -27,7 +27,7 @@ const CustomHandle = () => {
 };
 
 const InvestmentAccountPopup = forwardRef(
-  ({ setIsModalOpen, setBlurred }: any, ref: any) => {
+  ({ setIsModalOpen, setBlurred, asset }: any, ref: any) => {
     const { t } = useTranslation();
     const snapPoints = useMemo(() => ["45%"], []);
 
@@ -104,7 +104,11 @@ const InvestmentAccountPopup = forwardRef(
                 textAlign: "center",
               }}
             >
-              <Link href={t("pop-ups.investment_account.href_link") as Href}>
+              <Link
+                href={
+                  t(`pop-ups.investment_account.${asset}_href_link`) as Href
+                }
+              >
                 {t("pop-ups.investment_account.link")}
               </Link>
             </Text>

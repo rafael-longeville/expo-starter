@@ -68,6 +68,7 @@ function HomeScreen() {
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
   const [mainAccountBalance, setMainAccountBalance] = useState<string>("0.00");
+  const [asset, setAsset] = useState<string>("");
 
   const tokenAddress = "0x0c86a754a29714c4fe9c6f1359fa7099ed174c0b";
 
@@ -260,6 +261,7 @@ function HomeScreen() {
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
                 setUsdBalance={setUsdBalance}
+                setAsset={setAsset}
                 handleOpenModal={() =>
                   handleOpenModal(
                     investmentAccountModalRef as React.MutableRefObject<
@@ -276,6 +278,7 @@ function HomeScreen() {
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
                 setUsdBalance={setUsdBalance}
+                setAsset={setAsset}
                 handleOpenModal={() =>
                   handleOpenModal(
                     investmentAccountModalRef as React.MutableRefObject<
@@ -300,6 +303,7 @@ function HomeScreen() {
             ref={investmentAccountModalRef}
             setIsModalOpen={setIsModalOpen}
             setBlurred={setIsBlurred}
+            asset={asset}
           />
           <StayUpdated
             ref={stayUpdatedModalRef}
