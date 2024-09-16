@@ -21,6 +21,7 @@ import { router } from "expo-router";
 import { Wallet, WalletId } from "thirdweb/wallets";
 import withFadeIn from "@/components/effects/withFadeIn";
 import { ScrollView } from "react-native-gesture-handler";
+import * as CONFIG from "../../app.json";
 
 interface AccountDetailsProps {
   currency: string;
@@ -92,7 +93,7 @@ function Account({
             flexDirection: "column",
             gap: 20,
             alignItems: "center",
-            marginBottom: 100,
+            marginBottom: 120,
           }}
         >
           <View style={styles.optionsContainer}>
@@ -100,7 +101,6 @@ function Account({
             <OptionRow label={"pages.account.help_center"} t={t} />
             <OptionRow label={"pages.account.contact_us"} t={t} />
           </View>
-
           <View
             style={{
               flexDirection: "row",
@@ -123,7 +123,6 @@ function Account({
               style={styles.heartIcon}
             />
           </View>
-
           {/* Conditional rendering for account information */}
           {account ? (
             <View>
@@ -188,7 +187,6 @@ function Account({
               </Modal>
             </View>
           ) : null}
-
           {/* Conditional rendering for wallet */}
           {wallet && (
             <Pressable
@@ -203,6 +201,14 @@ function Account({
               </Text>
             </Pressable>
           )}
+          <Text
+            style={{
+              ...globalFonts.disclaimerText,
+              textAlign: "center",
+            }}
+          >
+            Version {CONFIG.expo.ios.buildNumber}
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

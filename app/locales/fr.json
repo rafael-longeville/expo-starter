@@ -109,7 +109,11 @@
       "yield": "Rendement",
       "deposit": "Déposer",
       "withdraw": "Retirer",
-      "gains": "Gains"
+      "gains": "Gains",
+      "amount_error": {
+        "title": "Montant incorrect",
+        "message": "Veuillez saisir un montant entre 5 et 100."
+      }
     }
   },
   "pop-ups": {

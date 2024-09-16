@@ -19,6 +19,7 @@ const Onboarding4: React.FC = () => {
   const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
   const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
   const [currency, setCurrency] = useState<string>("EUR"); // Default currency
+  const [currencySymbol, setCurrencySymbol] = useState<string>("€");
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const Onboarding4: React.FC = () => {
         setOnboardingValue(value);
         setOnboardingMethod(method);
         setCurrency(storedCurrency === "euro" ? "EUR" : "USD"); // Update currency
-
+        setCurrencySymbol(storedCurrency === "euro" ? "€" : "$");
         Sentry.addBreadcrumb({
           category: "storage",
           message: `Retrieved onboardingValue: ${value}, onboardingMethod: ${method}, currency: ${storedCurrency}`,
@@ -114,7 +115,21 @@ const Onboarding4: React.FC = () => {
             {t("pages.onboarding_4.account")}{" "}
             {onboardingMethod === "angleEUR" ? "EURO " : "DOLLAR US "}:
           </Text>
-          <Text style={styles.amount}> 0 {currency === "USD" ? "$" : "€"}</Text>
+          <Text style={styles.amount}>
+            {" "}
+            0{" "}
+            <Text
+              style={{
+                ...styles.amount,
+                fontStyle:
+                  currencySymbol === "€" && onboardingMethod === "angleUSD"
+                    ? "italic"
+                    : "normal",
+              }}
+            >
+              $
+            </Text>
+          </Text>
         </Text>
       </View>
       <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
@@ -147,7 +162,7 @@ const Onboarding4: React.FC = () => {
             message: "User navigated to home from Onboarding3",
             level: "info",
           });
-          router.push("/(tabs)/home");
+          router.push("/(onboarding)/onboarding_2");
         }}
       >
         {t("pages.onboarding_4.cancel")}

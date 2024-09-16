@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from "react-native";
 import { styles } from "./styles";
 import {
@@ -131,29 +132,20 @@ const InvestmentCard = forwardRef(
                 placeholder="0"
                 placeholderTextColor="rgba(19, 41, 61, 0.60)"
                 value={amount} // Bind the state to the TextInput
-                onChangeText={(text) => {
-                  // Remove any non-numeric characters
-                  const numericText = text.replace(/[^0-9]/g, "");
-
-                  // Convert to number, or 0 if empty
-                  const numericValue =
-                    numericText === "" ? 0 : parseInt(numericText, 10);
-
-                  if (isOnboarding && !investing) {
-                    // For onboarding and not investing, cap at 100 and min at 5
-                    const cappedValue = Math.min(
-                      Math.max(numericValue, 5),
-                      100
-                    );
-                    setAmount(cappedValue.toString());
-                  } else {
-                    // For all other cases, don't limit the amount
-                    setAmount(numericText);
-                  }
-                }}
+                onChangeText={(text) => setAmount(text)}
               />
             </View>
-            <Text style={styles.asideInputText}>{currencySymbol}</Text>
+            <Text
+              style={[
+                styles.asideInputText,
+                currencySymbol === "€" &&
+                  investment === "DOLLAR US" && {
+                    fontFamily: "Poppins_600SemiBold_Italic",
+                  },
+              ]}
+            >
+              {currencySymbol}
+            </Text>
           </View>
           <View style={gainContainerStyle(investing)}>
             <Text style={styles.rendementText}>
@@ -279,16 +271,23 @@ const InvestmentCard = forwardRef(
             style={styles.buttonContainer}
             activeOpacity={0.6}
             onPress={async () => {
+              const numericAmount = parseAmount(amount); // Convert amount to number
+
+              if (numericAmount <= 0) {
+                console.error(
+                  "Invalid amount. Please enter a number greater than 0."
+                );
+                return;
+              }
+
+              if (numericAmount < 5 || numericAmount > 100) {
+                Alert.alert(
+                  t("components.investment_card.amount_error.title"),
+                  t("components.investment_card.amount_error.message")
+                );
+                return;
+              }
               if (isOnboarding) {
-                const numericAmount = parseAmount(amount); // Convert amount to number
-
-                if (numericAmount <= 0) {
-                  console.error(
-                    "Invalid amount. Please enter a number greater than 0."
-                  );
-                  return;
-                }
-
                 try {
                   await AsyncStorage.setItem(
                     "onboardingValue",
@@ -326,8 +325,6 @@ const InvestmentCard = forwardRef(
                 usdBalance != undefined &&
                 setUsdBalance != undefined
               ) {
-                const numericAmount = parseAmount(amount); // Convert amount to number
-
                 if (numericAmount <= 0) {
                   console.error(
                     "Invalid amount. Please enter a number greater than 0."

@@ -109,7 +109,11 @@
       "yield": "Yield",
       "deposit": "Deposit",
       "withdraw": "Withdraw",
-      "gains": "Gains"
+      "gains": "Gains",
+      "amount_error": {
+        "title": "Incorrect Amount",
+        "message": "Please enter an amount between 5 and 100."
+      }
     }
   },
   "pop-ups": {

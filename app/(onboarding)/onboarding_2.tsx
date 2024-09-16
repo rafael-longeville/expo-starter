@@ -20,115 +20,58 @@ const Onboarding2: React.FC = () => {
     });
   }, []);
 
-  const handleContinuePress = async () => {
-    try {
-      Sentry.addBreadcrumb({
-        category: "action",
-        message: "User clicked continue without funding",
-        level: "info",
-      });
-
-      await AsyncStorage.setItem("continueWithoutFunding", "true");
-
-      Sentry.addBreadcrumb({
-        category: "storage",
-        message: "Stored continueWithoutFunding flag in AsyncStorage",
-        level: "info",
-      });
-
-      router.push("/(onboarding)/onboarding_3");
-    } catch (error) {
-      Sentry.captureException(error);
-      console.error("Error storing data or navigating:", error);
-    }
-  };
-
   return (
-    <View style={styles.container}>
-      <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-        <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
-        <Text style={globalFonts.subtitle}>
-          {t("pages.onboarding_2.subtitle_1")}{" "}
-          <Text style={{ fontFamily: "Poppins_700Bold" }}>
-            {t("pages.onboarding_2.subtitle_2")}
-          </Text>{" "}
-          {t("pages.onboarding_2.subtitle_3")}
-        </Text>
-        <Text style={{ ...globalFonts.disclaimerText }}>
-          {t("pages.onboarding_2.disclaimer")}
-        </Text>
-      </View>
-      <InvestmentCard
-        investment={"DOLLAR US"}
-        investing={true}
-        isOnboarding={true}
-      />
-      <InvestmentCard
-        investment={"EURO"}
-        investing={true}
-        isOnboarding={true}
-      />
+    <>
+      <View style={styles.container}>
+        <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
+          <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
+          <Text style={globalFonts.subtitle}>
+            {t("pages.onboarding_2.subtitle_1")}{" "}
+            <Text style={{ fontFamily: "Poppins_700Bold" }}>
+              {t("pages.onboarding_2.subtitle_2")}
+            </Text>{" "}
+            {t("pages.onboarding_2.subtitle_3")}
+          </Text>
+          <Text style={{ ...globalFonts.disclaimerText }}>
+            {t("pages.onboarding_2.disclaimer")}
+          </Text>
+        </View>
+        <InvestmentCard
+          investment={"DOLLAR US"}
+          investing={true}
+          isOnboarding={true}
+        />
+        <InvestmentCard
+          investment={"EURO"}
+          investing={true}
+          isOnboarding={true}
+        />
 
-      <Divider
-        style={{
-          backgroundColor: "#13293D",
-          opacity: 0.3,
-          height: 1.5,
-        }}
-      />
-      <Text style={globalFonts.title}>
-        {t("pages.onboarding_2.second_title")}
-      </Text>
-
-      <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_2.second_subtitle_1")}{" "}
-        <Text style={{ fontFamily: "Poppins_700Bold" }}>
-          {t("pages.onboarding_2.second_subtitle_2")}
-        </Text>{" "}
-        {t("pages.onboarding_2.second_subtitle_3")}
-      </Text>
-      <InvestmentCard
-        investment={"DOLLAR US"}
-        investing={false}
-        isOnboarding={true}
-      />
-      <Pressable
-        style={{
-          backgroundColor: "#13293D",
-          padding: 10,
-          borderRadius: 30,
-          marginTop: 20,
-          height: 50,
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-        }}
-        onPress={handleContinuePress}
-      >
-        <Text
+        <Divider
           style={{
-            ...globalFonts.whiteSubtitle,
-            textAlign: "center",
-            fontSize: 14,
-            fontFamily: "Poppins_500Medium",
+            backgroundColor: "#13293D",
+            opacity: 0.3,
+            height: 1.5,
           }}
-        >
-          {t("pages.onboarding_2.continue_button")}
+        />
+        <Text style={globalFonts.title}>
+          {t("pages.onboarding_2.second_title")}
         </Text>
-      </Pressable>
-      <Text
-        style={{
-          ...globalFonts.subtitle,
-          width: "100%",
-          textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
-        }}
-        onPress={handleContinuePress}
-      >
-        {t("pages.onboarding_2.has_account")}
-      </Text>
-    </View>
+
+        <Text style={globalFonts.subtitle}>
+          {t("pages.onboarding_2.second_subtitle_1")}{" "}
+          <Text style={{ fontFamily: "Poppins_700Bold" }}>
+            {t("pages.onboarding_2.second_subtitle_2")}
+          </Text>{" "}
+          {t("pages.onboarding_2.second_subtitle_3")}
+        </Text>
+        <InvestmentCard
+          investment={"DOLLAR US"}
+          investing={false}
+          isOnboarding={true}
+        />
+      </View>
+    </>
   );
 };
 
