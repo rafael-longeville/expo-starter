@@ -12,7 +12,7 @@ import { chain, client } from "@/constants/thirdweb";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 import { router } from "expo-router";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
 
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   buttonText: {
     ...globalFonts.whiteSubtitle,
     textAlign: "center",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
   },
   overlay: {

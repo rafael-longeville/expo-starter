@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { Collapsible } from "@/components/Collapsible";
 import { useTranslation } from "react-i18next";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 
 interface AccountDetailsProps {
   currency: string; // Currency symbol passed from HomeScreen
@@ -11,7 +11,12 @@ interface AccountDetailsProps {
   total_balance: string;
 }
 
-export default function AccountDetails({ currency, main_account_balance, investment_account_balance, total_balance }: AccountDetailsProps) {
+export default function AccountDetails({
+  currency,
+  main_account_balance,
+  investment_account_balance,
+  total_balance,
+}: AccountDetailsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -112,7 +117,7 @@ export default function AccountDetails({ currency, main_account_balance, investm
             <Text
               style={{
                 ...globalFonts.subtitle,
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
               }}
             >
               {t("pages.home.on_main_account")}
@@ -141,7 +146,7 @@ export default function AccountDetails({ currency, main_account_balance, investm
             <Text
               style={{
                 ...globalFonts.subtitle,
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
               }}
             >
               {t("pages.home.on_investments")}
@@ -165,12 +170,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   smallNumber: {
-    fontSize: 18,
+    fontSize: scaledFontSize(18),
     fontFamily: "Poppins_700Bold",
     color: "#13293D",
   },
   whiteSubtitle: {
-    fontSize: 18,
+    fontSize: scaledFontSize(18),
     width: "100%",
     color: "white",
     fontFamily: "Poppins_400Regular",

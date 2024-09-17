@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Divider } from "react-native-paper";
-import { globalFonts } from "../styles/globalFonts";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Sentry from "@sentry/react-native";
 
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     marginBottom: 120,
   },
   text: {
-    fontSize: 24,
+    fontSize: scaledFontSize(24),
     fontWeight: "bold",
     color: "#13293D",
   },

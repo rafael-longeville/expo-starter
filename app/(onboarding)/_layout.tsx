@@ -14,7 +14,7 @@ import Onboarding2 from "./onboarding_2";
 import Onboarding3 from "./onboarding_3";
 import Onboarding4 from "./onboarding_4";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { globalFonts } from "../styles/globalFonts";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
 
@@ -141,7 +141,7 @@ export default function OnboardingLayout() {
               style={{
                 ...globalFonts.whiteSubtitle,
                 textAlign: "center",
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
                 fontFamily: "Poppins_500Medium",
               }}
             >
@@ -153,7 +153,7 @@ export default function OnboardingLayout() {
               ...globalFonts.subtitle,
               width: "100%",
               textAlign: "center",
-              fontSize: 14,
+              fontSize: scaledFontSize(14),
               fontFamily: "Poppins_500Medium",
             }}
             onPress={handleContinuePress}
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    fontSize: 32,
+    fontSize: scaledFontSize(32),
     fontWeight: "bold",
     color: "#13293D",
     textAlign: "center",

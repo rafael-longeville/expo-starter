@@ -12,7 +12,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import * as Sentry from "@sentry/react-native";
 import {
@@ -214,7 +214,12 @@ const OnRampModal = forwardRef(
                   </Text>
                 </View>
               </View>
-              <Text style={{ ...globalFonts.subtitle, fontSize: 14 }}>
+              <Text
+                style={{
+                  ...globalFonts.subtitle,
+                  fontSize: scaledFontSize(14),
+                }}
+              >
                 {isOffRamp
                   ? t("offramp.subtitle")
                   : t("pages.onboarding_4.subtitle")}
@@ -238,7 +243,7 @@ const OnRampModal = forwardRef(
               style={{
                 ...globalFonts.subtitle,
                 textAlign: "center",
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
                 fontFamily: "Poppins_500Medium",
                 marginTop: 20,
               }}
@@ -295,7 +300,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     color: "#ECFF78",
-    fontSize: 20,
+    fontSize: scaledFontSize(20),
     fontWeight: "700",
     fontFamily: "Poppins",
   },

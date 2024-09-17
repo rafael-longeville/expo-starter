@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import { useTranslation } from "react-i18next";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   useActiveAccount,
@@ -57,7 +57,9 @@ function Account({
               alignItems: "center",
             }}
           >
-            <Text style={{ ...globalFonts.title, fontSize: 28 }}>
+            <Text
+              style={{ ...globalFonts.title, fontSize: scaledFontSize(28) }}
+            >
               {t("pages.account.title")}
             </Text>
             <View
@@ -114,7 +116,12 @@ function Account({
               source={require("../../assets/images/account/heart.png")}
               style={styles.heartIcon}
             />
-            <Text style={{ ...globalFonts.mediumSubtitle, fontSize: 14 }}>
+            <Text
+              style={{
+                ...globalFonts.mediumSubtitle,
+                fontSize: scaledFontSize(14),
+              }}
+            >
               {t("pages.account.make_a_donation")}
             </Text>
 
@@ -126,7 +133,12 @@ function Account({
           {/* Conditional rendering for account information */}
           {account ? (
             <View>
-              <Text style={{ ...globalFonts.disclaimerText, fontSize: 14 }}>
+              <Text
+                style={{
+                  ...globalFonts.disclaimerText,
+                  fontSize: scaledFontSize(14),
+                }}
+              >
                 {t("pages.account.public_adress")}
               </Text>
               <Pressable
@@ -254,7 +266,7 @@ const styles = StyleSheet.create({
   buttonText: {
     ...globalFonts.whiteSubtitle,
     textAlign: "center",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
   },
   account_details: {
@@ -285,7 +297,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#E0E0E0",
   },
   optionText: {
-    fontSize: 16,
+    fontSize: scaledFontSize(16),
     fontFamily: "Poppins_500Medium",
     color: "#13293D",
   },

@@ -1,4 +1,4 @@
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import React, { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -46,7 +46,7 @@ const MainAccount = forwardRef(
       depositButtonText: {
         position: "absolute", // Overlay the text on top of the image
         color: "#13293D",
-        fontSize: 14,
+        fontSize: scaledFontSize(14),
         fontFamily: "Poppins_500Medium",
         left: 40, // Adjust this value to position the text towards the left
         textAlign: "left", // Ensure the text aligns to the left
@@ -54,7 +54,7 @@ const MainAccount = forwardRef(
       withdrawButtonText: {
         position: "absolute", // Overlay the text on top of the image
         color: "#13293D",
-        fontSize: 14,
+        fontSize: scaledFontSize(14),
         fontFamily: "Poppins_500Medium",
         left: 85, // Adjust this value to position the text towards the left
         textAlign: "left", // Ensure the text aligns to the left

@@ -1,3 +1,4 @@
+import { scaledFontSize } from "@/app/styles/globalFonts";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -16,11 +17,11 @@ export const styles = StyleSheet.create({
   },
   asideInputText: {
     color: "#ECFF78",
-    fontSize: 28,
+    fontSize: scaledFontSize(28),
     fontFamily: "Poppins_600SemiBold",
   },
   headerText: {
-    fontSize: 18,
+    fontSize: scaledFontSize(18),
     color: "#fff",
     fontFamily: "Poppins_500Medium",
     marginBottom: -3,
@@ -50,7 +51,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
   },
   input: {
-    fontSize: 18,
+    fontSize: scaledFontSize(18),
     color: "#13293D",
     fontFamily: "Poppins_600SemiBold",
     paddingHorizontal: 20,
@@ -70,13 +71,13 @@ export const styles = StyleSheet.create({
   },
   rendementText: {
     color: "#fff",
-    fontSize: 13,
+    fontSize: scaledFontSize(13),
     fontFamily: "Poppins_400Regular",
   },
   rendementValue: {
     fontFamily: "Poppins_500Medium",
     color: "#ECFF78",
-    fontSize: 18,
+    fontSize: scaledFontSize(18),
   },
   buttonContainer: {
     position: "relative",
@@ -92,7 +93,7 @@ export const styles = StyleSheet.create({
   depositButtonText: {
     position: "absolute", // Overlay the text on top of the image
     color: "#13293D",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
     left: 100, // Adjust this value to position the text towards the left
     textAlign: "left", // Ensure the text aligns to the left
@@ -109,7 +110,7 @@ export const styles = StyleSheet.create({
   withdrawButtonText: {
     position: "absolute", // Overlay the text on top of the image
     color: "#13293D",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
     left: 78, // Adjust this value to position the text towards the left
     textAlign: "left", // Ensure the text aligns to the left
@@ -123,7 +124,7 @@ export const styles = StyleSheet.create({
   depositButtonText2: {
     position: "absolute", // Overlay the text on top of the image
     color: "#13293D",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
     left: 25, // Adjust this value to position the text towards the left
     textAlign: "left", // Ensure the text aligns to the left

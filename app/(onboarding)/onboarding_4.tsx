@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useActiveAccount } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
@@ -152,8 +152,7 @@ const Onboarding4: React.FC = () => {
         style={{
           ...globalFonts.subtitle,
           textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
+          fontSize: scaledFontSize(14),
           marginTop: 20,
         }}
         onPress={() => {
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: 24,
+    fontSize: scaledFontSize(24),
     fontWeight: "bold",
   },
   webview: {
@@ -205,7 +204,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     color: "#ECFF78",
-    fontSize: 20,
+    fontSize: scaledFontSize(20),
     fontWeight: "700",
     fontFamily: "Poppins",
   },

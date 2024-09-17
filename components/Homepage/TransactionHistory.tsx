@@ -18,7 +18,7 @@ import {
   gql,
 } from "@apollo/client";
 import { shortenHex } from "thirdweb/utils";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import moment from "moment"; // Import moment.js for date formatting
 import { useActiveAccount } from "thirdweb/react"; // Import the useActiveAccount hook
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -220,7 +220,10 @@ function TransactionHistoryComponent({
                       {item.txId && (
                         <>
                           <Text
-                            style={{ ...styles.secondRowText, fontSize: 12 }}
+                            style={{
+                              ...styles.secondRowText,
+                              fontSize: scaledFontSize(12),
+                            }}
                           >
                             ID: {item.txId}
                           </Text>
@@ -294,17 +297,17 @@ const styles = StyleSheet.create({
   },
   topRowText: {
     color: "#AFC0FF",
-    fontSize: 12,
+    fontSize: scaledFontSize(12),
     fontFamily: "Poppins_600SemiBold",
   },
   secondRowText: {
     color: "#13293D",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
   },
   amount: {
     color: "#13293D",
-    fontSize: 22,
+    fontSize: scaledFontSize(22),
     fontFamily: "Poppins_600SemiBold",
     lineHeight: 25,
   },
