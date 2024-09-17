@@ -97,6 +97,7 @@ const TabBar = ({ state, descriptors, navigation, keyboardVisible }: any) => {
     isCheckoutModalOpen,
     isValidationModalOpen,
     setIsCheckoutModalOpen,
+    setIsOffRamp,
   } = useStayUpdatedModalContext();
 
   const TABS: Record<TabRoutes, { active?: any; inactive: any }> = {
@@ -200,6 +201,7 @@ const TabBar = ({ state, descriptors, navigation, keyboardVisible }: any) => {
             key="checkout"
             onPress={() => {
               navigation.navigate("home");
+              setIsOffRamp(false);
               setIsCheckoutModalOpen(true);
             }}
             style={styles.checkoutButton}

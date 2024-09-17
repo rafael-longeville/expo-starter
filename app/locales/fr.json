@@ -56,7 +56,8 @@
     "onboarding_4": {
       "account": "Compte",
       "title": "Alimentez votre compte",
-      "subtitle": "Placez vos fonds dans un des compte rémunéré via carte bancaire, Apple Pay ou Google Pay.",
+      "subtitle_angleEUR": "Placez vos fonds dans un des compte rémunéré EURO via carte bancaire, Apple Pay ou Google Pay.",
+      "subtitle_angleUSD": "Placez vos fonds dans un des compte rémunéré DOLLAR US via carte bancaire, Apple Pay ou Google Pay.",
       "cancel": "Annuler"
     },
     "home": {
@@ -151,6 +152,10 @@
       "cancel": "Annuler",
       "confirm": "Confirmer"
     }
+  },
+  "onramp": {
+    "title": "Alimentez votre compte",
+    "subtitle": "Placez vos fonds dans votre Compte courant, via carte bancaire, Apple Pay ou Google Pay."
   },
   "offramp": {
     "title": "Retirez de votre compte",

@@ -134,9 +134,9 @@ const Onboarding4: React.FC = () => {
       </View>
       <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
       <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_4.subtitle")}
+        {t(`pages.onboarding_4.subtitle_${onboardingMethod}`)}
       </Text>
-      {transakParams ? (
+      {transakParams && (
         <TransakWebView
           onError={(error) => {
             console.error("Transak error", error);
@@ -145,8 +145,6 @@ const Onboarding4: React.FC = () => {
           transakConfig={transakParams}
           onTransakEvent={onTransakEventHandler}
         />
-      ) : (
-        <Text style={globalFonts.subtitle}>Put a loader here or something</Text>
       )}
       <Text
         style={{

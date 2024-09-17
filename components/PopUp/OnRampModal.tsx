@@ -189,9 +189,7 @@ const OnRampModal = forwardRef(
             <View style={{ flexDirection: "column", gap: 20 }}>
               <View style={{ flexDirection: "column", alignItems: "center" }}>
                 <Text style={globalFonts.title}>
-                  {isOffRamp
-                    ? t("offramp.title")
-                    : t("pages.onboarding_4.title")}
+                  {isOffRamp ? t("offramp.title") : t("onramp.title")}
                 </Text>
                 <View style={styles.containercompte}>
                   <View style={{ flexDirection: "row" }}>
@@ -220,12 +218,10 @@ const OnRampModal = forwardRef(
                   fontSize: scaledFontSize(14),
                 }}
               >
-                {isOffRamp
-                  ? t("offramp.subtitle")
-                  : t("pages.onboarding_4.subtitle")}
+                {t(isOffRamp ? "offramp.subtitle" : "onramp.subtitle")}
               </Text>
             </View>
-            {transakParams ? (
+            {transakParams && (
               <TransakWebView
                 onError={(error) => {
                   console.error("Transak error", error);
@@ -234,10 +230,6 @@ const OnRampModal = forwardRef(
                 transakConfig={transakParams}
                 onTransakEvent={onTransakEventHandler}
               />
-            ) : (
-              <Text style={globalFonts.subtitle}>
-                Put a loader here or something
-              </Text>
             )}
             <Text
               style={{

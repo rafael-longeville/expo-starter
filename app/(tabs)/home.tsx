@@ -63,7 +63,6 @@ const formatBalance = (
 function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
-  const [isOffRamp, setIsOffRamp] = useState(false);
   const [currency, setCurrency] = useState<string>("$");
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
@@ -87,6 +86,8 @@ function HomeScreen() {
     setIsModalOpen,
     isValidationModalOpen,
     setIsValidationModalOpen,
+    isOffRamp,
+    setIsOffRamp,
   } = useStayUpdatedModalContext();
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
