@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
+  ConnectButton,
   useActiveAccount,
   useActiveWallet,
   useDisconnect,
@@ -22,6 +23,7 @@ import { Wallet, WalletId } from "thirdweb/wallets";
 import withFadeIn from "@/components/effects/withFadeIn";
 import { ScrollView } from "react-native-gesture-handler";
 import * as CONFIG from "../../app.json";
+import { client } from "@/constants/thirdweb";
 
 interface AccountDetailsProps {
   currency: string;
@@ -221,6 +223,7 @@ function Account({
           >
             Version {CONFIG.expo.ios.buildNumber}
           </Text>
+          <ConnectButton client={client}></ConnectButton>
         </View>
       </ScrollView>
     </SafeAreaView>
