@@ -48,7 +48,7 @@ export const UserInactivityProvider = ({
         Alert.alert(
           "You have been inactive for more than 5 seconds, so you have to login again"
         );
-        disconnect(wallet);
+        wallet.disconnect();
         router.navigate("/(onboarding)/onboarding_3");
       }
     }
