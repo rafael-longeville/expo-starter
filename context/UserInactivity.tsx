@@ -7,6 +7,11 @@ import {
   useDisconnect,
 } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MMKV } from "react-native-mmkv";
+
+const storage = new MMKV({
+  id: "inactivty-storage",
+});
 
 export const UserInactivityProvider = ({
   children,
@@ -38,12 +43,8 @@ export const UserInactivityProvider = ({
       nextAppState === "active" &&
       appState.current.match(/background/)
     ) {
-      const startTime = await AsyncStorage.getItem(
-        "user_inactivity_start_time"
-      );
-      const elapsed = Date.now() - parseInt(startTime || "0");
-      console.log("Elapsed time:", elapsed);
-      // Test in prod if account and wallet is the problem
+      const elapsed = Date.now() - (storage.getNumber("startTime") || 0);
+      console.log("🚀 ~ handleAppStateChange ~ elapsed:", elapsed);
       if (
         elapsed > 5000 &&
         account &&
@@ -54,8 +55,8 @@ export const UserInactivityProvider = ({
         Alert.alert(
           "You have been inactive for more than 5 seconds, so you have to login again"
         );
-        // wallet.disconnect();
-        // router.navigate("/(onboarding)/onboarding_3");
+        wallet.disconnect();
+        router.navigate("/(onboarding)/onboarding_3");
       } else if (elapsed > 5000) {
         console.log("User has been inactive for more than 1000ms");
         Alert.alert(
