@@ -188,7 +188,10 @@ const Onboarding1: React.FC = () => {
         "notifications",
         notifications ? "true" : "false"
       );
-
+      await AsyncStorage.setItem(
+        "settingsDone",
+        "true"
+      );
       // Navigate to the next screen
       router.push("/(onboarding)/onboarding_2");
     } catch (error) {
