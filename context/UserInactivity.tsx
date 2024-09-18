@@ -38,7 +38,7 @@ export const UserInactivityProvider = ({
   const handleAppStateChange = async (nextAppState: AppStateStatus) => {
     console.log("App state changed to", nextAppState);
     if (nextAppState === "background") {
-      await recordStartTime();
+      recordStartTime();
     } else if (
       nextAppState === "active" &&
       appState.current.match(/background/)
@@ -69,11 +69,8 @@ export const UserInactivityProvider = ({
     appState.current = nextAppState;
   };
 
-  const recordStartTime = async () => {
-    await AsyncStorage.setItem(
-      "user_inactivity_start_time",
-      Date.now().toString()
-    );
+  const recordStartTime = () => {
+    storage.set("startTime", Date.now());
   };
 
   return children;
