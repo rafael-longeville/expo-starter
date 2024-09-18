@@ -78,6 +78,12 @@
           "project": "react-native",
           "organization": "civicpower"
         }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use your Face ID"
+        }
       ]
     ],
     "experiments": {
