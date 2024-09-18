@@ -82,7 +82,7 @@ const Onboarding4: React.FC = () => {
     loadOnboardingData();
   }, [account, onboardingMethod, onboardingValue, currency]); // Added currency as dependency
 
-  const onTransakEventHandler = (event: EventTypes, data: Order) => {
+  const onTransakEventHandler = async (event: EventTypes, data: Order) => {
     switch (event) {
       case Events.ORDER_CREATED:
         console.log(event, data);
@@ -90,6 +90,11 @@ const Onboarding4: React.FC = () => {
 
       case Events.ORDER_PROCESSING:
         console.log(event, data);
+        try {
+          await AsyncStorage.setItem("transakDone", "true");
+        } catch (error) {
+          console.error("Failed to store data in AsyncStorage:", error);
+        }
         router.push("/(tabs)/home");
         break;
 

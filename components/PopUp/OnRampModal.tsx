@@ -21,6 +21,7 @@ import {
   EventTypes,
   Order,
 } from "@transak/react-native-sdk";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const OnRampModal = forwardRef(
   (
@@ -75,19 +76,25 @@ const OnRampModal = forwardRef(
     );
 
     // Transak event handler & Loading useEffect
-    const onTransakEventHandler = (event: EventTypes, data: Order) => {
+    const onTransakEventHandler = async (event: EventTypes, data: Order) => {
       switch (event) {
         case Events.ORDER_CREATED:
           console.log(event, data);
           break;
         case Events.ORDER_PROCESSING:
           console.log(event, data);
+          try {
+            await AsyncStorage.setItem("transakDone", "true");
+          } catch (error) {
+            console.error("Failed to store data in AsyncStorage:", error);
+          }
           ref.current?.dismiss();
           break;
         default:
           console.log(event, data);
       }
     };
+    
 
     useEffect(() => {
       const loadTransakParams = async () => {
