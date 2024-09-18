@@ -151,6 +151,10 @@
       "description": "Vous allez déplacer {{amount}}{{currency}} de votre compte courant vers votre compte rémunéré. Êtes-vous sûr de vouloir continuer ?",
       "cancel": "Annuler",
       "confirm": "Confirmer"
+    },
+    "inactivity": {
+      "title": "Session expirée",
+      "message": "Vous avez été inactif pendant plus de 5 secondes. Veuillez vous reconnecter."
     }
   },
   "onramp": {

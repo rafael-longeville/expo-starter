@@ -151,6 +151,10 @@
       "description": "You are about to move {{amount}}{{currency}} from your checking account to your high-yield account. Are you sure you want to continue?",
       "cancel": "Cancel",
       "confirm": "Confirm"
+    },
+    "inactivity": {
+      "title": "Session Expired",
+      "message": "You have been inactive for more than 5 seconds. Please log in again."
     }
   },
   "onramp": {

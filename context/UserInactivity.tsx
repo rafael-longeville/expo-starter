@@ -8,6 +8,7 @@ import {
 } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MMKV } from "react-native-mmkv";
+import { useTranslation } from "react-i18next"; // Add this import
 
 const storage = new MMKV({
   id: "inactivty-storage",
@@ -23,6 +24,7 @@ export const UserInactivityProvider = ({
   const account = useActiveAccount();
   const { disconnect } = useDisconnect();
   const wallet = useActiveWallet();
+  const { t } = useTranslation(); // Add this line to use the translation hook
 
   useEffect(() => {
     const subscription = AppState.addEventListener(
@@ -49,7 +51,8 @@ export const UserInactivityProvider = ({
       if (elapsed > 5000 /* && account */) {
         console.log("User has been inactive for more than 1000ms");
         Alert.alert(
-          "You have been inactive for more than 5 seconds, so you have to login again"
+          t("pop-ups.inactivity.title"),
+          t("pop-ups.inactivity.message")
         );
         // wallet.disconnect();
         router.navigate("/(onboarding)/onboarding_3");
