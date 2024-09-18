@@ -63,7 +63,7 @@ export const UserInactivityProvider = ({
           "You have been inactive for more than 5 seconds, so you have to login again"
         );
         // wallet.disconnect();
-        // router.navigate("/(onboarding)/onboarding_3");
+        router.navigate("/(onboarding)/onboarding_3");
       }
     }
     appState.current = nextAppState;
