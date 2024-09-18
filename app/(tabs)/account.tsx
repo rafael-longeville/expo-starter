@@ -223,7 +223,8 @@ function Account({
           >
             Version {CONFIG.expo.ios.buildNumber}
           </Text>
-          <ConnectButton client={client}></ConnectButton>
+          <Text>Update for disconnect</Text>
+          {/* <ConnectButton client={client}></ConnectButton> */}
         </View>
       </ScrollView>
     </SafeAreaView>
