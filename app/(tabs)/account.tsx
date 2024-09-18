@@ -223,9 +223,6 @@ function Account({
           >
             Version {CONFIG.expo.ios.buildNumber}
           </Text>
-          <Text>Update for disconnect</Text>
-          <Text>{wallet && account ? "true" : "condition not met"}</Text>
-          {/* <ConnectButton client={client}></ConnectButton> */}
         </View>
       </ScrollView>
     </SafeAreaView>
