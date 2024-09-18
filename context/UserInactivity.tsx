@@ -43,13 +43,26 @@ export const UserInactivityProvider = ({
       );
       const elapsed = Date.now() - parseInt(startTime || "0");
       console.log("Elapsed time:", elapsed);
-      if (elapsed > 5000 && account && wallet) {
+      // Test in prod if account and wallet is the problem
+      if (
+        elapsed > 5000 &&
+        account &&
+        wallet &&
+        process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true"
+      ) {
         console.log("User has been inactive for more than 1000ms");
         Alert.alert(
           "You have been inactive for more than 5 seconds, so you have to login again"
         );
-        wallet.disconnect();
-        router.navigate("/(onboarding)/onboarding_3");
+        // wallet.disconnect();
+        // router.navigate("/(onboarding)/onboarding_3");
+      } else if (elapsed > 5000) {
+        console.log("User has been inactive for more than 1000ms");
+        Alert.alert(
+          "You have been inactive for more than 5 seconds, so you have to login again"
+        );
+        // wallet.disconnect();
+        // router.navigate("/(onboarding)/onboarding_3");
       }
     }
     appState.current = nextAppState;
