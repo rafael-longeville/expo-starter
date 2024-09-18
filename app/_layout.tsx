@@ -22,7 +22,6 @@ import {
 import * as Sentry from "@sentry/react-native";
 import { StayUpdatedModalContentProvider } from "@/context/StayUpdatedModalContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { UserInactivityProvider } from "@/context/UserInactivity";
 
 // Initialize Sentry
 Sentry.init({

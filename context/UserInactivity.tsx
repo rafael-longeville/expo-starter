@@ -45,7 +45,7 @@ export const UserInactivityProvider = ({
     ) {
       const elapsed = Date.now() - (storage.getNumber("startTime") || 0);
       console.log("🚀 ~ handleAppStateChange ~ elapsed:", elapsed);
-      if (elapsed > 5000 /* && account && wallet */) {
+      if (elapsed > 5000 && account) {
         console.log("User has been inactive for more than 1000ms");
         Alert.alert(
           "You have been inactive for more than 5 seconds, so you have to login again"
