@@ -94,7 +94,6 @@ const OnRampModal = forwardRef(
           console.log(event, data);
       }
     };
-    
 
     useEffect(() => {
       const loadTransakParams = async () => {
@@ -290,7 +289,7 @@ const styles = StyleSheet.create({
   },
   webview: {
     width: "100%",
-    height: 470,
+    height: 500,
   },
   textcompte: {
     flexDirection: "row",
