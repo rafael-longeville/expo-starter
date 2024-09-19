@@ -110,33 +110,6 @@ const Onboarding4: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containercompte}>
-        <Image
-          source={require("@/assets/images/lock-icon.png")}
-          style={styles.icon}
-        />
-        <Text style={styles.textcompte}>
-          <Text style={globalFonts.whiteSubtitle}>
-            {t("pages.onboarding_4.account")}{" "}
-            {onboardingMethod === "angleEUR" ? "EURO " : "DOLLAR US "}:
-          </Text>
-          <Text style={styles.amount}>
-            {" "}
-            0{" "}
-            <Text
-              style={{
-                ...styles.amount,
-                fontStyle:
-                  currencySymbol === "€" && onboardingMethod === "angleUSD"
-                    ? "italic"
-                    : "normal",
-              }}
-            >
-              $
-            </Text>
-          </Text>
-        </Text>
-      </View>
       <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
       <Text style={globalFonts.subtitle}>
         {t(`pages.onboarding_4.subtitle_${onboardingMethod}`)}
