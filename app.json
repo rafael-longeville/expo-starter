@@ -34,8 +34,8 @@
       },
       "intentFilters": [
         {
-          "autoVerify": true,
           "action": "VIEW",
+          "autoVerify": true,
           "data": {
             "scheme": "https",
             "host": "moncomptesouverain.fr"
