@@ -46,6 +46,7 @@ const GET_TRANSACTIONS = gql`
       transaction_status
       transaction_created_at
       transaction_hash
+      transaction_currency
     }
   }
 `;
@@ -124,6 +125,7 @@ function TransactionHistoryComponent({
       fullHash: item.transaction_hash
         ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash
         : "Transaction en attente.",
+      currency: item.transaction_currency == "EUR" ? "€" : "$"
     };
   });
 
@@ -194,7 +196,13 @@ function TransactionHistoryComponent({
                   >
                     <Text style={styles.topRowText}>{item.date}</Text>
                     <Text style={styles.secondRowText}>{item.from}</Text>
-                    <Text style={styles.amount}>{item.amount}</Text>
+                    <Text style={styles.amount}>{item.amount} {item.currency != currency ? <Text
+            style={{
+              fontFamily: "Poppins_600SemiBold_Italic"
+            }}
+          >
+            {currency}
+          </Text> : item.currency}</Text>
                   </View>
                   <Image
                     source={require("@/assets/images/tx-middle-icon.png")}

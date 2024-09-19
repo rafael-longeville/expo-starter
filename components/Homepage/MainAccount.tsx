@@ -114,7 +114,6 @@ const MainAccount = forwardRef(
             {main_account_balance}{" "}
             <Text
               style={{
-                ...globalFonts.bigNumber,
                 fontFamily:
                   parseFloat(main_account_balance) > 0 && currency !== "$"
                     ? "Poppins_600SemiBold_Italic"
