@@ -39,7 +39,14 @@ export default function InvestmentAccount({
           }}
         >
           {investment_account_balance}
-          <Text style={{ fontFamily: "Poppins_600SemiBold_Italic" }}>
+          <Text
+            style={{
+              fontFamily:
+                parseFloat(investment_account_balance) > 0 && currency !== "$"
+                  ? "Poppins_600SemiBold_Italic"
+                  : "Poppins_600SemiBold",
+            }}
+          >
             {" "}
             {currency}
           </Text>
@@ -50,7 +57,14 @@ export default function InvestmentAccount({
           }}
         >
           {t("pages.home.including_gains")} : {investment_account_balance}{" "}
-          <Text style={{ fontFamily: "Poppins_400Regular_Italic" }}>
+          <Text
+            style={{
+              fontFamily:
+                parseFloat(investment_account_balance) > 0 && currency !== "$"
+                  ? "Poppins_400Regular_Italic"
+                  : "Poppins_400Regular",
+            }}
+          >
             {" "}
             {currency}
           </Text>

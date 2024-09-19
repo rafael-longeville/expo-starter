@@ -79,7 +79,10 @@ export default function AccountDetails({
           <Text
             style={{
               ...globalFonts.bigNumber,
-              fontFamily: "Poppins_700Bold_Italic",
+              fontFamily:
+                parseFloat(total_balance) > 0 && currency !== "$"
+                  ? "Poppins_700Bold_Italic"
+                  : "Poppins_700Bold",
             }}
           >
             {currency}
@@ -108,7 +111,10 @@ export default function AccountDetails({
               <Text
                 style={{
                   ...styles.smallNumber,
-                  fontFamily: "Poppins_700Bold_Italic",
+                  fontFamily:
+                    parseFloat(main_account_balance) > 0 && currency !== "$"
+                      ? "Poppins_700Bold_Italic"
+                      : "Poppins_700Bold",
                 }}
               >
                 {currency}
@@ -137,7 +143,11 @@ export default function AccountDetails({
               <Text
                 style={{
                   ...styles.smallNumber,
-                  fontFamily: "Poppins_700Bold_Italic",
+                  fontFamily:
+                    parseFloat(investment_account_balance) > 0 &&
+                    currency !== "$"
+                      ? "Poppins_700Bold_Italic"
+                      : "Poppins_700Bold",
                 }}
               >
                 {currency}

@@ -74,6 +74,7 @@ function TransactionHistoryComponent({
       console.error("Error refetching query:", error);
     },
   });
+  console.log("Transactions", data);
 
   // useEffect(() => {
   //   const fetchConversionRate = async () => {
@@ -118,7 +119,7 @@ function TransactionHistoryComponent({
             : "Terminée",
       from,
       to,
-      amount: `${amount} ${currency}`,
+      amount: `${amount} `,
       txId: shortenHex(item.transaction_hash || "0x0"),
       fullHash: item.transaction_hash
         ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash

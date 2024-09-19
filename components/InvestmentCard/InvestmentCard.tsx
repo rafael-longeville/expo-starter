@@ -141,17 +141,7 @@ const InvestmentCard = forwardRef(
                 onChangeText={(text) => setAmount(text)}
               />
             </View>
-            <Text
-              style={[
-                styles.asideInputText,
-                currencySymbol === "€" &&
-                  investment === "DOLLAR US" && {
-                    fontFamily: "Poppins_600SemiBold_Italic",
-                  },
-              ]}
-            >
-              {currencySymbol}
-            </Text>
+            <Text style={[styles.asideInputText]}>{currencySymbol}</Text>
           </View>
           <View style={gainContainerStyle(investing)}>
             <Text style={styles.rendementText}>

@@ -111,7 +111,18 @@ const MainAccount = forwardRef(
               includeFontPadding: false,
             }}
           >
-            {main_account_balance} {currency}
+            {main_account_balance}{" "}
+            <Text
+              style={{
+                ...globalFonts.bigNumber,
+                fontFamily:
+                  parseFloat(main_account_balance) > 0 && currency !== "$"
+                    ? "Poppins_600SemiBold_Italic"
+                    : "Poppins_600SemiBold",
+              }}
+            >
+              {currency}
+            </Text>
           </Text>
         </View>
         <View
