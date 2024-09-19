@@ -1,6 +1,6 @@
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import { Link, router } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Divider } from "react-native-paper";
@@ -8,14 +8,19 @@ import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Sentry from "@sentry/react-native";
 
-const Onboarding2: React.FC = () => {
+const Onboarding2: React.FC<{ scrollViewRef: React.RefObject<any> }> = ({
+  scrollViewRef,
+}) => {
   const { t } = useTranslation();
+  const dollarCardRef = useRef(null);
+  const euroCardRef = useRef(null);
+  const dollarCCCardRef = useRef(null);
 
   // Capture a breadcrumb when the component mounts
   useEffect(() => {
     Sentry.addBreadcrumb({
       category: "navigation",
-      message: "Onboarding1 screen loaded",
+      message: "Onboarding2 screen loaded",
       level: "info",
     });
   }, []);
@@ -37,14 +42,18 @@ const Onboarding2: React.FC = () => {
           </Text>
         </View>
         <InvestmentCard
+          ref={dollarCardRef}
           investment={"DOLLAR US"}
           investing={true}
           isOnboarding={true}
+          scrollViewRef={scrollViewRef}
         />
         <InvestmentCard
+          ref={euroCardRef}
           investment={"EURO"}
           investing={true}
           isOnboarding={true}
+          scrollViewRef={scrollViewRef}
         />
 
         <Divider
@@ -66,9 +75,11 @@ const Onboarding2: React.FC = () => {
           {t("pages.onboarding_2.second_subtitle_3")}
         </Text>
         <InvestmentCard
+          ref={dollarCCCardRef}
           investment={"DOLLAR US"}
           investing={false}
           isOnboarding={true}
+          scrollViewRef={scrollViewRef}
         />
       </View>
     </>

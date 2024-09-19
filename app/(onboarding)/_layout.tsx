@@ -30,13 +30,14 @@ export default function OnboardingLayout() {
   const currentSegment = segments[segments.length - 1];
   const { t } = useTranslation();
   const { isTyping } = useTyping();
+  const scrollViewRef = useRef(null);
 
-  const renderCurrentScreen = () => {
+  const renderCurrentScreen = (scrollViewRef: any) => {
     switch (currentSegment) {
       case "onboarding_1":
         return <Onboarding1 />;
       case "onboarding_2":
-        return <Onboarding2 />;
+        return <Onboarding2 scrollViewRef={scrollViewRef} />;
       case "onboarding_3":
         return <Onboarding3 />;
       case "onboarding_4":
@@ -75,7 +76,10 @@ export default function OnboardingLayout() {
         source={require("@/assets/images/yellow-rectangle.png")}
         style={styles.backgroundImage}
       />
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={styles.scrollViewContainer}
+      >
         {currentSegment !== "onboarding_3" &&
           IMAGES[currentSegment as keyof typeof IMAGES] && (
             <Image
@@ -84,7 +88,7 @@ export default function OnboardingLayout() {
             />
           )}
 
-        {renderCurrentScreen()}
+        {renderCurrentScreen(scrollViewRef)}
 
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT && (
           <View style={styles.languageSwitcher}>
