@@ -154,7 +154,7 @@
     },
     "inactivity": {
       "title": "Session Expired",
-      "message": "You have been inactive for more than 5 seconds. Please log in again."
+      "message": "You have been inactive for more than 5 minutes. Please log in again."
     }
   },
   "onramp": {
