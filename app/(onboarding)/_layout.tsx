@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
+import { useTyping } from "@/context/TypingContext";
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
@@ -28,6 +29,7 @@ export default function OnboardingLayout() {
   const segments = useSegments();
   const currentSegment = segments[segments.length - 1];
   const { t } = useTranslation();
+  const { isTyping } = useTyping();
 
   const renderCurrentScreen = () => {
     switch (currentSegment) {
@@ -123,6 +125,7 @@ export default function OnboardingLayout() {
             padding: 20,
             gap: 20,
             zIndex: 100,
+            display: isTyping ? "none" : "flex",
           }}
         >
           <Pressable

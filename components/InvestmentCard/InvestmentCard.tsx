@@ -18,6 +18,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { globalFonts } from "@/app/styles/globalFonts";
+import { useTyping } from "@/context/TypingContext";
 
 const InvestmentCard = forwardRef(
   (
@@ -36,6 +37,7 @@ const InvestmentCard = forwardRef(
     ref: any
   ) => {
     const { t } = useTranslation();
+    const { setIsTyping, isTyping } = useTyping();
 
     // State for the currency symbol and amount entered in the TextInput
     const [currencySymbol, setCurrencySymbol] = useState<string>("€");
@@ -137,8 +139,14 @@ const InvestmentCard = forwardRef(
                 style={styles.input}
                 placeholder="0"
                 placeholderTextColor="rgba(19, 41, 61, 0.60)"
-                value={amount} // Bind the state to the TextInput
-                onChangeText={(text) => setAmount(text)}
+                value={amount}
+                onChangeText={(text) => {
+                  setAmount(text);
+                }}
+                onFocus={() => {
+                  setIsTyping(true);
+                }}
+                onBlur={() => setIsTyping(false)}
               />
             </View>
             <Text style={[styles.asideInputText]}>{currencySymbol}</Text>

@@ -22,6 +22,7 @@ import {
 import * as Sentry from "@sentry/react-native";
 import { StayUpdatedModalContentProvider } from "@/context/StayUpdatedModalContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { TypingProvider } from "@/context/TypingContext";
 
 // Initialize Sentry
 Sentry.init({
@@ -59,19 +60,21 @@ function RootLayout() {
   return (
     <ThirdwebProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <StayUpdatedModalContentProvider>
-          <GestureHandlerRootView>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="(onboarding)"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </GestureHandlerRootView>
-        </StayUpdatedModalContentProvider>
+        <TypingProvider>
+          <StayUpdatedModalContentProvider>
+            <GestureHandlerRootView>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="(onboarding)"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </GestureHandlerRootView>
+          </StayUpdatedModalContentProvider>
+        </TypingProvider>
       </ThemeProvider>
     </ThirdwebProvider>
   );
