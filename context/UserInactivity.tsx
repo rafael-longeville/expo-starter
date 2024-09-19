@@ -48,8 +48,8 @@ export const UserInactivityProvider = ({
       const elapsed = Date.now() - (storage.getNumber("startTime") || 0);
       console.log("🚀 ~ handleAppStateChange ~ elapsed:", elapsed);
       // withoutAccount for the moment but fix ASAP
-      if (elapsed > 5000 /* && account */) {
-        console.log("User has been inactive for more than 1000ms");
+      if (elapsed > 300000 /* && account */) {
+        console.log("User has been inactive for more than 5 minutes");
         Alert.alert(
           t("pop-ups.inactivity.title"),
           t("pop-ups.inactivity.message")
