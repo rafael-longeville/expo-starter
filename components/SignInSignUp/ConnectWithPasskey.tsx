@@ -15,6 +15,7 @@ import { client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
+import { sepolia } from "thirdweb/chains";
 
 interface ConnectWithPasskeyProps {
   connect: any;
@@ -42,6 +43,10 @@ export default function ConnectWithPasskey({
         auth: {
           options: ["passkey"],
           passkeyDomain: "moncomptesouverain.fr",
+        },
+        smartAccount: {
+          chain: sepolia,
+          sponsorGas: true,
         },
       });
 
