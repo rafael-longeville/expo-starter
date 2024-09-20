@@ -8,7 +8,7 @@ import React, {
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Href, Link } from "expo-router";
 
@@ -69,7 +69,7 @@ const MainAccountPopup = forwardRef(
             <Text
               style={{
                 ...globalFonts.subtitle,
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
                 alignSelf: "center",
                 width: "80%",
                 textAlign: "center",
@@ -80,7 +80,7 @@ const MainAccountPopup = forwardRef(
             <Text
               style={{
                 ...globalFonts.subtitle,
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
                 alignSelf: "center",
                 textAlign: "center",
 
@@ -92,7 +92,7 @@ const MainAccountPopup = forwardRef(
             <Text
               style={{
                 ...globalFonts.subtitle,
-                fontSize: 12,
+                fontSize: scaledFontSize(12),
                 fontFamily: "Poppins_600SemiBold",
                 textDecorationLine: "underline",
                 width: "100%",
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "Poppins_600SemiBold",
-    fontSize: 24,
+    fontSize: scaledFontSize(24),
     color: "#13293D",
   },
   button: {

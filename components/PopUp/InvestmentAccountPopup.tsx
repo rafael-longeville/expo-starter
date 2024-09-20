@@ -8,7 +8,7 @@ import React, {
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Href, Link } from "expo-router";
 
@@ -27,7 +27,7 @@ const CustomHandle = () => {
 };
 
 const InvestmentAccountPopup = forwardRef(
-  ({ setIsModalOpen, setBlurred }: any, ref: any) => {
+  ({ setIsModalOpen, setBlurred, asset }: any, ref: any) => {
     const { t } = useTranslation();
     const snapPoints = useMemo(() => ["45%"], []);
 
@@ -71,7 +71,7 @@ const InvestmentAccountPopup = forwardRef(
             <Text
               style={{
                 ...globalFonts.subtitle,
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
                 alignSelf: "center",
                 width: "80%",
                 textAlign: "center",
@@ -82,7 +82,7 @@ const InvestmentAccountPopup = forwardRef(
             <Text
               style={{
                 ...globalFonts.subtitle,
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
                 alignSelf: "center",
                 textAlign: "center",
 
@@ -97,14 +97,18 @@ const InvestmentAccountPopup = forwardRef(
             <Text
               style={{
                 ...globalFonts.subtitle,
-                fontSize: 12,
+                fontSize: scaledFontSize(12),
                 fontFamily: "Poppins_600SemiBold",
                 textDecorationLine: "underline",
                 width: "100%",
                 textAlign: "center",
               }}
             >
-              <Link href={t("pop-ups.investment_account.href_link") as Href}>
+              <Link
+                href={
+                  t(`pop-ups.investment_account.${asset}_href_link`) as Href
+                }
+              >
                 {t("pop-ups.investment_account.link")}
               </Link>
             </Text>
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "Poppins_600SemiBold",
-    fontSize: 24,
+    fontSize: scaledFontSize(24),
     color: "#13293D",
   },
   button: {

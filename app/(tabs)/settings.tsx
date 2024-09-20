@@ -9,7 +9,7 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Divider } from "react-native-paper";
 import * as Sentry from "@sentry/react-native";
@@ -163,7 +163,6 @@ const Settings: React.FC = () => {
         "notifications",
         notifications ? "true" : "false"
       );
-
       // Navigate to the next screen
       router.push("/(tabs)/home");
     } catch (error) {
@@ -244,7 +243,7 @@ const Settings: React.FC = () => {
               >
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: scaledFontSize(16),
                     color:
                       selectedCurrency === "euro"
                         ? "#13293D"
@@ -264,7 +263,7 @@ const Settings: React.FC = () => {
               >
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: scaledFontSize(16),
                     color:
                       selectedCurrency === "dollar"
                         ? "#13293D"
@@ -331,7 +330,7 @@ const Settings: React.FC = () => {
                     />
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: scaledFontSize(16),
                         color:
                           selectedLanguage === "fr"
                             ? "#13293D"
@@ -362,7 +361,7 @@ const Settings: React.FC = () => {
                     />
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: scaledFontSize(16),
                         color:
                           selectedLanguage === "en"
                             ? "#13293D"
@@ -392,7 +391,7 @@ const Settings: React.FC = () => {
                   style={{
                     ...globalFonts.whiteSubtitle,
                     textAlign: "center",
-                    fontSize: 14,
+                    fontSize: scaledFontSize(14),
                     fontFamily: "Poppins_500Medium",
                   }}
                 >
@@ -413,7 +412,7 @@ const Settings: React.FC = () => {
                   style={{
                     ...globalFonts.subtitle,
                     textAlign: "center",
-                    fontSize: 14,
+                    fontSize: scaledFontSize(14),
                     fontFamily: "Poppins_500Medium",
                     marginTop: 20,
                   }}
@@ -453,13 +452,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   questionText: {
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     color: "#13293D",
     fontFamily: "Poppins_600SemiBold",
     width: "80%",
   },
   descriptionText: {
-    fontSize: 12,
+    fontSize: scaledFontSize(12),
     color: "#13293D",
     opacity: 0.7,
     fontFamily: "Poppins_400Regular",
@@ -507,9 +506,13 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -15 }],
   },
   switchIcon: {
-    fontSize: 16,
+    fontSize: scaledFontSize(16),
     color: "#13293D",
   },
 });
 
-export default withFadeIn(Settings);
+const EnhancedSettings = withFadeIn(Settings);
+
+export default process.env.EXPO_PUBLIC_IS_DEVELOPMENT
+  ? Settings
+  : EnhancedSettings;

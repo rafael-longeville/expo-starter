@@ -56,7 +56,8 @@
     "onboarding_4": {
       "account": "Compte",
       "title": "Alimentez votre compte",
-      "subtitle": "Placez vos fonds dans un des compte rémunéré via carte bancaire, Apple Pay ou Google Pay.",
+      "subtitle_angleEUR": "Placez vos fonds dans un des compte rémunéré EURO via carte bancaire, Apple Pay ou Google Pay.",
+      "subtitle_angleUSD": "Placez vos fonds dans un des compte rémunéré DOLLAR US via carte bancaire, Apple Pay ou Google Pay.",
       "cancel": "Annuler"
     },
     "home": {
@@ -74,7 +75,9 @@
         "in_progress": "En cours",
         "seeAll": "Tout voir",
         "no_transactions_1": "Vous n'avez pas encore réalisé d'opération.",
-        "no_transactions_2": "Alimentez votre compte courant  ou effectuez un placement pour commencer."
+        "no_transactions_2": "Alimentez votre compte courant  ou effectuez un placement pour commencer.",
+        "copied": "Copié",
+        "copied_link": "Un lien vers la transaction a été copié dans votre presse-papier"
       }
     },
     "account": {
@@ -93,7 +96,9 @@
       },
       "make_a_donation": "Faire un don",
       "public_adress": "Votre adresse publique IBEx Wallet",
-      "disconnect": "Se déconnecter"
+      "disconnect": "Se déconnecter",
+      "show_qr_code": "Afficher le QR code",
+      "close": "Fermer"
     }
   },
   "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",
@@ -105,7 +110,11 @@
       "yield": "Rendement",
       "deposit": "Déposer",
       "withdraw": "Retirer",
-      "gains": "Gains"
+      "gains": "Gains",
+      "amount_error": {
+        "title": "Montant incorrect",
+        "message": "Veuillez saisir un montant entre 5 et 100."
+      }
     }
   },
   "pop-ups": {
@@ -133,7 +142,8 @@
       "description_2": "Immobilisez vos fonds et percevez un intéret dès la première minute. Sortez à tout moment.",
       "disclaimer": "Rendement estimé à l’année et non garanti. ",
       "link": "En savoir plus.",
-      "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
+      "DOLLAR US_href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/fond-en-dollar",
+      "EURO_href_link": "https://docs.wallet.civicpower.org/fr-fr/placements/compte_courant_usd/",
       "button": "J'ai compris"
     },
     "transaction": {
@@ -141,7 +151,15 @@
       "description": "Vous allez déplacer {{amount}}{{currency}} de votre compte courant vers votre compte rémunéré. Êtes-vous sûr de vouloir continuer ?",
       "cancel": "Annuler",
       "confirm": "Confirmer"
+    },
+    "inactivity": {
+      "title": "Session expirée",
+      "message": "Vous avez été inactif pendant plus de 5 minutes. Veuillez vous reconnecter."
     }
+  },
+  "onramp": {
+    "title": "Alimentez votre compte",
+    "subtitle": "Placez vos fonds dans votre Compte courant, via carte bancaire, Apple Pay ou Google Pay."
   },
   "offramp": {
     "title": "Retirez de votre compte",

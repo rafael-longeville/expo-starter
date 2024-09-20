@@ -1,4 +1,4 @@
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
@@ -39,7 +39,14 @@ export default function InvestmentAccount({
           }}
         >
           {investment_account_balance}
-          <Text style={{ fontFamily: "Poppins_600SemiBold_Italic" }}>
+          <Text
+            style={{
+              fontFamily:
+                parseFloat(investment_account_balance) > 0 && currency !== "$"
+                  ? "Poppins_600SemiBold_Italic"
+                  : "Poppins_600SemiBold",
+            }}
+          >
             {" "}
             {currency}
           </Text>
@@ -50,7 +57,14 @@ export default function InvestmentAccount({
           }}
         >
           {t("pages.home.including_gains")} : {investment_account_balance}{" "}
-          <Text style={{ fontFamily: "Poppins_400Regular_Italic" }}>
+          <Text
+            style={{
+              fontFamily:
+                parseFloat(investment_account_balance) > 0 && currency !== "$"
+                  ? "Poppins_400Regular_Italic"
+                  : "Poppins_400Regular",
+            }}
+          >
             {" "}
             {currency}
           </Text>
@@ -83,7 +97,7 @@ const styles = StyleSheet.create({
   depositButtonText: {
     position: "absolute", // Overlay the text on top of the image
     color: "#13293D",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
     left: 40, // Adjust this value to position the text towards the left
     textAlign: "left", // Ensure the text aligns to the left
@@ -91,7 +105,7 @@ const styles = StyleSheet.create({
   withdrawButtonText: {
     position: "absolute", // Overlay the text on top of the image
     color: "#13293D",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
     left: 85, // Adjust this value to position the text towards the left
     textAlign: "left", // Ensure the text aligns to the left

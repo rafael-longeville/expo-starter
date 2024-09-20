@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
 import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
@@ -124,7 +124,8 @@ const styles = StyleSheet.create({
     borderRadius: 30, // Optional, gives rounded corners to the image
   },
   text: {
-    fontSize: 24,
+    fontSize: scaledFontSize(24),
+
     fontWeight: "bold",
   },
 });

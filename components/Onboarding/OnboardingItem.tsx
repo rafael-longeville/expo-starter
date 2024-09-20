@@ -1,3 +1,4 @@
+import { scaledFontSize } from "@/app/styles/globalFonts";
 import React from "react";
 import {
   View,
@@ -34,7 +35,7 @@ export default function OnboardingItem({ item }: any) {
     },
     title: {
       fontFamily: "Alegreya_500Medium",
-      fontSize: 32,
+      fontSize: scaledFontSize(32),
       marginBottom: 10,
       color: "#fff",
       textAlign: "center",
@@ -42,7 +43,7 @@ export default function OnboardingItem({ item }: any) {
     },
     subtitle: {
       fontFamily: "Poppins_400Regular",
-      fontSize: 20,
+      fontSize: scaledFontSize(20),
       color: "#ECFF78",
       textAlign: "center",
     },
@@ -76,7 +77,7 @@ export default function OnboardingItem({ item }: any) {
           <Text
             style={{
               fontFamily: "Poppins_400Regular",
-              fontSize: 20,
+              fontSize: scaledFontSize(20),
               color: "#ECFF78",
               textAlign: "center",
               height: 100,

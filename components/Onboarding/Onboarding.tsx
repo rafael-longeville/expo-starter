@@ -108,13 +108,40 @@ export default function Onboarding() {
         console.log("Scrolling to next index:", currentIndex + 1);
         slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
       } else {
-        console.log("Navigating to /onboarding_1");
-        router.push({ pathname: "/(onboarding)/onboarding_1" });
+        console.log("Checking AsyncStorage for settingsDone and transakDone");
+        const settingsDone = await AsyncStorage.getItem("settingsDone");
+        const transakDone = await AsyncStorage.getItem("transakDone");
+
+        if (settingsDone === "true" && transakDone === "true") {
+          console.log("Navigating to /onboarding_3");
+          router.push({ pathname: "/(onboarding)/onboarding_3" });
+        } else if (settingsDone === "true") {
+          console.log("Navigating to /onboarding_2");
+          router.push({ pathname: "/(onboarding)/onboarding_2" });
+        }
+        else {
+          console.log("Navigating to /onboarding_1");
+          router.push({ pathname: "/(onboarding)/onboarding_1" });
+        }
+
         await AsyncStorage.setItem("hasSeenSplash", "true");
       }
     } catch (error) {
-      console.error("Error scrolling to next slide: ", error);
-      router.push({ pathname: "/(onboarding)/onboarding_1" });
+      console.error("Error scrolling to next slide or navigating: ", error);
+      const settingsDone = await AsyncStorage.getItem("settingsDone");
+      const transakDone = await AsyncStorage.getItem("transakDone");
+
+      if (settingsDone === "true" && transakDone === "true") {
+        console.log("Navigating to /onboarding_3");
+        router.push({ pathname: "/(onboarding)/onboarding_3" });
+      } else if (settingsDone === "true") {
+        console.log("Navigating to /onboarding_2");
+        router.push({ pathname: "/(onboarding)/onboarding_2" });
+      }
+      else {
+        console.log("Navigating to /onboarding_1");
+        router.push({ pathname: "/(onboarding)/onboarding_1" });
+      }
     } finally {
       isScrolling.current = false; // Reset the flag
       console.log("scrollTo completed", { isScrolling: isScrolling.current });

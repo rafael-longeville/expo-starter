@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface StayUpdatedModalContentProps {
   isModalOpen: boolean;
@@ -9,6 +9,8 @@ interface StayUpdatedModalContentProps {
   setIsBlurred: (isBlurred: boolean) => void;
   isValidationModalOpen: boolean;
   setIsValidationModalOpen: (isOpen: boolean) => void;
+  isOffRamp: boolean;
+  setIsOffRamp: (isOffRamp: boolean) => void;
 }
 
 const StayUpdatedModalContent = createContext<StayUpdatedModalContentProps>({
@@ -20,6 +22,8 @@ const StayUpdatedModalContent = createContext<StayUpdatedModalContentProps>({
   setIsBlurred: () => {},
   isValidationModalOpen: false,
   setIsValidationModalOpen: () => {},
+  isOffRamp: false,
+  setIsOffRamp: () => {},
 });
 
 export const StayUpdatedModalContentProvider: React.FC<{
@@ -29,6 +33,7 @@ export const StayUpdatedModalContentProvider: React.FC<{
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isBlurred, setIsBlurred] = useState(false); // Add this line to declare isBlurred state
   const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
+  const [isOffRamp, setIsOffRamp] = useState(false);
 
   return (
     <StayUpdatedModalContent.Provider
@@ -41,6 +46,8 @@ export const StayUpdatedModalContentProvider: React.FC<{
         setIsBlurred, // Pass the setIsBlurred state updater*
         isValidationModalOpen,
         setIsValidationModalOpen,
+        isOffRamp,
+        setIsOffRamp,
       }}
     >
       {children}

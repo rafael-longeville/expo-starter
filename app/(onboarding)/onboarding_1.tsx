@@ -8,7 +8,7 @@ import {
   Pressable,
   Alert,
 } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Divider } from "react-native-paper";
 import * as Sentry from "@sentry/react-native";
@@ -80,11 +80,37 @@ const Onboarding1: React.FC = () => {
   const [notifications, setNotifications] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchStoredSettings = async () => {
+    const fetchStoredAndResetSettings = async () => {
       try {
         const storedLanguage = await AsyncStorage.getItem("selectedLanguage");
         const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
         const storedNotifications = await AsyncStorage.getItem("notifications");
+
+        const allKeys = await AsyncStorage.getAllKeys();
+        console.log("allKeys", allKeys);
+        const walletTokenKey = allKeys.find((key) =>
+          key.startsWith("walletToken")
+        );
+        const thirdwebEwsWalletUserDetailsKey = allKeys.find((key) =>
+          key.startsWith("thirdwebEwsWalletUserDetails")
+        );
+
+        if (walletTokenKey) {
+          console.log("Removing walletTokenKey", walletTokenKey);
+          await AsyncStorage.removeItem(walletTokenKey);
+        }
+        if (thirdwebEwsWalletUserDetailsKey) {
+          console.log(
+            "Removing thirdwebEwsWalletUserDetailsKey",
+            thirdwebEwsWalletUserDetailsKey
+          );
+          await AsyncStorage.removeItem(thirdwebEwsWalletUserDetailsKey);
+        }
+        await AsyncStorage.removeItem("thirdweb:active-wallet-id");
+        await AsyncStorage.removeItem("thirdweb:connected-wallet-ids");
+        await AsyncStorage.removeItem("thirdweb:active-chain");
+
+        await AsyncStorage.setItem("continueWithoutFunding", "false");
 
         if (storedLanguage) {
           i18n.changeLanguage(storedLanguage);
@@ -98,11 +124,14 @@ const Onboarding1: React.FC = () => {
         }
       } catch (error) {
         Sentry.captureException(error);
-        console.error("Error retrieving settings from AsyncStorage:", error);
+        console.error(
+          "Error retrieving settings or JWT tokens from AsyncStorage:",
+          error
+        );
       }
     };
 
-    fetchStoredSettings();
+    fetchStoredAndResetSettings();
   }, []);
 
   useEffect(() => {
@@ -159,7 +188,10 @@ const Onboarding1: React.FC = () => {
         "notifications",
         notifications ? "true" : "false"
       );
-
+      await AsyncStorage.setItem(
+        "settingsDone",
+        "true"
+      );
       // Navigate to the next screen
       router.push("/(onboarding)/onboarding_2");
     } catch (error) {
@@ -199,7 +231,7 @@ const Onboarding1: React.FC = () => {
           >
             <Text
               style={{
-                fontSize: 16,
+                fontSize: scaledFontSize(16),
                 color:
                   selectedCurrency === "euro"
                     ? "#13293D"
@@ -219,7 +251,7 @@ const Onboarding1: React.FC = () => {
           >
             <Text
               style={{
-                fontSize: 16,
+                fontSize: scaledFontSize(16),
                 color:
                   selectedCurrency === "dollar"
                     ? "#13293D"
@@ -280,7 +312,7 @@ const Onboarding1: React.FC = () => {
                 <Image source={require("../../assets/images/flags/fr.png")} />
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: scaledFontSize(16),
                     color:
                       selectedLanguage === "fr"
                         ? "#13293D"
@@ -305,7 +337,7 @@ const Onboarding1: React.FC = () => {
                 <Image source={require("../../assets/images/flags/usa.png")} />
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: scaledFontSize(16),
                     color:
                       selectedLanguage === "en"
                         ? "#13293D"
@@ -335,7 +367,7 @@ const Onboarding1: React.FC = () => {
               style={{
                 ...globalFonts.whiteSubtitle,
                 textAlign: "center",
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
                 fontFamily: "Poppins_500Medium",
               }}
             >
@@ -356,13 +388,13 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   questionText: {
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     color: "#13293D",
     fontFamily: "Poppins_600SemiBold",
     width: "80%",
   },
   descriptionText: {
-    fontSize: 12,
+    fontSize: scaledFontSize(12),
     color: "#13293D",
     opacity: 0.7,
     fontFamily: "Poppins_400Regular",
@@ -410,7 +442,7 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -15 }],
   },
   switchIcon: {
-    fontSize: 16,
+    fontSize: scaledFontSize(16),
     color: "#13293D",
   },
 });

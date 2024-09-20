@@ -63,11 +63,11 @@ const formatBalance = (
 function HomeScreen() {
   const account = useActiveAccount();
   const [refreshing, setRefreshing] = useState(false);
-  const [isOffRamp, setIsOffRamp] = useState(false);
   const [currency, setCurrency] = useState<string>("$");
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
   const [mainAccountBalance, setMainAccountBalance] = useState<string>("0.00");
+  const [asset, setAsset] = useState<string>("");
 
   const tokenAddress = "0x0c86a754a29714c4fe9c6f1359fa7099ed174c0b";
 
@@ -86,6 +86,8 @@ function HomeScreen() {
     setIsModalOpen,
     isValidationModalOpen,
     setIsValidationModalOpen,
+    isOffRamp,
+    setIsOffRamp,
   } = useStayUpdatedModalContext();
 
   const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
@@ -154,6 +156,7 @@ function HomeScreen() {
   useEffect(() => {
     const fetchBalanceWithConversion = async () => {
       if (data != undefined) {
+        console.log("New balance", data);
         let balance = parseFloat(data?.displayValue) || 0;
         if (currency === "€") {
           const conversionRate = await getConversionRate();
@@ -259,6 +262,7 @@ function HomeScreen() {
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
                 setUsdBalance={setUsdBalance}
+                setAsset={setAsset}
                 handleOpenModal={() =>
                   handleOpenModal(
                     investmentAccountModalRef as React.MutableRefObject<
@@ -275,6 +279,7 @@ function HomeScreen() {
                 usdBalance={usdBalance}
                 setEurBalance={setEurBalance}
                 setUsdBalance={setUsdBalance}
+                setAsset={setAsset}
                 handleOpenModal={() =>
                   handleOpenModal(
                     investmentAccountModalRef as React.MutableRefObject<
@@ -284,7 +289,11 @@ function HomeScreen() {
                 }
               />
             </View>
-            <TransactionHistory refetchBalance={refetch} />
+            <TransactionHistory
+              refetchBalance={refetch}
+              currency={currency}
+              getConversionRate={getConversionRate}
+            />
           </ScrollView>
           <MainAccountPopup
             ref={currentAccountModalRef}
@@ -295,6 +304,7 @@ function HomeScreen() {
             ref={investmentAccountModalRef}
             setIsModalOpen={setIsModalOpen}
             setBlurred={setIsBlurred}
+            asset={asset}
           />
           <StayUpdated
             ref={stayUpdatedModalRef}
@@ -348,5 +358,8 @@ const styles = StyleSheet.create({
     gap: 20,
   },
 });
+const EnhancedHomeScreen = withFadeIn(HomeScreen);
 
-export default withFadeIn(HomeScreen);
+export default process.env.EXPO_PUBLIC_IS_DEVELOPMENT
+  ? HomeScreen
+  : EnhancedHomeScreen;

@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+  Alert,
+} from "react-native";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useTranslation } from "react-i18next";
 import {
@@ -10,7 +18,7 @@ import {
   gql,
 } from "@apollo/client";
 import { shortenHex } from "thirdweb/utils";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import moment from "moment"; // Import moment.js for date formatting
 import { useActiveAccount } from "thirdweb/react"; // Import the useActiveAccount hook
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -38,27 +46,19 @@ const GET_TRANSACTIONS = gql`
       transaction_status
       transaction_created_at
       transaction_hash
+      transaction_currency
     }
   }
 `;
 
-function TransactionHistoryComponent(refetchBalance: any) {
+function TransactionHistoryComponent({
+  refetchBalance,
+  currency,
+  // getConversionRate,
+}: any) {
   const { t } = useTranslation();
   const activeAccount = useActiveAccount(); // Get the active account
-  const [currency, setCurrency] = useState<string>("EUR"); // Default currency
-
-  useEffect(() => {
-    const fetchCurrency = async () => {
-      try {
-        const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
-        setCurrency(storedCurrency === "usd" ? "USD" : "EUR");
-      } catch (error) {
-        console.error("Error fetching currency from AsyncStorage", error);
-      }
-    };
-
-    fetchCurrency();
-  }, []);
+  // const [conversionRate, setConversionRate] = useState<number | null>(null);
 
   // Step 3: Fetch transactions using the useQuery hook with pollInterval for auto refetch
   const { loading, error, data, refetch } = useQuery(GET_TRANSACTIONS, {
@@ -69,24 +69,21 @@ function TransactionHistoryComponent(refetchBalance: any) {
     client,
     pollInterval: 10000, // Set poll interval to 10 seconds (10000 milliseconds)
     skip: !activeAccount?.address, // Skip the query if no active account address
-    onCompleted: (fetchedData) => {
-      // This will be called every time the query is successfully refetched
-      console.log("Query refetched successfully", fetchedData);
-      // Add your custom logic here
-      refetchBalance();
-    },
+
     onError: (error) => {
       // Handle errors if necessary
       console.error("Error refetching query:", error);
     },
   });
+  console.log("Transactions", data);
 
-  if (!activeAccount?.address) {
-    return <Text>No active account found.</Text>;
-  }
-
-  if (loading) return <Text>Loading...</Text>;
-  if (!loading && error) return <Text>Error loading transactions.</Text>;
+  // useEffect(() => {
+  //   const fetchConversionRate = async () => {
+  //     const rate = await getConversionRate();
+  //     setConversionRate(rate);
+  //   };
+  //   fetchConversionRate();
+  // }, [getConversionRate]);
 
   // Use fetched transactions instead of static history
   const transactions = data?.transaction.map((item: any) => {
@@ -109,11 +106,7 @@ function TransactionHistoryComponent(refetchBalance: any) {
     );
 
     // Format the amount based on the selected currency
-    const amount =
-      currency === "USD"
-        ? item.transaction_amount.toFixed(2)
-        : item.transaction_amount.toFixed(2);
-    const currencySymbol = currency === "USD" ? "$" : "€";
+    const amount = item.transaction_amount.toFixed(2);
 
     return {
       id: item.id,
@@ -127,13 +120,32 @@ function TransactionHistoryComponent(refetchBalance: any) {
             : "Terminée",
       from,
       to,
-      amount: `${amount} ${currencySymbol}`,
+      amount: `${amount} `,
       txId: shortenHex(item.transaction_hash || "0x0"),
       fullHash: item.transaction_hash
         ? "https://sepolia.arbiscan.io/tx/" + item.transaction_hash
         : "Transaction en attente.",
+      currency: item.transaction_currency == "EUR" ? "€" : "$"
     };
   });
+
+  useEffect(() => {
+    const fetchNewBalance = async () => {
+      try {
+        await refetchBalance();
+      } catch (error) {
+        console.error("Error refetching balance:", error);
+      }
+    };
+    fetchNewBalance();
+  }, [transactions]);
+
+  if (!activeAccount?.address) {
+    return <View style={{ marginBottom: 120 }}></View>;
+  }
+
+  if (loading) return <Text>Loading...</Text>;
+  if (!loading && error) return <Text>Error loading transactions.</Text>;
 
   return (
     <View style={styles.container}>
@@ -184,7 +196,13 @@ function TransactionHistoryComponent(refetchBalance: any) {
                   >
                     <Text style={styles.topRowText}>{item.date}</Text>
                     <Text style={styles.secondRowText}>{item.from}</Text>
-                    <Text style={styles.amount}>{item.amount}</Text>
+                    <Text style={styles.amount}>{item.amount} {item.currency != currency ? <Text
+            style={{
+              fontFamily: "Poppins_600SemiBold_Italic"
+            }}
+          >
+            {currency}
+          </Text> : item.currency}</Text>
                   </View>
                   <Image
                     source={require("@/assets/images/tx-middle-icon.png")}
@@ -208,17 +226,32 @@ function TransactionHistoryComponent(refetchBalance: any) {
                     </Text>
                     <Text style={styles.secondRowText}>{item.to}</Text>
                     <View style={{ flexDirection: "row", gap: 2 }}>
-                      <Text style={{ ...styles.secondRowText, fontSize: 12 }}>
-                        ID: {item.txId}
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => Clipboard.setString(item.fullHash)} // Copy txId to clipboard
-                      >
-                        <Image
-                          source={require("@/assets/images/tx-copy-icon.png")}
-                          style={{ width: 20, height: 20 }} // Adjust image size if necessary
-                        />
-                      </TouchableOpacity>
+                      {item.txId && (
+                        <>
+                          <Text
+                            style={{
+                              ...styles.secondRowText,
+                              fontSize: scaledFontSize(12),
+                            }}
+                          >
+                            ID: {item.txId}
+                          </Text>
+                          <TouchableOpacity
+                            onPress={() => {
+                              Clipboard.setString(item.fullHash);
+                              Alert.alert(
+                                t("pages.home.transactions.copied"),
+                                t("pages.home.transactions.copied_link")
+                              );
+                            }}
+                          >
+                            <Image
+                              source={require("@/assets/images/tx-copy-icon.png")}
+                              style={{ width: 20, height: 20 }}
+                            />
+                          </TouchableOpacity>
+                        </>
+                      )}
                     </View>
                   </View>
                 </View>
@@ -273,27 +306,35 @@ const styles = StyleSheet.create({
   },
   topRowText: {
     color: "#AFC0FF",
-    fontSize: 12,
+    fontSize: scaledFontSize(12),
     fontFamily: "Poppins_600SemiBold",
   },
   secondRowText: {
     color: "#13293D",
-    fontSize: 14,
+    fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
   },
   amount: {
     color: "#13293D",
-    fontSize: 22,
+    fontSize: scaledFontSize(22),
     fontFamily: "Poppins_600SemiBold",
     lineHeight: 25,
   },
 });
 
 // Step 5: Wrap the component in ApolloProvider and export
-export default function TransactionHistory(refetchBalance: any) {
+export default function TransactionHistory({
+  refetchBalance,
+  currency,
+  getConversionRate,
+}: any) {
   return (
     <ApolloProvider client={client}>
-      <TransactionHistoryComponent refetchBalance={refetchBalance} />
+      <TransactionHistoryComponent
+        refetchBalance={refetchBalance}
+        currency={currency}
+        getConversionRate={getConversionRate}
+      />
     </ApolloProvider>
   );
 }

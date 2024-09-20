@@ -10,6 +10,7 @@ import {
 import { Tabs } from "expo-router";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import withFadeIn from "@/components/effects/withFadeIn";
+import { UserInactivityProvider } from "@/context/UserInactivity";
 
 type TabRoutes = "home" | "settings" | "account";
 
@@ -59,35 +60,37 @@ function TabLayout() {
     },
   });
   return (
-    <View style={styles.container}>
-      <Tabs
-        screenOptions={({ route }) => ({
-          headerShown: false,
-          tabBarShowLabel: false,
-          // tabBarIcon: ({ focused }) => {
-          //   const tabName = route.name as TabRoutes;
-          //   return (
-          //     <Image
-          //       source={TABS[tabName]?.[focused ? "active" : "inactive"]}
-          //       style={{
-          //         width: route.name === "settings" ? 37 : 35,
-          //         height: route.name === "settings" ? 36 : 35,
-          //         resizeMode: "contain",
-          //       }}
-          //     />
-          //   );
-          // },
-          tabBarHideOnKeyboard: true,
-        })}
-        tabBar={(props) => (
-          <TabBar {...props} keyboardVisible={keyboardVisible} />
-        )}
-      >
-        <Tabs.Screen name="home" />
-        <Tabs.Screen name="settings" />
-        <Tabs.Screen name="account" />
-      </Tabs>
-    </View>
+    <UserInactivityProvider>
+      <View style={styles.container}>
+        <Tabs
+          screenOptions={({ route }) => ({
+            headerShown: false,
+            tabBarShowLabel: false,
+            // tabBarIcon: ({ focused }) => {
+            //   const tabName = route.name as TabRoutes;
+            //   return (
+            //     <Image
+            //       source={TABS[tabName]?.[focused ? "active" : "inactive"]}
+            //       style={{
+            //         width: route.name === "settings" ? 37 : 35,
+            //         height: route.name === "settings" ? 36 : 35,
+            //         resizeMode: "contain",
+            //       }}
+            //     />
+            //   );
+            // },
+            tabBarHideOnKeyboard: true,
+          })}
+          tabBar={(props) => (
+            <TabBar {...props} keyboardVisible={keyboardVisible} />
+          )}
+        >
+          <Tabs.Screen name="home" />
+          <Tabs.Screen name="settings" />
+          <Tabs.Screen name="account" />
+        </Tabs>
+      </View>
+    </UserInactivityProvider>
   );
 }
 
@@ -97,6 +100,7 @@ const TabBar = ({ state, descriptors, navigation, keyboardVisible }: any) => {
     isCheckoutModalOpen,
     isValidationModalOpen,
     setIsCheckoutModalOpen,
+    setIsOffRamp,
   } = useStayUpdatedModalContext();
 
   const TABS: Record<TabRoutes, { active?: any; inactive: any }> = {
@@ -200,6 +204,7 @@ const TabBar = ({ state, descriptors, navigation, keyboardVisible }: any) => {
             key="checkout"
             onPress={() => {
               navigation.navigate("home");
+              setIsOffRamp(false);
               setIsCheckoutModalOpen(true);
             }}
             style={styles.checkoutButton}

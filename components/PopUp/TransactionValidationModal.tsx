@@ -12,7 +12,7 @@ import {
   BottomSheetBackdrop,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import * as Sentry from "@sentry/react-native";
 import {
@@ -79,7 +79,12 @@ const TransactionValidationModal = forwardRef(
                 {t("pop-ups.transaction.title")}
               </Text>
             </View>
-            <Text style={{ ...globalFonts.mediumSubtitle, fontSize: 14 }}>
+            <Text
+              style={{
+                ...globalFonts.mediumSubtitle,
+                fontSize: scaledFontSize(14),
+              }}
+            >
               {t("pop-ups.transaction.description", {
                 amount: amount,
                 currency: currency,
@@ -103,7 +108,7 @@ const TransactionValidationModal = forwardRef(
               style={{
                 ...globalFonts.whiteSubtitle,
                 textAlign: "center",
-                fontSize: 14,
+                fontSize: scaledFontSize(14),
                 fontFamily: "Poppins_500Medium",
               }}
             >
@@ -114,7 +119,7 @@ const TransactionValidationModal = forwardRef(
             style={{
               ...globalFonts.subtitle,
               textAlign: "center",
-              fontSize: 14,
+              fontSize: scaledFontSize(14),
               fontFamily: "Poppins_500Medium",
               marginTop: 20,
             }}
@@ -168,7 +173,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     color: "#ECFF78",
-    fontSize: 20,
+    fontSize: scaledFontSize(20),
     fontWeight: "700",
     fontFamily: "Poppins",
   },

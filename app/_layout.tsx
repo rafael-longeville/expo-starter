@@ -22,6 +22,7 @@ import {
 import * as Sentry from "@sentry/react-native";
 import { StayUpdatedModalContentProvider } from "@/context/StayUpdatedModalContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { TypingProvider } from "@/context/TypingContext";
 
 // Initialize Sentry
 Sentry.init({
@@ -36,7 +37,7 @@ SplashScreen.preventAutoHideAsync();
 
 function RootLayout() {
   const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
+  const [loaded, error] = useFonts({
     Poppins_400Regular,
     Poppins_400Regular_Italic,
     Poppins_500Medium,
@@ -47,27 +48,33 @@ function RootLayout() {
   });
 
   useEffect(() => {
-    if (loaded) {
+    if (loaded || error) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
 
   return (
     <ThirdwebProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <StayUpdatedModalContentProvider>
-          <GestureHandlerRootView>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen
-                name="(onboarding)"
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </GestureHandlerRootView>
-        </StayUpdatedModalContentProvider>
+        <TypingProvider>
+          <StayUpdatedModalContentProvider>
+            <GestureHandlerRootView>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="(onboarding)"
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </GestureHandlerRootView>
+          </StayUpdatedModalContentProvider>
+        </TypingProvider>
       </ThemeProvider>
     </ThirdwebProvider>
   );

@@ -14,7 +14,7 @@ import {
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Href, Link } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -149,12 +149,12 @@ const styles = StyleSheet.create({
   // Fonts
   title: {
     fontFamily: "Poppins_600SemiBold",
-    fontSize: 24,
+    fontSize: scaledFontSize(24),
     color: "#13293D",
   },
   subtitle: {
     fontFamily: "Poppins_500Medium",
-    fontSize: 16,
+    fontSize: scaledFontSize(16),
     color: "#13293D",
   },
 });

@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
-import { globalFonts } from "../styles/globalFonts";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useActiveAccount } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ const Onboarding4: React.FC = () => {
   const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
   const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
   const [currency, setCurrency] = useState<string>("EUR"); // Default currency
+  const [currencySymbol, setCurrencySymbol] = useState<string>("€");
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -32,14 +33,14 @@ const Onboarding4: React.FC = () => {
         setOnboardingValue(value);
         setOnboardingMethod(method);
         setCurrency(storedCurrency === "euro" ? "EUR" : "USD"); // Update currency
-
+        setCurrencySymbol(storedCurrency === "euro" ? "€" : "$");
         Sentry.addBreadcrumb({
           category: "storage",
           message: `Retrieved onboardingValue: ${value}, onboardingMethod: ${method}, currency: ${storedCurrency}`,
           level: "info",
         });
 
-        if (account?.address) {
+        if (account?.address && currency) {
           let params = {
             apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
             fiatCurrency: currency, // Use the selected currency
@@ -81,7 +82,7 @@ const Onboarding4: React.FC = () => {
     loadOnboardingData();
   }, [account, onboardingMethod, onboardingValue, currency]); // Added currency as dependency
 
-  const onTransakEventHandler = (event: EventTypes, data: Order) => {
+  const onTransakEventHandler = async (event: EventTypes, data: Order) => {
     switch (event) {
       case Events.ORDER_CREATED:
         console.log(event, data);
@@ -89,6 +90,11 @@ const Onboarding4: React.FC = () => {
 
       case Events.ORDER_PROCESSING:
         console.log(event, data);
+        try {
+          await AsyncStorage.setItem("transakDone", "true");
+        } catch (error) {
+          console.error("Failed to store data in AsyncStorage:", error);
+        }
         router.push("/(tabs)/home");
         break;
 
@@ -104,24 +110,11 @@ const Onboarding4: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.containercompte}>
-        <Image
-          source={require("@/assets/images/lock-icon.png")}
-          style={styles.icon}
-        />
-        <Text style={styles.textcompte}>
-          <Text style={globalFonts.whiteSubtitle}>
-            {t("pages.onboarding_4.account")}{" "}
-            {currency === "EUR" ? "EURO" : "DOLLAR US"}:
-          </Text>
-          <Text style={styles.amount}> 0 {currency === "USD" ? "$" : "€"}</Text>
-        </Text>
-      </View>
       <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
       <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_4.subtitle")}
+        {t(`pages.onboarding_4.subtitle_${onboardingMethod}`)}
       </Text>
-      {transakParams ? (
+      {transakParams && (
         <TransakWebView
           onError={(error) => {
             console.error("Transak error", error);
@@ -130,15 +123,12 @@ const Onboarding4: React.FC = () => {
           transakConfig={transakParams}
           onTransakEvent={onTransakEventHandler}
         />
-      ) : (
-        <Text style={globalFonts.subtitle}>Put a loader here or something</Text>
       )}
       <Text
         style={{
           ...globalFonts.subtitle,
           textAlign: "center",
-          fontSize: 14,
-          fontFamily: "Poppins_500Medium",
+          fontSize: scaledFontSize(14),
           marginTop: 20,
         }}
         onPress={() => {
@@ -147,7 +137,7 @@ const Onboarding4: React.FC = () => {
             message: "User navigated to home from Onboarding3",
             level: "info",
           });
-          router.push("/(tabs)/home");
+          router.push("/(onboarding)/onboarding_2");
         }}
       >
         {t("pages.onboarding_4.cancel")}
@@ -162,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    fontSize: 24,
+    fontSize: scaledFontSize(24),
     fontWeight: "bold",
   },
   webview: {
@@ -190,7 +180,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     color: "#ECFF78",
-    fontSize: 20,
+    fontSize: scaledFontSize(20),
     fontWeight: "700",
     fontFamily: "Poppins",
   },

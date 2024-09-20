@@ -14,8 +14,10 @@ import Onboarding2 from "./onboarding_2";
 import Onboarding3 from "./onboarding_3";
 import Onboarding4 from "./onboarding_4";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as CONFIG from "../../app.json";
-import { globalFonts } from "../styles/globalFonts";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
+import * as Sentry from "@sentry/react-native";
+import { useTranslation } from "react-i18next";
+import { useTyping } from "@/context/TypingContext";
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
@@ -26,13 +28,16 @@ const IMAGES = {
 export default function OnboardingLayout() {
   const segments = useSegments();
   const currentSegment = segments[segments.length - 1];
+  const { t } = useTranslation();
+  const { isTyping } = useTyping();
+  const scrollViewRef = useRef(null);
 
-  const renderCurrentScreen = () => {
+  const renderCurrentScreen = (scrollViewRef: any) => {
     switch (currentSegment) {
       case "onboarding_1":
         return <Onboarding1 />;
       case "onboarding_2":
-        return <Onboarding2 />;
+        return <Onboarding2 scrollViewRef={scrollViewRef} />;
       case "onboarding_3":
         return <Onboarding3 />;
       case "onboarding_4":
@@ -42,21 +47,39 @@ export default function OnboardingLayout() {
     }
   };
 
+  const handleContinuePress = async () => {
+    try {
+      Sentry.addBreadcrumb({
+        category: "action",
+        message: "User clicked continue without funding",
+        level: "info",
+      });
+
+      await AsyncStorage.setItem("continueWithoutFunding", "true");
+
+      Sentry.addBreadcrumb({
+        category: "storage",
+        message: "Stored continueWithoutFunding flag in AsyncStorage",
+        level: "info",
+      });
+
+      router.push("/(onboarding)/onboarding_3");
+    } catch (error) {
+      Sentry.captureException(error);
+      console.error("Error storing data or navigating:", error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text
-        style={{
-          ...globalFonts.subtitle,
-          textAlign: "center",
-        }}
-      >
-        Version {CONFIG.expo.ios.buildNumber}
-      </Text>
       <Image
         source={require("@/assets/images/yellow-rectangle.png")}
         style={styles.backgroundImage}
       />
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={styles.scrollViewContainer}
+      >
         {currentSegment !== "onboarding_3" &&
           IMAGES[currentSegment as keyof typeof IMAGES] && (
             <Image
@@ -65,10 +88,14 @@ export default function OnboardingLayout() {
             />
           )}
 
-        {renderCurrentScreen()}
+        {renderCurrentScreen(scrollViewRef)}
 
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT && (
           <View style={styles.languageSwitcher}>
+            <LanguageButton
+              label="To 1"
+              onPress={() => router.push("/(onboarding)/onboarding_1")}
+            />
             <LanguageButton
               label="To T"
               onPress={() => router.push("/(onboarding)/onboarding_4")}
@@ -91,6 +118,57 @@ export default function OnboardingLayout() {
           </View>
         )}
       </ScrollView>
+      {currentSegment === "onboarding_2" && (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: "white",
+            padding: 20,
+            gap: 20,
+            zIndex: 100,
+            display: isTyping ? "none" : "flex",
+          }}
+        >
+          <Pressable
+            style={{
+              backgroundColor: "#13293D",
+              padding: 10,
+              borderRadius: 30,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+            onPress={handleContinuePress}
+          >
+            <Text
+              style={{
+                ...globalFonts.whiteSubtitle,
+                textAlign: "center",
+                fontSize: scaledFontSize(14),
+                fontFamily: "Poppins_500Medium",
+              }}
+            >
+              {t("pages.onboarding_2.continue_button")}
+            </Text>
+          </Pressable>
+          <Text
+            style={{
+              ...globalFonts.subtitle,
+              width: "100%",
+              textAlign: "center",
+              fontSize: scaledFontSize(14),
+              fontFamily: "Poppins_500Medium",
+            }}
+            onPress={handleContinuePress}
+          >
+            {t("pages.onboarding_2.has_account")}
+          </Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -107,18 +185,6 @@ const LanguageButton = ({
   </Pressable>
 );
 
-const NavigationButton = ({
-  label,
-  onPress,
-}: {
-  label: string;
-  onPress: () => void;
-}) => (
-  <Pressable onPress={onPress} style={styles.navigationButton}>
-    <Text style={styles.navigationButtonText}>{label}</Text>
-  </Pressable>
-);
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -131,7 +197,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
-    fontSize: 32,
+    fontSize: scaledFontSize(32),
     fontWeight: "bold",
     color: "#13293D",
     textAlign: "center",

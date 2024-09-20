@@ -8,7 +8,7 @@ import {
 } from "@gorhom/bottom-sheet";
 import { BlurView } from "expo-blur";
 import { useTranslation } from "react-i18next";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { Href, Link } from "expo-router";
 
 const TestBlurModal = () => {
@@ -120,12 +120,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "Poppins_600SemiBold",
-    fontSize: 24,
+    fontSize: scaledFontSize(24),
     color: "#13293D",
   },
   subtitle: {
     fontFamily: "Poppins_500Medium",
-    fontSize: 16,
+    fontSize: scaledFontSize(16),
     color: "#13293D",
   },
 });
