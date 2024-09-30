@@ -100,9 +100,16 @@ export default function ConnectWithPasskey({
   };
 
   // Only render the view if no passkey is stored
+<<<<<<< HEAD
   if (!hasPasskey) {
     return null; // Do not render if a passkey already exists
   }
+=======
+  if (hasPasskey) {
+    return null; // Do not render if a passkey already exists
+  }
+  
+>>>>>>> 05e990b (push)
   return (
     <View>
       <Pressable
