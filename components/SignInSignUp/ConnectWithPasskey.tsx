@@ -31,6 +31,20 @@ export default function ConnectWithPasskey({
 
   const { t } = useTranslation();
 
+  const [hasPasskey, setHasPasskey] = useState(false); // State to manage whether a passkey exists
+  useEffect(() => {
+    // Check if a passkey is stored when the component mounts
+    const checkPasskey = async () => {
+      try {
+        const result = await hasStoredPasskey(client);
+        setHasPasskey(result);
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    };
+    checkPasskey();
+  }, []);
+
   const handlePress = async () => {
     setLoading(true); // Show loader when the process starts
     try {
@@ -85,6 +99,11 @@ export default function ConnectWithPasskey({
     }
   };
 
+  // Only render the view if no passkey is stored
+  if (hasPasskey) {
+    return null; // Do not render if a passkey already exists
+  }
+  
   return (
     <View>
       <Pressable
