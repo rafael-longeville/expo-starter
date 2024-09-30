@@ -78,7 +78,9 @@ export default function ConnectWithPasskey({
             });
           } else {
             router.push({
-              pathname: redirectionUrl as "/(onboarding)/onboarding_4" | "/(tabs)/home",
+              pathname: redirectionUrl as
+                | "/(onboarding)/onboarding_4"
+                | "/(tabs)/home",
             });
           }
           setLoading(false); // Hide loader after successful connection
@@ -100,16 +102,9 @@ export default function ConnectWithPasskey({
   };
 
   // Only render the view if no passkey is stored
-<<<<<<< HEAD
   if (!hasPasskey) {
     return null; // Do not render if a passkey already exists
   }
-=======
-  if (hasPasskey) {
-    return null; // Do not render if a passkey already exists
-  }
-  
->>>>>>> 05e990b (push)
   return (
     <View>
       <Pressable
