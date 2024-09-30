@@ -164,7 +164,7 @@ const Settings: React.FC = () => {
         notifications ? "true" : "false"
       );
       // Navigate to the next screen
-      router.push("/(tabs)/home");
+      router.replace("/(tabs)/home");
     } catch (error) {
       Sentry.captureException(error);
       console.error("Error storing data or navigating:", error);
