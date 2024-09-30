@@ -27,6 +27,9 @@
           "UIUserNotificationTypeBadge": true,
           "UIUserNotificationTypeSound": true
         }
+      },
+      "entitlements": {
+        "com.apple.developer.icloud-services": ["CloudKit"]
       }
     },
     "android": {
@@ -80,6 +83,12 @@
           "url": "https://sentry.io/",
           "project": "react-native",
           "organization": "civicpower"
+        }
+      ],
+      [
+        "expo-user-identity",
+        {
+          "iCloudContainerEnvironment": "Production"
         }
       ]
     ],

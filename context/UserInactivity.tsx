@@ -9,6 +9,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MMKV } from "react-native-mmkv";
 import { useTranslation } from "react-i18next"; // Add this import
+import { getUserIdentity } from "expo-user-identity";
 
 const storage = new MMKV({
   id: "inactivty-storage",
@@ -39,6 +40,8 @@ export const UserInactivityProvider = ({
 
   const handleAppStateChange = async (nextAppState: AppStateStatus) => {
     console.log("App state changed to", nextAppState);
+    const identity = await getUserIdentity();
+    console.log("User identity:", identity);
     if (nextAppState === "background") {
       recordStartTime();
     } else if (

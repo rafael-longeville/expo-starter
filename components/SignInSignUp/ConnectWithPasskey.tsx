@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { hasStoredPasskey } from "thirdweb/wallets/in-app";
+
 import { client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
