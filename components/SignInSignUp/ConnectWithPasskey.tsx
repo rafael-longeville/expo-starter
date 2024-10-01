@@ -102,7 +102,7 @@ export default function ConnectWithPasskey({
   };
 
   // Only render the view if no passkey is stored
-  if (hasPasskey) {
+  if (!hasPasskey) {
     return null; // Do not render if a passkey already exists
   }
   return (
