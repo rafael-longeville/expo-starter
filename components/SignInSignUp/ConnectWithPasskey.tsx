@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { hasStoredPasskey } from "thirdweb/wallets/in-app";
+
 import { client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
@@ -29,6 +30,20 @@ export default function ConnectWithPasskey({
   const [loading, setLoading] = useState(false); // State to manage the loading
 
   const { t } = useTranslation();
+
+  const [hasPasskey, setHasPasskey] = useState(false); // State to manage whether a passkey exists
+  useEffect(() => {
+    // Check if a passkey is stored when the component mounts
+    const checkPasskey = async () => {
+      try {
+        const result = await hasStoredPasskey(client);
+        setHasPasskey(result);
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    };
+    checkPasskey();
+  }, []);
 
   const handlePress = async () => {
     setLoading(true); // Show loader when the process starts
@@ -63,7 +78,9 @@ export default function ConnectWithPasskey({
             });
           } else {
             router.push({
-              pathname: redirectionUrl as "/(onboarding)/onboarding_4" | "/(tabs)/home",
+              pathname: redirectionUrl as
+                | "/(onboarding)/onboarding_4"
+                | "/(tabs)/home",
             });
           }
           setLoading(false); // Hide loader after successful connection
@@ -84,6 +101,10 @@ export default function ConnectWithPasskey({
     }
   };
 
+  // Only render the view if no passkey is stored
+  if (hasPasskey) {
+    return null; // Do not render if a passkey already exists
+  }
   return (
     <View>
       <Pressable
