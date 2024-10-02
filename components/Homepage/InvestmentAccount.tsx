@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     color: "#13293D",
     fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
-    left: 40, // Adjust this value to position the text towards the left
+    left: 30, // Adjust this value to position the text towards the left
     textAlign: "left", // Ensure the text aligns to the left
   },
   withdrawButtonText: {
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     color: "#13293D",
     fontSize: scaledFontSize(14),
     fontFamily: "Poppins_500Medium",
-    left: 85, // Adjust this value to position the text towards the left
+    left: 95, // Adjust this value to position the text towards the left
     textAlign: "left", // Ensure the text aligns to the left
   },
 });
