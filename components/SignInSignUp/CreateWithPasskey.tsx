@@ -71,15 +71,11 @@ export default function CreateWithPasskey({
             strategy: "passkey",
             type: "sign-up",
           });
-          if (redirectionUrl === "/(tabs)/home") {
-            router.replace({
-              pathname: "/(tabs)/home",
-            });
-          } else {
-            router.push({
-              pathname: redirectionUrl as "/(onboarding)/onboarding_4" | "/(tabs)/home",
-            });
-          }
+          router.push({
+            pathname: redirectionUrl as
+              | "/(onboarding)/onboarding_4"
+              | "/(tabs)/home",
+          });
           setLoading(false); // Hide loader after successful wallet creation
           return wallet;
         } catch (connectError: any) {

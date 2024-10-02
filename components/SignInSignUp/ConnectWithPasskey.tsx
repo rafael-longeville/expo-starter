@@ -72,17 +72,11 @@ export default function ConnectWithPasskey({
             strategy: "passkey",
             type: "sign-in",
           });
-          if (redirectionUrl === "/(tabs)/home") {
-            router.replace({
-              pathname: "/(tabs)/home",
-            });
-          } else {
-            router.push({
-              pathname: redirectionUrl as
-                | "/(onboarding)/onboarding_4"
-                | "/(tabs)/home",
-            });
-          }
+          router.push({
+            pathname: redirectionUrl as
+              | "/(onboarding)/onboarding_4"
+              | "/(tabs)/home",
+          });
           setLoading(false); // Hide loader after successful connection
           return wallet;
         } catch (connectError: any) {

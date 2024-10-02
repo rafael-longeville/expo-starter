@@ -95,7 +95,7 @@ const Onboarding4: React.FC = () => {
         } catch (error) {
           console.error("Failed to store data in AsyncStorage:", error);
         }
-        router.replace("/(tabs)/home");
+        router.push("/(tabs)/home");
         break;
 
       case Events.ORDER_COMPLETED:
