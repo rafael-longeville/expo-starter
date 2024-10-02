@@ -42,6 +42,8 @@ const InvestmentCard = forwardRef(
       handleOpenModal,
       setAsset,
       scrollViewRef,
+      onLayout, // Add onLayout prop here
+      onFocusInput, // Add onFocusInput prop
     }: any,
     ref: any
   ) => {
@@ -68,7 +70,7 @@ const InvestmentCard = forwardRef(
     };
 
     return (
-      <View style={styles.cardContainer}>
+      <View style={styles.cardContainer} onLayout={onLayout}>
         <View
           style={{
             flexDirection: "row",
@@ -153,11 +155,10 @@ const InvestmentCard = forwardRef(
                   setAmount(text);
                 }}
                 onFocus={() => {
+                  onFocusInput(); // Trigger scroll when input is focused
                   setIsTyping(true);
                 }}
-                onBlur={() => {
-                  setIsTyping(false);
-                }}
+                onBlur={() => setIsTyping(false)}
               />
             </View>
             <Text style={[styles.asideInputText]}>{currencySymbol}</Text>
