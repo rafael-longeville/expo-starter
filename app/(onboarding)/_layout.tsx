@@ -102,7 +102,7 @@ export default function OnboardingLayout() {
             />
             <LanguageButton
               label="To home"
-              onPress={() => router.replace("/(tabs)/home")}
+              onPress={() => router.push("/(tabs)/home")}
             />
             <LanguageButton
               label="Clear cache"
