@@ -38,7 +38,7 @@ const OnRampModal = forwardRef(
     const { t } = useTranslation();
     const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
     // variables
-    const snapPoints = useMemo(() => ["91%"], []);
+    const snapPoints = useMemo(() => ["93%"], []);
     // Custom handle component
     const CustomHandle = () => {
       const source = isOffRamp
