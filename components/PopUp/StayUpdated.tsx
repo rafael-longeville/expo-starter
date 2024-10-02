@@ -27,7 +27,7 @@ const StayUpdated = forwardRef(
     // state to track if modal is open
 
     // variables
-    const snapPoints = useMemo(() => ["60%"], []);
+    const snapPoints = useMemo(() => ["70%"], []);
 
     // callbacks
     const handlePresentModalPress = useCallback(() => {
@@ -53,6 +53,7 @@ const StayUpdated = forwardRef(
 
     return (
       <>
+        <Button title="open" onPress={() => handlePresentModalPress()}></Button>
         <BottomSheetModal
           ref={ref}
           index={0}
