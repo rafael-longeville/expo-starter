@@ -283,6 +283,7 @@ function TransactionHistoryComponent({
           <Text
             style={{
               ...globalFonts.disclaimerText,
+              textAlign: "left",
               color: "#13293D",
               marginTop: 20,
             }}
