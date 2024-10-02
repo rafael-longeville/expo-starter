@@ -71,7 +71,7 @@ function Account({
               }}
             >
               <Pressable
-                onPress={() => setIsOpen(!isOpen)}
+                onPress={() => Linking.openURL('https://docs.wallet.civicpower.org/')}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",

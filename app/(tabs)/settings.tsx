@@ -8,6 +8,7 @@ import {
   Pressable,
   Alert,
   ScrollView,
+  Linking
 } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
@@ -192,7 +193,7 @@ const Settings: React.FC = () => {
               }}
             >
               <Pressable
-                onPress={() => setIsOpen(!isOpen)}
+                onPress={() => Linking.openURL('https://docs.wallet.civicpower.org/')}
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
