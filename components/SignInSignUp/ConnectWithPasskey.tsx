@@ -12,11 +12,10 @@ import {
 import { inAppWallet, Wallet } from "thirdweb/wallets";
 import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 
-import { client } from "@/constants/thirdweb";
+import { chain, client } from "@/constants/thirdweb";
 import { globalFonts } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
-import { sepolia } from "thirdweb/chains";
 
 interface ConnectWithPasskeyProps {
   connect: any;
@@ -60,7 +59,7 @@ export default function ConnectWithPasskey({
           passkeyDomain: "moncomptesouverain.fr",
         },
         smartAccount: {
-          chain: sepolia,
+          chain: chain,
           sponsorGas: true,
         },
       });

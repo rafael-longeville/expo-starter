@@ -18,7 +18,7 @@
         "webcredentials:moncomptesouverain.fr",
         "applinks:moncomptesouverain.fr"
       ],
-      "buildNumber": "38",
+      "buildNumber": "44",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos.",
         "UIBackgroundModes": ["fetch", "remote-notification"],

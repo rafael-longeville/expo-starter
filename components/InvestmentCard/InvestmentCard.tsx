@@ -16,6 +16,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  LayoutChangeEvent,
 } from "react-native";
 import { styles } from "./styles";
 import {
@@ -27,8 +28,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { globalFonts } from "@/app/styles/globalFonts";
 import { useTyping } from "@/context/TypingContext";
+import { ScrollView } from "react-native-gesture-handler";
 
-const InvestmentCard = forwardRef(
+interface InvestmentCardProps {
+  investment: string;
+  investing: boolean;
+  isOnboarding?: boolean;
+  main_account_balance?: string;
+  eurBalance?: number;
+  setEurBalance?: (balance: number) => void;
+  usdBalance?: number;
+  setUsdBalance?: (balance: number) => void;
+  handleOpenModal?: () => void;
+  setAsset?: (asset: string) => void;
+  scrollViewRef?: React.RefObject<any>;
+  onLayout?: (event: LayoutChangeEvent) => void;
+  onFocusInput?: () => void;
+}
+
+const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
   (
     {
       investment,
@@ -44,8 +62,8 @@ const InvestmentCard = forwardRef(
       scrollViewRef,
       onLayout, // Add onLayout prop here
       onFocusInput, // Add onFocusInput prop
-    }: any,
-    ref: any
+    },
+    ref
   ) => {
     const { t } = useTranslation();
     const { setIsTyping, isTyping } = useTyping();
@@ -89,8 +107,8 @@ const InvestmentCard = forwardRef(
           </View>
           <Pressable
             onPress={() => {
-              setAsset(investment);
-              handleOpenModal();
+              setAsset && setAsset(investment);
+              handleOpenModal && handleOpenModal();
             }}
           >
             <Image
@@ -155,7 +173,7 @@ const InvestmentCard = forwardRef(
                   setAmount(text);
                 }}
                 onFocus={() => {
-                  onFocusInput(); // Trigger scroll when input is focused
+                  onFocusInput && onFocusInput(); // Trigger scroll when input is focused
                   setIsTyping(true);
                 }}
                 onBlur={() => setIsTyping(false)}

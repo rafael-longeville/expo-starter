@@ -71,7 +71,9 @@ function Account({
               }}
             >
               <Pressable
-                onPress={() => Linking.openURL('https://docs.wallet.civicpower.org/')}
+                onPress={() =>
+                  Linking.openURL("https://docs.wallet.civicpower.org/")
+                }
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -221,7 +223,7 @@ function Account({
               textAlign: "center",
             }}
           >
-            Version {CONFIG.expo.ios.buildNumber}.0.3
+            Version {CONFIG.expo.ios.buildNumber}.0.4
           </Text>
         </View>
       </ScrollView>
