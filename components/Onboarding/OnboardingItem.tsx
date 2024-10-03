@@ -61,40 +61,70 @@ export default function OnboardingItem({ item }: any) {
         source={require("@/assets/images/splash/ibex.png")}
         style={styles.image}
       />
-      <Text
-        style={{
-          ...styles.title,
-          marginTop: item.id === "4" ? "50%" : "10%",
-        }}
-      >
-        {item.title}
-      </Text>
 
       {item.id === "4" ? (
-        <View
-          style={{ flexDirection: "column", gap: 20, alignItems: "center" }}
-        >
+        <>
+          <Text
+            style={{
+              ...styles.title,
+              marginTop: "10%",
+            }}
+          >
+            {item.first_title}
+          </Text>
           <Text
             style={{
               fontFamily: "Poppins_400Regular",
               fontSize: scaledFontSize(20),
               color: "#ECFF78",
               textAlign: "center",
-              height: 100,
             }}
           >
-            {item.subtitle}{" "}
+            {item.first_subtitle}{" "}
           </Text>
-          <Image
-            source={require("@/assets/images/info-icon.png")}
-            style={{
-              width: 20,
-              height: 20,
-            }}
-          />
-        </View>
+          <View
+            style={{ flexDirection: "column", gap: 20, alignItems: "center" }}
+          >
+            <Text
+              style={{
+                ...styles.title,
+                marginTop: item.id === "4" ? "10%" : "10%",
+              }}
+            >
+              {item.title}
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Poppins_400Regular",
+                fontSize: scaledFontSize(20),
+                color: "#ECFF78",
+                textAlign: "center",
+                height: 100,
+              }}
+            >
+              {item.subtitle}{" "}
+            </Text>
+            <Image
+              source={require("@/assets/images/info-icon.png")}
+              style={{
+                width: 20,
+                height: 20,
+              }}
+            />
+          </View>
+        </>
       ) : (
-        <Text style={styles.subtitle}>{item.subtitle} </Text>
+        <>
+          <Text
+            style={{
+              ...styles.title,
+              marginTop: item.id === "4" ? "50%" : "10%",
+            }}
+          >
+            {item.title}
+          </Text>
+          <Text style={styles.subtitle}>{item.subtitle} </Text>
+        </>
       )}
       {item.image && (
         <Image

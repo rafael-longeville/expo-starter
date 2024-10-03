@@ -2,14 +2,16 @@
   "welcome": "Bienvenue",
   "splash": {
     "1": {
-      "title": "Alimentez votre compte courant",
-      "subtitle": "ET REPRENEZ LE CONTRÔLE DE VOTRE ARGENT"
+      "title": "Conservez votre argent vous même !",
+      "subtitle": "ET DEVENEZ INSAISISSABLE : VOUS SEUL AVEZ ACCÈS À VOTRE PORTEFUEILLE SECURISÉ."
     },
     "2": {
       "title": "Placez vos fonds dans un compte rémunéré",
-      "subtitle": "SOYEZ REMUNÉRÉ DÈS LA PREMIÈRE SECONDE ET GAGNEZ DES INTÉRÊTS SUR VOS INTÉRÊTS"
+      "subtitle": "ET SOYEZ REMUNÉRÉ DÈS LA PREMIÈRE SECONDE."
     },
     "3": {
+      "first_title": "Facile à utiliser",
+      "first_subtitle": "VOTRE IBEx WALLET S’ADAPTE À VOTRE MONNAIE DE PRÉFÉRENCE.",
       "title": "Restez informé",
       "subtitle": "SUR LA NATURE DES PRODUITS PROPOSÉS EN CLIQUANT SUR LES POINTS INFO :"
     }
