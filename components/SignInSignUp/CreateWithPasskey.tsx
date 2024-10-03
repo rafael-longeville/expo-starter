@@ -15,7 +15,6 @@ import { router } from "expo-router";
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
-import { sepolia } from "thirdweb/chains";
 
 interface CreateWithPasskeyProps {
   connect: any;
@@ -59,7 +58,7 @@ export default function CreateWithPasskey({
           passkeyDomain: "moncomptesouverain.fr",
         },
         smartAccount: {
-          chain: sepolia,
+          chain: chain,
           sponsorGas: true,
         },
       });
