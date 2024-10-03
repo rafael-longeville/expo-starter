@@ -88,6 +88,8 @@ export default function Onboarding() {
     },
     {
       id: "4",
+      first_title: t("splash.3.first_title"),
+      first_subtitle: t("splash.3.first_subtitle"),
       title: t("splash.3.title"),
       subtitle: t("splash.3.subtitle"),
     },
@@ -118,8 +120,7 @@ export default function Onboarding() {
         } else if (settingsDone === "true") {
           console.log("Navigating to /onboarding_2");
           router.push({ pathname: "/(onboarding)/onboarding_2" });
-        }
-        else {
+        } else {
           console.log("Navigating to /onboarding_1");
           router.push({ pathname: "/(onboarding)/onboarding_1" });
         }
@@ -137,8 +138,7 @@ export default function Onboarding() {
       } else if (settingsDone === "true") {
         console.log("Navigating to /onboarding_2");
         router.push({ pathname: "/(onboarding)/onboarding_2" });
-      }
-      else {
+      } else {
         console.log("Navigating to /onboarding_1");
         router.push({ pathname: "/(onboarding)/onboarding_1" });
       }
@@ -162,7 +162,7 @@ export default function Onboarding() {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 3, height: "100%" }}>
         <FlatList
           data={slidesToRender}
           renderItem={({ item }) => <OnboardingItem item={item} />}
@@ -181,6 +181,10 @@ export default function Onboarding() {
           onViewableItemsChanged={viewableItemsChanged}
           viewabilityConfig={viewConfig}
           ref={slidesRef}
+          style={{
+            flexGrow: 0,
+            height: "90%",
+          }}
         />
       </View>
 
@@ -218,5 +222,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    height: "100%",
+    backgroundColor: "#13293D",
   },
 });

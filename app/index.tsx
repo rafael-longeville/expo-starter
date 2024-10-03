@@ -11,11 +11,7 @@ import { SafeAreaView } from "react-native";
 import Onboarding from "@/components/Onboarding/Onboarding";
 
 const Splash = () => {
-  return (
-    <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
-      <Onboarding />
-    </SafeAreaView>
-  );
+  return <Onboarding />;
 };
 
 export default Splash;
