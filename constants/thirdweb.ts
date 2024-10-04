@@ -13,7 +13,7 @@ export const client = createThirdwebClient({
   clientId,
 });
 
-export const chain = arbitrum;
+export const chain = arbitrumSepolia;
 
 export const contract = getContract({
   client,
