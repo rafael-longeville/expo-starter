@@ -94,9 +94,9 @@ export default function CreateWithPasskey({
   };
 
   // Only render the view if no passkey is stored
-  if (hasPasskey) {
-    return null; // Do not render if a passkey already exists
-  }
+  // if (hasPasskey) {
+  //   return null; // Do not render if a passkey already exists
+  // }
 
   return (
     <View>
