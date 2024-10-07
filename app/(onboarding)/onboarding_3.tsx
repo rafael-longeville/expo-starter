@@ -31,6 +31,30 @@ const Onboarding3: React.FC = () => {
             level: "info",
           });
         }
+        const allKeys = await AsyncStorage.getAllKeys();
+        console.log("allKeys", allKeys);
+        const walletTokenKey = allKeys.find((key) =>
+          key.startsWith("walletToken")
+        );
+        const thirdwebEwsWalletUserDetailsKey = allKeys.find((key) =>
+          key.startsWith("thirdwebEwsWalletUserDetails")
+        );
+
+        if (walletTokenKey) {
+          console.log("Removing walletTokenKey", walletTokenKey);
+          await AsyncStorage.removeItem(walletTokenKey);
+        }
+        if (thirdwebEwsWalletUserDetailsKey) {
+          console.log(
+            "Removing thirdwebEwsWalletUserDetailsKey",
+            thirdwebEwsWalletUserDetailsKey
+          );
+          await AsyncStorage.removeItem(thirdwebEwsWalletUserDetailsKey);
+        }
+        await AsyncStorage.removeItem("thirdweb:active-wallet-id");
+        await AsyncStorage.removeItem("thirdweb:connected-wallet-ids");
+        await AsyncStorage.removeItem("thirdweb:active-chain");
+
       } catch (error) {
         Sentry.captureException(error);
         console.error("Error retrieving data from AsyncStorage: ", error);

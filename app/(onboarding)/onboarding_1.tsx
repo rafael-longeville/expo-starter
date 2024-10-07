@@ -86,30 +86,6 @@ const Onboarding1: React.FC = () => {
         const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
         const storedNotifications = await AsyncStorage.getItem("notifications");
 
-        const allKeys = await AsyncStorage.getAllKeys();
-        console.log("allKeys", allKeys);
-        const walletTokenKey = allKeys.find((key) =>
-          key.startsWith("walletToken")
-        );
-        const thirdwebEwsWalletUserDetailsKey = allKeys.find((key) =>
-          key.startsWith("thirdwebEwsWalletUserDetails")
-        );
-
-        if (walletTokenKey) {
-          console.log("Removing walletTokenKey", walletTokenKey);
-          await AsyncStorage.removeItem(walletTokenKey);
-        }
-        if (thirdwebEwsWalletUserDetailsKey) {
-          console.log(
-            "Removing thirdwebEwsWalletUserDetailsKey",
-            thirdwebEwsWalletUserDetailsKey
-          );
-          await AsyncStorage.removeItem(thirdwebEwsWalletUserDetailsKey);
-        }
-        await AsyncStorage.removeItem("thirdweb:active-wallet-id");
-        await AsyncStorage.removeItem("thirdweb:connected-wallet-ids");
-        await AsyncStorage.removeItem("thirdweb:active-chain");
-
         await AsyncStorage.setItem("continueWithoutFunding", "false");
 
         if (storedLanguage) {
