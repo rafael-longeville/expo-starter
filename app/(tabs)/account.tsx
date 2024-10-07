@@ -223,7 +223,7 @@ function Account({
               textAlign: "center",
             }}
           >
-            Version {CONFIG.expo.ios.buildNumber}.0.4
+            Version {CONFIG.expo.ios.buildNumber}.1
           </Text>
         </View>
       </ScrollView>
