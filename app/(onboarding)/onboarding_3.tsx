@@ -41,6 +41,9 @@ const Onboarding3: React.FC = () => {
         const thirdwebEwsWalletUserDetailsKey = allKeys.find((key) =>
           key.startsWith("thirdwebEwsWalletUserDetails")
         );
+        const passKeyCredentialId = allKeys.find((key) =>
+          key.startsWith("passkey-credential-id")
+        );
 
         if (walletTokenKey) {
           console.log("Removing walletTokenKey", walletTokenKey);
@@ -52,6 +55,13 @@ const Onboarding3: React.FC = () => {
             thirdwebEwsWalletUserDetailsKey
           );
           await AsyncStorage.removeItem(thirdwebEwsWalletUserDetailsKey);
+        }
+        if (passKeyCredentialId) {
+          console.log(
+            "Removing passKeyCredentialId",
+            passKeyCredentialId
+          );
+          await AsyncStorage.removeItem(passKeyCredentialId);
         }
         await AsyncStorage.removeItem("thirdweb:active-wallet-id");
         await AsyncStorage.removeItem("thirdweb:connected-wallet-ids");
