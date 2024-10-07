@@ -123,10 +123,6 @@ const Onboarding3: React.FC = () => {
         )}
       </View>
       <Text style={globalFonts.disclaimerText}>
-        {asyncStorageValue}
-        ""
-        ""
-        ""
         {t("disclaimer")}
         <Link href={"https://moncomptesouverain.fr"}>
           <Text style={{ textDecorationLine: "underline" }}>
