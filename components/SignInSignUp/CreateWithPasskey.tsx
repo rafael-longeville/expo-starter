@@ -7,6 +7,7 @@ import {
   Modal,
   ActivityIndicator,
   StyleSheet,
+  TextInput,
 } from "react-native";
 import { chain, client } from "@/constants/thirdweb";
 import { inAppWallet, Wallet } from "thirdweb/wallets";
@@ -27,8 +28,10 @@ export default function CreateWithPasskey({
 }: CreateWithPasskeyProps) {
   const [loading, setLoading] = useState(false); // State to manage the loading
   const { t } = useTranslation();
-
   const [hasPasskey, setHasPasskey] = useState(false); // State to manage whether a passkey exists
+  const [modalVisible, setModalVisible] = useState(false); // State to manage modal visibility
+  const [passkeyName, setPasskeyName] = useState(""); // State to store the passkey name
+
   useEffect(() => {
     // Check if a passkey is stored when the component mounts
     const checkPasskey = async () => {
@@ -42,7 +45,7 @@ export default function CreateWithPasskey({
     checkPasskey();
   }, []);
 
-  const handlePress = async () => {
+  const handleConnect = async () => {
     setLoading(true); // Show loader when the process starts
 
     try {
@@ -69,6 +72,7 @@ export default function CreateWithPasskey({
             client,
             strategy: "passkey",
             type: "sign-up",
+            passkeyName, // Add passkeyName argument here
           });
           router.push({
             pathname: redirectionUrl as
@@ -93,10 +97,18 @@ export default function CreateWithPasskey({
     }
   };
 
-  // Only render the view if no passkey is stored
-  // if (hasPasskey) {
-  //   return null; // Do not render if a passkey already exists
-  // }
+  const handleSavePasskeyName = () => {
+    if (passkeyName.trim() === "") {
+      Alert.alert("Error", "Please enter a valid passkey name.");
+      return;
+    }
+    setModalVisible(false); // Close the modal
+    handleConnect(); // Call the connect function after passkey name is entered
+  };
+
+  const handlePress = () => {
+    setModalVisible(true); // Open the modal when button is pressed
+  };
 
   return (
     <View>
@@ -127,6 +139,29 @@ export default function CreateWithPasskey({
           </View>
         </Modal>
       )}
+
+      {/* Minimalist Modal for Passkey Name Input */}
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Passkey Name"
+              placeholderTextColor="#888"
+              value={passkeyName}
+              onChangeText={setPasskeyName}
+            />
+            <Pressable style={styles.saveButton} onPress={handleSavePasskeyName}>
+              <Text style={styles.saveButtonText}>Save</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -166,5 +201,37 @@ const styles = StyleSheet.create({
   loaderText: {
     color: "#ffffff",
     marginTop: 10,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+  },
+  modalContainer: {
+    width: 300,
+    backgroundColor: "#ffffff",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  input: {
+    width: "100%",
+    padding: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    color: "#333",
+  },
+  saveButton: {
+    backgroundColor: "#13293D",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  saveButtonText: {
+    color: "#ffffff",
+    fontSize: 16,
   },
 });
