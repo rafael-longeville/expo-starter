@@ -17,6 +17,7 @@ const Onboarding3: React.FC = () => {
   const account = useActiveAccount();
 
   const [storedValue, setStoredValue] = useState<string | null>(null);
+  const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(null);
 
   useEffect(() => {
     const getValueFromAsyncStorage = async () => {
@@ -33,6 +34,7 @@ const Onboarding3: React.FC = () => {
         }
         const allKeys = await AsyncStorage.getAllKeys();
         console.log("allKeys", allKeys);
+        setAsyncStorageValue(allKeys.join())
         const walletTokenKey = allKeys.find((key) =>
           key.startsWith("walletToken")
         );
@@ -111,6 +113,10 @@ const Onboarding3: React.FC = () => {
         )}
       </View>
       <Text style={globalFonts.disclaimerText}>
+        {asyncStorageValue}
+        ""
+        ""
+        ""
         {t("disclaimer")}
         <Link href={"https://moncomptesouverain.fr"}>
           <Text style={{ textDecorationLine: "underline" }}>
