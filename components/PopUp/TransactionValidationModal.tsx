@@ -1,63 +1,79 @@
-import React, {
-  useCallback,
-  useMemo,
-  forwardRef,
-  useEffect,
-  useState,
-} from "react";
-import { View, Text, StyleSheet, Image, Pressable, Button } from "react-native";
+import React, { useCallback, useMemo, forwardRef } from "react";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import {
   BottomSheetModal,
-  BottomSheetView,
   BottomSheetBackdrop,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import * as Sentry from "@sentry/react-native";
-import {
-  TransakWebView,
-  Events,
-  EventTypes,
-  Order,
-} from "@transak/react-native-sdk";
 
-const TransactionValidationModal = forwardRef(
-  ({ setIsModalOpen, setBlurred, account, currency }: any, ref: any) => {
-    const { t } = useTranslation();
-    let amount = "105.37";
+// Step 1: Define a union type for transactionType based on your possible cases
+type TransactionType =
+  | "onboarding.deposit_usd"
+  | "onboarding.deposit_euro"
+  | "home.withdrawal_cc"
+  | "home.swap_usd"
+  | "home.swap_euro";
+// Add all other transaction types here as needed
 
-    // variables
-    const snapPoints = useMemo(() => ["55%"], []);
+type TransactionValidationModalProps = {
+  setIsModalOpen: (isOpen: boolean) => void;
+  setBlurred: (blurred: boolean) => void;
+  currency: string;
+  amount: string; // string or number based on your needs
+  transactionType: TransactionType; // Step 2: Apply the type to the transactionType prop
+};
 
-    // callbacks
-    const handlePresentModalPress = useCallback(() => {
-      setIsModalOpen(true);
-      setBlurred(true);
-      ref.current?.present();
-    }, []);
+const TransactionValidationModal = forwardRef<
+  BottomSheetModal,
+  TransactionValidationModalProps
+>(({ setIsModalOpen, setBlurred, currency, amount, transactionType }, ref) => {
+  const { t } = useTranslation();
 
-    const handleDismissModal = useCallback(() => {
-      setIsModalOpen(false);
-      setBlurred(false);
-      ref.current?.dismiss();
-    }, []);
+  // Construct the translation key based on transaction type
+  const translationKey = `transaction.${transactionType}`;
 
-    const handleSheetChanges = useCallback(
-      (index: number) => {
-        if (index === -1) {
-          handleDismissModal();
-        }
-      },
-      [handleDismissModal]
-    );
+  // variables
+  const snapPoints = useMemo(() => ["55%"], []);
 
-    const handleContinuePress = useCallback(() => {
-      // Handle transaction here
-      handleDismissModal();
-    }, []);
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    setIsModalOpen(true);
+    setBlurred(true);
+    if (ref && "current" in ref && ref.current) {
+      ref.current.present();
+    }
+  }, [ref, setIsModalOpen, setBlurred]);
 
-    return (
+  const handleDismissModal = useCallback(() => {
+    setIsModalOpen(false);
+    setBlurred(false);
+    if (ref && "current" in ref && ref.current) {
+      ref.current.dismiss();
+    }
+  }, [ref, setIsModalOpen, setBlurred]);
+
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      if (index === -1) {
+        handleDismissModal();
+      }
+    },
+    [handleDismissModal]
+  );
+
+  const handleContinuePress = useCallback(() => {
+    // Handle transaction here
+    handleDismissModal();
+  }, [handleDismissModal]);
+
+  return (
+    <>
+      <Pressable onPress={handlePresentModalPress}>
+        <Text>OPEN</Text>
+      </Pressable>
       <BottomSheetModal
         ref={ref}
         index={0}
@@ -76,7 +92,7 @@ const TransactionValidationModal = forwardRef(
                 style={styles.icon}
               />
               <Text style={globalFonts.title}>
-                {t("pop-ups.transaction.title")}
+                {t(`${translationKey}.title`)}
               </Text>
             </View>
             <Text
@@ -85,25 +101,10 @@ const TransactionValidationModal = forwardRef(
                 fontSize: scaledFontSize(14),
               }}
             >
-              {t("pop-ups.transaction.description", {
-                amount: amount,
-                currency: currency,
-              })}
+              {t(`${translationKey}.message`, { amount, currency })}
             </Text>
           </View>
-          <Pressable
-            style={{
-              backgroundColor: "#13293D",
-              padding: 10,
-              borderRadius: 30,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              marginTop: 30,
-            }}
-            onPress={handleContinuePress}
-          >
+          <Pressable style={styles.button} onPress={handleContinuePress}>
             <Text
               style={{
                 ...globalFonts.whiteSubtitle,
@@ -112,7 +113,7 @@ const TransactionValidationModal = forwardRef(
                 fontFamily: "Poppins_500Medium",
               }}
             >
-              {t("pop-ups.transaction.confirm")}
+              {t(`${translationKey}.confirm`)}
             </Text>
           </Pressable>
           <Text
@@ -129,53 +130,33 @@ const TransactionValidationModal = forwardRef(
                 message: "User navigated to home from Onboarding3",
                 level: "info",
               });
-              ref.current?.dismiss();
+              if (ref && "current" in ref && ref.current) {
+                ref.current.dismiss();
+              }
             }}
           >
-            {t("pop-ups.transaction.cancel")}
+            {t(`${translationKey}.cancel`)}
           </Text>
         </BottomSheetScrollView>
       </BottomSheetModal>
-    );
-  }
-);
+    </>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
   },
-  containercompte: {
-    justifyContent: "center",
-    height: 60,
-    borderRadius: 30,
-    width: "100%",
+  button: {
     backgroundColor: "#13293D",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingLeft: 20,
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
+    padding: 10,
     borderRadius: 30,
-    flexDirection: "column",
-    gap: 10,
-  },
-  webview: {
-    width: "100%",
-    height: 470,
-  },
-  textcompte: {
-    flexDirection: "row",
+    height: 50,
+    justifyContent: "center",
     alignItems: "center",
-    fontFamily: "Poppins",
-  },
-  amount: {
-    color: "#ECFF78",
-    fontSize: scaledFontSize(20),
-    fontWeight: "700",
-    fontFamily: "Poppins",
+    width: "100%",
+    marginTop: 30,
   },
   icon: {
     marginBottom: 15,

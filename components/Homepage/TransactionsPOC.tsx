@@ -2,8 +2,7 @@ import { prepareTransaction, sendAndConfirmTransaction, toWei } from "thirdweb";
 import { chain, client } from "@/constants/thirdweb";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useState } from "react";
-import { Alert, StyleSheet, Text } from "react-native";
-import { View } from "react-native-reanimated/lib/typescript/Animated";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { globalFonts } from "@/app/styles/globalFonts";
 
