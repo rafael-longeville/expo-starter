@@ -24,14 +24,13 @@ import { useTyping } from "@/context/TypingContext";
 interface InvestmentCardProps {
   investment: string;
   investing: boolean;
-  isOnboarding?: boolean;
-  main_account_balance?: string;
-  eurBalance?: number;
-  setEurBalance?: (balance: number) => void;
-  usdBalance?: number;
-  setUsdBalance?: (balance: number) => void;
-  handleOpenModal?: () => void;
-  setAsset?: (asset: string) => void;
+  main_account_balance: string;
+  eurBalance: number;
+  setEurBalance: (balance: number) => void;
+  usdBalance: number;
+  setUsdBalance: (balance: number) => void;
+  handleOpenModal: () => void;
+  setAsset: (asset: string) => void;
   onInitiateTransaction: (transactionDetails: {
     investmentType: string;
     amount: number;
@@ -43,8 +42,7 @@ interface InvestmentCardProps {
 const InvestmentCard = ({
   investment,
   investing,
-  isOnboarding,
-  main_account_balance = "0",
+  main_account_balance,
   eurBalance,
   setEurBalance,
   usdBalance,
@@ -83,14 +81,14 @@ const InvestmentCard = ({
       return;
     }
 
-    // // Check if user has enough balance
-    // if (parseFloat(main_account_balance) < numericAmount) {
-    //   Alert.alert(
-    //     "Insufficient Balance",
-    //     "You do not have enough balance in your main account."
-    //   );
-    //   return;
-    // }
+    // Check if user has enough balance
+    if (parseFloat(main_account_balance) < numericAmount) {
+      Alert.alert(
+        "Insufficient Balance",
+        "You do not have enough balance in your main account."
+      );
+      return;
+    }
     setIsValidationModalOpen(true);
     onInitiateTransaction({
       investmentType: investment,
@@ -134,8 +132,8 @@ const InvestmentCard = ({
         </View>
         <Pressable
           onPress={() => {
-            setAsset && setAsset(investment);
-            handleOpenModal && handleOpenModal();
+            setAsset(investment);
+            handleOpenModal();
           }}
         >
           <Image
@@ -148,44 +146,22 @@ const InvestmentCard = ({
           />
         </Pressable>
       </View>
-      {eurBalance != undefined &&
-        !isOnboarding &&
-        eurBalance > 0 &&
-        investment === "EURO" && (
-          <>
-            <View style={styles.flexContainer}>
-              <Text
-                style={{
-                  ...globalFonts.mediumSubtitle,
-                  color: "#ECFF78",
-                  includeFontPadding: false,
-                  marginLeft: 20,
-                }}
-              >
-                {eurBalance} €
-              </Text>
-            </View>
-          </>
-        )}
-      {usdBalance != undefined &&
-        !isOnboarding &&
-        usdBalance > 0 &&
-        investment === "DOLLAR US" && (
-          <>
-            <View style={styles.flexContainer}>
-              <Text
-                style={{
-                  ...globalFonts.mediumSubtitle,
-                  color: "#ECFF78",
-                  includeFontPadding: false,
-                  marginLeft: 20,
-                }}
-              >
-                {usdBalance} $
-              </Text>
-            </View>
-          </>
-        )}
+
+      {(investment === "EURO" && eurBalance > 0) ||
+      (investment === "DOLLAR US" && usdBalance > 0) ? (
+        <View style={styles.flexContainer}>
+          <Text
+            style={{
+              ...globalFonts.mediumSubtitle,
+              color: "#ECFF78",
+              includeFontPadding: false,
+              marginLeft: 20,
+            }}
+          >
+            {investment === "EURO" ? `${eurBalance} €` : `${usdBalance} $`}
+          </Text>
+        </View>
+      ) : null}
 
       <View style={styles.flexContainer}>
         <View style={styles.flexInputContainer}>
@@ -214,50 +190,44 @@ const InvestmentCard = ({
           <Text style={styles.rendementValue}>7,85 %</Text>
         </View>
       </View>
-      {setEurBalance != undefined &&
-      setUsdBalance != undefined &&
-      eurBalance != undefined &&
-      usdBalance != undefined &&
-      !isOnboarding &&
-      ((eurBalance > 0 && investment === "EURO") ||
-        (usdBalance > 0 && investment === "DOLLAR US")) ? (
-        <>
-          <View
-            style={{
-              flexDirection: "row",
-              width: "100%",
-              marginTop: 10,
-              justifyContent: "space-between",
-            }}
+
+      {(investment === "EURO" && eurBalance > 0) ||
+      (investment === "DOLLAR US" && usdBalance > 0) ? (
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            marginTop: 10,
+            justifyContent: "space-between",
+          }}
+        >
+          <TouchableOpacity
+            style={styles.buttonContainer2}
+            activeOpacity={0.6}
+            onPress={handleWithdraw}
           >
-            <TouchableOpacity
-              style={styles.buttonContainer2}
-              activeOpacity={0.6}
-              onPress={handleWithdraw}
-            >
-              <Image
-                source={require("@/assets/images/small-withdraw-button-shape.png")}
-                style={styles.buttonImage}
-              />
-              <Text style={styles.withdrawButtonText}>
-                {t("components.investment_card.withdraw")}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.buttonContainer2}
-              activeOpacity={0.6}
-              onPress={handleDeposit}
-            >
-              <Image
-                source={require("@/assets/images/small-deposit-button-shape.png")}
-                style={styles.buttonImage}
-              />
-              <Text style={styles.depositButtonText2}>
-                {t("components.investment_card.deposit")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </>
+            <Image
+              source={require("@/assets/images/small-withdraw-button-shape.png")}
+              style={styles.buttonImage}
+            />
+            <Text style={styles.withdrawButtonText}>
+              {t("components.investment_card.withdraw")}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer2}
+            activeOpacity={0.6}
+            onPress={handleDeposit}
+          >
+            <Image
+              source={require("@/assets/images/small-deposit-button-shape.png")}
+              style={styles.buttonImage}
+            />
+            <Text style={styles.depositButtonText2}>
+              {t("components.investment_card.deposit")}
+            </Text>
+          </TouchableOpacity>
+        </View>
       ) : (
         <TouchableOpacity
           style={styles.buttonContainer}
