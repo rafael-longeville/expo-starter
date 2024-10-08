@@ -74,12 +74,12 @@ export default function CreateWithPasskey({
             type: "sign-up",
             passkeyName, // Add passkeyName argument here
           });
-          router.push({
+          setLoading(false); // Hide loader after successful wallet creation
+          router.replace({
             pathname: redirectionUrl as
               | "/(onboarding)/onboarding_4"
               | "/(tabs)/home",
           });
-          setLoading(false); // Hide loader after successful wallet creation
           return wallet;
         } catch (connectError: any) {
           Sentry.captureException(connectError);
