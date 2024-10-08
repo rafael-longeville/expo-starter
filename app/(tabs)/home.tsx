@@ -1,5 +1,13 @@
+// Home.tsx
+
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { StyleSheet, ScrollView, RefreshControl, View } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+  View,
+  Alert,
+} from "react-native";
 import { useActiveAccount, useWalletBalance } from "thirdweb/react";
 import { chain, client } from "@/constants/thirdweb";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,10 +18,7 @@ import TransactionHistory from "@/components/Homepage/TransactionHistory";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import StayUpdated from "@/components/PopUp/StayUpdated";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { BlurView } from "@react-native-community/blur";
@@ -23,44 +28,6 @@ import InvestmentAccountPopup from "@/components/PopUp/InvestmentAccountPopup";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import withFadeIn from "@/components/effects/withFadeIn";
 import TransactionPOC from "@/components/Homepage/TransactionsPOC";
-import { TransactionType } from "../sharedTypes";
-
-// Function to get conversion rate
-const getConversionRate = async () => {
-  try {
-    // Primary API - Frankfurter
-    const response = await fetch(
-      "https://api.frankfurter.app/latest?from=USD&to=EUR"
-    );
-    const data = await response.json();
-    return data.rates.EUR;
-  } catch (error) {
-    console.error("Frankfurter API failed, trying fallback:", error);
-
-    // Fallback API - FreeCurrencyAPI
-    try {
-      const response = await fetch(
-        "https://api.freecurrencyapi.com/v1/latest?base_currency=USD&apikey=YOUR_API_KEY"
-      );
-      const data = await response.json();
-      return data.data.EUR;
-    } catch (fallbackError) {
-      console.error("Fallback API failed:", fallbackError);
-      return null;
-    }
-  }
-};
-
-const formatBalance = (
-  balance: any,
-  eurBalance: number,
-  usdBalance: number
-) => {
-  const balanceNum = parseFloat(balance);
-  const totalInvestmentBalance = eurBalance + usdBalance;
-  const finalBalance = balanceNum - totalInvestmentBalance;
-  return finalBalance.toFixed(2).replace(".", ",");
-};
 
 function HomeScreen() {
   const account = useActiveAccount();
@@ -68,11 +35,17 @@ function HomeScreen() {
   const [currency, setCurrency] = useState<string>("$");
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
-  const [transactionType, setTransactionType] = useState<keyof TransactionType>(
-    "home.swap_cc_to_usd"
-  );
   const [mainAccountBalance, setMainAccountBalance] = useState<string>("0.00");
   const [asset, setAsset] = useState<string>("");
+
+  // New state variables for transaction handling
+  const [pendingTransaction, setPendingTransaction] = useState<{
+    investmentType: string;
+    amount: number;
+    action: "deposit" | "withdraw";
+  } | null>(null);
+  const [isTransactionModalVisible, setIsTransactionModalVisible] =
+    useState(false);
 
   const tokenAddress = "0x0c86a754a29714c4fe9c6f1359fa7099ed174c0b";
 
@@ -95,17 +68,14 @@ function HomeScreen() {
     setIsOffRamp,
   } = useStayUpdatedModalContext();
 
-  const stayUpdatedModalRef = useRef<BottomSheetModal>(null);
-  const currentAccountModalRef = useRef<BottomSheetModal>(null);
-  const investmentAccountModalRef = useRef<BottomSheetModal>(null);
-  const onRampModalRef = useRef<BottomSheetModal>(null);
-  const transactionValidationModalRef = useRef<BottomSheetModal>(null);
+  const stayUpdatedModalRef = useRef(null);
+  const currentAccountModalRef = useRef(null);
+  const investmentAccountModalRef = useRef(null);
+  const onRampModalRef = useRef(null);
 
   // Modal handling
 
-  const handleOpenModal = (
-    ref: React.MutableRefObject<BottomSheetModal | undefined> | undefined
-  ) => {
+  const handleOpenModal = (ref: any) => {
     ref?.current?.present();
     setIsModalOpen(true);
     setIsBlurred(true);
@@ -182,6 +152,7 @@ function HomeScreen() {
         const hasSeenStayUpdated =
           await AsyncStorage.getItem("hasSeenStayUpdated");
         if (!hasSeenStayUpdated) {
+          //@ts-ignore
           stayUpdatedModalRef.current?.present();
           setIsModalOpen(true);
           setIsBlurred(true); // Enable blur when modal is open
@@ -197,10 +168,92 @@ function HomeScreen() {
 
   useEffect(() => {
     if (isCheckoutModalOpen || isValidationModalOpen) {
+      //@ts-ignore
       onRampModalRef.current?.present();
       setIsBlurred(true); // Enable blur when modal is open
     }
   }, [isCheckoutModalOpen]);
+
+  // Handler for initiating transactions
+  const handleInitiateTransaction = (transactionDetails: {
+    investmentType: string;
+    amount: number;
+    action: "deposit" | "withdraw";
+  }) => {
+    setPendingTransaction(transactionDetails);
+    setIsBlurred(true);
+    setIsTransactionModalVisible(true);
+  };
+
+  // Handler for confirming transactions
+  const handleConfirmTransaction = async (confirmed: boolean) => {
+    setIsTransactionModalVisible(false);
+    setIsBlurred(false);
+
+    if (confirmed && pendingTransaction) {
+      const { investmentType, amount, action } = pendingTransaction;
+
+      // Execute the transaction logic
+      if (investmentType === "EURO") {
+        if (action === "deposit") {
+          // Update EUR balance
+          const newEurBalance = eurBalance + amount;
+          setEurBalance(newEurBalance);
+          await AsyncStorage.setItem(
+            "investment_account_balance_eur",
+            newEurBalance.toString()
+          );
+        } else if (action === "withdraw") {
+          // Ensure sufficient balance
+          if (eurBalance >= amount) {
+            const newEurBalance = eurBalance - amount;
+            setEurBalance(newEurBalance);
+            await AsyncStorage.setItem(
+              "investment_account_balance_eur",
+              newEurBalance.toString()
+            );
+          } else {
+            // Handle insufficient balance
+            Alert.alert(
+              "Insufficient Balance",
+              "You do not have enough EUR balance to withdraw this amount."
+            );
+          }
+        }
+      } else if (investmentType === "DOLLAR US") {
+        if (action === "deposit") {
+          // Update USD balance
+          const newUsdBalance = usdBalance + amount;
+          setUsdBalance(newUsdBalance);
+          await AsyncStorage.setItem(
+            "investment_account_balance_usd",
+            newUsdBalance.toString()
+          );
+        } else if (action === "withdraw") {
+          // Ensure sufficient balance
+          if (usdBalance >= amount) {
+            const newUsdBalance = usdBalance - amount;
+            setUsdBalance(newUsdBalance);
+            await AsyncStorage.setItem(
+              "investment_account_balance_usd",
+              newUsdBalance.toString()
+            );
+          } else {
+            // Handle insufficient balance
+            Alert.alert(
+              "Insufficient Balance",
+              "You do not have enough USD balance to withdraw this amount."
+            );
+          }
+        }
+      }
+      // Reset pending transaction
+      setPendingTransaction(null);
+    } else {
+      // Transaction canceled, reset pending transaction
+      setPendingTransaction(null);
+    }
+  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -237,13 +290,7 @@ function HomeScreen() {
               ref={onRampModalRef}
               setIsModalOpen={setIsCheckoutModalOpen}
               setBlurred={setIsBlurred}
-              handleOpenModal={() =>
-                handleOpenModal(
-                  currentAccountModalRef as React.MutableRefObject<
-                    BottomSheetModal | undefined
-                  >
-                )
-              }
+              handleOpenModal={() => handleOpenModal(currentAccountModalRef)}
               setIsOffRamp={setIsOffRamp}
             />
             <InvestmentAccount
@@ -260,7 +307,7 @@ function HomeScreen() {
               }}
             >
               <InvestmentCard
-                investment={`DOLLAR US`}
+                investment="DOLLAR US"
                 investing
                 main_account_balance={mainAccountBalance}
                 eurBalance={eurBalance}
@@ -269,16 +316,13 @@ function HomeScreen() {
                 setUsdBalance={setUsdBalance}
                 setAsset={setAsset}
                 handleOpenModal={() =>
-                  handleOpenModal(
-                    investmentAccountModalRef as React.MutableRefObject<
-                      BottomSheetModal | undefined
-                    >
-                  )
+                  handleOpenModal(investmentAccountModalRef)
                 }
-                setTransactionType={setTransactionType}
+                onInitiateTransaction={handleInitiateTransaction}
+                setIsValidationModalOpen={setIsValidationModalOpen}
               />
               <InvestmentCard
-                investment={`EURO`}
+                investment="EURO"
                 investing
                 main_account_balance={mainAccountBalance}
                 eurBalance={eurBalance}
@@ -287,13 +331,10 @@ function HomeScreen() {
                 setUsdBalance={setUsdBalance}
                 setAsset={setAsset}
                 handleOpenModal={() =>
-                  handleOpenModal(
-                    investmentAccountModalRef as React.MutableRefObject<
-                      BottomSheetModal | undefined
-                    >
-                  )
+                  handleOpenModal(investmentAccountModalRef)
                 }
-                setTransactionType={setTransactionType}
+                onInitiateTransaction={handleInitiateTransaction}
+                setIsValidationModalOpen={setIsValidationModalOpen}
               />
             </View>
             <TransactionHistory
@@ -330,13 +371,12 @@ function HomeScreen() {
             currency={currency}
             mainAccountBalance={mainAccountBalance}
           />
+          {/* Transaction Validation Modal */}
           <TransactionValidationModal
-            ref={transactionValidationModalRef}
-            setIsModalOpen={setIsValidationModalOpen}
-            setBlurred={setIsBlurred}
-            currency={currency}
-            transactionType={transactionType}
-            amount="150"
+            isVisible={isTransactionModalVisible}
+            onConfirm={handleConfirmTransaction}
+            transactionDetails={pendingTransaction}
+            setIsValidationModalOpen={setIsValidationModalOpen}
           />
         </SafeAreaView>
       </BottomSheetModalProvider>
@@ -374,3 +414,29 @@ const EnhancedHomeScreen = withFadeIn(HomeScreen);
 export default process.env.EXPO_PUBLIC_IS_DEVELOPMENT
   ? HomeScreen
   : EnhancedHomeScreen;
+
+// Function to get conversion rate (Place this at the bottom of the file)
+async function getConversionRate() {
+  try {
+    // Primary API - Frankfurter
+    const response = await fetch(
+      "https://api.frankfurter.app/latest?from=USD&to=EUR"
+    );
+    const data = await response.json();
+    return data.rates.EUR;
+  } catch (error) {
+    console.error("Frankfurter API failed, trying fallback:", error);
+
+    // Fallback API - FreeCurrencyAPI
+    try {
+      const response = await fetch(
+        "https://api.freecurrencyapi.com/v1/latest?base_currency=USD&apikey=YOUR_API_KEY"
+      );
+      const data = await response.json();
+      return data.data.EUR;
+    } catch (fallbackError) {
+      console.error("Fallback API failed:", fallbackError);
+      return null;
+    }
+  }
+}

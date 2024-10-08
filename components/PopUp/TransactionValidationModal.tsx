@@ -1,4 +1,6 @@
-import React, { useCallback, useMemo, forwardRef } from "react";
+// TransactionValidationModal.tsx
+
+import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import {
   BottomSheetModal,
@@ -8,44 +10,63 @@ import {
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import * as Sentry from "@sentry/react-native";
-import { TransactionType } from "@/app/sharedTypes";
 
-type TransactionValidationModalProps = {
-  setIsModalOpen: (isOpen: boolean) => void;
-  setBlurred: (blurred: boolean) => void;
-  currency: string;
-  amount: string;
-  transactionType: keyof TransactionType; // Ensure it's typed correctly
-};
+interface TransactionValidationModalProps {
+  isVisible: boolean;
+  onConfirm: (confirmed: boolean) => void;
+  transactionDetails: {
+    investmentType: string;
+    amount: number;
+    action: "deposit" | "withdraw";
+  } | null;
+  setIsValidationModalOpen: (isOpen: boolean) => void;
+}
 
-const TransactionValidationModal = forwardRef<
-  BottomSheetModal,
-  TransactionValidationModalProps
->(({ setIsModalOpen, setBlurred, currency, amount, transactionType }, ref) => {
+const TransactionValidationModal = ({
+  isVisible,
+  onConfirm,
+  transactionDetails,
+  setIsValidationModalOpen,
+}: TransactionValidationModalProps) => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const { t } = useTranslation();
 
-  // Construct the translation key based on transaction type
-  const translationKey = `pop-ups.transaction.${transactionType}`;
+  // Snap points for the BottomSheetModal
+  const snapPoints = useMemo(() => ["45%"], []);
 
-  // variables
-  const snapPoints = useMemo(() => ["55%"], []);
+  // Custom handle component
+  const CustomHandle = () => {
+    return (
+      <View style={styles.customHandleContainer}>
+        <View style={styles.customHandle}>
+          <Image
+            source={require("@/assets/images/exclamation-icon.png")}
+            style={{ width: 80, height: 80 }}
+          />
+        </View>
+      </View>
+    );
+  };
 
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    setIsModalOpen(true);
-    setBlurred(true);
-    if (ref && "current" in ref && ref.current) {
-      ref.current.present();
+  useEffect(() => {
+    if (isVisible) {
+      bottomSheetModalRef.current?.present();
+    } else {
+      bottomSheetModalRef.current?.dismiss();
     }
-  }, [ref, setIsModalOpen, setBlurred]);
+  }, [isVisible]);
+
+  // Ensure hooks are called unconditionally
+  useEffect(() => {
+    if (!transactionDetails) {
+      bottomSheetModalRef.current?.dismiss();
+    }
+  }, [transactionDetails]);
 
   const handleDismissModal = useCallback(() => {
-    setIsModalOpen(false);
-    setBlurred(false);
-    if (ref && "current" in ref && ref.current) {
-      ref.current.dismiss();
-    }
-  }, [ref, setIsModalOpen, setBlurred]);
+    onConfirm(false); // User canceled the transaction
+    setIsValidationModalOpen(false);
+  }, [onConfirm]);
 
   const handleSheetChanges = useCallback(
     (index: number) => {
@@ -57,88 +78,94 @@ const TransactionValidationModal = forwardRef<
   );
 
   const handleContinuePress = useCallback(() => {
-    // Handle transaction here
-    handleDismissModal();
-  }, [handleDismissModal]);
+    onConfirm(true); // User confirmed the transaction
+  }, [onConfirm]);
+
+  if (!transactionDetails) return null;
+
+  const { investmentType, amount, action } = transactionDetails;
+
+  // Map the action and investmentType to your specific translation keys
+  let translationKey = "";
+  if (action === "deposit") {
+    if (investmentType === "DOLLAR US") {
+      translationKey = "pop-ups.transaction.home.swap_cc_to_usd";
+    } else if (investmentType === "EURO") {
+      translationKey = "pop-ups.transaction.home.swap_cc_to_euro";
+    }
+  } else if (action === "withdraw") {
+    if (investmentType === "DOLLAR US") {
+      translationKey = "pop-ups.transaction.home.swap_usd_to_cc";
+    } else if (investmentType === "EURO") {
+      translationKey = "pop-ups.transaction.home.swap_euro_to_cc";
+    }
+  }
 
   return (
-    <>
-      <Pressable onPress={handlePresentModalPress}>
-        <Text>OPEN</Text>
-      </Pressable>
-      <BottomSheetModal
-        ref={ref}
-        index={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        onDismiss={handleDismissModal}
-        backdropComponent={(props) => (
-          <BottomSheetBackdrop {...props} enableTouchThrough={false} />
-        )}
-      >
-        <BottomSheetScrollView style={styles.container}>
-          <View style={{ flexDirection: "column", gap: 20 }}>
-            <View style={{ flexDirection: "column", alignItems: "center" }}>
-              <Image
-                source={require("@/assets/images/exclamation-icon.png")}
-                style={styles.icon}
-              />
-              <Text style={globalFonts.title}>
-                {t(`${translationKey}.title`)}
-              </Text>
-            </View>
-            <Text
-              style={{
-                ...globalFonts.mediumSubtitle,
-                fontSize: scaledFontSize(14),
-              }}
-            >
-              {t(`${translationKey}.message`, { amount, currency })}
+    <BottomSheetModal
+      ref={bottomSheetModalRef}
+      index={0}
+      snapPoints={snapPoints}
+      onChange={handleSheetChanges}
+      onDismiss={handleDismissModal}
+      handleComponent={CustomHandle} // Use custom handle
+      backdropComponent={(props) => (
+        <BottomSheetBackdrop {...props} enableTouchThrough={false} />
+      )}
+    >
+      <BottomSheetScrollView style={styles.container}>
+        <View style={{ flexDirection: "column", gap: 20 }}>
+          {/* Removed the image from here since it's now in the custom handle */}
+          <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <Text style={globalFonts.title}>
+              {t(`${translationKey}.title`)}
             </Text>
           </View>
-          <Pressable style={styles.button} onPress={handleContinuePress}>
-            <Text
-              style={{
-                ...globalFonts.whiteSubtitle,
-                textAlign: "center",
-                fontSize: scaledFontSize(14),
-                fontFamily: "Poppins_500Medium",
-              }}
-            >
-              {t(`${translationKey}.confirm`)}
-            </Text>
-          </Pressable>
           <Text
             style={{
-              ...globalFonts.subtitle,
+              ...globalFonts.mediumSubtitle,
+              fontSize: scaledFontSize(14),
+            }}
+          >
+            {t(`${translationKey}.message`, {
+              amount,
+            })}
+          </Text>
+        </View>
+        <Pressable style={styles.button} onPress={handleContinuePress}>
+          <Text
+            style={{
+              ...globalFonts.whiteSubtitle,
               textAlign: "center",
               fontSize: scaledFontSize(14),
               fontFamily: "Poppins_500Medium",
-              marginTop: 20,
-            }}
-            onPress={() => {
-              Sentry.addBreadcrumb({
-                category: "navigation",
-                message: "User navigated to home from Onboarding3",
-                level: "info",
-              });
-              if (ref && "current" in ref && ref.current) {
-                ref.current.dismiss();
-              }
             }}
           >
-            {t(`${translationKey}.cancel`)}
+            {t(`${translationKey}.confirm`)}
           </Text>
-        </BottomSheetScrollView>
-      </BottomSheetModal>
-    </>
+        </Pressable>
+        <Text
+          style={{
+            ...globalFonts.subtitle,
+            textAlign: "center",
+            fontSize: scaledFontSize(14),
+            fontFamily: "Poppins_500Medium",
+            marginTop: 20,
+          }}
+          onPress={handleDismissModal}
+        >
+          {t(`${translationKey}.cancel`)}
+        </Text>
+      </BottomSheetScrollView>
+    </BottomSheetModal>
   );
-});
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    marginTop: 50, // Adjust this to move the content upwards to account for the custom handle
   },
   button: {
     backgroundColor: "#13293D",
@@ -150,10 +177,22 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 30,
   },
-  icon: {
-    marginBottom: 15,
-    width: 80,
-    height: 80,
+  customHandleContainer: {
+    position: "absolute",
+    top: -40, // Positioning for the icon
+    left: 0,
+    right: 0,
+    alignItems: "center",
+    zIndex: 1,
+  },
+  customHandle: {
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5, // For Android
   },
 });
 

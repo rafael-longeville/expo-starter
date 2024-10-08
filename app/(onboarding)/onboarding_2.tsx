@@ -1,4 +1,6 @@
-import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
+// Onboarding2.tsx
+
+import OnboardingInvestmentCard from "@/components/InvestmentCard/OnboardingInvestmentCard";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -12,7 +14,6 @@ import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
 
-// Define the prop types
 interface Onboarding2Props {
   scrollViewRef: React.RefObject<ScrollView>;
 }
@@ -26,8 +27,6 @@ const Onboarding2: React.FC<Onboarding2Props> = ({ scrollViewRef }) => {
   // Function to scroll to a specific card position
   const scrollToCard = (yPosition: number | null) => {
     if (scrollViewRef?.current && yPosition !== null) {
-      console.log("Scrolling to card position", (yPosition as number) + 40);
-
       scrollViewRef.current.scrollTo({ y: yPosition + 40, animated: true });
     }
   };
@@ -70,20 +69,18 @@ const Onboarding2: React.FC<Onboarding2Props> = ({ scrollViewRef }) => {
         </Text>
       </View>
 
-      <InvestmentCard
+      <OnboardingInvestmentCard
         onLayout={handleDollarCardLayout}
         investment="DOLLAR US"
         investing={true}
-        isOnboarding={true}
         scrollViewRef={scrollViewRef}
         onFocusInput={() => scrollToCard(dollarCardY)} // Scroll when input is focused
       />
 
-      <InvestmentCard
+      <OnboardingInvestmentCard
         onLayout={handleEuroCardLayout}
         investment="EURO"
         investing={true}
-        isOnboarding={true}
         scrollViewRef={scrollViewRef}
         onFocusInput={() => scrollToCard(euroCardY)} // Scroll when input is focused
       />
@@ -108,11 +105,10 @@ const Onboarding2: React.FC<Onboarding2Props> = ({ scrollViewRef }) => {
         {t("pages.onboarding_2.second_subtitle_3")}
       </Text>
 
-      <InvestmentCard
+      <OnboardingInvestmentCard
         onLayout={handleDollarCCCardLayout}
         investment="DOLLAR US"
         investing={false}
-        isOnboarding={true}
         scrollViewRef={scrollViewRef}
         onFocusInput={() => scrollToCard(dollarCCCardY)} // Scroll when input is focused
       />
