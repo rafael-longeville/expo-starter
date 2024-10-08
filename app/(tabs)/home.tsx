@@ -22,6 +22,7 @@ import TransactionValidationModal from "@/components/PopUp/TransactionValidation
 import InvestmentAccountPopup from "@/components/PopUp/InvestmentAccountPopup";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import withFadeIn from "@/components/effects/withFadeIn";
+import TransactionPOC from "@/components/Homepage/TransactionsPOC";
 
 // Function to get conversion rate
 const getConversionRate = async () => {
@@ -294,6 +295,9 @@ function HomeScreen() {
               currency={currency}
               getConversionRate={getConversionRate}
             />
+            <View style={{ marginTop: 50, marginBottom: 150 }}>
+              <TransactionPOC account={account} refetch={refetch} />
+            </View>
           </ScrollView>
           <MainAccountPopup
             ref={currentAccountModalRef}
