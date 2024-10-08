@@ -71,12 +71,12 @@ export default function ConnectWithPasskey({
             strategy: "passkey",
             type: "sign-in",
           });
-          router.push({
+          setLoading(false); // Hide loader after successful connection
+          router.replace({
             pathname: redirectionUrl as
               | "/(onboarding)/onboarding_4"
               | "/(tabs)/home",
           });
-          setLoading(false); // Hide loader after successful connection
           return wallet;
         } catch (connectError: any) {
           Sentry.captureException(connectError);
