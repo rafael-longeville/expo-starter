@@ -72,6 +72,7 @@ export default function ConnectWithPasskey({
             type: "sign-in",
           });
           setLoading(false); // Hide loader after successful connection
+          router.dismissAll();
           router.replace({
             pathname: redirectionUrl as
               | "/(onboarding)/onboarding_4"

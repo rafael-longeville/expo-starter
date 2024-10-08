@@ -8,22 +8,14 @@ import {
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import * as Sentry from "@sentry/react-native";
-
-// Step 1: Define a union type for transactionType based on your possible cases
-type TransactionType =
-  | "onboarding.deposit_usd"
-  | "onboarding.deposit_euro"
-  | "home.withdrawal_cc"
-  | "home.swap_usd"
-  | "home.swap_euro";
-// Add all other transaction types here as needed
+import { TransactionType } from "@/app/sharedTypes";
 
 type TransactionValidationModalProps = {
   setIsModalOpen: (isOpen: boolean) => void;
   setBlurred: (blurred: boolean) => void;
   currency: string;
-  amount: string; // string or number based on your needs
-  transactionType: TransactionType; // Step 2: Apply the type to the transactionType prop
+  amount: string;
+  transactionType: keyof TransactionType; // Ensure it's typed correctly
 };
 
 const TransactionValidationModal = forwardRef<
@@ -33,7 +25,7 @@ const TransactionValidationModal = forwardRef<
   const { t } = useTranslation();
 
   // Construct the translation key based on transaction type
-  const translationKey = `transaction.${transactionType}`;
+  const translationKey = `pop-ups.transaction.${transactionType}`;
 
   // variables
   const snapPoints = useMemo(() => ["55%"], []);

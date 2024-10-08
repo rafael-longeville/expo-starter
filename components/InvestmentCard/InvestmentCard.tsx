@@ -4,6 +4,8 @@ import React, {
   useRef,
   useState,
   useImperativeHandle,
+  SetStateAction,
+  Dispatch,
 } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -29,6 +31,7 @@ import { router } from "expo-router";
 import { globalFonts } from "@/app/styles/globalFonts";
 import { useTyping } from "@/context/TypingContext";
 import { ScrollView } from "react-native-gesture-handler";
+import { TransactionType } from "@/app/sharedTypes";
 
 interface InvestmentCardProps {
   investment: string;
@@ -44,6 +47,7 @@ interface InvestmentCardProps {
   scrollViewRef?: React.RefObject<any>;
   onLayout?: (event: LayoutChangeEvent) => void;
   onFocusInput?: () => void;
+  setTransactionType?: Dispatch<SetStateAction<keyof TransactionType>>; // Update this to the correct type
 }
 
 const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
@@ -62,6 +66,7 @@ const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
       scrollViewRef,
       onLayout, // Add onLayout prop here
       onFocusInput, // Add onFocusInput prop
+      setTransactionType,
     },
     ref
   ) => {
@@ -221,10 +226,16 @@ const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
                   if (investing === true && investment === "EURO") {
                     let newEurBalance = eurBalance - numericAmount;
                     if (newEurBalance < 0) {
+                      Alert.alert(
+                        "Montant trop élevé",
+                        "Le montant que vous avez entré est trop élevé."
+                      );
                       console.error("Amount too high.");
                       return;
                     }
                     setEurBalance(newEurBalance);
+                    setTransactionType &&
+                      setTransactionType("home.swap_euro_to_cc");
                     await AsyncStorage.setItem(
                       "investment_account_balance_eur",
                       newEurBalance.toString()
@@ -234,10 +245,16 @@ const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
                   if (investing === true && investment === "DOLLAR US") {
                     let newUsdBalance = usdBalance - numericAmount;
                     if (newUsdBalance < 0) {
+                      Alert.alert(
+                        "Montant trop élevé",
+                        "Le montant que vous avez entré est trop élevé."
+                      );
                       console.error("Amount too high.");
                       return;
                     }
                     setUsdBalance(newUsdBalance);
+                    setTransactionType &&
+                      setTransactionType("home.swap_usd_to_cc");
                     await AsyncStorage.setItem(
                       "investment_account_balance_usd",
                       newUsdBalance.toString()
@@ -274,6 +291,8 @@ const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
                   if (investing === true && investment === "EURO") {
                     let newEurBalance = eurBalance + numericAmount;
                     setEurBalance(newEurBalance);
+                    setTransactionType &&
+                      setTransactionType("home.swap_cc_to_euro");
                     await AsyncStorage.setItem(
                       "investment_account_balance_eur",
                       newEurBalance.toString()
@@ -283,6 +302,8 @@ const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
                   if (investing === true && investment === "DOLLAR US") {
                     let newUsdBalance = usdBalance + numericAmount;
                     setUsdBalance(newUsdBalance);
+                    setTransactionType &&
+                      setTransactionType("home.swap_cc_to_usd");
                     await AsyncStorage.setItem(
                       "investment_account_balance_usd",
                       newUsdBalance.toString()
