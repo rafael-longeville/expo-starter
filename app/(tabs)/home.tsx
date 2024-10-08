@@ -23,6 +23,7 @@ import InvestmentAccountPopup from "@/components/PopUp/InvestmentAccountPopup";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import withFadeIn from "@/components/effects/withFadeIn";
 import TransactionPOC from "@/components/Homepage/TransactionsPOC";
+import { TransactionType } from "../sharedTypes";
 
 // Function to get conversion rate
 const getConversionRate = async () => {
@@ -67,6 +68,9 @@ function HomeScreen() {
   const [currency, setCurrency] = useState<string>("$");
   const [eurBalance, setEurBalance] = useState<number>(0);
   const [usdBalance, setUsdBalance] = useState<number>(0);
+  const [transactionType, setTransactionType] = useState<keyof TransactionType>(
+    "home.swap_cc_to_usd"
+  );
   const [mainAccountBalance, setMainAccountBalance] = useState<string>("0.00");
   const [asset, setAsset] = useState<string>("");
 
@@ -271,6 +275,7 @@ function HomeScreen() {
                     >
                   )
                 }
+                setTransactionType={setTransactionType}
               />
               <InvestmentCard
                 investment={`EURO`}
@@ -288,6 +293,7 @@ function HomeScreen() {
                     >
                   )
                 }
+                setTransactionType={setTransactionType}
               />
             </View>
             <TransactionHistory
@@ -324,13 +330,14 @@ function HomeScreen() {
             currency={currency}
             mainAccountBalance={mainAccountBalance}
           />
-          {/* <TransactionValidationModal
+          <TransactionValidationModal
             ref={transactionValidationModalRef}
             setIsModalOpen={setIsValidationModalOpen}
             setBlurred={setIsBlurred}
-            account={account}
             currency={currency}
-          /> */}
+            transactionType={transactionType}
+            amount="150"
+          />
         </SafeAreaView>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

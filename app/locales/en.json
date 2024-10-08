@@ -38,12 +38,12 @@
       "title": "Your Money Works for You.",
       "subtitle_1": "Place in a",
       "subtitle_2": "Rewarding Account",
-      "subtitle_3": "and earn liquid interest from the first second, not exposed to exchange rates.",
+      "subtitle_3": " and earn liquid interest from the first second, not exposed to exchange rates.",
       "disclaimer": "Maximum €100 for the first deposit",
       "second_title": "Decentralize Your Liquidity",
       "second_subtitle_1": "And keep it in your",
       "second_subtitle_2": "Sovereign Current Account",
-      "second_subtitle_3": "which only you have access to.",
+      "second_subtitle_3": " which only you have access to.",
       "continue_button": "Continue without funding",
       "has_account": "I already have an account"
     },
@@ -149,36 +149,28 @@
       "button": "Got it"
     },
     "transaction": {
-      "onboarding": {
-        "deposit_usd": {
-          "title": "This Operation Requires Your Attention",
-          "message": "Your account has been credited. Do you confirm the deposit of {{amount}} € into the US DOLLAR Rewarding Account?",
-          "confirm": "Confirm",
-          "cancel": "Cancel"
-        },
-        "deposit_euro": {
-          "title": "This Operation Requires Your Attention",
-          "message": "Your account has been credited. Do you confirm the deposit of {{amount}} € into the EUR Rewarding Account?",
-          "confirm": "Confirm",
-          "cancel": "Cancel"
-        }
-      },
       "home": {
-        "withdrawal_cc": {
-          "title": "This Operation Requires Your Attention",
-          "message": "You are about to move {{amount}} € from your Current Account to your external bank account. Do you confirm this action?",
-          "confirm": "Confirm",
-          "cancel": "Cancel"
-        },
-        "swap_usd": {
+        "swap_cc_to_usd": {
           "title": "This Operation Requires Your Attention",
           "message": "You are about to move {{amount}} € from your Current Account to the US DOLLAR Rewarding Account. Do you confirm this action?",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
-        "swap_euro": {
+        "swap_cc_to_euro": {
           "title": "This Operation Requires Your Attention",
           "message": "You are about to move {{amount}} € from your Current Account to the EUR Rewarding Account. Do you confirm this action?",
+          "confirm": "Confirm",
+          "cancel": "Cancel"
+        },
+        "swap_usd_to_cc": {
+          "title": "This Operation Requires Your Attention",
+          "message": "You are about to move {{amount}} € from the US DOLLAR Investment to your Current Account. Do you confirm this action?",
+          "confirm": "Confirm",
+          "cancel": "Cancel"
+        },
+        "swap_euro_to_cc": {
+          "title": "This Operation Requires Your Attention",
+          "message": "You are about to move {{amount}} € from the EUR Investment to your Current Account. Do you confirm this action?",
           "confirm": "Confirm",
           "cancel": "Cancel"
         }
