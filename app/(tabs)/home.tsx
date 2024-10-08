@@ -276,6 +276,10 @@ function HomeScreen() {
                   )
                 }
                 setTransactionType={setTransactionType}
+                ref={transactionValidationModalRef}
+                setBlurred={setIsBlurred}
+                isValidationModalOpen={isValidationModalOpen}
+                setIsValidationModalOpen={setIsValidationModalOpen}
               />
               <InvestmentCard
                 investment={`EURO`}
@@ -294,6 +298,10 @@ function HomeScreen() {
                   )
                 }
                 setTransactionType={setTransactionType}
+                ref={transactionValidationModalRef}
+                setBlurred={setIsBlurred}
+                isValidationModalOpen={isValidationModalOpen}
+                setIsValidationModalOpen={setIsValidationModalOpen}
               />
             </View>
             <TransactionHistory

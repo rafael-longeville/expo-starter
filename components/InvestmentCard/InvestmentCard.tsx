@@ -48,6 +48,9 @@ interface InvestmentCardProps {
   onLayout?: (event: LayoutChangeEvent) => void;
   onFocusInput?: () => void;
   setTransactionType?: Dispatch<SetStateAction<keyof TransactionType>>; // Update this to the correct type
+  setBlurred?: (blurred: boolean) => void;
+  setIsValidationModalOpen?: (isOpen: boolean) => void;
+  isValidationModalOpen?: boolean;
 }
 
 const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
@@ -67,6 +70,9 @@ const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
       onLayout, // Add onLayout prop here
       onFocusInput, // Add onFocusInput prop
       setTransactionType,
+      setBlurred,
+      setIsValidationModalOpen,
+      isValidationModalOpen,
     },
     ref
   ) => {
@@ -90,6 +96,15 @@ const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
       // Replace comma with a dot and parse to a floating-point number
       const parsedValue = parseFloat(value.replace(",", "."));
       return isNaN(parsedValue) ? 0 : parsedValue;
+    };
+
+    const handleValidationModalOpen = () => {
+      console.log("Opening validation modal");
+      setBlurred && setBlurred(true);
+      !isValidationModalOpen &&
+        setIsValidationModalOpen &&
+        setIsValidationModalOpen(true);
+      ref?.current?.present();
     };
 
     return (
@@ -395,6 +410,7 @@ const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
                 if (investing === true && investment === "EURO") {
                   let newEurBalance = eurBalance + numericAmount;
                   setEurBalance(newEurBalance);
+                  // handleValidationModalOpen();
                   await AsyncStorage.setItem(
                     "investment_account_balance_eur",
                     newEurBalance.toString()

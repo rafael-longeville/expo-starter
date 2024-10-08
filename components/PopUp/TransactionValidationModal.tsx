@@ -30,15 +30,6 @@ const TransactionValidationModal = forwardRef<
   // variables
   const snapPoints = useMemo(() => ["55%"], []);
 
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    setIsModalOpen(true);
-    setBlurred(true);
-    if (ref && "current" in ref && ref.current) {
-      ref.current.present();
-    }
-  }, [ref, setIsModalOpen, setBlurred]);
-
   const handleDismissModal = useCallback(() => {
     setIsModalOpen(false);
     setBlurred(false);
@@ -63,9 +54,6 @@ const TransactionValidationModal = forwardRef<
 
   return (
     <>
-      <Pressable onPress={handlePresentModalPress}>
-        <Text>OPEN</Text>
-      </Pressable>
       <BottomSheetModal
         ref={ref}
         index={0}
