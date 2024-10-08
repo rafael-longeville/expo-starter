@@ -131,6 +131,16 @@ const TransactionValidationModal = ({
               amount,
             })}
           </Text>
+          <Text
+            style={{
+              ...globalFonts.mediumSubtitle,
+              fontSize: scaledFontSize(14),
+            }}
+          >
+            {t(`${translationKey}.do_you_confirm_this_action`, {
+              amount,
+            })}
+          </Text>
         </View>
         <Pressable style={styles.button} onPress={handleContinuePress}>
           <Text

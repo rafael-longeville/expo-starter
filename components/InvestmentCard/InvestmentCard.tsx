@@ -20,6 +20,9 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { globalFonts } from "@/app/styles/globalFonts";
 import { useTyping } from "@/context/TypingContext";
+export interface InvestmentCardHandles {
+  resetAmount: () => void;
+}
 
 interface InvestmentCardProps {
   investment: string;
