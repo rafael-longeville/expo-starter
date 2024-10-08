@@ -75,6 +75,7 @@ export default function CreateWithPasskey({
             passkeyName, // Add passkeyName argument here
           });
           setLoading(false); // Hide loader after successful wallet creation
+          router.dismissAll();
           router.replace({
             pathname: redirectionUrl as
               | "/(onboarding)/onboarding_4"
