@@ -47,10 +47,17 @@ export default function TransactionPOC({
 
           setSignedMessage(signature);
           console.log("Signed message:", signature);
+          Alert.alert("Transaction Successful", `Transaction Hash: ${txHash}`);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Transaction error:", error as Error);
+        Alert.alert(
+          "Transaction Failed",
+          `Error: ${(error as Error).message || error}`
+        );
       }
+    } else {
+      Alert.alert("Account Not Found", "Please connect your account.");
     }
   };
 
@@ -58,27 +65,23 @@ export default function TransactionPOC({
     if (account?.address) {
       Clipboard.setString(account.address);
       Alert.alert(
-        "Adresse copiée",
-        "L'adresse a été copiée dans le presse-papier."
+        "Address Copied",
+        "The address has been copied to the clipboard."
       );
     }
   };
+
   return (
-    <>
-      <View style={styles.container}>
-        <Text style={globalFonts.subtitle}>Bonjour {account?.address}</Text>
-        {/* <Text style={globalFonts.title}>
-          Vous avez {data?.displayValue} ETH
-        </Text> */}
-        <Button onPress={onClick}>
-          <Text>Envoyer 0.001 ETH</Text>
-        </Button>
-        <Button onPress={copyToClipboard}>
-          <Text>Copier l'adresse</Text>
-        </Button>
-        {signedMessage && <Text>Signed Transaction Hash: {signedMessage}</Text>}
-      </View>
-    </>
+    <View style={styles.container}>
+      <Text style={globalFonts.subtitle}>Bonjour {account?.address}</Text>
+      <Button onPress={onClick}>
+        <Text>Envoyer 0.001 ETH</Text>
+      </Button>
+      <Button onPress={copyToClipboard}>
+        <Text>Copier l'adresse</Text>
+      </Button>
+      {signedMessage && <Text>Signed Transaction Hash: {signedMessage}</Text>}
+    </View>
   );
 }
 
