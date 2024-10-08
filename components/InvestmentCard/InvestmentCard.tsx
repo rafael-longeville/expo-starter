@@ -1,12 +1,6 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useRef,
-  useState,
-  useImperativeHandle,
-  SetStateAction,
-  Dispatch,
-} from "react";
+// InvestmentCard.tsx
+
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   View,
@@ -16,9 +10,6 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
-  LayoutChangeEvent,
 } from "react-native";
 import { styles } from "./styles";
 import {
@@ -27,419 +18,233 @@ import {
   gainContainerStyle,
 } from "./StyleFunctions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
 import { globalFonts } from "@/app/styles/globalFonts";
 import { useTyping } from "@/context/TypingContext";
-import { ScrollView } from "react-native-gesture-handler";
-import { TransactionType } from "@/app/sharedTypes";
 
 interface InvestmentCardProps {
   investment: string;
   investing: boolean;
-  isOnboarding?: boolean;
-  main_account_balance?: string;
-  eurBalance?: number;
-  setEurBalance?: (balance: number) => void;
-  usdBalance?: number;
-  setUsdBalance?: (balance: number) => void;
-  handleOpenModal?: () => void;
-  setAsset?: (asset: string) => void;
-  scrollViewRef?: React.RefObject<any>;
-  onLayout?: (event: LayoutChangeEvent) => void;
-  onFocusInput?: () => void;
-  setTransactionType?: Dispatch<SetStateAction<keyof TransactionType>>; // Update this to the correct type
-  setBlurred?: (blurred: boolean) => void;
-  setIsValidationModalOpen?: (isOpen: boolean) => void;
-  isValidationModalOpen?: boolean;
+  main_account_balance: string;
+  eurBalance: number;
+  setEurBalance: (balance: number) => void;
+  usdBalance: number;
+  setUsdBalance: (balance: number) => void;
+  handleOpenModal: () => void;
+  setAsset: (asset: string) => void;
+  onInitiateTransaction: (transactionDetails: {
+    investmentType: string;
+    amount: number;
+    action: "deposit" | "withdraw";
+  }) => void;
+  setIsValidationModalOpen: (isOpen: boolean) => void;
 }
 
-const InvestmentCard = forwardRef<unknown, InvestmentCardProps>(
-  (
-    {
-      investment,
-      investing,
-      isOnboarding,
-      main_account_balance = "0",
-      eurBalance,
-      setEurBalance,
-      usdBalance,
-      setUsdBalance,
-      handleOpenModal,
-      setAsset,
-      scrollViewRef,
-      onLayout, // Add onLayout prop here
-      onFocusInput, // Add onFocusInput prop
-      setTransactionType,
-      setBlurred,
-      setIsValidationModalOpen,
-      isValidationModalOpen,
-    },
-    ref
-  ) => {
-    const { t } = useTranslation();
-    const { setIsTyping, isTyping } = useTyping();
+const InvestmentCard = ({
+  investment,
+  investing,
+  main_account_balance,
+  eurBalance,
+  setEurBalance,
+  usdBalance,
+  setUsdBalance,
+  handleOpenModal,
+  setAsset,
+  onInitiateTransaction,
+  setIsValidationModalOpen,
+}: InvestmentCardProps) => {
+  const { t } = useTranslation();
+  const { setIsTyping } = useTyping();
 
-    // State for the currency symbol and amount entered in the TextInput
-    const [currencySymbol, setCurrencySymbol] = useState<string>("€");
-    const [amount, setAmount] = useState<string>("");
+  // State for the currency symbol and amount entered in the TextInput
+  const [currencySymbol, setCurrencySymbol] = useState<string>("€");
+  const [amount, setAmount] = useState<string>("");
 
-    useEffect(() => {
-      const fetchCurrencySymbol = async () => {
-        const symbol = await getCurrencySymbol();
-        setCurrencySymbol(symbol);
-      };
-
-      fetchCurrencySymbol();
-    }, []);
-
-    const parseAmount = (value: string): number => {
-      // Replace comma with a dot and parse to a floating-point number
-      const parsedValue = parseFloat(value.replace(",", "."));
-      return isNaN(parsedValue) ? 0 : parsedValue;
+  useEffect(() => {
+    const fetchCurrencySymbol = async () => {
+      const symbol = await getCurrencySymbol();
+      setCurrencySymbol(symbol);
     };
 
-    const handleValidationModalOpen = () => {
-      console.log("Opening validation modal");
-      setBlurred && setBlurred(true);
-      !isValidationModalOpen &&
-        setIsValidationModalOpen &&
-        setIsValidationModalOpen(true);
-      ref?.current?.present();
-    };
+    fetchCurrencySymbol();
+  }, []);
 
-    return (
-      <View style={styles.cardContainer} onLayout={onLayout}>
+  const parseAmount = (value: string): number => {
+    // Replace comma with a dot and parse to a floating-point number
+    const parsedValue = parseFloat(value.replace(",", "."));
+    return isNaN(parsedValue) ? 0 : parsedValue;
+  };
+
+  const handleDeposit = () => {
+    const numericAmount = parseAmount(amount);
+    if (numericAmount <= 0) {
+      Alert.alert("Invalid Amount", "Please enter a number greater than 0.");
+      return;
+    }
+
+    // Check if user has enough balance
+    if (parseFloat(main_account_balance) < numericAmount) {
+      Alert.alert(
+        "Insufficient Balance",
+        "You do not have enough balance in your main account."
+      );
+      return;
+    }
+    setIsValidationModalOpen(true);
+    onInitiateTransaction({
+      investmentType: investment,
+      amount: numericAmount,
+      action: "deposit",
+    });
+  };
+
+  const handleWithdraw = () => {
+    const numericAmount = parseAmount(amount);
+    if (numericAmount <= 0) {
+      Alert.alert("Invalid Amount", "Please enter a number greater than 0.");
+      return;
+    }
+    setIsValidationModalOpen(true);
+
+    onInitiateTransaction({
+      investmentType: investment,
+      amount: numericAmount,
+      action: "withdraw",
+    });
+  };
+
+  return (
+    <View style={styles.cardContainer}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <View style={styles.header}>
+          <Image
+            style={styles.euroIcon}
+            source={getIconSource(investing, investment)}
+          />
+          <Text style={styles.headerText}>
+            {investing ? "CR" : "CC"} - {investment}
+          </Text>
+        </View>
+        <Pressable
+          onPress={() => {
+            setAsset(investment);
+            handleOpenModal();
+          }}
+        >
+          <Image
+            source={require("@/assets/images/info-icon.png")}
+            style={{
+              width: 20,
+              height: 20,
+              marginRight: 20,
+            }}
+          />
+        </Pressable>
+      </View>
+
+      {(investment === "EURO" && eurBalance > 0) ||
+      (investment === "DOLLAR US" && usdBalance > 0) ? (
+        <View style={styles.flexContainer}>
+          <Text
+            style={{
+              ...globalFonts.mediumSubtitle,
+              color: "#ECFF78",
+              includeFontPadding: false,
+              marginLeft: 20,
+            }}
+          >
+            {investment === "EURO" ? `${eurBalance} €` : `${usdBalance} $`}
+          </Text>
+        </View>
+      ) : null}
+
+      <View style={styles.flexContainer}>
+        <View style={styles.flexInputContainer}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              keyboardType="numeric"
+              style={styles.input}
+              placeholder="0"
+              placeholderTextColor="rgba(19, 41, 61, 0.60)"
+              value={amount}
+              onChangeText={(text) => {
+                setAmount(text);
+              }}
+              onFocus={() => {
+                setIsTyping(true);
+              }}
+              onBlur={() => setIsTyping(false)}
+            />
+          </View>
+          <Text style={[styles.asideInputText]}>{currencySymbol}</Text>
+        </View>
+        <View style={gainContainerStyle(investing)}>
+          <Text style={styles.rendementText}>
+            {t("components.investment_card.yield")} :
+          </Text>
+          <Text style={styles.rendementValue}>7,85 %</Text>
+        </View>
+      </View>
+
+      {(investment === "EURO" && eurBalance > 0) ||
+      (investment === "DOLLAR US" && usdBalance > 0) ? (
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
             width: "100%",
+            marginTop: 10,
+            justifyContent: "space-between",
           }}
         >
-          <View style={styles.header}>
-            <Image
-              style={styles.euroIcon}
-              source={getIconSource(investing, investment)}
-            />
-            <Text style={styles.headerText}>
-              {investing ? "CR" : "CC"} - {investment}
-            </Text>
-          </View>
-          <Pressable
-            onPress={() => {
-              setAsset && setAsset(investment);
-              handleOpenModal && handleOpenModal();
-            }}
-          >
-            <Image
-              source={require("@/assets/images/info-icon.png")}
-              style={{
-                width: 20,
-                height: 20,
-                marginRight: 20,
-              }}
-            />
-          </Pressable>
-        </View>
-        {eurBalance != undefined &&
-          !isOnboarding &&
-          eurBalance > 0 &&
-          investment === "EURO" && (
-            <>
-              <View style={styles.flexContainer}>
-                <Text
-                  style={{
-                    ...globalFonts.mediumSubtitle,
-                    color: "#ECFF78",
-                    includeFontPadding: false,
-                    marginLeft: 20,
-                  }}
-                >
-                  {eurBalance} €
-                </Text>
-              </View>
-            </>
-          )}
-        {usdBalance != undefined &&
-          !isOnboarding &&
-          usdBalance > 0 &&
-          investment === "DOLLAR US" && (
-            <>
-              <View style={styles.flexContainer}>
-                <Text
-                  style={{
-                    ...globalFonts.mediumSubtitle,
-                    color: "#ECFF78",
-                    includeFontPadding: false,
-                    marginLeft: 20,
-                  }}
-                >
-                  {usdBalance} $
-                </Text>
-              </View>
-            </>
-          )}
-
-        <View style={styles.flexContainer}>
-          <View style={styles.flexInputContainer}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                keyboardType="numeric"
-                style={styles.input}
-                placeholder="0"
-                placeholderTextColor="rgba(19, 41, 61, 0.60)"
-                value={amount}
-                onChangeText={(text) => {
-                  setAmount(text);
-                }}
-                onFocus={() => {
-                  onFocusInput && onFocusInput(); // Trigger scroll when input is focused
-                  setIsTyping(true);
-                }}
-                onBlur={() => setIsTyping(false)}
-              />
-            </View>
-            <Text style={[styles.asideInputText]}>{currencySymbol}</Text>
-          </View>
-          <View style={gainContainerStyle(investing)}>
-            <Text style={styles.rendementText}>
-              {t("components.investment_card.yield")} :
-            </Text>
-            <Text style={styles.rendementValue}>7,85 %</Text>
-          </View>
-        </View>
-        {setEurBalance != undefined &&
-        setUsdBalance != undefined &&
-        eurBalance != undefined &&
-        usdBalance != undefined &&
-        !isOnboarding &&
-        ((eurBalance > 0 && investment === "EURO") ||
-          (usdBalance > 0 && investment === "DOLLAR US")) ? (
-          <>
-            <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                marginTop: 10,
-                justifyContent: "space-between",
-              }}
-            >
-              <TouchableOpacity
-                style={styles.buttonContainer2}
-                activeOpacity={0.6}
-                onPress={async () => {
-                  const numericAmount = parseAmount(amount); // Convert amount to number
-
-                  if (numericAmount <= 0) {
-                    console.error(
-                      "Invalid amount. Please enter a number greater than 0."
-                    );
-                    return;
-                  }
-
-                  //EURO
-                  if (investing === true && investment === "EURO") {
-                    let newEurBalance = eurBalance - numericAmount;
-                    if (newEurBalance < 0) {
-                      Alert.alert(
-                        "Montant trop élevé",
-                        "Le montant que vous avez entré est trop élevé."
-                      );
-                      console.error("Amount too high.");
-                      return;
-                    }
-                    setEurBalance(newEurBalance);
-                    setTransactionType &&
-                      setTransactionType("home.swap_euro_to_cc");
-                    await AsyncStorage.setItem(
-                      "investment_account_balance_eur",
-                      newEurBalance.toString()
-                    );
-                  }
-                  //DOLLAR US
-                  if (investing === true && investment === "DOLLAR US") {
-                    let newUsdBalance = usdBalance - numericAmount;
-                    if (newUsdBalance < 0) {
-                      Alert.alert(
-                        "Montant trop élevé",
-                        "Le montant que vous avez entré est trop élevé."
-                      );
-                      console.error("Amount too high.");
-                      return;
-                    }
-                    setUsdBalance(newUsdBalance);
-                    setTransactionType &&
-                      setTransactionType("home.swap_usd_to_cc");
-                    await AsyncStorage.setItem(
-                      "investment_account_balance_usd",
-                      newUsdBalance.toString()
-                    );
-                  }
-                }}
-              >
-                <Image
-                  source={require("@/assets/images/small-withdraw-button-shape.png")}
-                  style={styles.buttonImage}
-                />
-                <Text style={styles.withdrawButtonText}>
-                  {t("components.investment_card.withdraw")}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.buttonContainer2}
-                activeOpacity={0.6}
-                onPress={async () => {
-                  const numericAmount = parseAmount(amount); // Convert amount to number
-
-                  if (numericAmount <= 0) {
-                    console.error(
-                      "Invalid amount. Please enter a number greater than 0."
-                    );
-                    return;
-                  }
-
-                  if (parseFloat(main_account_balance) < parseFloat(amount)) {
-                    console.error("Amount too high.");
-                    return;
-                  }
-                  //EURO
-                  if (investing === true && investment === "EURO") {
-                    let newEurBalance = eurBalance + numericAmount;
-                    setEurBalance(newEurBalance);
-                    setTransactionType &&
-                      setTransactionType("home.swap_cc_to_euro");
-                    await AsyncStorage.setItem(
-                      "investment_account_balance_eur",
-                      newEurBalance.toString()
-                    );
-                  }
-                  //DOLLAR US
-                  if (investing === true && investment === "DOLLAR US") {
-                    let newUsdBalance = usdBalance + numericAmount;
-                    setUsdBalance(newUsdBalance);
-                    setTransactionType &&
-                      setTransactionType("home.swap_cc_to_usd");
-                    await AsyncStorage.setItem(
-                      "investment_account_balance_usd",
-                      newUsdBalance.toString()
-                    );
-                  }
-                }}
-              >
-                <Image
-                  source={require("@/assets/images/small-deposit-button-shape.png")}
-                  style={styles.buttonImage}
-                />
-                <Text style={styles.depositButtonText2}>
-                  {t("components.investment_card.deposit")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        ) : (
           <TouchableOpacity
-            style={styles.buttonContainer}
+            style={styles.buttonContainer2}
             activeOpacity={0.6}
-            onPress={async () => {
-              const numericAmount = parseAmount(amount); // Convert amount to number
-
-              if (numericAmount <= 0) {
-                console.error(
-                  "Invalid amount. Please enter a number greater than 0."
-                );
-                return;
-              }
-
-              if (numericAmount < 5 || numericAmount > 100) {
-                Alert.alert(
-                  t("components.investment_card.amount_error.title"),
-                  t("components.investment_card.amount_error.message")
-                );
-                return;
-              }
-              if (isOnboarding) {
-                try {
-                  await AsyncStorage.setItem(
-                    "onboardingValue",
-                    numericAmount.toString()
-                  );
-                } catch (error) {
-                  console.error("Error storing data: ", error);
-                }
-
-                if (investing === true && investment === "DOLLAR US") {
-                  try {
-                    await AsyncStorage.setItem("onboardingMethod", "angleUSD");
-                  } catch (error) {
-                    console.error("Error storing data: ", error);
-                  }
-                } else if (investing === true && investment === "EURO") {
-                  try {
-                    await AsyncStorage.setItem("onboardingMethod", "angleEUR");
-                  } catch (error) {
-                    console.error("Error storing data: ", error);
-                  }
-                } else {
-                  try {
-                    await AsyncStorage.setItem("onboardingMethod", "onRamp");
-                  } catch (error) {
-                    console.error("Error storing data: ", error);
-                  }
-                }
-                router.push({
-                  pathname: "/(onboarding)/onboarding_3",
-                });
-              } else if (
-                eurBalance != undefined &&
-                setEurBalance != undefined &&
-                usdBalance != undefined &&
-                setUsdBalance != undefined
-              ) {
-                if (numericAmount <= 0) {
-                  console.error(
-                    "Invalid amount. Please enter a number greater than 0."
-                  );
-                  return;
-                }
-
-                if (parseFloat(main_account_balance) < parseFloat(amount)) {
-                  console.error("Amount too high.");
-                  return;
-                }
-                //EURO
-                if (investing === true && investment === "EURO") {
-                  let newEurBalance = eurBalance + numericAmount;
-                  setEurBalance(newEurBalance);
-                  // handleValidationModalOpen();
-                  await AsyncStorage.setItem(
-                    "investment_account_balance_eur",
-                    newEurBalance.toString()
-                  );
-                }
-                //DOLLAR US
-                if (investing === true && investment === "DOLLAR US") {
-                  let newUsdBalance = usdBalance + numericAmount;
-                  setUsdBalance(newUsdBalance);
-                  await AsyncStorage.setItem(
-                    "investment_account_balance_usd",
-                    newUsdBalance.toString()
-                  );
-                }
-              }
-            }}
+            onPress={handleWithdraw}
           >
             <Image
-              source={require("@/assets/images/deposit-button-shape.png")}
+              source={require("@/assets/images/small-withdraw-button-shape.png")}
               style={styles.buttonImage}
             />
-            <Text style={styles.depositButtonText}>
+            <Text style={styles.withdrawButtonText}>
+              {t("components.investment_card.withdraw")}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer2}
+            activeOpacity={0.6}
+            onPress={handleDeposit}
+          >
+            <Image
+              source={require("@/assets/images/small-deposit-button-shape.png")}
+              style={styles.buttonImage}
+            />
+            <Text style={styles.depositButtonText2}>
               {t("components.investment_card.deposit")}
             </Text>
           </TouchableOpacity>
-        )}
-      </View>
-    );
-  }
-);
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          activeOpacity={0.6}
+          onPress={handleDeposit}
+        >
+          <Image
+            source={require("@/assets/images/deposit-button-shape.png")}
+            style={styles.buttonImage}
+          />
+          <Text style={styles.depositButtonText}>
+            {t("components.investment_card.deposit")}
+          </Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+};
 
 export default InvestmentCard;
