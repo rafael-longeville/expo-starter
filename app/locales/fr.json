@@ -149,10 +149,40 @@
       "button": "J'ai compris"
     },
     "transaction": {
-      "title": "Cette opération requiert votre attention",
-      "description": "Vous allez déplacer {{amount}}{{currency}} de votre compte courant vers votre compte rémunéré. Êtes-vous sûr de vouloir continuer ?",
-      "cancel": "Annuler",
-      "confirm": "Confirmer"
+      "onboarding": {
+        "deposit_usd": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Votre compte vient d'être crédité. Confirmez-vous le dépôt {{amount}} € dans le Compte rémunéré DOLLAR US ?",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        },
+        "deposit_euro": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Votre compte vient d'être crédité. Confirmez-vous le dépôt {{amount}} € dans le Compte rémunéré EURO ?",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        }
+      },
+      "home": {
+        "withdrawal_cc": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Vous allez déplacer {{amount}} € de votre Compte courant vers votre compte en banque externe. Confirmez-vous cette action ?",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        },
+        "swap_usd": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Vous allez déplacer {{amount}} € de votre compte Courant vers le Compte rémunéré DOLLAR US. Confirmez-vous cette action ?",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        },
+        "swap_euro": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Vous allez déplacer {{amount}} € de votre compte Courant vers le Compte rémunéré EURO. Confirmez-vous cette action ?",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        }
+      }
     },
     "inactivity": {
       "title": "Session expirée",

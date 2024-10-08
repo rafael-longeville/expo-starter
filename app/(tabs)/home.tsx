@@ -320,13 +320,13 @@ function HomeScreen() {
             currency={currency}
             mainAccountBalance={mainAccountBalance}
           />
-          <TransactionValidationModal
+          {/* <TransactionValidationModal
             ref={transactionValidationModalRef}
             setIsModalOpen={setIsValidationModalOpen}
             setBlurred={setIsBlurred}
             account={account}
             currency={currency}
-          />
+          /> */}
         </SafeAreaView>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
