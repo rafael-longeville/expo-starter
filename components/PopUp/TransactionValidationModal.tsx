@@ -32,7 +32,7 @@ const TransactionValidationModal = ({
   const { t } = useTranslation();
 
   // Snap points for the BottomSheetModal
-  const snapPoints = useMemo(() => ["45%"], []);
+  const snapPoints = useMemo(() => ["50%"], []);
 
   // Custom handle component
   const CustomHandle = () => {
