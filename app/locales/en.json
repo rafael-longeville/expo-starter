@@ -60,6 +60,7 @@
       "title": "Fund Your Account",
       "subtitle_angleEUR": "Place your funds in a EURO rewarding account via bank card, Apple Pay, or Google Pay.",
       "subtitle_angleUSD": "Place your funds in a US DOLLAR rewarding account via bank card, Apple Pay, or Google Pay.",
+      "subtitle_onRamp": "Place your funds in your Current Account via bank card, Apple Pay, or Google Pay.",
       "cancel": "Cancel"
     },
     "home": {

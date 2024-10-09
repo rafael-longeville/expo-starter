@@ -110,7 +110,9 @@ const Onboarding4: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={globalFonts.title}>{t("pages.onboarding_4.title")}</Text>
+      <Text style={{ ...globalFonts.title, textAlign: "left" }}>
+        {t("pages.onboarding_4.title")}
+      </Text>
       <Text style={globalFonts.subtitle}>
         {t(`pages.onboarding_4.subtitle_${onboardingMethod}`)}
       </Text>
@@ -150,6 +152,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    gap: 15,
   },
   text: {
     fontSize: scaledFontSize(24),
