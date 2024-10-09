@@ -37,6 +37,9 @@ const setInitialLanguage = async () => {
     else
       await AsyncStorage.setItem("selectedCurrency", "dollar");
   }
+  else{
+    i18n.changeLanguage(selectedLanguage);
+  }
 };
 
 // Call the function to set the initial language
