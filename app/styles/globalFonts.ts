@@ -29,6 +29,7 @@ export const globalFonts = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     fontSize: scaledFontSize(22),
     color: "#13293D",
+    textAlign: "center",
   },
   mediumTitle: {
     fontFamily: "Poppins_500Medium",
@@ -39,6 +40,7 @@ export const globalFonts = StyleSheet.create({
     fontFamily: "Poppins_500Medium",
     fontSize: scaledFontSize(18),
     color: "#13293D",
+    textAlign: "center",
   },
   subtitle: {
     fontFamily: "Poppins_400Regular",

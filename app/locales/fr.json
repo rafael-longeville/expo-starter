@@ -152,28 +152,29 @@
       "home": {
         "swap_cc_to_usd": {
           "title": "Cette opération requiert votre attention",
-          "message": "Vous allez déplacer {{amount}} € de votre compte Courant vers le Compte rémunéré DOLLAR US. Confirmez-vous cette action ?",
+          "message": "Vous allez déplacer {{amount}} € de votre compte Courant vers le Compte rémunéré DOLLAR US. ",
           "confirm": "Confirmer",
           "cancel": "Annuler"
         },
         "swap_cc_to_euro": {
           "title": "Cette opération requiert votre attention",
-          "message": "Vous allez déplacer {{amount}} € de votre compte Courant vers le Compte rémunéré EURO. Confirmez-vous cette action ?",
+          "message": "Vous allez déplacer {{amount}} € de votre compte Courant vers le Compte rémunéré EURO. ",
           "confirm": "Confirmer",
           "cancel": "Annuler"
         },
         "swap_usd_to_cc": {
           "title": "Cette opération requiert votre attention",
-          "message": "Vous allez déplacer {{amount}} € du placement DOLLAR US vers votre Compte courant. Confirmez-vous cette action ?",
+          "message": "Vous allez déplacer {{amount}} € du placement DOLLAR US vers votre Compte courant. ",
           "confirm": "Confirmer",
           "cancel": "Annuler"
         },
         "swap_euro_to_cc": {
           "title": "Cette opération requiert votre attention",
-          "message": "Vous allez déplacer {{amount}} € du placement EURO vers votre Compte courant. Confirmez-vous cette action ?",
+          "message": "Vous allez déplacer {{amount}} € du placement EURO vers votre Compte courant. ",
           "confirm": "Confirmer",
           "cancel": "Annuler"
-        }
+        },
+        "do_you_confirm_this_action": "Confirmez-vous cette action ?"
       }
     },
     "inactivity": {
