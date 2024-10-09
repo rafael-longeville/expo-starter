@@ -98,6 +98,7 @@ const InvestmentCard = ({
       amount: numericAmount,
       action: "deposit",
     });
+    setAmount("");
   };
 
   const handleWithdraw = () => {
@@ -113,6 +114,7 @@ const InvestmentCard = ({
       amount: numericAmount,
       action: "withdraw",
     });
+    setAmount("");
   };
 
   return (
