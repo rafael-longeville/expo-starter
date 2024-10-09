@@ -137,7 +137,7 @@ const TransactionValidationModal = ({
               fontSize: scaledFontSize(14),
             }}
           >
-            {t(`${translationKey}.do_you_confirm_this_action`, {
+            {t(`pop-ups.transaction.home.do_you_confirm_this_action`, {
               amount,
             })}
           </Text>
