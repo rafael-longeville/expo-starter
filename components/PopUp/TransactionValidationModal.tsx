@@ -32,7 +32,7 @@ const TransactionValidationModal = ({
   const { t } = useTranslation();
 
   // Snap points for the BottomSheetModal
-  const snapPoints = useMemo(() => ["45%"], []);
+  const snapPoints = useMemo(() => ["50%"], []);
 
   // Custom handle component
   const CustomHandle = () => {
@@ -137,7 +137,7 @@ const TransactionValidationModal = ({
               fontSize: scaledFontSize(14),
             }}
           >
-            {t(`${translationKey}.do_you_confirm_this_action`, {
+            {t(`pop-ups.transaction.home.do_you_confirm_this_action`, {
               amount,
             })}
           </Text>
