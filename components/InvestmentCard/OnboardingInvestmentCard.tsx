@@ -86,6 +86,7 @@ const OnboardingInvestmentCard = ({
     if (investing === true && investment === "DOLLAR US") {
       try {
         await AsyncStorage.setItem("onboardingMethod", "angleUSD");
+        await AsyncStorage.setItem("continueWithoutFunding", "false");
         console.log(
           "onboardingMethod: ",
           AsyncStorage.getItem("onboardingMethod")
@@ -96,12 +97,14 @@ const OnboardingInvestmentCard = ({
     } else if (investing === true && investment === "EURO") {
       try {
         await AsyncStorage.setItem("onboardingMethod", "angleEUR");
+        await AsyncStorage.setItem("continueWithoutFunding", "false");
       } catch (error) {
         console.error("Error storing data: ", error);
       }
     } else {
       try {
         await AsyncStorage.setItem("onboardingMethod", "onRamp");
+        await AsyncStorage.setItem("continueWithoutFunding", "false");
       } catch (error) {
         console.error("Error storing data: ", error);
       }
