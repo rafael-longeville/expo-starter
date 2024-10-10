@@ -40,7 +40,7 @@ export default function TransactionPOC({
     prepareContractCall({
       contract: contractStake,
       method: "function stake(address token, uint256 tokenValue, address stArtsRecipient)",
-      params: ["0x070E6A0e832401547a82AF5D6E2360438cf450cB", toUnits("0.0033808", 6), account.address],
+      params: ["0x070E6A0e832401547a82AF5D6E2360438cf450cB", toUnits("0.0033808", 6), account?.address],
     }),
   ];
 
