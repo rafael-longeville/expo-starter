@@ -1,10 +1,11 @@
-import { prepareTransaction, sendAndConfirmTransaction, toWei } from "thirdweb";
+import { prepareContractCall, getContract, sendAndConfirmTransaction, toWei } from "thirdweb";
 import { chain, client } from "@/constants/thirdweb";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { globalFonts } from "@/app/styles/globalFonts";
+import { toUnits } from "thirdweb/utils";
 
 interface TransactionPOCProps {
   account: any;
@@ -18,11 +19,16 @@ export default function TransactionPOC({
   const [transactionObject, setTransactionObject] = useState<any>(null);
   const [signedMessage, setSignedMessage] = useState<string | null>(null);
 
-  const transaction = prepareTransaction({
-    to: "0x4fc0C27D9F37dC94469e449CBe015df9A392c83e",
+  const contract = getContract({
+    client,
     chain: chain,
-    client: client,
-    value: toWei("0.0001"),
+    address: "0xa1Ebb6CcECDFE0CbC0aaE08E73917AA8E534a7Ec"
+  });
+
+  const transaction = prepareContractCall({
+    contract,
+    method: "function transfer(address to, uint256 value)",
+    params: ["0x3bF093C1bB2dFBcfD8EACCbB7cD5a1eAf017494C", toUnits("10", 6)],
   });
 
   const onClick = async () => {

@@ -28,6 +28,7 @@ import InvestmentAccountPopup from "@/components/PopUp/InvestmentAccountPopup";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import withFadeIn from "@/components/effects/withFadeIn";
 import TransactionPOC from "@/components/Homepage/TransactionsPOC";
+import { ConnectButton } from "thirdweb/react";
 
 function HomeScreen() {
   const account = useActiveAccount();
@@ -47,7 +48,7 @@ function HomeScreen() {
   const [isTransactionModalVisible, setIsTransactionModalVisible] =
     useState(false);
 
-  const tokenAddress = "0x0c86a754a29714c4fe9c6f1359fa7099ed174c0b";
+  const tokenAddress = "0xa1Ebb6CcECDFE0CbC0aaE08E73917AA8E534a7Ec";
 
   const { data, refetch } = useWalletBalance({
     chain,
@@ -55,6 +56,10 @@ function HomeScreen() {
     client,
     tokenAddress,
   });
+
+  console.log("Data", data);
+  console.log("account address", account?.address);
+
 
   const {
     isCheckoutModalOpen,
