@@ -25,7 +25,7 @@
     "production": {
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_THIRDWEB_CLIENT_ID": "992d835b2cfd689faf1d7f66abb4be18",
+        "EXPO_PUBLIC_THIRDWEB_CLIENT_ID": "bf7dc4bc4ed96699bf3ebb5b2cb6d80a",
         "SENTRY_AUTH_TOKEN": "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"
       },
       "channel": "production"
