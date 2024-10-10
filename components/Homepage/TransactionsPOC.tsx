@@ -1,4 +1,4 @@
-import { prepareContractCall, getContract, sendAndConfirmTransaction, toWei } from "thirdweb";
+import { prepareContractCall, getContract, sendAndConfirmTransaction, toWei, sendBatchTransaction } from "thirdweb";
 import { chain, client } from "@/constants/thirdweb";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useState } from "react";
@@ -19,40 +19,47 @@ export default function TransactionPOC({
   const [transactionObject, setTransactionObject] = useState<any>(null);
   const [signedMessage, setSignedMessage] = useState<string | null>(null);
 
-  const contract = getContract({
+  const contractApprove = getContract({
     client,
     chain: chain,
-    address: "0xa1Ebb6CcECDFE0CbC0aaE08E73917AA8E534a7Ec"
+    address: "0x070E6A0e832401547a82AF5D6E2360438cf450cB"
   });
 
-  const transaction = prepareContractCall({
-    contract,
-    method: "function transfer(address to, uint256 value)",
-    params: ["0x3bF093C1bB2dFBcfD8EACCbB7cD5a1eAf017494C", toUnits("10", 6)],
+  const contractStake = getContract({
+    client,
+    chain: chain,
+    address: "0x18406a4C275925fF2Bf5Fdd0616C2872Ff44202E"
   });
+
+  const transactions = [
+    prepareContractCall({
+      contract: contractApprove,
+      method: "function approve(address spender, uint256 value)",
+      params: ["0x18406a4C275925fF2Bf5Fdd0616C2872Ff44202E", BigInt(115792089237316195423570985008687907853269984665640564039457584007913129639935)],
+    }),
+    prepareContractCall({
+      contract: contractStake,
+      method: "function stake(address token, uint256 tokenValue, address stArtsRecipient)",
+      params: ["0x070E6A0e832401547a82AF5D6E2360438cf450cB", toUnits("0.0033808", 6), account.address],
+    }),
+  ];
 
   const onClick = async () => {
     if (account) {
       try {
         // Send the transaction
-        const tx = await sendAndConfirmTransaction({
-          transaction,
-          account,
+        const tx =  await sendBatchTransaction({
+          transactions,
+          account
         });
 
         refetch();
         setTransactionObject(tx);
-
+        console.log(tx)
         const txHash = tx?.transactionHash; // Extract the transaction hash
         console.log("Transaction hash:", txHash);
 
         if (txHash) {
-          // Sign the transaction hash with ECDSA
-          const signer = account.signer; // Ensure this points to the account's signer
-          const signature = await signer.signMessage(txHash); // Sign the transaction hash
-
-          setSignedMessage(signature);
-          console.log("Signed message:", signature);
           Alert.alert("Transaction Successful", `Transaction Hash: ${txHash}`);
         }
       } catch (error) {
