@@ -28,7 +28,8 @@ import InvestmentAccountPopup from "@/components/PopUp/InvestmentAccountPopup";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import withFadeIn from "@/components/effects/withFadeIn";
 import TransactionPOC from "@/components/Homepage/TransactionsPOC";
-import { ConnectButton } from "thirdweb/react";
+import { prepareContractCall, getContract, sendAndConfirmTransaction, toWei, sendBatchTransaction } from "thirdweb";
+import { toUnits } from "thirdweb/utils";
 
 function HomeScreen() {
   const account = useActiveAccount();
@@ -38,6 +39,40 @@ function HomeScreen() {
   const [usdBalance, setUsdBalance] = useState<number>(0);
   const [mainAccountBalance, setMainAccountBalance] = useState<string>("0.00");
   const [asset, setAsset] = useState<string>("");
+
+  //Contracts
+  const contractART = getContract({
+    client,
+    chain: chain,
+    address: "0x070E6A0e832401547a82AF5D6E2360438cf450cB"
+  });
+  const contractTrUSDC = getContract({
+    client,
+    chain: chain,
+    address: "0xa1Ebb6CcECDFE0CbC0aaE08E73917AA8E534a7Ec"
+  });
+
+  function createTransactionBuyArtWithTrUsdc(amount: string) {
+    return [
+      // Send trUSDC test token then receive ART in another tx
+      prepareContractCall({
+        contract: contractTrUSDC,
+        method: "function transfer(address to, uint256 value)",
+        params: ["0x7Bfe5d2746D51342DD3a1F864D66B1bD74C5a0eE", toUnits(amount, 6)],
+      }),
+    ];
+  }
+  
+  function createTransactionSellArt(amount: string) {
+    return [
+      // Sell ART (transfer then receive USDC)
+      prepareContractCall({
+        contract: contractART,
+        method: "function transfer(address to, uint256 value)",
+        params: ["0x7Bfe5d2746D51342DD3a1F864D66B1bD74C5a0eE", toUnits(amount, 6)],
+      }),
+    ];
+  }
 
   // New state variables for transaction handling
   const [pendingTransaction, setPendingTransaction] = useState<{
@@ -57,7 +92,18 @@ function HomeScreen() {
     tokenAddress,
   });
 
+  const tokenAddressART = "0x070e6a0e832401547a82af5d6e2360438cf450cb";
+
+  const { data: dataART, refetch: refetchART } = useWalletBalance({
+    chain,
+    address: account?.address,
+    client,
+    tokenAddress: tokenAddressART,
+  });
+
   console.log("Data", data);
+  console.log("Data ART", dataART);
+
   console.log("account address", account?.address);
 
 
@@ -88,6 +134,7 @@ function HomeScreen() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    refetchART()
     refetch().finally(() => setRefreshing(false));
   }, [refetch]);
 
@@ -107,31 +154,18 @@ function HomeScreen() {
   useEffect(() => {
     const fetchInvestmentBalances = async () => {
       try {
-        let eurBalance = await AsyncStorage.getItem(
-          "investment_account_balance_eur"
-        );
-        let usdBalance = await AsyncStorage.getItem(
-          "investment_account_balance_usd"
-        );
 
-        if (!eurBalance) {
-          await AsyncStorage.setItem("investment_account_balance_eur", "0");
-          eurBalance = "0";
+        if (dataART) {
+          setEurBalance(parseFloat((dataART.displayValue)))
+          setUsdBalance(parseFloat((dataART.displayValue)))
         }
-        if (!usdBalance) {
-          await AsyncStorage.setItem("investment_account_balance_usd", "0");
-          usdBalance = "0";
-        }
-
-        setEurBalance(parseFloat(eurBalance));
-        setUsdBalance(parseFloat(usdBalance));
       } catch (error) {
         console.error("Error fetching investment balances:", error);
       }
     };
 
     fetchInvestmentBalances();
-  }, []);
+  }, [dataART]);
 
   useEffect(() => {
     const fetchBalanceWithConversion = async () => {
@@ -144,12 +178,12 @@ function HomeScreen() {
             balance *= conversionRate; // Convert USD to EUR
           }
         }
-        setMainAccountBalance((balance - eurBalance - usdBalance).toFixed(2));
+        setMainAccountBalance((balance).toFixed(2));
       }
     };
 
     fetchBalanceWithConversion();
-  }, [currency, data, eurBalance, usdBalance]);
+  }, [currency, data]);
 
   useEffect(() => {
     const checkFirstVisit = async () => {
@@ -198,58 +232,64 @@ function HomeScreen() {
     if (confirmed && pendingTransaction) {
       const { investmentType, amount, action } = pendingTransaction;
 
-      // Execute the transaction logic
-      if (investmentType === "EURO") {
-        if (action === "deposit") {
-          // Update EUR balance
-          const newEurBalance = eurBalance + amount;
-          setEurBalance(newEurBalance);
-          await AsyncStorage.setItem(
-            "investment_account_balance_eur",
-            newEurBalance.toString()
-          );
-        } else if (action === "withdraw") {
-          // Ensure sufficient balance
-          if (eurBalance >= amount) {
-            const newEurBalance = eurBalance - amount;
-            setEurBalance(newEurBalance);
-            await AsyncStorage.setItem(
-              "investment_account_balance_eur",
-              newEurBalance.toString()
-            );
-          } else {
-            // Handle insufficient balance
-            Alert.alert(
-              "Insufficient Balance",
-              "You do not have enough EUR balance to withdraw this amount."
-            );
+      if (action === "deposit" && account) {
+        // Update EUR balance
+        try {
+          // Send the transaction
+          const tx = await sendBatchTransaction({
+            transactions: createTransactionBuyArtWithTrUsdc(amount.toString()),
+            account
+          });
+
+          refetch();
+          refetchART();
+          console.log(tx)
+          const txHash = tx?.transactionHash; // Extract the transaction hash
+          console.log("Transaction hash:", txHash);
+
+          if (txHash) {
+            Alert.alert("Transaction Successful", `Transaction Hash: ${txHash}`);
           }
+        } catch (error) {
+          console.error("Transaction error:", error as Error);
+          Alert.alert(
+            "Transaction Failed",
+            `Error: ${(error as Error).message || error}`
+          );
         }
-      } else if (investmentType === "DOLLAR US") {
-        if (action === "deposit") {
-          // Update USD balance
-          const newUsdBalance = usdBalance + amount;
-          setUsdBalance(newUsdBalance);
-          await AsyncStorage.setItem(
-            "investment_account_balance_usd",
-            newUsdBalance.toString()
-          );
-        } else if (action === "withdraw") {
-          // Ensure sufficient balance
-          if (usdBalance >= amount) {
-            const newUsdBalance = usdBalance - amount;
-            setUsdBalance(newUsdBalance);
-            await AsyncStorage.setItem(
-              "investment_account_balance_usd",
-              newUsdBalance.toString()
-            );
-          } else {
-            // Handle insufficient balance
+
+      } else if (action === "withdraw" && account) {
+        // Ensure sufficient balance
+        if (eurBalance >= amount) {
+          try {
+            // Send the transaction
+            const tx = await sendBatchTransaction({
+              transactions: createTransactionSellArt(amount.toString()),
+              account
+            });
+
+            refetch();
+            refetchART();
+            console.log(tx)
+            const txHash = tx?.transactionHash; // Extract the transaction hash
+            console.log("Transaction hash:", txHash);
+
+            if (txHash) {
+              Alert.alert("Transaction Successful", `Transaction Hash: ${txHash}`);
+            }
+          } catch (error) {
+            console.error("Transaction error:", error as Error);
             Alert.alert(
-              "Insufficient Balance",
-              "You do not have enough USD balance to withdraw this amount."
+              "Transaction Failed",
+              `Error: ${(error as Error).message || error}`
             );
           }
+        } else {
+          // Handle insufficient balance
+          Alert.alert(
+            "Insufficient Balance",
+            "You do not have enough EUR balance to withdraw this amount."
+          );
         }
       }
       // Reset pending transaction
