@@ -35,7 +35,7 @@ export default function OnboardingItem({ item }: any) {
     },
     title: {
       fontFamily: "Alegreya_500Medium",
-      fontSize: scaledFontSize(32),
+      fontSize: scaledFontSize(26),
       marginBottom: 10,
       color: "#fff",
       textAlign: "center",
@@ -43,7 +43,7 @@ export default function OnboardingItem({ item }: any) {
     },
     subtitle: {
       fontFamily: "Poppins_400Regular",
-      fontSize: scaledFontSize(20),
+      fontSize: scaledFontSize(16),
       color: "#ECFF78",
       textAlign: "center",
     },
