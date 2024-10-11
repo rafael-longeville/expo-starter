@@ -387,9 +387,6 @@ function HomeScreen() {
               currency={currency}
               getConversionRate={getConversionRate}
             />
-            <View style={{ marginTop: 50, marginBottom: 150 }}>
-              <TransactionPOC account={account} refetch={refetch} />
-            </View>
           </ScrollView>
           <MainAccountPopup
             ref={currentAccountModalRef}
