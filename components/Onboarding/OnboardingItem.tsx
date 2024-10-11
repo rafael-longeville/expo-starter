@@ -35,7 +35,7 @@ export default function OnboardingItem({ item }: any) {
     },
     title: {
       fontFamily: "Alegreya_500Medium",
-      fontSize: scaledFontSize(26),
+      fontSize: scaledFontSize(28),
       marginBottom: 10,
       color: "#fff",
       textAlign: "center",
