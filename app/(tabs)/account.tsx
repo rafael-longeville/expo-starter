@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
-  ConnectButton,
   useActiveAccount,
   useActiveWallet,
   useDisconnect,
