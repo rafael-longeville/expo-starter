@@ -23,6 +23,7 @@ import { Wallet, WalletId } from "thirdweb/wallets";
 import withFadeIn from "@/components/effects/withFadeIn";
 import { ScrollView } from "react-native-gesture-handler";
 import * as CONFIG from "../../app.json";
+import * as EAS from "../../eas.json";
 import { client } from "@/constants/thirdweb";
 
 interface AccountDetailsProps {
@@ -223,7 +224,11 @@ function Account({
               textAlign: "center",
             }}
           >
-            Version {CONFIG.expo.ios.buildNumber}.1
+            Version {CONFIG.expo.ios.buildNumber}.2
+          </Text>
+          <Text>
+            Client ID :{" "}
+            {EAS.build.production.env.EXPO_PUBLIC_THIRDWEB_CLIENT_ID}
           </Text>
         </View>
       </ScrollView>
