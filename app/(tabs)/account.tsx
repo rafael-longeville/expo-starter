@@ -223,11 +223,7 @@ function Account({
               textAlign: "center",
             }}
           >
-            Version {CONFIG.expo.ios.buildNumber}.2
-          </Text>
-          <Text>
-            Client ID :{" "}
-            {EAS.build.production.env.EXPO_PUBLIC_THIRDWEB_CLIENT_ID}
+            Version {CONFIG.expo.ios.buildNumber}.3
           </Text>
         </View>
       </ScrollView>
