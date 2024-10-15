@@ -112,7 +112,7 @@ const Onboarding3: React.FC = () => {
           redirectionUrl={continueWithoutFundingUrl}
           // withoutFunding={storedValue}
         />
-        {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && (
+        {/* {process.env.EXPO_PUBLIC_IS_DEVELOPMENT === "true" && ( */}
           <ConnectWithGoogle
             connect={connect}
             isConnecting={isConnecting}
@@ -120,7 +120,7 @@ const Onboarding3: React.FC = () => {
             account={account}
             error={error}
           />
-        )}
+        {/* )} */}
       </View>
       <Text style={globalFonts.disclaimerText}>
         {t("disclaimer")}
