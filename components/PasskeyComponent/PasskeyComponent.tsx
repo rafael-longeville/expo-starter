@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Button, Text, Alert } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
 import {
   Passkey,
   PasskeyCreateResult,
@@ -49,33 +50,55 @@ const PasskeyComponent: React.FC = () => {
   const [registrationResult, setRegistrationResult] =
     useState<PasskeyCreateResult | null>(null);
 
-  // Mock registration request with a generated challenge
-  const registrationRequest: RegistrationRequest = {
-    challenge: generateMockChallenge(),
-    rp: {
-      name: "moncomptesouverain.fr",
-      id: "moncomptesouverain.fr",
-    },
-    user: {
-      id: base64UrlEncode(new Uint8Array([1, 2, 3, 4])), // Example mock user ID, should be a base64-url encoded unique identifier
-      name: "example_user",
-      displayName: "Example User",
-    },
-    pubKeyCredParams: [
-      { type: "public-key", alg: -7 }, // -7 stands for ES256
-    ],
+  // Function to copy text to the clipboard
+  const copyToClipboard = (text: string) => {
+    Clipboard.setString(text);
+    Alert.alert("Copied to Clipboard", "The result has been copied.");
+  };
+
+  // Function to show the result and allow copying
+  const showResultAlert = (title: string, result: object) => {
+    const resultString = JSON.stringify(result, null, 2);
+    Alert.alert(
+      title,
+      resultString,
+      [
+        {
+          text: "Copy to Clipboard",
+          onPress: () => copyToClipboard(resultString),
+        },
+        { text: "OK", style: "cancel" },
+      ],
+      { cancelable: true }
+    );
   };
 
   // Function to create a new Passkey
   const handleCreatePasskey = async (): Promise<void> => {
+    const registrationRequest: RegistrationRequest = {
+      challenge: generateMockChallenge(),
+      rp: {
+        name: "moncomptesouverain.fr",
+        id: "moncomptesouverain.fr",
+      },
+      user: {
+        id: base64UrlEncode(new Uint8Array([1, 2, 3, 4])), // Example mock user ID, should be a base64-url encoded unique identifier
+        name: "example_user",
+        displayName: "Example User",
+      },
+      pubKeyCredParams: [
+        { type: "public-key", alg: -7 }, // -7 stands for ES256
+      ],
+    };
+
     try {
       console.log("Registration Request:", registrationRequest);
-      // Call the register method with the registration request from your server
       const result = await Passkey.create(registrationRequest);
       console.log("Registration Result:", result);
       setRegistrationResult(result);
 
-      // Pass the result to your server for verification (omitted for this mock)
+      // Show the result with an option to copy it
+      showResultAlert("Passkey Created", result);
     } catch (error) {
       console.error("Error creating passkey:", JSON.stringify(error, null, 2));
       if (error instanceof Error) {
@@ -84,30 +107,35 @@ const PasskeyComponent: React.FC = () => {
     }
   };
 
-  // Mock authentication request with a generated challenge
-  const authenticationRequest: AuthenticationRequest = {
-    challenge: generateMockChallenge(), // Generate a new challenge for authentication
-    rpId: "moncomptesouverain.fr",
-    allowCredentials: [
-      {
-        id:
-          registrationResult?.id ||
-          base64UrlEncode(new Uint8Array([5, 6, 7, 8])), // Replace with the credential ID from the registration result
-        type: "public-key",
-      },
-    ],
-  };
-
   // Function to authenticate using the created passkey
   const handleAuthenticate = async (): Promise<void> => {
+    if (!registrationResult) {
+      Alert.alert("Error", "No passkey found. Please create a passkey first.");
+      return;
+    }
+
+    const fakeChallenge = generateMockChallenge();
+
+    const authenticationRequest: AuthenticationRequest = {
+      challenge: fakeChallenge, // Simulated challenge for authentication
+      rpId: "moncomptesouverain.fr",
+      allowCredentials: [
+        {
+          id: registrationResult.id,
+          type: "public-key",
+        },
+      ],
+    };
+
     try {
-      // Call the authenticate method with the assertion request from your server
+      console.log("Authentication Request:", authenticationRequest);
       const result = await Passkey.get(authenticationRequest);
       console.log("Authentication Result:", result);
-      Alert.alert("Authentication Successful", result.toString());
+
       setAssertion(result);
 
-      // Pass the result to your server for verification (omitted for this mock)
+      // Show the result with an option to copy it
+      showResultAlert("Authentication Successful", result);
     } catch (error) {
       console.error("Error authenticating passkey:", error);
       if (error instanceof Error) {
@@ -121,6 +149,7 @@ const PasskeyComponent: React.FC = () => {
       style={{
         flexDirection: "column",
         gap: 10,
+        padding: 20,
       }}
     >
       <Button title="Create Passkey" onPress={handleCreatePasskey} />
