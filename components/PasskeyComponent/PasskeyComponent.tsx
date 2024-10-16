@@ -44,6 +44,7 @@ interface AuthenticationRequest {
   allowCredentials: Array<{
     id: string;
     type: string;
+    transports?: AuthenticatorTransport[]; // Use the correct type here
   }>;
 }
 
@@ -120,6 +121,7 @@ const PasskeyComponent: React.FC = () => {
         {
           id: registrationResult.id,
           type: "public-key",
+          transports: ["internal" as AuthenticatorTransport], // Ensure we're using the correct type
         },
       ],
     };
@@ -130,7 +132,7 @@ const PasskeyComponent: React.FC = () => {
         request: authenticationRequest,
       });
 
-      const result = await Passkey.get(authenticationRequest);
+      const result = await Passkey.get(authenticationRequest as any);
 
       showResultAlert("Authentication Successful", result);
       setAssertion(result);
