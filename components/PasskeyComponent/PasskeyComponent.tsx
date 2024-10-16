@@ -5,7 +5,17 @@ import {
   Passkey,
   PasskeyCreateResult,
   PasskeyGetResult,
+  PasskeyGetRequest,
 } from "react-native-passkey";
+
+// Define the possible values for `transports`
+type AuthenticatorTransportType =
+  | "usb"
+  | "nfc"
+  | "ble"
+  | "smart-card"
+  | "hybrid"
+  | "internal";
 
 // Utility function to generate a mock base64 encoded challenge
 const generateMockChallenge = (): string => {
@@ -21,32 +31,6 @@ const base64UrlEncode = (arrayBuffer: Uint8Array): string => {
     .replace(/\//g, "_")
     .replace(/=+$/, ""); // Remove any trailing '='
 };
-
-// Define the structure of the registration request object
-interface RegistrationRequest {
-  challenge: string;
-  rp: {
-    name: string;
-    id: string;
-  };
-  user: {
-    id: string;
-    name: string;
-    displayName: string;
-  };
-  pubKeyCredParams: Array<{ type: string; alg: number }>;
-}
-
-// Define the structure of the authentication request object
-interface AuthenticationRequest {
-  challenge: string;
-  rpId: string;
-  allowCredentials: Array<{
-    id: string;
-    type: string;
-    transports?: AuthenticatorTransport[]; // Use the correct type here
-  }>;
-}
 
 const PasskeyComponent: React.FC = () => {
   const [assertion, setAssertion] = useState<PasskeyGetResult | null>(null);
@@ -75,7 +59,7 @@ const PasskeyComponent: React.FC = () => {
   };
 
   const handleCreatePasskey = async (): Promise<void> => {
-    const registrationRequest: RegistrationRequest = {
+    const registrationRequest = {
       challenge: generateMockChallenge(),
       rp: {
         name: "moncomptesouverain.fr",
@@ -114,16 +98,16 @@ const PasskeyComponent: React.FC = () => {
 
     const fakeChallenge = generateMockChallenge();
 
-    const authenticationRequest: AuthenticationRequest = {
+    const authenticationRequest: PasskeyGetRequest = {
       challenge: fakeChallenge,
       rpId: "moncomptesouverain.fr",
-      allowCredentials: [
-        {
-          id: registrationResult.id,
-          type: "public-key",
-          transports: ["internal" as AuthenticatorTransport], // Ensure we're using the correct type
-        },
-      ],
+      //   allowCredentials: [
+      //     {
+      //       id: registrationResult.id,
+      //       type: "public-key",
+      //       transports: ["internal"] as AuthenticatorTransportType[], // Use our custom type for transports
+      //     },
+      //   ],
     };
 
     try {
@@ -132,7 +116,7 @@ const PasskeyComponent: React.FC = () => {
         request: authenticationRequest,
       });
 
-      const result = await Passkey.get(authenticationRequest as any);
+      const result = await Passkey.get(authenticationRequest);
 
       showResultAlert("Authentication Successful", result);
       setAssertion(result);
