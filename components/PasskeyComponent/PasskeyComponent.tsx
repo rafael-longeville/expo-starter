@@ -107,7 +107,6 @@ const PasskeyComponent: React.FC = () => {
     }
   };
 
-  // Function to authenticate using the created passkey
   const handleAuthenticate = async (): Promise<void> => {
     if (!registrationResult) {
       Alert.alert("Error", "No passkey found. Please create a passkey first.");
@@ -128,19 +127,26 @@ const PasskeyComponent: React.FC = () => {
     };
 
     try {
-      console.log("Authentication Request:", authenticationRequest);
-      const result = await Passkey.get(authenticationRequest);
-      console.log("Authentication Result:", result);
+      Alert.alert(
+        "Authentication",
+        "Starting Passkey.get() with the following request:\n" +
+          JSON.stringify(authenticationRequest, null, 2)
+      );
 
+      const result = await Passkey.get(authenticationRequest);
+
+      Alert.alert(
+        "Authentication Successful",
+        "Result:\n" + JSON.stringify(result, null, 2)
+      );
       setAssertion(result);
 
       // Show the result with an option to copy it
       showResultAlert("Authentication Successful", result);
     } catch (error) {
-      console.error("Error authenticating passkey:", error);
-      if (error instanceof Error) {
-        showResultAlert("Authentication Failed", error);
-      }
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+      Alert.alert("Authentication Failed", errorMessage);
     }
   };
 
