@@ -116,37 +116,33 @@ const PasskeyComponent: React.FC = () => {
     const fakeChallenge = generateMockChallenge();
 
     const authenticationRequest: AuthenticationRequest = {
-      challenge: fakeChallenge, // Simulated challenge for authentication
-      rpId: "moncomptesouverain.fr",
+      challenge: fakeChallenge,
+      rpId: "moncomptesouverain.fr", // Ensure this matches the registration
       allowCredentials: [
         {
-          id: registrationResult.id,
+          id: registrationResult.id, // Use the exact ID from the registration result
           type: "public-key",
         },
       ],
     };
 
     try {
-      Alert.alert(
-        "Authentication",
-        "Starting Passkey.get() with the following request:\n" +
-          JSON.stringify(authenticationRequest, null, 2)
-      );
+      showResultAlert("Authentication", {
+        message: "Starting Passkey.get() with the following request",
+        request: authenticationRequest,
+      });
 
       const result = await Passkey.get(authenticationRequest);
 
-      Alert.alert(
-        "Authentication Successful",
-        "Result:\n" + JSON.stringify(result, null, 2)
-      );
-      setAssertion(result);
-
-      // Show the result with an option to copy it
       showResultAlert("Authentication Successful", result);
+      setAssertion(result);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
-      Alert.alert("Authentication Failed", errorMessage);
+      showResultAlert("Authentication Failed", {
+        error: errorMessage,
+        details: error,
+      });
     }
   };
 
