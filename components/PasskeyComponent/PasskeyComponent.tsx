@@ -139,7 +139,7 @@ const PasskeyComponent: React.FC = () => {
     } catch (error) {
       console.error("Error authenticating passkey:", error);
       if (error instanceof Error) {
-        alert(`Passkey authentication failed: ${error.message}`);
+        showResultAlert("Authentication Failed", error);
       }
     }
   };
