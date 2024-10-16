@@ -9,7 +9,6 @@ import {
 
 // Utility function to generate a mock base64 encoded challenge
 const generateMockChallenge = (): string => {
-  // Generate a random array of bytes and convert to base64
   const randomBytes = new Uint8Array(32); // 32 bytes = 256 bits
   window.crypto.getRandomValues(randomBytes);
   return base64UrlEncode(randomBytes);
@@ -42,7 +41,10 @@ interface RegistrationRequest {
 interface AuthenticationRequest {
   challenge: string;
   rpId: string;
-  allowCredentials: Array<{ id: string; type: string }>;
+  allowCredentials: Array<{
+    id: string;
+    type: string;
+  }>;
 }
 
 const PasskeyComponent: React.FC = () => {
@@ -50,13 +52,11 @@ const PasskeyComponent: React.FC = () => {
   const [registrationResult, setRegistrationResult] =
     useState<PasskeyCreateResult | null>(null);
 
-  // Function to copy text to the clipboard
   const copyToClipboard = (text: string) => {
     Clipboard.setString(text);
     Alert.alert("Copied to Clipboard", "The result has been copied.");
   };
 
-  // Function to show the result and allow copying
   const showResultAlert = (title: string, result: object) => {
     const resultString = JSON.stringify(result, null, 2);
     Alert.alert(
@@ -73,7 +73,6 @@ const PasskeyComponent: React.FC = () => {
     );
   };
 
-  // Function to create a new Passkey
   const handleCreatePasskey = async (): Promise<void> => {
     const registrationRequest: RegistrationRequest = {
       challenge: generateMockChallenge(),
@@ -82,7 +81,7 @@ const PasskeyComponent: React.FC = () => {
         id: "moncomptesouverain.fr",
       },
       user: {
-        id: base64UrlEncode(new Uint8Array([1, 2, 3, 4])), // Example mock user ID, should be a base64-url encoded unique identifier
+        id: base64UrlEncode(new Uint8Array([1, 2, 3, 4])),
         name: "example_user",
         displayName: "Example User",
       },
@@ -92,18 +91,17 @@ const PasskeyComponent: React.FC = () => {
     };
 
     try {
-      console.log("Registration Request:", registrationRequest);
+      showResultAlert("Registration Request", registrationRequest);
       const result = await Passkey.create(registrationRequest);
-      console.log("Registration Result:", result);
-      setRegistrationResult(result);
-
-      // Show the result with an option to copy it
       showResultAlert("Passkey Created", result);
+      setRegistrationResult(result);
     } catch (error) {
-      console.error("Error creating passkey:", JSON.stringify(error, null, 2));
-      if (error instanceof Error) {
-        alert(`Passkey creation failed: ${error.message}`);
-      }
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+      showResultAlert("Passkey Creation Failed", {
+        error: errorMessage,
+        details: error,
+      });
     }
   };
 
@@ -117,10 +115,10 @@ const PasskeyComponent: React.FC = () => {
 
     const authenticationRequest: AuthenticationRequest = {
       challenge: fakeChallenge,
-      rpId: "moncomptesouverain.fr", // Ensure this matches the registration
+      rpId: "moncomptesouverain.fr",
       allowCredentials: [
         {
-          id: registrationResult.id, // Use the exact ID from the registration result
+          id: registrationResult.id,
           type: "public-key",
         },
       ],
@@ -147,13 +145,7 @@ const PasskeyComponent: React.FC = () => {
   };
 
   return (
-    <View
-      style={{
-        flexDirection: "column",
-        gap: 10,
-        padding: 20,
-      }}
-    >
+    <View style={{ flexDirection: "column", gap: 10, padding: 20 }}>
       <Button title="Create Passkey" onPress={handleCreatePasskey} />
       <Button title="Authenticate with Passkey" onPress={handleAuthenticate} />
       {registrationResult && (
