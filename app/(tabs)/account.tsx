@@ -24,6 +24,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import * as CONFIG from "../../app.json";
 import * as EAS from "../../eas.json";
 import { client } from "@/constants/thirdweb";
+import PasskeyComponent from "@/components/PasskeyComponent/PasskeyComponent";
 
 interface AccountDetailsProps {
   currency: string;
@@ -225,6 +226,7 @@ function Account({
           >
             Version {CONFIG.expo.ios.buildNumber}.3
           </Text>
+          <PasskeyComponent />
         </View>
       </ScrollView>
     </SafeAreaView>
