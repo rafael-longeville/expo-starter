@@ -1,0 +1,105 @@
+{
+  "expo": {
+    "name": "IBEx Wallet",
+    "slug": "civicpower-wallet",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "com.civicpower.ibexwallet",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#13293D"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.civicpower.ibexwallet",
+      "associatedDomains": [
+        "webcredentials:moncomptesouverain.fr",
+        "applinks:moncomptesouverain.fr"
+      ],
+      "buildNumber": "44",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library to allow you to upload and manage your photos.",
+        "UIBackgroundModes": ["fetch", "remote-notification"],
+        "UIUserNotificationSettings": {
+          "UIUserNotificationTypeAlert": true,
+          "UIUserNotificationTypeBadge": true,
+          "UIUserNotificationTypeSound": true
+        }
+      }
+    },
+    "android": {
+      "package": "com.mcs_ibex.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#13293D"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": {
+            "scheme": "https",
+            "host": "moncomptesouverain.fr"
+          },
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "versionCode": 26
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26
+          },
+          "ios": {
+            "extraPods": [
+              {
+                "name": "OpenSSL-Universal",
+                "configurations": ["Release", "Debug"],
+                "modular_headers": true,
+                "version": "3.1.5004"
+              }
+            ]
+          }
+        }
+      ],
+      "expo-localization",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "civicpower"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "cb471d7b-fc40-4a02-b7fd-8beae6ebc6c0"
+      }
+    },
+    "owner": "sneakydev",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cb471d7b-fc40-4a02-b7fd-8beae6ebc6c0"
+    }
+  }
+}
