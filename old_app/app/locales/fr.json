@@ -1,0 +1,194 @@
+{
+  "welcome": "Bienvenue",
+  "splash": {
+    "1": {
+      "title": "Conservez votre argent vous même !",
+      "subtitle": "ET DEVENEZ INSAISISSABLE : VOUS SEUL AVEZ ACCÈS À VOTRE PORTEFUEILLE SECURISÉ."
+    },
+    "2": {
+      "title": "Placez vos fonds dans un compte rémunéré",
+      "subtitle": "ET SOYEZ REMUNÉRÉ DÈS LA PREMIÈRE SECONDE."
+    },
+    "3": {
+      "first_title": "Facile à utiliser",
+      "first_subtitle": "VOTRE IBEx WALLET S’ADAPTE À VOTRE MONNAIE DE PRÉFÉRENCE.",
+      "title": "Restez informé",
+      "subtitle": "SUR LA NATURE DES PRODUITS PROPOSÉS EN CLIQUANT SUR LES POINTS INFO :"
+    }
+  },
+  "pages": {
+    "login": {
+      "title": "Bienvenue",
+      "subtitle": "Vous êtes à un doigt de créer votre compte souverain gratuitement !"
+    },
+    "settings": {
+      "title": "Réglages"
+    },
+    "onboarding_1": {
+      "title": "Paramètrez l'affichage de la devise et les notifications",
+      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
+      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
+      "notifications_question": "Souhaitez-vous activer les notifications ?",
+      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
+      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
+      "dollar": "Dollar US",
+      "save_button": "Enregistrer"
+    },
+    "onboarding_2": {
+      "title": "Votre argent travaille pour vous.",
+      "subtitle_1": "Placez dans un",
+      "subtitle_2": "Compte rémunéré ",
+      "subtitle_3": " et touchez dès la première seconde des intérêts liquide et non exposé au taux de change.",
+      "disclaimer": "Maximum 100€ pour le premier dépôt",
+      "second_title": "Débancarisez vos liquidités",
+      "second_subtitle_1": "Et conservez les dans votre",
+      "second_subtitle_2": "Compte courant ",
+      "second_subtitle_3": "souverain dont vous seul avez l’accès.",
+      "continue_button": "Continuer sans alimenter",
+      "has_account": "J'ai déjà un compte"
+    },
+    "onboarding_3": {
+      "title": "Accédez à votre compte",
+      "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
+      "sign-in": "Utiliser un portefeuille existant",
+      "sign-in-pending": "Connexion en cours, veuillez patienter...",
+      "create-account": "Créer un nouveau portefeuille",
+      "create-account-pending": "Création en cours, veuillez patienter..."
+    },
+    "onboarding_4": {
+      "account": "Compte",
+      "title": "Alimentez votre compte",
+      "subtitle_angleEUR": "Placez vos fonds dans un des compte rémunéré EURO via carte bancaire, Apple Pay ou Google Pay.",
+      "subtitle_angleUSD": "Placez vos fonds dans un des compte rémunéré DOLLAR US via carte bancaire, Apple Pay ou Google Pay.",
+      "subtitle_onRamp": "Placez vos fonds dans votre Compte courant via carte bancaire, Apple Pay ou Google Pay.",
+      "cancel": "Annuler"
+    },
+    "home": {
+      "total_balance": "Solde total",
+      "balance": "Solde",
+      "on_main_account": "Compte courant",
+      "on_investments": "Comptes rémunérés",
+      "your_main_account": "Compte courant",
+      "your_investment_account": "Comptes rémunérés",
+      "details": "En détails",
+      "hide_details": "Masquer ",
+      "including_gains": "Dont gains",
+      "transactions": {
+        "title": "Historique de vos transactions",
+        "in_progress": "En cours",
+        "seeAll": "Tout voir",
+        "no_transactions_1": "Vous n'avez pas encore réalisé d'opération.",
+        "no_transactions_2": "Alimentez votre compte courant  ou effectuez un placement pour commencer.",
+        "copied": "Copié",
+        "copied_link": "Un lien vers la transaction a été copié dans votre presse-papier"
+      }
+    },
+    "account": {
+      "title": "Mon compte",
+      "rate_wallet": {
+        "title": "Notez IBEx Wallet",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "help_center": {
+        "title": "Centre d'aide",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "contact_us": {
+        "title": "Contactez-nous",
+        "href": "https://moncomptesouverain.fr/"
+      },
+      "make_a_donation": "Faire un don",
+      "public_adress": "Votre adresse publique IBEx Wallet",
+      "disconnect": "Se déconnecter",
+      "show_qr_code": "Afficher le QR code",
+      "close": "Fermer"
+    }
+  },
+  "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",
+  "disclaimer_link": "nos conditions générales de ventes.",
+  "components": {
+    "investment_card": {
+      "investment": "Placement",
+      "account": "Compte",
+      "yield": "Rendement",
+      "deposit": "Déposer",
+      "withdraw": "Retirer",
+      "gains": "Gains",
+      "amount_error": {
+        "title": "Montant incorrect",
+        "message": "Veuillez saisir un montant entre 5 et 100."
+      }
+    }
+  },
+  "pop-ups": {
+    "stay_updated": {
+      "title": "Restez à jour !",
+      "subtitle": "Glissez vers le bas pour rafraîchir.",
+      "disclaimer": {
+        "description": "Les montants sont arrondis au centième (2 chiffres après la virgules).",
+        "link": "En savoir plus.",
+        "href_link": "https://moncomptesouverain.fr/"
+      },
+      "button": "J'ai compris"
+    },
+    "main_account": {
+      "title": "Votre compte courant",
+      "description_1": "Soyez le réél propriétaire de vos fonds, vous seul avez la possibilité d’intéragir avec votre Compte courant souverain. ",
+      "description_2": "Vous pouvez déplacer l’argent de celui-ci, vers vos comptes rémunérés.",
+      "link": "En savoir plus.",
+      "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
+      "button": "J'ai compris"
+    },
+    "investment_account": {
+      "title": "Vos placements",
+      "description_1": "Ce placement se comporte comme un compte épargne, en mieux ! ",
+      "description_2": "Immobilisez vos fonds et percevez un intéret dès la première minute. Sortez à tout moment.",
+      "disclaimer": "Rendement estimé à l’année et non garanti. ",
+      "link": "En savoir plus.",
+      "DOLLAR US_href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/fond-en-dollar",
+      "EURO_href_link": "https://docs.wallet.civicpower.org/fr-fr/placements/compte_courant_usd/",
+      "button": "J'ai compris"
+    },
+    "transaction": {
+      "home": {
+        "swap_cc_to_usd": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Vous allez déplacer {{amount}} € de votre compte Courant vers le Compte rémunéré DOLLAR US. ",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        },
+        "swap_cc_to_euro": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Vous allez déplacer {{amount}} € de votre compte Courant vers le Compte rémunéré EURO. ",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        },
+        "swap_usd_to_cc": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Vous allez déplacer {{amount}} € du placement DOLLAR US vers votre Compte courant. ",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        },
+        "swap_euro_to_cc": {
+          "title": "Cette opération requiert votre attention",
+          "message": "Vous allez déplacer {{amount}} € du placement EURO vers votre Compte courant. ",
+          "confirm": "Confirmer",
+          "cancel": "Annuler"
+        },
+        "do_you_confirm_this_action": "Confirmez-vous cette action ?"
+      }
+    },
+    "inactivity": {
+      "title": "Session expirée",
+      "message": "Vous avez été inactif pendant plus de 5 minutes. Veuillez vous reconnecter."
+    }
+  },
+  "onramp": {
+    "title": "Alimentez votre compte",
+    "subtitle": "Placez vos fonds dans votre Compte courant, via carte bancaire, Apple Pay ou Google Pay."
+  },
+  "offramp": {
+    "title": "Retirez de votre compte",
+    "subtitle": "Vous pouvez récupérer les fonds de votre compte en retirant via carte bancaire, virement ou Google Pay."
+  }
+}
