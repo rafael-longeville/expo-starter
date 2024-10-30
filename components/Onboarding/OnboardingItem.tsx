@@ -55,7 +55,7 @@ export default function OnboardingItem({ item }: any) {
     </View>
   ) : (
     <SafeAreaView
-      style={[styles.container, { width, backgroundColor: "#13293D" }]}
+      style={[styles.container, { width, backgroundColor: "#333333" }]}
     >
       <Image
         source={require("@/assets/images/splash/ibex.png")}
