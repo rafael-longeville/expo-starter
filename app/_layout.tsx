@@ -18,6 +18,13 @@ import {
   Poppins_600SemiBold_Italic,
   Poppins_400Regular_Italic,
 } from "@expo-google-fonts/poppins";
+import {
+  useFonts as useAlegreyaFonts,
+  AlegreyaSansSC_400Regular,
+  AlegreyaSansSC_500Medium,
+  AlegreyaSansSC_800ExtraBold,
+} from "@expo-google-fonts/alegreya-sans-sc";
+
 import * as Sentry from "@sentry/react-native";
 import { StayUpdatedModalContentProvider } from "@/context/StayUpdatedModalContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -37,6 +44,11 @@ SplashScreen.preventAutoHideAsync();
 function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({
+    // Alegreya Sans SC
+    AlegreyaSansSC_400Regular,
+    AlegreyaSansSC_500Medium,
+    AlegreyaSansSC_800ExtraBold,
+    // Poppins
     Poppins_400Regular,
     Poppins_400Regular_Italic,
     Poppins_500Medium,
