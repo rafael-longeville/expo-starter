@@ -24,7 +24,10 @@ export default function Onboarding() {
   useEffect(() => {
     const checkIfSeenSplash = async () => {
       try {
+        await AsyncStorage.setItem("hasSeenSplash", "false");
+
         const value = await AsyncStorage.getItem("hasSeenSplash");
+        console.log("hasSeenSplash value: ", value);
         if (value === "true") {
           setHasSeenSplash(true);
         }
@@ -37,33 +40,33 @@ export default function Onboarding() {
   }, []);
 
   // Set up a timer to navigate to the next slide after 3 seconds of inactivity
-  useEffect(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
+  // useEffect(() => {
+  //   if (timerRef.current) {
+  //     clearTimeout(timerRef.current);
+  //   }
 
-    timerRef.current = setTimeout(() => {
-      scrollTo();
-    }, 3000);
+  //   timerRef.current = setTimeout(() => {
+  //     scrollTo();
+  //   }, 3000);
 
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [currentIndex]);
+  //   return () => {
+  //     if (timerRef.current) {
+  //       clearTimeout(timerRef.current);
+  //     }
+  //   };
+  // }, [currentIndex]);
 
   const viewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
       setCurrentIndex(viewableItems[0].index);
 
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
+      // if (timerRef.current) {
+      //   clearTimeout(timerRef.current);
+      // }
 
-      timerRef.current = setTimeout(() => {
-        scrollTo();
-      }, 3000);
+      // timerRef.current = setTimeout(() => {
+      //   scrollTo();
+      // }, 3000);
     }
   }).current;
 
@@ -124,7 +127,7 @@ export default function Onboarding() {
           console.log("Navigating to /onboarding_1");
           router.push({ pathname: "/(onboarding)/onboarding_1" });
         }
-
+        // reset to true when dev done
         await AsyncStorage.setItem("hasSeenSplash", "true");
       }
     } catch (error) {
@@ -162,56 +165,35 @@ export default function Onboarding() {
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 3, height: "100%" }}>
-        <FlatList
-          data={slidesToRender}
-          renderItem={({ item }) => <OnboardingItem item={item} />}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          bounces={false}
-          keyExtractor={(item) => item.id}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            {
-              useNativeDriver: false,
-            }
-          )}
-          scrollEventThrottle={32}
-          onViewableItemsChanged={viewableItemsChanged}
-          viewabilityConfig={viewConfig}
-          ref={slidesRef}
-          style={{
-            flexGrow: 0,
-            height: "90%",
-          }}
-        />
-      </View>
-
-      <View
+      <FlatList
+        data={slidesToRender}
+        renderItem={({ item }) => <OnboardingItem item={item} />}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+        bounces={false}
+        keyExtractor={(item) => item.id}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          {
+            useNativeDriver: false,
+          }
+        )}
+        scrollEventThrottle={32}
+        onViewableItemsChanged={viewableItemsChanged}
+        viewabilityConfig={viewConfig}
+        ref={slidesRef}
         style={{
-          position: "absolute",
-          bottom: -100,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
-          height: 300,
+          flexGrow: 0,
+          height: "90%",
         }}
-      >
-        <View style={{ display: "flex", flexDirection: "column", height: 300 }}>
-          <View style={{ height: "50%" }}>
-            <NextButton
-              scrollTo={handleNextButtonPress}
-              percentage={(currentIndex + 1) * (100 / slides.length)}
-            />
-          </View>
-          <View style={{ height: "50%" }}>
-            {currentIndex !== 0 && (
-              <Paginator data={slides} scrollX={scrollX} />
-            )}
-          </View>
-        </View>
+      />
+
+      <View style={{ position: "absolute", bottom: 20, height: "20%" }}>
+        <NextButton
+          scrollTo={handleNextButtonPress}
+          percentage={(currentIndex + 1) * (100 / slides.length)}
+        />
       </View>
     </View>
   );
@@ -220,9 +202,10 @@ export default function Onboarding() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    backgroundColor: "#13293D",
+    backgroundColor: "#333333",
   },
 });
