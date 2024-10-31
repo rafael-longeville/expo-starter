@@ -1,112 +1,185 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Pressable, Image, Button } from "react-native";
+import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
-import { scaledFontSize } from "../styles/globalFonts";
+import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
+import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
+// import { useActiveAccount, useConnect } from "thirdweb/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Link } from "expo-router";
+import { ActivityIndicator } from "react-native-paper";
+import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
+import * as Sentry from "@sentry/react-native";
+import { useRouter } from "expo-router";
 
 const Onboarding1: React.FC = () => {
   const { t } = useTranslation();
+  // const { connect, isConnecting, error } = useConnect();
+  // const account = useActiveAccount();
+  const router = useRouter();
 
-  const handleCreateWallet = () => {
-    // Navigation logic for wallet creation
-  };
+  const [storedValue, setStoredValue] = useState<string | null>(null);
+  const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    const getValueFromAsyncStorage = async () => {
+      try {
+        const value = await AsyncStorage.getItem("continueWithoutFunding");
+
+        if (value !== null) {
+          setStoredValue(value); // Set the value if it exists
+          Sentry.addBreadcrumb({
+            category: "storage",
+            message: `Retrieved continueWithoutFunding: ${value}`,
+            level: "info",
+          });
+        }
+        const allKeys = await AsyncStorage.getAllKeys();
+        console.log("allKeys", allKeys);
+        setAsyncStorageValue(allKeys.join());
+        const walletTokenKey = allKeys.find((key) =>
+          key.startsWith("walletToken")
+        );
+        const thirdwebEwsWalletUserDetailsKey = allKeys.find((key) =>
+          key.startsWith("thirdwebEwsWalletUserDetails")
+        );
+        const passKeyCredentialId = allKeys.find((key) =>
+          key.startsWith("passkey-credential-id")
+        );
+
+        if (walletTokenKey) {
+          console.log("Removing walletTokenKey", walletTokenKey);
+          await AsyncStorage.removeItem(walletTokenKey);
+        }
+        if (thirdwebEwsWalletUserDetailsKey) {
+          console.log(
+            "Removing thirdwebEwsWalletUserDetailsKey",
+            thirdwebEwsWalletUserDetailsKey
+          );
+          await AsyncStorage.removeItem(thirdwebEwsWalletUserDetailsKey);
+        }
+        if (passKeyCredentialId) {
+          console.log("Removing passKeyCredentialId", passKeyCredentialId);
+          await AsyncStorage.removeItem(passKeyCredentialId);
+        }
+        await AsyncStorage.removeItem("thirdweb:active-wallet-id");
+        await AsyncStorage.removeItem("thirdweb:connected-wallet-ids");
+        await AsyncStorage.removeItem("thirdweb:active-chain");
+      } catch (error) {
+        Sentry.captureException(error);
+        console.error("Error retrieving data from AsyncStorage: ", error);
+      }
+    };
+
+    getValueFromAsyncStorage();
+  }, []);
+
+  // useEffect(() => {
+  //   if (error) {
+  //     Sentry.captureException(error);
+  //     console.error("Error during connection:", error);
+  //   }
+  // }, [error]);
+
+  const continueWithoutFundingUrl =
+    storedValue === "true" ? "/(tabs)/home" : "/(onboarding)/onboarding_4";
 
   return (
     <View style={styles.container}>
-      {/* Header Title */}
-      <Text style={styles.title}>{t("pages.onboarding_1.title")}</Text>
-      <Text style={styles.subtitle}>{t("pages.onboarding_1.subtitle")}</Text>
+      <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
+      <Text
+        style={{
+          ...globalFonts.subtitle,
+          fontSize: scaledFontSize(16),
+          textAlign: "center",
+        }}
+      >
+        {t("pages.onboarding_1.subtitle")}
+      </Text>
+      <Image
+        style={styles.image}
+        source={require("@/assets/images/onboarding/1/biometry-image.png")}
+      />
+      <Text
+        style={{
+          ...globalFonts.subtitle,
+          fontSize: scaledFontSize(12),
+          textAlign: "center",
+          width: "90%",
+        }}
+      >
+        {t("pages.onboarding_1.second_subtitle")}
+      </Text>
+      {/* <ConnectWithPasskey
+          connect={connect}
+          redirectionUrl={continueWithoutFundingUrl}
+          // withoutFunding={storedValue}
+        />
+        <CreateWithPasskey
+          connect={connect}
+          redirectionUrl={continueWithoutFundingUrl}
+          // withoutFunding={storedValue}
+        />
+        <ConnectWithGoogle
+          connect={connect}
+          isConnecting={isConnecting}
+          redirectUrl={continueWithoutFundingUrl}
+          account={account}
+          error={error}
+        /> */}
+      <Text style={globalFonts.disclaimerText}>
+        {t("disclaimer")}
+        <Link href={"https://moncomptesouverain.fr"}>
+          <Text style={{ textDecorationLine: "underline" }}>
+            {t("disclaimer_link")}
+          </Text>
+        </Link>
+      </Text>
+      <Button
+        title={"To onboarding 2"}
+        onPress={() => {
+          AsyncStorage.setItem("continueWithoutFunding", "true");
+          router.push("/(onboarding)/onboarding_2");
+        }}
+      />
 
-      {/* Description Section */}
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>
-          {t("pages.onboarding_1.description")}
+      {/* Display the value retrieved from AsyncStorage */}
+      {/* {storedValue && (
+        <Text style={globalFonts.subtitle}>
+          Skipped provisionning: {storedValue}
         </Text>
-        <View>
-          <Text style={styles.descriptionText}>• {t("pages.onboarding_1.fingerprint")}</Text>
-          <Text style={styles.descriptionText}>• {t("pages.onboarding_1.face_id")}</Text>
-          <Text style={styles.descriptionText}>• {t("pages.onboarding_1.pin_code")}</Text>
-        </View>
-        <Text style={styles.descriptionText}>
-          {t("pages.onboarding_1.icloud_note")}
-        </Text>
-        <Text style={styles.descriptionText}>
-          {t("pages.onboarding_1.warning")}
-        </Text>
-      </View>
-
-      {/* Bottom Button */}
-      <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
-        <Text style={styles.buttonText}>{t("pages.onboarding_1.create_wallet_button")}</Text>
-      </TouchableOpacity>
-
-      {/* Bottom Text Link */}
-      <TouchableOpacity onPress={() => { /* Show info about private key */ }}>
-        <Text style={styles.linkText}>{t("pages.onboarding_1.private_key_info")}</Text>
-      </TouchableOpacity>
+      )} */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20,
-    backgroundColor: "transparent",  // Keep background transparent
+    gap: 15,
   },
-  title: {
-    fontSize: scaledFontSize(20),
-    fontWeight: "700",
-    textAlign: "center",
-    color: "#13293D",
-    marginBottom: 5,
+  buttonContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignSelf: "center",
+    gap: 10,
   },
-  subtitle: {
-    fontSize: scaledFontSize(14),
-    textAlign: "center",
-    color: "#13293D",
-    opacity: 0.7,
-    marginBottom: "20%",
+  image: {
+    height: 240,
+    resizeMode: "contain",
   },
-  descriptionContainer: {
-    marginBottom: "30%",
-    alignItems: "flex-start",  // Align content to the left
-    width: "100%",
-    gap: 20
-  },
-  descriptionText: {
-    fontSize: 16,
-    lineHeight: 22,
-    fontWeight: "400",
-    letterSpacing: 0.32,  // 2% of 16px is 0.32px
-    color: "#212121",
-    fontFamily: "Poppins",
-    marginBottom: 5,
-  },
-  button: {
-    backgroundColor: "#333333",  // Adjust button color to match design
-    paddingVertical: 15,
-    paddingHorizontal: 60,
-    borderRadius: 25,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  buttonText: {
-    fontSize: scaledFontSize(14),
-    color: "#FFFFFF",
-    fontWeight: "500",
-  },
-  linkText: {
-    fontSize: scaledFontSize(12),
-    color: "#13293D",
-    textAlign: "center",
-    textDecorationLine: "underline",
+  text: {
+    fontSize: scaledFontSize(24),
+
+    fontWeight: "bold",
   },
 });
 

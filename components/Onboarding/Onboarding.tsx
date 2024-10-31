@@ -30,9 +30,6 @@ export default function Onboarding() {
   useEffect(() => {
     const checkIfSeenSplash = async () => {
       try {
-        await AsyncStorage.setItem("hasSeenSplash", "false");
-        await AsyncStorage.setItem("settingsDone", "false");
-        await AsyncStorage.setItem("transakDone", "false");
         const value = await AsyncStorage.getItem("hasSeenSplash");
         console.log("hasSeenSplash value: ", value);
         if (value === "true") {

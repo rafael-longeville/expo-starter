@@ -27,6 +27,15 @@
       "title": "Réglages"
     },
     "onboarding_1": {
+      "title": "Accédez à votre compte",
+      "subtitle": "Ouvrez ou accédez à un compte IBEx Wallet existant, en un clic :",
+      "second_subtitle": "Créez votre portefueille numérique crypté à l'aide de votre empreinte digitale, de votre visage ou de votre code d'accès.",
+      "sign-in": "Utiliser un portefeuille existant",
+      "sign-in-pending": "Connexion en cours, veuillez patienter...",
+      "create-account": "Créer un nouveau portefeuille",
+      "create-account-pending": "Création en cours, veuillez patienter..."
+    },
+    "onboarding_2": {
       "title": "Créez votre portefeuille",
       "subtitle": "Vous seul en aurez l’accès.",
       "description": "Créez et reconnectez vous à un portefeuille numérique grâce aux nouvelles methodes d’identification :",
@@ -45,26 +54,15 @@
       "dollar": "Dollar US",
       "save_button": "Enregistrer"
     },
-    "onboarding_2": {
-      "title": "Votre argent travaille pour vous.",
-      "subtitle_1": "Placez dans un",
-      "subtitle_2": "Compte rémunéré ",
-      "subtitle_3": " et touchez dès la première seconde des intérêts liquide et non exposé au taux de change.",
-      "disclaimer": "Maximum 100€ pour le premier dépôt",
-      "second_title": "Débancarisez vos liquidités",
-      "second_subtitle_1": "Et conservez les dans votre",
-      "second_subtitle_2": "Compte courant ",
-      "second_subtitle_3": "souverain dont vous seul avez l’accès.",
-      "continue_button": "Continuer sans alimenter",
-      "has_account": "J'ai déjà un compte"
-    },
     "onboarding_3": {
-      "title": "Accédez à votre compte",
-      "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
-      "sign-in": "Utiliser un portefeuille existant",
-      "sign-in-pending": "Connexion en cours, veuillez patienter...",
-      "create-account": "Créer un nouveau portefeuille",
-      "create-account-pending": "Création en cours, veuillez patienter..."
+      "title": "Paramètrez l'affichage de la devise et les notifications",
+      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
+      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
+      "notifications_question": "Souhaitez-vous activer les notifications ?",
+      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
+      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
+      "dollar": "Dollar US",
+      "save_button": "Enregistrer"
     },
     "onboarding_4": {
       "account": "Compte",

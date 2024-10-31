@@ -1,127 +1,121 @@
-// Onboarding2.tsx
-
-import OnboardingInvestmentCard from "@/components/InvestmentCard/OnboardingInvestmentCard";
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  LayoutChangeEvent,
-  ScrollView,
-} from "react-native";
-import { Divider } from "react-native-paper";
-import { globalFonts, scaledFontSize } from "../styles/globalFonts";
-import * as Sentry from "@sentry/react-native";
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
+import { scaledFontSize } from "../styles/globalFonts";
 
-interface Onboarding2Props {
-  scrollViewRef: React.RefObject<ScrollView>;
-}
-
-const Onboarding2: React.FC<Onboarding2Props> = ({ scrollViewRef }) => {
+const Onboarding2: React.FC = () => {
   const { t } = useTranslation();
-  const [dollarCardY, setDollarCardY] = useState<number | null>(null);
-  const [euroCardY, setEuroCardY] = useState<number | null>(null);
-  const [dollarCCCardY, setDollarCCCardY] = useState<number | null>(null);
 
-  // Function to scroll to a specific card position
-  const scrollToCard = (yPosition: number | null) => {
-    if (scrollViewRef?.current && yPosition !== null) {
-      scrollViewRef.current.scrollTo({ y: yPosition + 40, animated: true });
-    }
-  };
-
-  // Capture a breadcrumb when the component mounts
-  useEffect(() => {
-    Sentry.addBreadcrumb({
-      category: "navigation",
-      message: "Onboarding2 screen loaded",
-      level: "info",
-    });
-  }, []);
-
-  // Handlers for layout changes
-  const handleDollarCardLayout = (event: LayoutChangeEvent) => {
-    setDollarCardY(event.nativeEvent.layout.y);
-  };
-
-  const handleEuroCardLayout = (event: LayoutChangeEvent) => {
-    setEuroCardY(event.nativeEvent.layout.y);
-  };
-
-  const handleDollarCCCardLayout = (event: LayoutChangeEvent) => {
-    setDollarCCCardY(event.nativeEvent.layout.y);
+  const handleCreateWallet = () => {
+    // Navigation logic for wallet creation
   };
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-        <Text style={globalFonts.title}>{t("pages.onboarding_2.title")}</Text>
-        <Text style={globalFonts.subtitle}>
-          {t("pages.onboarding_2.subtitle_1")}{" "}
-          <Text style={{ fontFamily: "Poppins_700Bold" }}>
-            {t("pages.onboarding_2.subtitle_2")}
-          </Text>{" "}
-          {t("pages.onboarding_2.subtitle_3")}
+      {/* Header Title */}
+      <Text style={styles.title}>{t("pages.onboarding_2.title")}</Text>
+      <Text style={styles.subtitle}>{t("pages.onboarding_2.subtitle")}</Text>
+
+      {/* Description Section */}
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.descriptionText}>
+          {t("pages.onboarding_2.description")}
         </Text>
-        <Text style={{ ...globalFonts.disclaimerText }}>
-          {t("pages.onboarding_2.disclaimer")}
+        <View>
+          <Text style={styles.descriptionText}>
+            • {t("pages.onboarding_2.fingerprint")}
+          </Text>
+          <Text style={styles.descriptionText}>
+            • {t("pages.onboarding_2.face_id")}
+          </Text>
+          <Text style={styles.descriptionText}>
+            • {t("pages.onboarding_2.pin_code")}
+          </Text>
+        </View>
+        <Text style={styles.descriptionText}>
+          {t("pages.onboarding_2.icloud_note")}
+        </Text>
+        <Text style={styles.descriptionText}>
+          {t("pages.onboarding_2.warning")}
         </Text>
       </View>
 
-      <OnboardingInvestmentCard
-        onLayout={handleDollarCardLayout}
-        investment="DOLLAR US"
-        investing={true}
-        scrollViewRef={scrollViewRef}
-        onFocusInput={() => scrollToCard(dollarCardY)} // Scroll when input is focused
-      />
+      {/* Bottom Button */}
+      <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
+        <Text style={styles.buttonText}>
+          {t("pages.onboarding_2.create_wallet_button")}
+        </Text>
+      </TouchableOpacity>
 
-      <OnboardingInvestmentCard
-        onLayout={handleEuroCardLayout}
-        investment="EURO"
-        investing={true}
-        scrollViewRef={scrollViewRef}
-        onFocusInput={() => scrollToCard(euroCardY)} // Scroll when input is focused
-      />
-
-      <Divider
-        style={{
-          backgroundColor: "#13293D",
-          opacity: 0.3,
-          height: 1.5,
+      {/* Bottom Text Link */}
+      <TouchableOpacity
+        onPress={() => {
+          /* Show info about private key */
         }}
-      />
-
-      <Text style={globalFonts.title}>
-        {t("pages.onboarding_2.second_title")}
-      </Text>
-
-      <Text style={globalFonts.subtitle}>
-        {t("pages.onboarding_2.second_subtitle_1")}{" "}
-        <Text style={{ fontFamily: "Poppins_700Bold" }}>
-          {t("pages.onboarding_2.second_subtitle_2")}
-        </Text>{" "}
-        {t("pages.onboarding_2.second_subtitle_3")}
-      </Text>
-
-      <OnboardingInvestmentCard
-        onLayout={handleDollarCCCardLayout}
-        investment="DOLLAR US"
-        investing={false}
-        scrollViewRef={scrollViewRef}
-        onFocusInput={() => scrollToCard(dollarCCCardY)} // Scroll when input is focused
-      />
+      >
+        <Text style={styles.linkText}>
+          {t("pages.onboarding_2.private_key_info")}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-// Type-safe styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    backgroundColor: "transparent", // Keep background transparent
+  },
+  title: {
+    fontSize: scaledFontSize(20),
+    fontWeight: "700",
+    textAlign: "center",
+    color: "#13293D",
+    marginBottom: 5,
+  },
+  subtitle: {
+    fontSize: scaledFontSize(14),
+    textAlign: "center",
+    color: "#13293D",
+    opacity: 0.7,
+    marginBottom: "20%",
+  },
+  descriptionContainer: {
+    marginBottom: "30%",
+    alignItems: "flex-start", // Align content to the left
+    width: "100%",
     gap: 20,
-    marginBottom: 150,
+  },
+  descriptionText: {
+    fontSize: 16,
+    lineHeight: 22,
+    fontWeight: "400",
+    letterSpacing: 0.32, // 2% of 16px is 0.32px
+    color: "#212121",
+    fontFamily: "Poppins",
+    marginBottom: 5,
+  },
+  button: {
+    backgroundColor: "#333333", // Adjust button color to match design
+    paddingVertical: 15,
+    paddingHorizontal: 60,
+    borderRadius: 25,
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  buttonText: {
+    fontSize: scaledFontSize(14),
+    color: "#FFFFFF",
+    fontWeight: "500",
+  },
+  linkText: {
+    fontSize: scaledFontSize(12),
+    color: "#13293D",
+    textAlign: "center",
+    textDecorationLine: "underline",
   },
 });
 
