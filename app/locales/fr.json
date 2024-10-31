@@ -27,14 +27,12 @@
       "title": "Réglages"
     },
     "onboarding_1": {
-      "title": "Paramètrez l'affichage de la devise et les notifications",
-      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
-      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
-      "notifications_question": "Souhaitez-vous activer les notifications ?",
-      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
-      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
-      "dollar": "Dollar US",
-      "save_button": "Enregistrer"
+      "title": "Accédez à votre compte",
+      "subtitle": "Ouvrez ou accédez à un compte IBEx Wallet existant, en un clic :",
+      "sign-in": "Utiliser un portefeuille existant",
+      "sign-in-pending": "Connexion en cours, veuillez patienter...",
+      "create-account": "Créer un nouveau portefeuille",
+      "create-account-pending": "Création en cours, veuillez patienter..."
     },
     "onboarding_2": {
       "title": "Votre argent travaille pour vous.",
@@ -50,12 +48,14 @@
       "has_account": "J'ai déjà un compte"
     },
     "onboarding_3": {
-      "title": "Accédez à votre compte",
-      "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
-      "sign-in": "Utiliser un portefeuille existant",
-      "sign-in-pending": "Connexion en cours, veuillez patienter...",
-      "create-account": "Créer un nouveau portefeuille",
-      "create-account-pending": "Création en cours, veuillez patienter..."
+      "title": "Paramètrez l'affichage de la devise et les notifications",
+      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
+      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
+      "notifications_question": "Souhaitez-vous activer les notifications ?",
+      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
+      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
+      "dollar": "Dollar US",
+      "save_button": "Enregistrer"
     },
     "onboarding_4": {
       "account": "Compte",

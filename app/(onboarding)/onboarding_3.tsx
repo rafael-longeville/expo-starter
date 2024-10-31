@@ -1,138 +1,150 @@
-import React, { useEffect, useState } from "react";
+import { router } from "expo-router";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
-import { useTranslation } from "react-i18next";
-import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
-import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
-// import { useActiveAccount, useConnect } from "thirdweb/react";
+// import { useActiveAccount } from "thirdweb/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link } from "expo-router";
-import { ActivityIndicator } from "react-native-paper";
-import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
+import { useTranslation } from "react-i18next";
 import * as Sentry from "@sentry/react-native";
+// // import {
+// //   TransakWebView,
+// //   Events,
+// //   EventTypes,
+// //   Order,
+// // } from "@transak/react-native-sdk";
 
 const Onboarding3: React.FC = () => {
-  const { t } = useTranslation();
-  // const { connect, isConnecting, error } = useConnect();
-  // const account = useActiveAccount();
+  //   // const account = useActiveAccount();
+  //   const [onboardingValue, setOnboardingValue] = useState<string | null>(null);
+  //   const [onboardingMethod, setOnboardingMethod] = useState<string | null>(null);
+  //   const [transakParams, setTransakParams] = useState<any>(null); // Holds the params for Transak SDK
+  //   const [currency, setCurrency] = useState<string>("EUR"); // Default currency
+  //   const [currencySymbol, setCurrencySymbol] = useState<string>("€");
+  //   const { t } = useTranslation();
 
-  const [storedValue, setStoredValue] = useState<string | null>(null);
-  const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(
-    null
-  );
+  //   // useEffect(() => {
+  //   //   const loadOnboardingData = async () => {
+  //   //     try {
+  //   //       // Fetch currency and onboarding data from AsyncStorage
+  //   //       const value = await AsyncStorage.getItem("onboardingValue");
+  //   //       const method = await AsyncStorage.getItem("onboardingMethod");
+  //   //       const storedCurrency = await AsyncStorage.getItem("selectedCurrency");
 
-  useEffect(() => {
-    const getValueFromAsyncStorage = async () => {
-      try {
-        const value = await AsyncStorage.getItem("continueWithoutFunding");
+  //   //       setOnboardingValue(value);
+  //   //       setOnboardingMethod(method);
+  //   //       setCurrency(storedCurrency === "euro" ? "EUR" : "USD"); // Update currency
+  //   //       setCurrencySymbol(storedCurrency === "euro" ? "€" : "$");
+  //   //       Sentry.addBreadcrumb({
+  //   //         category: "storage",
+  //   //         message: `Retrieved onboardingValue: ${value}, onboardingMethod: ${method}, currency: ${storedCurrency}`,
+  //   //         level: "info",
+  //   //       });
 
-        if (value !== null) {
-          setStoredValue(value); // Set the value if it exists
-          Sentry.addBreadcrumb({
-            category: "storage",
-            message: `Retrieved continueWithoutFunding: ${value}`,
-            level: "info",
-          });
-        }
-        const allKeys = await AsyncStorage.getAllKeys();
-        console.log("allKeys", allKeys);
-        setAsyncStorageValue(allKeys.join());
-        const walletTokenKey = allKeys.find((key) =>
-          key.startsWith("walletToken")
-        );
-        const thirdwebEwsWalletUserDetailsKey = allKeys.find((key) =>
-          key.startsWith("thirdwebEwsWalletUserDetails")
-        );
-        const passKeyCredentialId = allKeys.find((key) =>
-          key.startsWith("passkey-credential-id")
-        );
+  //   //       // if (account?.address && currency) {
+  //   //       //   let params = {
+  //   //       //     apiKey: "ec807ee4-b564-4b2a-af55-92a8adfe619b",
+  //   //       //     fiatCurrency: currency, // Use the selected currency
+  //   //       //     cryptoCurrencyCode: "USDC",
+  //   //       //     fiatAmount: "100",
+  //   //       //     productsAvailed: ["BUY"],
+  //   //       //     network: "arbitrum",
+  //   //       //     defaultPaymentMethod: "credit_debit_card",
+  //   //       //     disablePaymentMethods: ["gbp_bank_transfer", "sepa_bank_transfer"],
+  //   //       //     // hideExchangeScreen: true,
+  //   //       //     walletAddress: account.address,
+  //   //       //     disableWalletAddressForm: true,
+  //   //       //     isFeeCalculationHidden: true,
+  //   //       //     environment: "STAGING",
+  //   //       //     partnerOrderId: "123456",
+  //   //       //   };
 
-        if (walletTokenKey) {
-          console.log("Removing walletTokenKey", walletTokenKey);
-          await AsyncStorage.removeItem(walletTokenKey);
-        }
-        if (thirdwebEwsWalletUserDetailsKey) {
-          console.log(
-            "Removing thirdwebEwsWalletUserDetailsKey",
-            thirdwebEwsWalletUserDetailsKey
-          );
-          await AsyncStorage.removeItem(thirdwebEwsWalletUserDetailsKey);
-        }
-        if (passKeyCredentialId) {
-          console.log("Removing passKeyCredentialId", passKeyCredentialId);
-          await AsyncStorage.removeItem(passKeyCredentialId);
-        }
-        await AsyncStorage.removeItem("thirdweb:active-wallet-id");
-        await AsyncStorage.removeItem("thirdweb:connected-wallet-ids");
-        await AsyncStorage.removeItem("thirdweb:active-chain");
-      } catch (error) {
-        Sentry.captureException(error);
-        console.error("Error retrieving data from AsyncStorage: ", error);
-      }
-    };
+  //   //       //   if (onboardingValue) {
+  //   //       //     params = {
+  //   //       //       ...params,
+  //   //       //       fiatAmount: onboardingValue,
+  //   //       //     };
+  //   //       //   }
 
-    getValueFromAsyncStorage();
-  }, []);
+  //   //       //   setTransakParams(params);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     Sentry.captureException(error);
-  //     console.error("Error during connection:", error);
-  //   }
-  // }, [error]);
+  //   //       //   Sentry.addBreadcrumb({
+  //   //       //     category: "navigation",
+  //   //       //     message: `Set Transak params: ${JSON.stringify(params)}`,
+  //   //       //     level: "info",
+  //   //       //   });
+  //   //       // }
+  //   //     } catch (error) {
+  //   //       Sentry.captureException(error);
+  //   //       console.error("Error loading onboarding data from AsyncStorage", error);
+  //   //     }
+  //   //   };
 
-  const continueWithoutFundingUrl =
-    storedValue === "true" ? "/(tabs)/home" : "/(onboarding)/onboarding_4";
+  //   //   loadOnboardingData();
+  //   // }, [account, onboardingMethod, onboardingValue, currency]); // Added currency as dependency
+
+  //   const onTransakEventHandler = async (event: EventTypes, data: Order) => {
+  //     switch (event) {
+  //       case Events.ORDER_CREATED:
+  //         console.log(event, data);
+  //         break;
+
+  //       case Events.ORDER_PROCESSING:
+  //         console.log(event, data);
+  //         try {
+  //           await AsyncStorage.setItem("transakDone", "true");
+  //         } catch (error) {
+  //           console.error("Failed to store data in AsyncStorage:", error);
+  //         }
+  //         router.push("/(tabs)/home");
+  //         break;
+
+  //       case Events.ORDER_COMPLETED:
+  //         router.push("/(onboarding)/onboarding_2?transactionSuccess=true");
+  //         console.log(event, data);
+  //         break;
+
+  //       default:
+  //         console.log(event, data);
+  //     }
+  //   };
 
   return (
     <View style={styles.container}>
-      <Text style={globalFonts.title}>{t("pages.onboarding_3.title")}</Text>
-      <Text
+      <Text>Hello</Text>
+      {/* <Text style={{ ...globalFonts.title, textAlign: "left" }}>
+        {t("pages.onboarding_4.title")}
+      </Text>
+      <Text style={globalFonts.subtitle}>
+        {t(`pages.onboarding_4.subtitle_${onboardingMethod}`)}
+      </Text> */}
+      {/* {transakParams && (
+        <TransakWebView
+          onError={(error) => {
+            console.error("Transak error", error);
+          }}
+          style={styles.webview}
+          transakConfig={transakParams}
+          onTransakEvent={onTransakEventHandler}
+        />
+      )} */}
+      {/* <Text
         style={{
           ...globalFonts.subtitle,
-          width: "80%",
+          textAlign: "center",
+          fontSize: scaledFontSize(14),
+          marginTop: 20,
+        }}
+        onPress={() => {
+          Sentry.addBreadcrumb({
+            category: "navigation",
+            message: "User navigated to home from Onboarding3",
+            level: "info",
+          });
+          router.push("/(onboarding)/onboarding_2");
         }}
       >
-        {t("pages.onboarding_3.subtitle")}
-      </Text>
-      <View style={styles.buttonContainer}>
-        <Image
-          style={styles.image}
-          source={require("@/assets/images/biometry-image.png")}
-        />
-        {/* <ConnectWithPasskey
-          connect={connect}
-          redirectionUrl={continueWithoutFundingUrl}
-          // withoutFunding={storedValue}
-        />
-        <CreateWithPasskey
-          connect={connect}
-          redirectionUrl={continueWithoutFundingUrl}
-          // withoutFunding={storedValue}
-        />
-        <ConnectWithGoogle
-          connect={connect}
-          isConnecting={isConnecting}
-          redirectUrl={continueWithoutFundingUrl}
-          account={account}
-          error={error}
-        /> */}
-      </View>
-      <Text style={globalFonts.disclaimerText}>
-        {t("disclaimer")}
-        <Link href={"https://moncomptesouverain.fr"}>
-          <Text style={{ textDecorationLine: "underline" }}>
-            {t("disclaimer_link")}
-          </Text>
-        </Link>
-      </Text>
-
-      {/* Display the value retrieved from AsyncStorage */}
-      {/* {storedValue && (
-        <Text style={globalFonts.subtitle}>
-          Skipped provisionning: {storedValue}
-        </Text>
-      )} */}
+        {t("pages.onboarding_4.cancel")}
+      </Text> */}
     </View>
   );
 };
@@ -141,24 +153,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "flex-start",
     gap: 15,
-  },
-  buttonContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignSelf: "center",
-    gap: 10,
-  },
-  image: {
-    borderWidth: 1,
-    borderColor: "#13293D",
-    borderRadius: 30, // Optional, gives rounded corners to the image
   },
   text: {
     fontSize: scaledFontSize(24),
-
     fontWeight: "bold",
+  },
+  webview: {
+    marginTop: 20,
+    width: "100%",
+    height: 600,
+  },
+  containercompte: {
+    height: 60,
+    borderRadius: 30,
+    width: "100%",
+    backgroundColor: "#13293D",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 20,
+    marginBottom: 30,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  textcompte: {
+    flexDirection: "row",
+    alignItems: "center",
+    fontFamily: "Poppins",
+  },
+  amount: {
+    color: "#ECFF78",
+    fontSize: scaledFontSize(20),
+    fontWeight: "700",
+    fontFamily: "Poppins",
   },
 });
 
