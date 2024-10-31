@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Image } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image, Button } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
@@ -10,11 +10,13 @@ import { Link } from "expo-router";
 import { ActivityIndicator } from "react-native-paper";
 import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
 import * as Sentry from "@sentry/react-native";
+import { useRouter } from "expo-router";
 
 const Onboarding1: React.FC = () => {
   const { t } = useTranslation();
   // const { connect, isConnecting, error } = useConnect();
   // const account = useActiveAccount();
+  const router = useRouter();
 
   const [storedValue, setStoredValue] = useState<string | null>(null);
   const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(
@@ -135,6 +137,13 @@ const Onboarding1: React.FC = () => {
           </Text>
         </Link>
       </Text>
+      <Button
+        title={"To onboarding 2"}
+        onPress={() => {
+          AsyncStorage.setItem("continueWithoutFunding", "true");
+          router.push("/(onboarding)/onboarding_2");
+        }}
+      />
 
       {/* Display the value retrieved from AsyncStorage */}
       {/* {storedValue && (
