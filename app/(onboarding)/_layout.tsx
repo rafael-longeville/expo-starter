@@ -13,6 +13,7 @@ import Onboarding1 from "./onboarding_1";
 import Onboarding2 from "./onboarding_2";
 import Onboarding3 from "./onboarding_3";
 import Onboarding4 from "./onboarding_4";
+import Onboarding7 from "./onboarding_7";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
@@ -40,6 +41,8 @@ export default function OnboardingLayout() {
         return <Onboarding2 />;
       case "onboarding_3":
         return <Onboarding3 />;
+      case "onboarding_7":
+        return <Onboarding7 />;
       // case "onboarding_4":
       //   return <Onboarding4 />;
       // default:
