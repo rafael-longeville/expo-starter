@@ -99,16 +99,16 @@ export default function Onboarding() {
         const settingsDone = await AsyncStorage.getItem("settingsDone");
         const transakDone = await AsyncStorage.getItem("transakDone");
 
-        if (settingsDone === "true" && transakDone === "true") {
-          console.log("Navigating to /onboarding_3");
-          router.push({ pathname: "/(onboarding)/onboarding_3" });
-        } else if (settingsDone === "true") {
-          console.log("Navigating to /onboarding_2");
-          router.push({ pathname: "/(onboarding)/onboarding_2" });
-        } else {
+        // if (settingsDone === "true" && transakDone === "true") {
+        //   console.log("Navigating to /onboarding_3");
+        //   router.push({ pathname: "/(onboarding)/onboarding_3" });
+        // } else if (settingsDone === "true") {
+        //   console.log("Navigating to /onboarding_2");
+        //   router.push({ pathname: "/(onboarding)/onboarding_2" });
+        // } else {
           console.log("Navigating to /onboarding_1");
           router.push({ pathname: "/(onboarding)/onboarding_1" });
-        }
+        // }
         // reset to true when dev done
         await AsyncStorage.setItem("hasSeenSplash", "true");
       }

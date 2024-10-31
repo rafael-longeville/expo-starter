@@ -46,6 +46,8 @@ export const globalFonts = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
     fontSize: scaledFontSize(14),
     color: "#13293D",
+    textAlign: "center",
+
   },
   whiteSubtitle: {
     fontSize: scaledFontSize(16),
