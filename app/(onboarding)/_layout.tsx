@@ -19,6 +19,7 @@ import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
 import { useTyping } from "@/context/TypingContext";
+import Onboarding6 from "./onboarding_6";
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
@@ -43,6 +44,10 @@ export default function OnboardingLayout() {
         return <Onboarding2 />;
       case "onboarding_3":
         return <Onboarding3 />;
+      case "onboarding_4":
+        return <Onboarding4 />;
+      case "onboarding_6":
+        return <Onboarding6 />;
       case "onboarding_7":
         return <Onboarding7 />;
       case "onboarding_4":

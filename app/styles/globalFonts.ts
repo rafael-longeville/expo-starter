@@ -47,7 +47,6 @@ export const globalFonts = StyleSheet.create({
     fontSize: scaledFontSize(14),
     color: "#13293D",
     textAlign: "center",
-
   },
   whiteSubtitle: {
     fontSize: scaledFontSize(16),
@@ -57,7 +56,7 @@ export const globalFonts = StyleSheet.create({
   disclaimerText: {
     fontFamily: "Poppins_400Regular",
     fontSize: scaledFontSize(12),
-    color: "rgba(19, 41, 61, 0.70)",
+    color: "rgba(33, 33, 33, 0.70)",
     textAlign: "center",
   },
 });
