@@ -31,6 +31,8 @@ export default function Onboarding() {
     const checkIfSeenSplash = async () => {
       try {
         await AsyncStorage.setItem("hasSeenSplash", "false");
+        await AsyncStorage.setItem("settingsDone", "false");
+        await AsyncStorage.setItem("transakDone", "false");
         const value = await AsyncStorage.getItem("hasSeenSplash");
         console.log("hasSeenSplash value: ", value);
         if (value === "true") {
@@ -45,7 +47,7 @@ export default function Onboarding() {
 
   const viewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0].index);
+      setCurrentIndex(viewableItems[0].index); // Set the current index based on the viewable items
     }
   }).current;
 
@@ -78,7 +80,8 @@ export default function Onboarding() {
     },
   ];
 
-  const slidesToRender = hasSeenSplash ? [slides[0]] : slides;
+  // Update slidesToRender to start from the second slide
+  const slidesToRender = hasSeenSplash ? [slides[0]] : slides.slice(1);
 
   const scrollTo = async () => {
     console.log("scrollTo called", {
@@ -91,6 +94,7 @@ export default function Onboarding() {
 
     try {
       if (currentIndex < slides.length - 1) {
+        // Adjust scrolling logic
         console.log("Scrolling to next index:", currentIndex + 1);
         slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
       } else {
@@ -151,7 +155,7 @@ export default function Onboarding() {
     >
       <View style={styles.container}>
         <FlatList
-          data={slidesToRender}
+          data={slides}
           renderItem={({ item }) => <OnboardingItem item={item} />}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -166,14 +170,22 @@ export default function Onboarding() {
           onViewableItemsChanged={viewableItemsChanged}
           viewabilityConfig={viewConfig}
           ref={slidesRef}
-          style={{ flexGrow: 0, height: "90%" }}
+          style={{ flexGrow: 0, height: "100%" }}
         />
 
         <View style={{ position: "absolute", bottom: 20, height: "20%" }}>
           <NextButton
             scrollTo={handleNextButtonPress}
-            percentage={(currentIndex + 1) * (100 / slides.length)}
+            percentage={currentIndex * (100 / (slides.length - 1))} // Updated to reflect slides length excluding first
           />
+          {currentIndex >= 1 && currentIndex <= 3 && (
+            <View style={{ height: "20%" }}>
+              <Paginator
+                data={slides.slice(1)} // Pass slides excluding the first for the paginator
+                currentIndex={currentIndex} // Pass currentIndex to paginator
+              />
+            </View>
+          )}
         </View>
       </View>
     </ImageBackground>

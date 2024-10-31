@@ -1,44 +1,21 @@
 import React from "react";
-import { View, StyleSheet, Animated, useWindowDimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Animated,
+  useWindowDimensions,
+  Text,
+} from "react-native";
 
-export default Paginator = ({ data, scrollX }) => {
-  const { width } = useWindowDimensions();
-
+const Paginator = ({ data, currentIndex }) => {
   return (
-    <View style={{ flexDirection: "row", height: "100%" }}>
+    <View style={{ flexDirection: "row", height: "100%", gap: 5 }}>
       {data.map((_, i) => {
-        const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
-
-        const dotWidth = scrollX.interpolate({
-          inputRange,
-          outputRange: [10, 20, 10],
-          extrapolate: "clamp",
-        });
-
-        const opacity = scrollX.interpolate({
-          inputRange,
-          outputRange: [0.3, 1, 0.3],
-          extrapolate: "clamp",
-        });
-
-        const backgroundColor = scrollX.interpolate({
-          inputRange,
-          outputRange: ["#A8A8A8", "#E9FD79", "#A8A8A8"],
-          extrapolate: "clamp",
-        });
+        // Determine background color based on current index
+        const backgroundColor = currentIndex === i + 1 ? "#6EE7B7" : "#525252"; // i + 1 adjusts index for 0-based array
 
         return (
-          <Animated.View
-            style={[
-              styles.dot,
-              {
-                width: dotWidth,
-                opacity,
-                backgroundColor, // Set background color dynamically
-              },
-            ]}
-            key={i.toString()}
-          />
+          <View style={[styles.dot, { backgroundColor }]} key={i.toString()} />
         );
       })}
     </View>
@@ -47,8 +24,11 @@ export default Paginator = ({ data, scrollX }) => {
 
 const styles = StyleSheet.create({
   dot: {
-    height: 10,
-    borderRadius: 5,
+    height: 13,
+    borderRadius: 10,
     marginHorizontal: 8,
+    width: 13, // Fixed width for dots
   },
 });
+
+export default Paginator;
