@@ -1,16 +1,34 @@
 import { scaledFontSize } from "@/app/styles/globalFonts";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Image,
+  Animated,
   useWindowDimensions,
+  Image,
+  Easing,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function OnboardingItem({ item }: any) {
   const { height, width } = useWindowDimensions();
+  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity set to 0 for fade-in effect
+  const multiplierValue = item.id === "4" ? 0.35 : 0.25;
+  const marginValue = item.id === "4" ? "-10%" : "10%";
+
+  useEffect(() => {
+    // Reset fadeAnim to 0 before starting the animation for smoothness
+    fadeAnim.setValue(0);
+
+    // Trigger smooth fade-in animation when the component mounts or item changes
+    Animated.timing(fadeAnim, {
+      toValue: 1, // Animate to full opacity
+      duration: 1600, // Shorter duration for a smoother, quicker transition
+      useNativeDriver: true,
+      easing: Easing.out(Easing.quad), // Smooth easing function
+    }).start();
+  }, [item.id]); // Run the animation when item.id changes
 
   const styles = StyleSheet.create({
     container: {
@@ -21,12 +39,15 @@ export default function OnboardingItem({ item }: any) {
     },
     initialContainer: {
       flex: 1,
-      justifyContent: "flex-start",
+      flexDirection: "column",
+      justifyContent: "center",
       alignItems: "center",
+      gap: 40,
     },
     initialImage: {
-      flex: 1,
-      justifyContent: "center",
+      height: 200,
+      width: 200,
+      resizeMode: "contain",
     },
     image: {
       width: width * 0.6, // Responsive width
@@ -34,7 +55,7 @@ export default function OnboardingItem({ item }: any) {
       resizeMode: "contain", // Ensure the image scales without distortion
     },
     title: {
-      fontFamily: "Alegreya_500Medium",
+      fontFamily: "AlegreyaSansSC_500Medium",
       fontSize: scaledFontSize(28),
       marginBottom: 10,
       color: "#fff",
@@ -44,26 +65,67 @@ export default function OnboardingItem({ item }: any) {
     subtitle: {
       fontFamily: "Poppins_400Regular",
       fontSize: scaledFontSize(16),
-      color: "#ECFF78",
+      color: "#6EE7B7",
       textAlign: "center",
     },
   });
 
   return item.id === "1" ? (
     <View style={[styles.initialContainer, { width }]}>
-      <Image source={item.image} style={[styles.initialImage, { width }]} />
+      <Image source={item.image} style={styles.initialImage} />
+
+      <View style={{ flexDirection: "column", gap: 10 }}>
+        <Text
+          style={{
+            fontFamily: "AlegreyaSansSC_800ExtraBold",
+            fontSize: scaledFontSize(60),
+            color: "#fff",
+            textAlign: "center",
+            lineHeight: scaledFontSize(60),
+          }}
+        >
+          IBEx
+        </Text>
+        <Text
+          style={{
+            fontFamily: "Poppins_400Regular",
+            fontSize: scaledFontSize(60),
+            color: "#6EE7B7",
+            textAlign: "center",
+            lineHeight: scaledFontSize(60),
+          }}
+        >
+          Wallet
+        </Text>
+      </View>
     </View>
   ) : (
     <SafeAreaView
-      style={[styles.container, { width, backgroundColor: "#13293D" }]}
+      style={[
+        styles.container,
+        {
+          width,
+          backgroundColor: "transparent", // Make sure the container background is transparent
+        },
+      ]}
     >
-      <Image
+      {/* Animated image for fade-in effect */}
+      <Animated.Image
         source={require("@/assets/images/splash/ibex.png")}
-        style={styles.image}
+        style={styles.image} // Apply the fadeAnim opacity to this image
       />
 
       {item.id === "4" ? (
-        <>
+        <View
+          style={{
+            flexDirection: "column",
+            gap: 30,
+            alignItems: "center",
+            width,
+            padding: 20,
+          }}
+        >
+          {/* Main Content */}
           <Text
             style={{
               ...styles.title,
@@ -72,47 +134,9 @@ export default function OnboardingItem({ item }: any) {
           >
             {item.first_title}
           </Text>
-          <Text
-            style={{
-              fontFamily: "Poppins_400Regular",
-              fontSize: scaledFontSize(20),
-              color: "#ECFF78",
-              textAlign: "center",
-            }}
-          >
-            {item.first_subtitle}{" "}
-          </Text>
-          <View
-            style={{ flexDirection: "column", gap: 20, alignItems: "center" }}
-          >
-            <Text
-              style={{
-                ...styles.title,
-                marginTop: item.id === "4" ? "10%" : "10%",
-              }}
-            >
-              {item.title}
-            </Text>
-            <Text
-              style={{
-                fontFamily: "Poppins_400Regular",
-                fontSize: scaledFontSize(20),
-                color: "#ECFF78",
-                textAlign: "center",
-                height: 100,
-              }}
-            >
-              {item.subtitle}{" "}
-            </Text>
-            <Image
-              source={require("@/assets/images/info-icon.png")}
-              style={{
-                width: 20,
-                height: 20,
-              }}
-            />
-          </View>
-        </>
+          <Text style={styles.subtitle}>{item.first_subtitle}</Text>
+          <Text style={styles.subtitle}>{item.subtitle}</Text>
+        </View>
       ) : (
         <>
           <Text
@@ -127,15 +151,36 @@ export default function OnboardingItem({ item }: any) {
         </>
       )}
       {item.image && (
-        <Image
+        <Animated.Image
           source={item.image}
           style={{
-            marginTop: 50,
-            width: width * 0.9, // Responsive width
-            height: height * 0.2, // Fixed height for other images
+            marginTop: marginValue,
+            width: width, // Responsive width
+            height: height * multiplierValue, // Fixed height for other images
             resizeMode: "contain", // Ensure the image scales without distortion
+            opacity: fadeAnim, // Apply fade-in opacity to this image as well
           }}
         />
+      )}
+      {item.id === "3" && (
+        <Text
+          style={{
+            ...styles.subtitle,
+            fontSize: scaledFontSize(18),
+          }}
+        >
+          {item.second_subtitle_1}{" "}
+          <Text
+            style={{
+              ...styles.subtitle,
+              fontSize: scaledFontSize(18),
+              fontFamily: "Poppins_700Bold",
+            }}
+          >
+            {item.second_subtitle_2}{" "}
+          </Text>
+          {item.second_subtitle_3}
+        </Text>
       )}
     </SafeAreaView>
   );

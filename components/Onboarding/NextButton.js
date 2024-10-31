@@ -71,33 +71,14 @@ export default function NextButton({ percentage, scrollTo }) {
 
   return (
     <View style={styles.container}>
-      <Svg width={size} height={size}>
-        <G rotation="90" origin={center}>
-          <Circle
-            stroke="#13293D"
-            cx={center}
-            cy={center}
-            r={radius}
-            strokeWidth={strokeWidth}
-          />
-          <Circle
-            ref={progressRef}
-            stroke="#fff"
-            fill="#13293D"
-            cx={center}
-            cy={center}
-            r={radius}
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-          />
-        </G>
-      </Svg>
-      <TouchableOpacity
-        onPress={scrollTo}
-        style={styles.button}
-        activeOpacity={0.6}
-      >
-        <Image source={require("@/components/Onboarding/arrow.png")} />
+      <TouchableOpacity onPress={scrollTo} style={styles.button}>
+        <Image
+          source={require("@/components/Onboarding/button.png")}
+          style={{
+            height: 64,
+            width: 64,
+          }}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -110,9 +91,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    position: "absolute",
-    backgroundColor: "#ECFF78",
+    height: 64,
+    width: 64,
     borderRadius: 100,
-    padding: 15,
   },
 });

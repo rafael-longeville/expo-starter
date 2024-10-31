@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, StyleSheet, FlatList, Animated, LogBox } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Animated,
+  LogBox,
+  ImageBackground,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,14 +24,14 @@ export default function Onboarding() {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const slidesRef = useRef<FlatList<any>>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null); // Timer reference
-  const isScrolling = useRef(false); // To track ongoing scroll operations
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const isScrolling = useRef(false);
 
-  // Check if the user has seen the splash screen
   useEffect(() => {
     const checkIfSeenSplash = async () => {
       try {
         const value = await AsyncStorage.getItem("hasSeenSplash");
+        console.log("hasSeenSplash value: ", value);
         if (value === "true") {
           setHasSeenSplash(true);
         }
@@ -32,48 +39,19 @@ export default function Onboarding() {
         console.error("Error retrieving data: ", error);
       }
     };
-
     checkIfSeenSplash();
   }, []);
 
-  // Set up a timer to navigate to the next slide after 3 seconds of inactivity
-  useEffect(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-
-    timerRef.current = setTimeout(() => {
-      scrollTo();
-    }, 3000);
-
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [currentIndex]);
-
   const viewableItemsChanged = useRef(({ viewableItems }: any) => {
     if (viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0].index);
-
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-
-      timerRef.current = setTimeout(() => {
-        scrollTo();
-      }, 3000);
+      setCurrentIndex(viewableItems[0].index); // Set the current index based on the viewable items
     }
   }).current;
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
   const slides = [
-    {
-      id: "1",
-      image: require("@/assets/images/splash/initial_splash.png"),
-    },
+    { id: "1", image: require("@/components/Onboarding/big-logo.png") },
     {
       id: "2",
       title: t("splash.1.title"),
@@ -84,6 +62,9 @@ export default function Onboarding() {
       id: "3",
       title: t("splash.2.title"),
       subtitle: t("splash.2.subtitle"),
+      second_subtitle_1: t("splash.2.second_subtitle_1"),
+      second_subtitle_2: t("splash.2.second_subtitle_2"),
+      second_subtitle_3: t("splash.2.second_subtitle_3"),
       image: require("@/assets/images/splash/splash_2.png"),
     },
     {
@@ -92,10 +73,13 @@ export default function Onboarding() {
       first_subtitle: t("splash.3.first_subtitle"),
       title: t("splash.3.title"),
       subtitle: t("splash.3.subtitle"),
+      image: require("@/assets/images/splash/splash_3.png"),
     },
   ];
 
-  const slidesToRender = hasSeenSplash ? [slides[0]] : slides;
+  // Update slidesToRender to start from the second slide
+  const slidesToRender = hasSeenSplash ? [slides[0]] : slides.slice(1);
+
   const scrollTo = async () => {
     console.log("scrollTo called", {
       isScrolling: isScrolling.current,
@@ -107,6 +91,7 @@ export default function Onboarding() {
 
     try {
       if (currentIndex < slides.length - 1) {
+        // Adjust scrolling logic
         console.log("Scrolling to next index:", currentIndex + 1);
         slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
       } else {
@@ -114,17 +99,17 @@ export default function Onboarding() {
         const settingsDone = await AsyncStorage.getItem("settingsDone");
         const transakDone = await AsyncStorage.getItem("transakDone");
 
-        if (settingsDone === "true" && transakDone === "true") {
-          console.log("Navigating to /onboarding_3");
-          router.push({ pathname: "/(onboarding)/onboarding_3" });
-        } else if (settingsDone === "true") {
-          console.log("Navigating to /onboarding_2");
-          router.push({ pathname: "/(onboarding)/onboarding_2" });
-        } else {
+        // if (settingsDone === "true" && transakDone === "true") {
+        //   console.log("Navigating to /onboarding_3");
+        //   router.push({ pathname: "/(onboarding)/onboarding_3" });
+        // } else if (settingsDone === "true") {
+        //   console.log("Navigating to /onboarding_2");
+        //   router.push({ pathname: "/(onboarding)/onboarding_2" });
+        // } else {
           console.log("Navigating to /onboarding_1");
           router.push({ pathname: "/(onboarding)/onboarding_1" });
-        }
-
+        // }
+        // reset to true when dev done
         await AsyncStorage.setItem("hasSeenSplash", "true");
       }
     } catch (error) {
@@ -161,10 +146,13 @@ export default function Onboarding() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={{ flex: 3, height: "100%" }}>
+    <ImageBackground
+      source={require("@/components/Onboarding/background-image.png")}
+      style={styles.backgroundImage}
+    >
+      <View style={styles.container}>
         <FlatList
-          data={slidesToRender}
+          data={slides}
           renderItem={({ item }) => <OnboardingItem item={item} />}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -173,56 +161,45 @@ export default function Onboarding() {
           keyExtractor={(item) => item.id}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            {
-              useNativeDriver: false,
-            }
+            { useNativeDriver: false }
           )}
           scrollEventThrottle={32}
           onViewableItemsChanged={viewableItemsChanged}
           viewabilityConfig={viewConfig}
           ref={slidesRef}
-          style={{
-            flexGrow: 0,
-            height: "90%",
-          }}
+          style={{ flexGrow: 0, height: "100%" }}
         />
-      </View>
 
-      <View
-        style={{
-          position: "absolute",
-          bottom: -100,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
-          height: 300,
-        }}
-      >
-        <View style={{ display: "flex", flexDirection: "column", height: 300 }}>
-          <View style={{ height: "50%" }}>
-            <NextButton
-              scrollTo={handleNextButtonPress}
-              percentage={(currentIndex + 1) * (100 / slides.length)}
-            />
-          </View>
-          <View style={{ height: "50%" }}>
-            {currentIndex !== 0 && (
-              <Paginator data={slides} scrollX={scrollX} />
-            )}
-          </View>
+        <View style={{ position: "absolute", bottom: 20, height: "20%" }}>
+          <NextButton
+            scrollTo={handleNextButtonPress}
+            percentage={currentIndex * (100 / (slides.length - 1))} // Updated to reflect slides length excluding first
+          />
+          {currentIndex >= 1 && currentIndex <= 3 && (
+            <View style={{ height: "20%" }}>
+              <Paginator
+                data={slides.slice(1)} // Pass slides excluding the first for the paginator
+                currentIndex={currentIndex} // Pass currentIndex to paginator
+              />
+            </View>
+          )}
         </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    backgroundColor: "#13293D",
+    backgroundColor: "transparent", // Make sure the container background is transparent
+  },
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "center",
   },
 });

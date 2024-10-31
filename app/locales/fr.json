@@ -7,13 +7,15 @@
     },
     "2": {
       "title": "Placez vos fonds dans un compte rémunéré",
-      "subtitle": "ET SOYEZ REMUNÉRÉ DÈS LA PREMIÈRE SECONDE."
+      "subtitle": "PERCEVEZ DES INTÉRETS SUR VOS INTÉRETS, SANS EFFORTS.",
+      "second_subtitle_1": "Jusqu’à",
+      "second_subtitle_2": "4,5% ",
+      "second_subtitle_3": "d'intérêts annuels versés tous les jours !"
     },
     "3": {
-      "first_title": "Facile à utiliser",
-      "first_subtitle": "VOTRE IBEx WALLET S’ADAPTE À VOTRE MONNAIE DE PRÉFÉRENCE.",
-      "title": "Restez informé",
-      "subtitle": "SUR LA NATURE DES PRODUITS PROPOSÉS EN CLIQUANT SUR LES POINTS INFO :"
+      "first_title": "Diversifiez vos investissements",
+      "first_subtitle": "ACCÉDEZ À UN ENSEMBLE DE PRODUITS EN UN CLIC :",
+      "subtitle": "IMMOBILIER, ACTIONS COTÉES, CRYPTOS, MATIÈRES PREMIÈRES..."
     }
   },
   "pages": {
@@ -25,6 +27,35 @@
       "title": "Réglages"
     },
     "onboarding_1": {
+      "title": "Accédez à votre compte",
+      "subtitle": "Ouvrez ou accédez à un compte IBEx Wallet existant, en un clic :",
+      "second_subtitle": "Créez votre portefueille numérique crypté à l'aide de votre empreinte digitale, de votre visage ou de votre code d'accès.",
+      "sign-in": "Utiliser un portefeuille existant",
+      "sign-up": "Créer mon portefeuille",
+      "sign-in-pending": "Connexion en cours, veuillez patienter...",
+      "create-account": "Créer un nouveau portefeuille",
+      "create-account-pending": "Création en cours, veuillez patienter..."
+    },
+    "onboarding_2": {
+      "title": "Créez votre portefeuille",
+      "subtitle": "Vous seul en aurez l’accès.",
+      "description": "Créez et reconnectez vous à un portefeuille numérique grâce aux nouvelles methodes d’identification :",
+      "fingerprint": "Empreinte digitale",
+      "face_id": "Face ID",
+      "pin_code": "Code Pin",
+      "icloud_note": "L'identification se fait automatiquement grâce à la clé d'accès liée à votre compte iCloud.",
+      "warning": "Ne laissez personne accédez à votre Téléphone et à vos fonds.",
+      "create_wallet_button": "Créer mon portefeuille",
+      "private_key_info": "Qu’est-ce qu’une clé privée",
+      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
+      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
+      "notifications_question": "Souhaitez-vous activer les notifications ?",
+      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
+      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
+      "dollar": "Dollar US",
+      "save_button": "Enregistrer"
+    },
+    "onboarding_3": {
       "title": "Paramètrez l'affichage de la devise et les notifications",
       "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
       "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
@@ -34,27 +65,6 @@
       "dollar": "Dollar US",
       "save_button": "Enregistrer"
     },
-    "onboarding_2": {
-      "title": "Votre argent travaille pour vous.",
-      "subtitle_1": "Placez dans un",
-      "subtitle_2": "Compte rémunéré ",
-      "subtitle_3": " et touchez dès la première seconde des intérêts liquide et non exposé au taux de change.",
-      "disclaimer": "Maximum 100€ pour le premier dépôt",
-      "second_title": "Débancarisez vos liquidités",
-      "second_subtitle_1": "Et conservez les dans votre",
-      "second_subtitle_2": "Compte courant ",
-      "second_subtitle_3": "souverain dont vous seul avez l’accès.",
-      "continue_button": "Continuer sans alimenter",
-      "has_account": "J'ai déjà un compte"
-    },
-    "onboarding_3": {
-      "title": "Accédez à votre compte",
-      "subtitle": "Ouvrez ou accédez à un compte existant, en un clic :",
-      "sign-in": "Utiliser un portefeuille existant",
-      "sign-in-pending": "Connexion en cours, veuillez patienter...",
-      "create-account": "Créer un nouveau portefeuille",
-      "create-account-pending": "Création en cours, veuillez patienter..."
-    },
     "onboarding_4": {
       "account": "Compte",
       "title": "Alimentez votre compte",
@@ -63,6 +73,22 @@
       "subtitle_onRamp": "Placez vos fonds dans votre Compte courant via carte bancaire, Apple Pay ou Google Pay.",
       "cancel": "Annuler"
     },
+    "onboarding_6": {
+      "title": "Activez les notifications",
+      "subtitle": "Premier arrivé, premier servi...",
+      "push": {
+        "cta": "Activer les notifications sur votre téléphone ?",
+        "cta_disclaimer": "Gardez une longueur d'avance !",
+        "cta_disclaimer_2": "Soyez prévenu lorsque l’application sera disponible et profitez des meilleures opportunités d'investissement, avant tout le monde."
+      },
+      "mail": {
+        "cta": "Activer les notifications par mail ?",
+        "cta_disclaimer": "Offrez-vous une chance supplémentaire d’etre parmis les premiers à profiter des meilleures offres.",
+        "input_placeholder": "Votre adresse mail"
+      },
+      "save_button": "Enregistrer"
+    },
+
     "home": {
       "total_balance": "Solde total",
       "balance": "Solde",
@@ -105,7 +131,9 @@
     }
   },
   "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",
-  "disclaimer_link": "nos conditions générales de ventes.",
+  "disclaimer_link": "nos conditions générales de ventes ",
+  "disclaimer_2": "et celles d'",
+  "disclaimer_link_2": "Inblocks UAB",
   "components": {
     "investment_card": {
       "investment": "Placement",
