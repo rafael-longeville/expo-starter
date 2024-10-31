@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { router } from "expo-router";
 import {
   Pressable,
@@ -9,145 +9,71 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-import { inAppWallet, Wallet } from "thirdweb/wallets";
-import { hasStoredPasskey } from "thirdweb/wallets/in-app";
 
-import { chain, client } from "@/constants/thirdweb";
-import { globalFonts } from "@/app/styles/globalFonts";
+import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
 
-interface ConnectWithPasskeyProps {
-  connect: any;
-  redirectionUrl: string;
-}
+interface ConnectWithPasskeyProps {}
 
-export default function ConnectWithPasskey({
-  connect,
-  redirectionUrl,
-}: ConnectWithPasskeyProps) {
-  const [loading, setLoading] = useState(false); // State to manage the loading
-
-  const { t } = useTranslation();
-
-  const [hasPasskey, setHasPasskey] = useState(false); // State to manage whether a passkey exists
-  useEffect(() => {
-    // Check if a passkey is stored when the component mounts
-    const checkPasskey = async () => {
-      try {
-        const result = await hasStoredPasskey(client);
-        setHasPasskey(result);
-      } catch (error) {
-        Sentry.captureException(error);
-      }
-    };
-    checkPasskey();
-  }, []);
-
-  const handlePress = async () => {
-    setLoading(true); // Show loader when the process starts
-    try {
-      Sentry.addBreadcrumb({
-        category: "action",
-        message: "User clicked connect button",
-        level: "info",
-      });
-
-      const wallet = inAppWallet({
-        auth: {
-          options: ["passkey"],
-          passkeyDomain: "moncomptesouverain.fr",
-        },
-        smartAccount: {
-          chain: chain,
-          sponsorGas: true,
-        },
-      });
-
-      await connect(async (): Promise<Wallet> => {
-        try {
-          await wallet.connect({
-            client,
-            strategy: "passkey",
-            type: "sign-in",
-          });
-          setLoading(false); // Hide loader after successful connection
-          router.dismissAll();
-          router.replace({
-            pathname: redirectionUrl as
-              | "/(onboarding)/onboarding_4"
-              | "/(tabs)/home",
-          });
-          return wallet;
-        } catch (connectError: any) {
-          Sentry.captureException(connectError);
-          setLoading(false); // Hide loader on error
-          throw connectError;
-        }
-      });
-    } catch (err: any) {
-      Sentry.captureException(err);
-      setLoading(false); // Hide loader on error
-      Alert.alert(
-        "Error",
-        "An error occurred during the connection process. Please try again."
-      );
-    }
-  };
-
+export default function ConnectWithPasskey({}: ConnectWithPasskeyProps) {
   // Only render the view if no passkey is stored
   // if (!hasPasskey) {
   //   return null; // Do not render if a passkey already exists
   // }
-  return (
-    <View>
-      <Pressable
-        style={styles.button} // No changes to button style
-        onPress={handlePress}
-        disabled={loading} // Disable the button while loading
-      >
-        <Text
-          style={{
-            ...globalFonts.subtitle,
-            textAlign: "center",
-          }}
-        >
-          {t("pages.onboarding_3.sign-in")}
-        </Text>
-      </Pressable>
 
-      {loading && ( // Modal for the centered loader overlay
-        <Modal
-          transparent={true}
-          animationType="fade"
-          visible={loading}
-          onRequestClose={() => setLoading(false)}
-        >
-          <View style={styles.overlay}>
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color="#ffffff" />
-              <Text style={styles.loaderText}>
-                {t("pages.onboarding_3.sign-in-pending")}
-              </Text>
-            </View>
-          </View>
-        </Modal>
-      )}
-    </View>
+  const { t } = useTranslation();
+
+  const handlePress = async () => {
+    try {
+      // Connect to the wallet
+      // Redirect to the next page
+      router.push("/(onboarding)/onboarding_2");
+    } catch (error: any) {
+      // Sentry.captureException(error);
+      Alert.alert("Error", error.message);
+    }
+  };
+  return (
+    <Pressable
+      style={styles.button} // No changes to button style
+      onPress={handlePress}
+    >
+      <Text
+        style={{
+          ...globalFonts.mediumSubtitle,
+          textAlign: "center",
+          color: "#fff",
+          fontSize: scaledFontSize(12),
+        }}
+      >
+        {t("pages.onboarding_1.sign-in")}
+      </Text>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "white",
+    backgroundColor: "#333333",
     padding: 10,
     borderRadius: 30,
-    height: 50,
+    height: 37,
     justifyContent: "center",
     alignItems: "center",
-    width: 335,
-    borderWidth: 1,
-    borderColor: "#13293D",
+    width: "85%",
+    borderWidth: 2,
+    borderColor: "#666666",
+    // Adding shadow properties for iOS
+    shadowColor: "#000", // Shadow color
+    shadowOffset: {
+      width: 0,
+      height: 10, // Vertical shadow offset
+    },
+    shadowOpacity: 0.1, // Shadow opacity
+    shadowRadius: 3.5, // Shadow blur radius
+    // Adding elevation for Android
+    elevation: 5, // Elevation for Android shadow effect
   },
   overlay: {
     position: "absolute",
