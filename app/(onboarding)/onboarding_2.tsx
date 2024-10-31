@@ -42,7 +42,10 @@ const Onboarding2: React.FC = () => {
       </View>
 
       {/* Bottom Button */}
-      <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
+      <TouchableOpacity
+        style={{ ...styles.button, backgroundColor: "#333333" }}
+        onPress={handleCreateWallet}
+      >
         <Text style={styles.buttonText}>
           {t("pages.onboarding_2.create_wallet_button")}
         </Text>
@@ -96,12 +99,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   button: {
-    backgroundColor: "#333333", // Active color to match Onboarding3
-    paddingVertical: 15,
     borderRadius: 25,
     alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 60,
     marginBottom: 20,
-    width: "100%", // Full width to match checkbox container in Onboarding3
+    height: 37,
   },
   buttonText: {
     fontSize: scaledFontSize(14),
@@ -112,6 +116,7 @@ const styles = StyleSheet.create({
     fontSize: scaledFontSize(14), // 1.5 times bigger
     color: "#13293D",
     textAlign: "center",
+    fontFamily: "Poppins_500Medium",
   },
 });
 

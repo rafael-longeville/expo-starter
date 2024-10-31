@@ -130,7 +130,7 @@ const Onboarding1: React.FC = () => {
           error={error}
         /> */}
       <Text
-        style={{ ...globalFonts.disclaimerText, width: "90%", marginTop: 10 }}
+        style={{ ...globalFonts.disclaimerText, width: "90%", marginTop: 40 }}
       >
         {t("disclaimer")}
         <Link href={"https://moncomptesouverain.fr"}>
@@ -145,7 +145,7 @@ const Onboarding1: React.FC = () => {
           </Text>
         </Link>
       </Text>
-      <View
+      {/* <View
         style={{
           marginTop: 20,
         }}
@@ -164,7 +164,7 @@ const Onboarding1: React.FC = () => {
             router.push("/(onboarding)/onboarding_6");
           }}
         />
-      </View>
+      </View> */}
 
       {/* Display the value retrieved from AsyncStorage */}
       {/* {storedValue && (
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    gap: 15,
+    gap: 10,
   },
   buttonContainer: {
     flexDirection: "column",

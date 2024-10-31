@@ -175,11 +175,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    paddingVertical: 15,
     borderRadius: 25,
     alignItems: "center",
-    width: "90%",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 60,
     marginBottom: 20,
+    height: 37,
   },
   buttonActive: {
     backgroundColor: "#333333",
@@ -193,9 +195,10 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   linkText: {
-    fontSize: scaledFontSize(18), // 1.5 times bigger
+    fontSize: scaledFontSize(14),
     color: "#13293D",
     textAlign: "center",
+    fontFamily: "Poppins_500Medium",
   },
 });
 

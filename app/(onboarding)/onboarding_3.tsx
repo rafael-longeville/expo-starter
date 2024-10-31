@@ -183,11 +183,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    paddingVertical: 15,
     borderRadius: 25,
     alignItems: "center",
-    marginBottom: 20,
+    justifyContent: "center",
     width: "100%",
+    marginTop: 20,
+    marginBottom: 20,
+    height: 37,
   },
   buttonActive: {
     backgroundColor: "#333333",
@@ -204,6 +206,7 @@ const styles = StyleSheet.create({
     fontSize: scaledFontSize(14),
     color: "#13293D",
     textAlign: "center",
+    fontFamily: "Poppins_500Medium",
   },
 });
 
