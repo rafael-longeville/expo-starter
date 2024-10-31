@@ -1210,6 +1210,11 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/alegreya-sans-sc@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.npmjs.org/@expo-google-fonts/alegreya-sans-sc/-/alegreya-sans-sc-0.2.3.tgz"
+  integrity sha512-KvajeBtuBIP0WX5GUHgkdg3zuOT8mdxc/LkrqD5fuV6PEpOOJtXMaHCVB5nXUgUxbkEkwBVcTNJIwl+lm6dKZg==
+
 "@expo-google-fonts/poppins@^0.2.3":
   version "0.2.3"
   resolved "https://registry.npmjs.org/@expo-google-fonts/poppins/-/poppins-0.2.3.tgz"
