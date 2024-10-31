@@ -23,8 +23,10 @@ import Onboarding6 from "./onboarding_6";
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
-  onboarding_2: require("@/assets/images/onboarding/onboarding_2.png"),
-  onboarding_3: require("@/assets/images/onboarding/onboarding_3.png"),
+  onboarding_2: require("@/assets/images/onboarding/onboarding_1.png"),
+  onboarding_3: require("@/assets/images/onboarding/onboarding_1.png"),
+  onboarding_4: require("@/assets/images/onboarding/onboarding_1.png"),
+
 } as const;
 
 export default function OnboardingLayout() {
@@ -48,8 +50,8 @@ export default function OnboardingLayout() {
         return <Onboarding6 />;
       case "onboarding_7":
         return <Onboarding7 />;
-      // case "onboarding_4":
-      //   return <Onboarding4 />;
+      case "onboarding_4":
+        return <Onboarding4 />;
       // default:
       //   return <Onboarding1 />;
     }
@@ -88,7 +90,7 @@ export default function OnboardingLayout() {
         ref={scrollViewRef}
         contentContainerStyle={styles.scrollViewContainer}
       >
-        {currentSegment !== "onboarding_3" &&
+        {
           IMAGES[currentSegment as keyof typeof IMAGES] && (
             <Image
               source={IMAGES[currentSegment as keyof typeof IMAGES]}
@@ -125,7 +127,7 @@ export default function OnboardingLayout() {
           </View>
         )}
       </ScrollView>
-      {currentSegment === "onboarding_2" && (
+      {/* {currentSegment === "onboarding_2" && (
         <View
           style={{
             position: "absolute",
@@ -175,7 +177,7 @@ export default function OnboardingLayout() {
             {t("pages.onboarding_2.has_account")}
           </Text>
         </View>
-      )}
+      )} */}
     </SafeAreaView>
   );
 }

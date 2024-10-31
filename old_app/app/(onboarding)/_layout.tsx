@@ -118,7 +118,7 @@ export default function OnboardingLayout() {
           </View>
         )}
       </ScrollView>
-      {currentSegment === "onboarding_2" && (
+      {/* {currentSegment === "onboarding_2" && (
         <View
           style={{
             position: "absolute",
@@ -168,7 +168,7 @@ export default function OnboardingLayout() {
             {t("pages.onboarding_2.has_account")}
           </Text>
         </View>
-      )}
+      )} */}
     </SafeAreaView>
   );
 }

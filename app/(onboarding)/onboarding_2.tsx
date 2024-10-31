@@ -2,12 +2,13 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
+import { router } from "expo-router";
 
 const Onboarding2: React.FC = () => {
   const { t } = useTranslation();
 
   const handleCreateWallet = () => {
-    // Navigation logic for wallet creation
+    router.push("/(onboarding)/onboarding_3");
   };
 
   return (
@@ -48,11 +49,7 @@ const Onboarding2: React.FC = () => {
       </TouchableOpacity>
 
       {/* Bottom Text Link */}
-      <TouchableOpacity
-        onPress={() => {
-          /* Show info about private key */
-        }}
-      >
+      <TouchableOpacity>
         <Text style={styles.linkText}>
           {t("pages.onboarding_2.private_key_info")}
         </Text>
@@ -67,7 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
-    backgroundColor: "transparent", // Keep background transparent
+    backgroundColor: "transparent",
   },
   title: {
     fontSize: scaledFontSize(20),
@@ -85,7 +82,7 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     marginBottom: "30%",
-    alignItems: "flex-start", // Align content to the left
+    alignItems: "flex-start",
     width: "100%",
     gap: 20,
   },
@@ -93,18 +90,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 22,
     fontWeight: "400",
-    letterSpacing: 0.32, // 2% of 16px is 0.32px
+    letterSpacing: 0.32,
     color: "#212121",
     fontFamily: "Poppins",
     marginBottom: 5,
   },
   button: {
-    backgroundColor: "#333333", // Adjust button color to match design
+    backgroundColor: "#333333", // Active color to match Onboarding3
     paddingVertical: 15,
-    paddingHorizontal: 60,
     borderRadius: 25,
     alignItems: "center",
     marginBottom: 20,
+    width: "100%", // Full width to match checkbox container in Onboarding3
   },
   buttonText: {
     fontSize: scaledFontSize(14),
@@ -112,10 +109,9 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   linkText: {
-    fontSize: scaledFontSize(12),
+    fontSize: scaledFontSize(14), // 1.5 times bigger
     color: "#13293D",
     textAlign: "center",
-    textDecorationLine: "underline",
   },
 });
 
