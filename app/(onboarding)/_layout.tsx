@@ -37,7 +37,7 @@ export default function OnboardingLayout() {
       case "onboarding_1":
         return <Onboarding1 />;
       case "onboarding_2":
-        return <Onboarding2 scrollViewRef={scrollViewRef} />;
+        return <Onboarding2 />;
       case "onboarding_3":
         return <Onboarding3 />;
       // case "onboarding_4":
@@ -73,8 +73,8 @@ export default function OnboardingLayout() {
   return (
     <SafeAreaView style={styles.container}>
       <Image
-      source={require("@/assets/images/onboarding/background.png")}
-      style={styles.backgroundImage}
+        source={require("@/assets/images/onboarding/background.png")}
+        style={styles.backgroundImage}
       />
       <ScrollView
         ref={scrollViewRef}
@@ -87,7 +87,6 @@ export default function OnboardingLayout() {
               style={styles.image}
             />
           )}
-        <Text>WELCOME TO V1.1</Text>
         {renderCurrentScreen(scrollViewRef)}
 
         {process.env.EXPO_PUBLIC_IS_DEVELOPMENT && (
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     position: "absolute",
-    top:"20%",
+    top: "20%",
     width: "100%", // Adjust as needed to cover the bottom part of the screen
     resizeMode: "cover", // Ensures the image covers the area proportionally
     zIndex: -1, // Ensures the image stays behind all other elements

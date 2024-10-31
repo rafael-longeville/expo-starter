@@ -108,15 +108,15 @@ const Onboarding1: React.FC = () => {
           fontSize: scaledFontSize(12),
           textAlign: "center",
           width: "90%",
+          lineHeight: scaledFontSize(22),
+          marginBottom: 10,
         }}
       >
         {t("pages.onboarding_1.second_subtitle")}
       </Text>
-      {/* <ConnectWithPasskey
-          connect={connect}
-          redirectionUrl={continueWithoutFundingUrl}
-          // withoutFunding={storedValue}
-        />
+      <ConnectWithPasskey />
+      <CreateWithPasskey />
+      {/*
         <CreateWithPasskey
           connect={connect}
           redirectionUrl={continueWithoutFundingUrl}
@@ -129,21 +129,35 @@ const Onboarding1: React.FC = () => {
           account={account}
           error={error}
         /> */}
-      <Text style={globalFonts.disclaimerText}>
+      <Text
+        style={{ ...globalFonts.disclaimerText, width: "90%", marginTop: 10 }}
+      >
         {t("disclaimer")}
         <Link href={"https://moncomptesouverain.fr"}>
           <Text style={{ textDecorationLine: "underline" }}>
             {t("disclaimer_link")}
           </Text>
         </Link>
+        {t("disclaimer_2")}
+        <Link href={"https://moncomptesouverain.fr"}>
+          <Text style={{ textDecorationLine: "underline" }}>
+            {t("disclaimer_link_2")}
+          </Text>
+        </Link>
       </Text>
-      <Button
-        title={"To onboarding 2"}
-        onPress={() => {
-          AsyncStorage.setItem("continueWithoutFunding", "true");
-          router.push("/(onboarding)/onboarding_2");
+      <View
+        style={{
+          marginTop: 20,
         }}
-      />
+      >
+        <Button
+          title={"To onboarding 2"}
+          onPress={() => {
+            AsyncStorage.setItem("continueWithoutFunding", "true");
+            router.push("/(onboarding)/onboarding_2");
+          }}
+        />
+      </View>
 
       {/* Display the value retrieved from AsyncStorage */}
       {/* {storedValue && (
@@ -173,7 +187,10 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   image: {
-    height: 240,
+    marginTop: 20,
+    marginBottom: 10,
+    height: 220,
+    width: 175,
     resizeMode: "contain",
   },
   text: {

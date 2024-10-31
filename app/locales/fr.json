@@ -31,6 +31,7 @@
       "subtitle": "Ouvrez ou accédez à un compte IBEx Wallet existant, en un clic :",
       "second_subtitle": "Créez votre portefueille numérique crypté à l'aide de votre empreinte digitale, de votre visage ou de votre code d'accès.",
       "sign-in": "Utiliser un portefeuille existant",
+      "sign-up": "Créer mon portefeuille",
       "sign-in-pending": "Connexion en cours, veuillez patienter...",
       "create-account": "Créer un nouveau portefeuille",
       "create-account-pending": "Création en cours, veuillez patienter..."
@@ -114,7 +115,9 @@
     }
   },
   "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",
-  "disclaimer_link": "nos conditions générales de ventes.",
+  "disclaimer_link": "nos conditions générales de ventes ",
+  "disclaimer_2": "et celles d'",
+  "disclaimer_link_2": "Inblocks UAB",
   "components": {
     "investment_card": {
       "investment": "Placement",
