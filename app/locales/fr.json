@@ -73,6 +73,22 @@
       "subtitle_onRamp": "Placez vos fonds dans votre Compte courant via carte bancaire, Apple Pay ou Google Pay.",
       "cancel": "Annuler"
     },
+    "onboarding_6": {
+      "title": "Activez les notifications",
+      "subtitle": "Premier arrivé, premier servi...",
+      "push": {
+        "cta": "Activer les notifications sur votre téléphone ?",
+        "cta_disclaimer": "Gardez une longueur d'avance !",
+        "cta_disclaimer_2": "Soyez prévenu lorsque l’application sera disponible et profitez des meilleures opportunités d'investissement, avant tout le monde."
+      },
+      "mail": {
+        "cta": "Activer les notifications par mail ?",
+        "cta_disclaimer": "Offrez-vous une chance supplémentaire d’etre parmis les premiers à profiter des meilleures offres.",
+        "input_placeholder": "Votre adresse mail"
+      },
+      "save_button": "Enregistrer"
+    },
+
     "home": {
       "total_balance": "Solde total",
       "balance": "Solde",
