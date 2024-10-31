@@ -157,6 +157,13 @@ const Onboarding1: React.FC = () => {
             router.push("/(onboarding)/onboarding_2");
           }}
         />
+        <Button
+          title={"To onboarding 7"}
+          onPress={() => {
+            AsyncStorage.setItem("continueWithoutFunding", "true");
+            router.push("/(onboarding)/onboarding_7");
+          }}
+        />
       </View>
 
       {/* Display the value retrieved from AsyncStorage */}
