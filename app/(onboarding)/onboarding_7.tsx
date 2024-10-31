@@ -1,9 +1,24 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
+import { useRouter } from "expo-router";
 
 const Onboarding7: React.FC = () => {
-  //   // const account = useActiveAccount();
+  const router = useRouter();
+
+  const handlePress = (type: string) => () => {
+    switch (type) {
+      case "website":
+        router.push("https://moncomptesouverain.fr/");
+        break;
+      case "telegram":
+        router.push("https://t.me/inblocksexchange");
+        break;
+      case "twitter":
+        router.push("https://x.com/ibex_official");
+        break;
+    }
+  };
 
   return (
     <View>
@@ -39,18 +54,24 @@ const Onboarding7: React.FC = () => {
         </Text>
       </View>
       <View style={styles.socialsContainer}>
-        <Image
-          source={require("@/assets/images/onboarding/7/website.png")}
-          style={styles.image}
-        />
-        <Image
-          source={require("@/assets/images/onboarding/7/telegram.png")}
-          style={styles.image}
-        />
-        <Image
-          source={require("@/assets/images/onboarding/7/twitter.png")}
-          style={styles.image}
-        />
+        <Pressable onPress={handlePress("website")}>
+          <Image
+            source={require("@/assets/images/onboarding/7/website.png")}
+            style={styles.image}
+          />
+        </Pressable>
+        <Pressable onPress={handlePress("telegram")}>
+          <Image
+            source={require("@/assets/images/onboarding/7/telegram.png")}
+            style={styles.image}
+          />
+        </Pressable>
+        <Pressable onPress={handlePress("twitter")}>
+          <Image
+            source={require("@/assets/images/onboarding/7/twitter.png")}
+            style={styles.image}
+          />
+        </Pressable>
       </View>
     </View>
   );

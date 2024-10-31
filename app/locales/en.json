@@ -2,30 +2,51 @@
   "welcome": "Welcome",
   "splash": {
     "1": {
-      "title": "Keep Your Money Yourself!",
+      "title": "Keep your money yourself!",
       "subtitle": "AND BECOME UNSEIZABLE: ONLY YOU HAVE ACCESS TO YOUR SECURED WALLET."
     },
     "2": {
-      "title": "Place Your Funds in a Rewarding Account",
-      "subtitle": "AND BE REWARDED FROM THE VERY FIRST SECOND."
+      "title": "Put your funds in an interest-bearing account",
+      "subtitle": "EARN INTEREST ON YOUR INTEREST, WITH NO EFFORT.",
+      "second_subtitle_1": "Up to",
+      "second_subtitle_2": "4.5% ",
+      "second_subtitle_3": "annual interest paid daily!"
     },
     "3": {
-      "first_title": "Easy to Use",
-      "first_subtitle": "YOUR IBEx WALLET ADAPTS TO YOUR PREFERRED CURRENCY.",
-      "title": "Stay Informed",
-      "subtitle": "ABOUT THE NATURE OF THE PRODUCTS OFFERED BY CLICKING ON THE INFO POINTS:"
+      "first_title": "Diversify your investments",
+      "first_subtitle": "ACCESS A RANGE OF PRODUCTS WITH A CLICK:",
+      "subtitle": "REAL ESTATE, LISTED SHARES, CRYPTOS, COMMODITIES..."
     }
   },
   "pages": {
     "login": {
       "title": "Welcome",
-      "subtitle": "You are one step away from creating your sovereign account for free!"
+      "subtitle": "You're just one step away from creating your sovereign account for free!"
     },
     "settings": {
       "title": "Settings"
     },
     "onboarding_1": {
-      "title": "Set Up Currency Display and Notifications",
+      "title": "Access your account",
+      "subtitle": "Open or access an existing IBEx Wallet account with one click:",
+      "second_subtitle": "Create your encrypted digital wallet using your fingerprint, face, or passcode.",
+      "sign-in": "Use an existing wallet",
+      "sign-up": "Create my wallet",
+      "sign-in-pending": "Logging in, please wait...",
+      "create-account": "Create a new wallet",
+      "create-account-pending": "Creating, please wait..."
+    },
+    "onboarding_2": {
+      "title": "Create your wallet",
+      "subtitle": "You will have exclusive access.",
+      "description": "Create and reconnect to a digital wallet using new identification methods:",
+      "fingerprint": "Fingerprint",
+      "face_id": "Face ID",
+      "pin_code": "Pin Code",
+      "icloud_note": "Identification is done automatically via the access key linked to your iCloud account.",
+      "warning": "Do not allow anyone to access your phone and your funds.",
+      "create_wallet_button": "Create my wallet",
+      "private_key_info": "What is a private key?",
       "money_question": "Would you like a general display of amounts in Euros or Dollars?",
       "money_question_helper": "To help you, amounts converted for display (according to the chosen currency) will be preceded by an asterisk (*).",
       "notifications_question": "Would you like to enable notifications?",
@@ -34,53 +55,42 @@
       "dollar": "US Dollar",
       "save_button": "Save"
     },
-    "onboarding_2": {
-      "title": "Your Money Works for You.",
-      "subtitle_1": "Place in a",
-      "subtitle_2": "Rewarding Account",
-      "subtitle_3": " and earn liquid interest from the first second, not exposed to exchange rates.",
-      "disclaimer": "Maximum €100 for the first deposit",
-      "second_title": "De-bank Your Liquidity",
-      "second_subtitle_1": "And keep it in your",
-      "second_subtitle_2": "Sovereign Current Account",
-      "second_subtitle_3": " which only you can access.",
-      "continue_button": "Continue without funding",
-      "has_account": "I already have an account"
-    },
     "onboarding_3": {
-      "title": "Access Your Account",
-      "subtitle": "Open or access an existing account with one click:",
-      "sign-in": "Use an existing wallet",
-      "sign-in-pending": "Connecting, please wait...",
-      "create-account": "Create a new wallet",
-      "create-account-pending": "Creating, please wait..."
+      "title": "Set the display for currency and notifications",
+      "money_question": "Would you like a general display of amounts in Euros or Dollars?",
+      "money_question_helper": "To help you, amounts converted for display (according to the chosen currency) will be preceded by an asterisk (*).",
+      "notifications_question": "Would you like to enable notifications?",
+      "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
+      "language_question": "In which language would you like to use the application?",
+      "dollar": "US Dollar",
+      "save_button": "Save"
     },
     "onboarding_4": {
       "account": "Account",
-      "title": "Fund Your Account",
-      "subtitle_angleEUR": "Place your funds in a EURO rewarding account via bank card, Apple Pay, or Google Pay.",
-      "subtitle_angleUSD": "Place your funds in a US DOLLAR rewarding account via bank card, Apple Pay, or Google Pay.",
-      "subtitle_onRamp": "Place your funds in your Current Account via bank card, Apple Pay, or Google Pay.",
+      "title": "Fund your account",
+      "subtitle_angleEUR": "Put your funds in a Euro interest-bearing account via credit card, Apple Pay, or Google Pay.",
+      "subtitle_angleUSD": "Put your funds in a US Dollar interest-bearing account via credit card, Apple Pay, or Google Pay.",
+      "subtitle_onRamp": "Put your funds into your Current Account via credit card, Apple Pay, or Google Pay.",
       "cancel": "Cancel"
     },
     "home": {
       "total_balance": "Total Balance",
       "balance": "Balance",
       "on_main_account": "Current Account",
-      "on_investments": "Rewarding Accounts",
+      "on_investments": "Interest-bearing Accounts",
       "your_main_account": "Current Account",
-      "your_investment_account": "Rewarding Accounts",
+      "your_investment_account": "Interest-bearing Accounts",
       "details": "Details",
-      "hide_details": "Hide",
+      "hide_details": "Hide ",
       "including_gains": "Including gains",
       "transactions": {
-        "title": "Your Transaction History",
-        "in_progress": "In Progress",
+        "title": "Transaction History",
+        "in_progress": "In progress",
         "seeAll": "See All",
-        "no_transactions_1": "You haven't made any transactions yet.",
+        "no_transactions_1": "You have not made any transactions yet.",
         "no_transactions_2": "Fund your current account or make an investment to get started.",
         "copied": "Copied",
-        "copied_link": "A link to the transaction has been copied to your clipboard"
+        "copied_link": "A link to the transaction has been copied to your clipboard."
       }
     },
     "account": {
@@ -105,7 +115,9 @@
     }
   },
   "disclaimer": "By continuing, you confirm that you have read and accepted ",
-  "disclaimer_link": "our general sales conditions.",
+  "disclaimer_link": "our terms and conditions ",
+  "disclaimer_2": "and those of ",
+  "disclaimer_link_2": "Inblocks UAB",
   "components": {
     "investment_card": {
       "investment": "Investment",
@@ -129,49 +141,49 @@
         "link": "Learn more.",
         "href_link": "https://moncomptesouverain.fr/"
       },
-      "button": "Got it"
+      "button": "I Understand"
     },
     "main_account": {
       "title": "Your Current Account",
-      "description_1": "Be the true owner of your funds, only you can interact with your sovereign Current Account.",
-      "description_2": "You can move money from it to your rewarding accounts.",
+      "description_1": "Be the true owner of your funds; only you can interact with your sovereign Current Account.",
+      "description_2": "You can move money from this account to your interest-bearing accounts.",
       "link": "Learn more.",
       "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
-      "button": "Got it"
+      "button": "I Understand"
     },
     "investment_account": {
       "title": "Your Investments",
-      "description_1": "This investment behaves like a savings account, but better!",
-      "description_2": "Lock your funds and earn interest from the first minute. Withdraw at any time.",
-      "disclaimer": "Estimated annual yield and not guaranteed.",
+      "description_1": "This investment acts like a savings account, but better!",
+      "description_2": "Lock in your funds and earn interest from the very first minute. Withdraw at any time.",
+      "disclaimer": "Estimated yield per year and not guaranteed.",
       "link": "Learn more.",
       "DOLLAR US_href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/fond-en-dollar",
       "EURO_href_link": "https://docs.wallet.civicpower.org/fr-fr/placements/compte_courant_usd/",
-      "button": "Got it"
+      "button": "I Understand"
     },
     "transaction": {
       "home": {
         "swap_cc_to_usd": {
-          "title": "This Operation Requires Your Attention",
-          "message": "You are about to move {{amount}} € from your Current Account to the US DOLLAR Rewarding Account.",
+          "title": "This operation requires your attention",
+          "message": "You are about to move {{amount}} € from your Current Account to the US Dollar interest-bearing Account.",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
         "swap_cc_to_euro": {
-          "title": "This Operation Requires Your Attention",
-          "message": "You are about to move {{amount}} € from your Current Account to the EURO Rewarding Account.",
+          "title": "This operation requires your attention",
+          "message": "You are about to move {{amount}} € from your Current Account to the Euro interest-bearing Account.",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
         "swap_usd_to_cc": {
-          "title": "This Operation Requires Your Attention",
-          "message": "You are about to move {{amount}} € from the US DOLLAR investment to your Current Account.",
+          "title": "This operation requires your attention",
+          "message": "You are about to move {{amount}} € from the US Dollar investment to your Current Account.",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
         "swap_euro_to_cc": {
-          "title": "This Operation Requires Your Attention",
-          "message": "You are about to move {{amount}} € from the EURO investment to your Current Account.",
+          "title": "This operation requires your attention",
+          "message": "You are about to move {{amount}} € from the Euro investment to your Current Account.",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
@@ -184,11 +196,11 @@
     }
   },
   "onramp": {
-    "title": "Fund Your Account",
-    "subtitle": "Place your funds in your Current Account via bank card, Apple Pay, or Google Pay."
+    "title": "Fund your account",
+    "subtitle": "Put your funds in your Current Account via credit card, Apple Pay, or Google Pay."
   },
   "offramp": {
-    "title": "Withdraw from Your Account",
-    "subtitle": "You can retrieve funds from your account by withdrawing via bank card, bank transfer, or Google Pay."
+    "title": "Withdraw from your account",
+    "subtitle": "You can retrieve funds from your account by withdrawing via credit card, bank transfer, or Google Pay."
   }
 }

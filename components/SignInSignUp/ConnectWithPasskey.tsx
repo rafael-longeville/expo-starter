@@ -56,7 +56,6 @@ export default function ConnectWithPasskey({}: ConnectWithPasskeyProps) {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#333333",
-    padding: 10,
     borderRadius: 30,
     height: 37,
     justifyContent: "center",
