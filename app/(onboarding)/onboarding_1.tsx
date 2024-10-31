@@ -90,18 +90,27 @@ const Onboarding1: React.FC = () => {
       <Text
         style={{
           ...globalFonts.subtitle,
+          fontSize: scaledFontSize(16),
           textAlign: "center",
-          width: "85%",
         }}
       >
         {t("pages.onboarding_1.subtitle")}
       </Text>
-      <View style={styles.buttonContainer}>
-        <Image
-          style={styles.image}
-          source={require("@/assets/images/onboarding/1/biometry-image.png")}
-        />
-        {/* <ConnectWithPasskey
+      <Image
+        style={styles.image}
+        source={require("@/assets/images/onboarding/1/biometry-image.png")}
+      />
+      <Text
+        style={{
+          ...globalFonts.subtitle,
+          fontSize: scaledFontSize(12),
+          textAlign: "center",
+          width: "90%",
+        }}
+      >
+        {t("pages.onboarding_1.second_subtitle")}
+      </Text>
+      {/* <ConnectWithPasskey
           connect={connect}
           redirectionUrl={continueWithoutFundingUrl}
           // withoutFunding={storedValue}
@@ -118,7 +127,6 @@ const Onboarding1: React.FC = () => {
           account={account}
           error={error}
         /> */}
-      </View>
       <Text style={globalFonts.disclaimerText}>
         {t("disclaimer")}
         <Link href={"https://moncomptesouverain.fr"}>
