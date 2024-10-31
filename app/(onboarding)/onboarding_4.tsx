@@ -11,7 +11,7 @@ const Onboarding4: React.FC = () => {
 
   const handleVerify = () => {
     if (selectedOption === 1) {
-      router.push("/(onboarding)/onboarding_5"); // Navigate to the next screen if correct
+      router.push("/(onboarding)/onboarding_6"); // Navigate to the next screen if correct
     } else {
       setShowError(true); // Show error message if the answer is incorrect
     }
@@ -29,7 +29,9 @@ const Onboarding4: React.FC = () => {
       <Text style={styles.subtitle}>Choisissez la bonne réponse.</Text>
 
       {/* Question */}
-      <Text style={styles.questionText}>Si vous supprimez la clé d'accès...</Text>
+      <Text style={styles.questionText}>
+        Si vous supprimez la clé d'accès...
+      </Text>
 
       {/* Options */}
       <View style={styles.optionsContainer}>
@@ -37,7 +39,12 @@ const Onboarding4: React.FC = () => {
           style={styles.optionItem}
           onPress={() => handleOptionSelect(0)}
         >
-          <View style={[styles.radioCircle, selectedOption === 0 && styles.radioCircleSelected]}>
+          <View
+            style={[
+              styles.radioCircle,
+              selectedOption === 0 && styles.radioCircleSelected,
+            ]}
+          >
             {selectedOption === 0 && <View style={styles.innerCircle} />}
           </View>
           <Text style={styles.optionText}>
@@ -49,18 +56,26 @@ const Onboarding4: React.FC = () => {
           style={styles.optionItem}
           onPress={() => handleOptionSelect(1)}
         >
-          <View style={[styles.radioCircle, selectedOption === 1 && styles.radioCircleSelected]}>
+          <View
+            style={[
+              styles.radioCircle,
+              selectedOption === 1 && styles.radioCircleSelected,
+            ]}
+          >
             {selectedOption === 1 && <View style={styles.innerCircle} />}
           </View>
           <Text style={styles.optionText}>
-            Je ne pourrais plus me connecter à mon portefeuille et perdrais l'accès à mes fonds.
+            Je ne pourrais plus me connecter à mon portefeuille et perdrais
+            l'accès à mes fonds.
           </Text>
         </TouchableOpacity>
       </View>
 
       {/* Error Message */}
       {showError && (
-        <Text style={styles.errorText}>Réponse incorrecte, veuillez réessayer.</Text>
+        <Text style={styles.errorText}>
+          Réponse incorrecte, veuillez réessayer.
+        </Text>
       )}
 
       {/* Bottom Button */}

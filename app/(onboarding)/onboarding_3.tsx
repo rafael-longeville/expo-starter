@@ -24,13 +24,17 @@ const Onboarding3: React.FC = () => {
       <Text style={styles.title}>Sécurité</Text>
       <Text style={styles.subtitle}>Votre clé d'accès est importante</Text>
       <Text style={styles.instructionText}>
-        Cochez toutes les cases pour confirmer que vous comprenez l'importance des clés d'accès.
+        Cochez toutes les cases pour confirmer que vous comprenez l'importance
+        des clés d'accès.
       </Text>
 
       {/* Checkbox Section */}
       <View style={styles.checkboxContainer}>
         <TouchableOpacity
-          style={[styles.checkboxItem, isFirstChecked && styles.checkedCheckbox]}
+          style={[
+            styles.checkboxItem,
+            isFirstChecked && styles.checkedCheckbox,
+          ]}
           onPress={() => setIsFirstChecked(!isFirstChecked)}
         >
           <Image
@@ -42,12 +46,17 @@ const Onboarding3: React.FC = () => {
             style={styles.checkIcon}
           />
           <Text style={styles.checkboxText}>
-            Sur votre téléphone, allez dans «Paramètres › Votre compte › iCloud» et activez «Mots de passe et keychain» (pas 1Password), pour activer les clés d'accès.
+            Sur votre téléphone, allez dans «Paramètres › Votre compte › iCloud»
+            et activez «Mots de passe et keychain» (pas 1Password), pour activer
+            les clés d'accès.
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.checkboxItem, isSecondChecked && styles.checkedCheckbox]}
+          style={[
+            styles.checkboxItem,
+            isSecondChecked && styles.checkedCheckbox,
+          ]}
           onPress={() => setIsSecondChecked(!isSecondChecked)}
         >
           <Image
@@ -59,12 +68,16 @@ const Onboarding3: React.FC = () => {
             style={styles.checkIcon}
           />
           <Text style={styles.checkboxText}>
-            Les clés d'accès vous permettent de récupérer le portefeuille à l'avenir, en cas de perte ou de remplacement de votre appareil.
+            Les clés d'accès vous permettent de récupérer le portefeuille à
+            l'avenir, en cas de perte ou de remplacement de votre appareil.
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.checkboxItem, isThirdChecked && styles.checkedCheckbox]}
+          style={[
+            styles.checkboxItem,
+            isThirdChecked && styles.checkedCheckbox,
+          ]}
           onPress={() => setIsThirdChecked(!isThirdChecked)}
         >
           <Image
@@ -76,7 +89,9 @@ const Onboarding3: React.FC = () => {
             style={styles.checkIcon}
           />
           <Text style={styles.checkboxText}>
-            Important : si votre clé d'accès est supprimée (et que vous ne l'avez pas sauvegardée autrement), vous perdez l'accès au portefeuille et aux fonds.
+            Important : si votre clé d'accès est supprimée (et que vous ne
+            l'avez pas sauvegardée autrement), vous perdez l'accès au
+            portefeuille et aux fonds.
           </Text>
         </TouchableOpacity>
       </View>
@@ -163,7 +178,8 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: "400",
     color: "#212121",
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_400Regular",
+
     flex: 1,
   },
   button: {
@@ -185,7 +201,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   linkText: {
-    fontSize: scaledFontSize(18),
+    fontSize: scaledFontSize(14),
     color: "#13293D",
     textAlign: "center",
   },

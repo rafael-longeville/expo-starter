@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     letterSpacing: 0.32,
     color: "#212121",
-    fontFamily: "Poppins",
+    fontFamily: "Poppins_400Regular",
     marginBottom: 5,
   },
   button: {

@@ -183,8 +183,15 @@ const Onboarding6: React.FC = () => {
             color: "#212121",
             textAlign: "center",
             alignSelf: "center",
+            display: emailNotifications ? "flex" : "none",
           }}
-        ></TextInput>
+        />
+        <TouchableOpacity
+          style={{ ...styles.button, backgroundColor: "#333333" }}
+          onPress={() => router.push("/(onboarding)/onboarding_7")}
+        >
+          <Text style={styles.buttonText}>Enregistrer</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -256,6 +263,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: scaledFontSize(22),
     textAlign: "center",
+  },
+  button: {
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 60,
+    height: 37,
+  },
+  buttonText: {
+    fontSize: scaledFontSize(14),
+    color: "#FFFFFF",
+    fontWeight: "500",
   },
 });
 
