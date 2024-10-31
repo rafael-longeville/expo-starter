@@ -25,7 +25,16 @@
       "title": "Réglages"
     },
     "onboarding_1": {
-      "title": "Paramètrez l'affichage de la devise et les notifications",
+      "title": "Créez votre portefeuille",
+      "subtitle": "Vous seul en aurez l’accès.",
+      "description": "Créez et reconnectez vous à un portefeuille numérique grâce aux nouvelles methodes d’identification :",
+      "fingerprint": "Empreinte digitale",
+      "face_id": "Face ID",
+      "pin_code": "Code Pin",
+      "icloud_note": "L'identification se fait automatiquement grâce à la clé d'accès liée à votre compte iCloud.",
+      "warning": "Ne laissez personne accédez à votre Téléphone et à vos fonds.",
+      "create_wallet_button": "Créer mon portefeuille",
+      "private_key_info": "Qu’est-ce qu’une clé privée",
       "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
       "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
       "notifications_question": "Souhaitez-vous activer les notifications ?",

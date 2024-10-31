@@ -73,8 +73,8 @@ export default function OnboardingLayout() {
   return (
     <SafeAreaView style={styles.container}>
       <Image
-        source={require("@/assets/images/yellow-rectangle.png")}
-        style={styles.backgroundImage}
+      source={require("@/assets/images/onboarding/background.png")}
+      style={styles.backgroundImage}
       />
       <ScrollView
         ref={scrollViewRef}
@@ -224,8 +224,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     position: "absolute",
-    bottom: 0,
-    right: 0,
+    top:"20%",
     width: "100%", // Adjust as needed to cover the bottom part of the screen
     resizeMode: "cover", // Ensures the image covers the area proportionally
     zIndex: -1, // Ensures the image stays behind all other elements
