@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    backgroundColor: "rgba(51,51,51, 0.5)", // Ensure the container background is semi-transparent
+    backgroundColor: "rgba(51,51,51, 0.4)", // Ensure the container background is semi-transparent
   },
   backgroundImage: {
     flex: 1,
