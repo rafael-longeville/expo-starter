@@ -140,6 +140,22 @@ export default function Onboarding() {
       source={require("@/components/Onboarding/background-image.png")}
       style={styles.backgroundImage}
     >
+      {/* Overlay LinearGradient for fading effect */}
+      <LinearGradient
+        colors={[
+          "rgba(51, 51, 51, 1)", // Top 20% - Full background color
+          "rgba(51, 51, 51, 0.9)", // Top 20% - Full background color
+
+          "rgba(51, 51, 51, 0.5)", // Fade to transparent
+          "rgba(51, 51, 51, 0.5)", // Stay transparent
+
+          "rgba(51, 51, 51, 0.9)", 
+          "rgba(51, 51, 51, 1)", 
+        ]}
+        locations={[0, 0.15, 0.2, 0.7, 0.85, 1]}
+        style={StyleSheet.absoluteFill}
+      />
+
       <View style={styles.container}>
         <FlatList
           data={slides}
@@ -160,13 +176,13 @@ export default function Onboarding() {
           style={{ flexGrow: 0, height: "100%" }}
         />
 
-        <View style={{ position: "absolute", bottom: 20, height: "20%" }}>
+        <View style={styles.bottomContainer}>
           <NextButton
             scrollTo={handleNextButtonPress}
             percentage={currentIndex * (100 / (slides.length - 1))}
           />
           {currentIndex >= 1 && currentIndex <= 3 && (
-            <View style={{ height: "20%" }}>
+            <View style={styles.paginatorContainer}>
               <Paginator data={slides.slice(1)} currentIndex={currentIndex} />
             </View>
           )}
@@ -183,10 +199,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    backgroundColor: "rgba(51,51,51, 0.98)", // Ensure the container background is transparent
+    backgroundColor: "rgba(51,51,51, 0.5)", // Ensure the container background is semi-transparent
   },
   backgroundImage: {
     flex: 1,
     justifyContent: "center",
+  },
+  bottomContainer: {
+    position: "absolute",
+    bottom: 20,
+    width: "100%",
+    alignItems: "center",
+    // Removed height to let contents define the height
+  },
+  paginatorContainer: {
+    marginTop: 10, // Adjust as needed for spacing
+    // Optionally, you can set height here if needed
   },
 });
