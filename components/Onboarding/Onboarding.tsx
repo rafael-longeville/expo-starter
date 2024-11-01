@@ -10,6 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 import OnboardingItem from "./OnboardingItem";
 import Paginator from "./Paginator";
@@ -77,7 +78,6 @@ export default function Onboarding() {
     },
   ];
 
-  // Update slidesToRender to start from the second slide
   const slidesToRender = hasSeenSplash ? [slides[0]] : slides.slice(1);
 
   const scrollTo = async () => {
@@ -86,12 +86,11 @@ export default function Onboarding() {
       currentIndex,
     });
 
-    if (isScrolling.current) return; // Prevent multiple scroll operations
-    isScrolling.current = true; // Set the flag to true
+    if (isScrolling.current) return;
+    isScrolling.current = true;
 
     try {
       if (currentIndex < slides.length - 1) {
-        // Adjust scrolling logic
         console.log("Scrolling to next index:", currentIndex + 1);
         slidesRef.current?.scrollToIndex({ index: currentIndex + 1 });
       } else {
@@ -99,17 +98,8 @@ export default function Onboarding() {
         const settingsDone = await AsyncStorage.getItem("settingsDone");
         const transakDone = await AsyncStorage.getItem("transakDone");
 
-        // if (settingsDone === "true" && transakDone === "true") {
-        //   console.log("Navigating to /onboarding_3");
-        //   router.push({ pathname: "/(onboarding)/onboarding_3" });
-        // } else if (settingsDone === "true") {
-        //   console.log("Navigating to /onboarding_2");
-        //   router.push({ pathname: "/(onboarding)/onboarding_2" });
-        // } else {
-          console.log("Navigating to /onboarding_1");
-          router.push({ pathname: "/(onboarding)/onboarding_1" });
-        // }
-        // reset to true when dev done
+        console.log("Navigating to /onboarding_1");
+        router.push({ pathname: "/(onboarding)/onboarding_1" });
         await AsyncStorage.setItem("hasSeenSplash", "true");
       }
     } catch (error) {
@@ -128,7 +118,7 @@ export default function Onboarding() {
         router.push({ pathname: "/(onboarding)/onboarding_1" });
       }
     } finally {
-      isScrolling.current = false; // Reset the flag
+      isScrolling.current = false;
       console.log("scrollTo completed", { isScrolling: isScrolling.current });
     }
   };
@@ -136,7 +126,7 @@ export default function Onboarding() {
   const handleNextButtonPress = () => {
     console.log("Next button pressed", { isScrolling: isScrolling.current });
 
-    if (isScrolling.current) return; // Prevent multiple triggers
+    if (isScrolling.current) return;
 
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -173,14 +163,11 @@ export default function Onboarding() {
         <View style={{ position: "absolute", bottom: 20, height: "20%" }}>
           <NextButton
             scrollTo={handleNextButtonPress}
-            percentage={currentIndex * (100 / (slides.length - 1))} // Updated to reflect slides length excluding first
+            percentage={currentIndex * (100 / (slides.length - 1))}
           />
           {currentIndex >= 1 && currentIndex <= 3 && (
             <View style={{ height: "20%" }}>
-              <Paginator
-                data={slides.slice(1)} // Pass slides excluding the first for the paginator
-                currentIndex={currentIndex} // Pass currentIndex to paginator
-              />
+              <Paginator data={slides.slice(1)} currentIndex={currentIndex} />
             </View>
           )}
         </View>
@@ -196,7 +183,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    backgroundColor: "transparent", // Make sure the container background is transparent
+    backgroundColor: "rgba(51,51,51, 0.98)", // Ensure the container background is transparent
   },
   backgroundImage: {
     flex: 1,
