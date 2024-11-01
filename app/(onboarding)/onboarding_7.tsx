@@ -21,7 +21,14 @@ const Onboarding7: React.FC = () => {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        paddingHorizontal: 20,
+        flex: 1,
+        alignItems: "center",
+        marginTop: 40,
+      }}
+    >
       <Text
         style={{
           ...globalFonts.bigTitle,

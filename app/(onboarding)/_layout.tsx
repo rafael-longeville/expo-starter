@@ -20,13 +20,17 @@ import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
 import { useTyping } from "@/context/TypingContext";
 import Onboarding6 from "./onboarding_6";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
+import { BlurView } from "@react-native-community/blur";
+import NotificationsPopup from "@/components/PopUp/NotificationPopup";
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
   onboarding_2: require("@/assets/images/onboarding/onboarding_1.png"),
   onboarding_3: require("@/assets/images/onboarding/onboarding_1.png"),
   onboarding_4: require("@/assets/images/onboarding/onboarding_1.png"),
-
 } as const;
 
 export default function OnboardingLayout() {
@@ -35,6 +39,10 @@ export default function OnboardingLayout() {
   const { t } = useTranslation();
   const { isTyping } = useTyping();
   const scrollViewRef = useRef(null);
+  // Handle modals in onboarding
+  const { setIsBlurred, isBlurred, setIsModalOpen } =
+    useStayUpdatedModalContext();
+  const notificationsModalRef = useRef(null);
 
   const renderCurrentScreen = (scrollViewRef: any) => {
     switch (currentSegment) {
@@ -47,7 +55,7 @@ export default function OnboardingLayout() {
       case "onboarding_4":
         return <Onboarding4 />;
       case "onboarding_6":
-        return <Onboarding6 />;
+        return <Onboarding6 ref={notificationsModalRef} />;
       case "onboarding_7":
         return <Onboarding7 />;
       case "onboarding_4":
@@ -81,104 +89,70 @@ export default function OnboardingLayout() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Image
-        source={require("@/assets/images/onboarding/background.png")}
-        style={styles.backgroundImage}
-      />
-      <ScrollView
-        ref={scrollViewRef}
-        contentContainerStyle={styles.scrollViewContainer}
-      >
-        {
-          IMAGES[currentSegment as keyof typeof IMAGES] && (
-            <Image
-              source={IMAGES[currentSegment as keyof typeof IMAGES]}
-              style={styles.image}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <SafeAreaView style={styles.container}>
+          {isBlurred && (
+            <BlurView
+              style={styles.absolute}
+              blurType="dark"
+              blurAmount={10}
+              reducedTransparencyFallbackColor="white"
             />
           )}
-        {renderCurrentScreen(scrollViewRef)}
+          <Image
+            source={require("@/assets/images/onboarding/background.png")}
+            style={styles.backgroundImage}
+          />
+          <ScrollView
+            ref={scrollViewRef}
+            contentContainerStyle={styles.scrollViewContainer}
+          >
+            {IMAGES[currentSegment as keyof typeof IMAGES] && (
+              <Image
+                source={IMAGES[currentSegment as keyof typeof IMAGES]}
+                style={styles.image}
+              />
+            )}
+            {renderCurrentScreen(scrollViewRef)}
 
-        {process.env.EXPO_PUBLIC_IS_DEVELOPMENT && (
-          <View style={styles.languageSwitcher}>
-            <LanguageButton
-              label="To 1"
-              onPress={() => router.push("/(onboarding)/onboarding_1")}
-            />
-            <LanguageButton
-              label="To T"
-              onPress={() => router.push("/(onboarding)/onboarding_4")}
-            />
-            {/* <LanguageButton
+            {process.env.EXPO_PUBLIC_IS_DEVELOPMENT && (
+              <View style={styles.languageSwitcher}>
+                <LanguageButton
+                  label="To 1"
+                  onPress={() => router.push("/(onboarding)/onboarding_1")}
+                />
+                <LanguageButton
+                  label="To T"
+                  onPress={() => router.push("/(onboarding)/onboarding_4")}
+                />
+                {/* <LanguageButton
               label="To home"
               onPress={() => router.push("/(tabs)/home")}
             /> */}
-            <LanguageButton
-              label="Clear cache"
-              onPress={async () => {
-                try {
-                  await AsyncStorage.clear();
-                  console.log("All async storage data cleared.");
-                } catch (error) {
-                  console.error("Error clearing async storage: ", error);
-                }
-              }}
-            />
-          </View>
-        )}
-      </ScrollView>
-      {/* {currentSegment === "onboarding_2" && (
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: "white",
-            padding: 20,
-            gap: 20,
-            zIndex: 100,
-            display: isTyping ? "none" : "flex",
-          }}
-        >
-          <Pressable
-            style={{
-              backgroundColor: "#13293D",
-              padding: 10,
-              borderRadius: 30,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-            }}
-            onPress={handleContinuePress}
-          >
-            <Text
-              style={{
-                ...globalFonts.whiteSubtitle,
-                textAlign: "center",
-                fontSize: scaledFontSize(14),
-                fontFamily: "Poppins_500Medium",
-              }}
-            >
-              {t("pages.onboarding_2.continue_button")}
-            </Text>
-          </Pressable>
-          <Text
-            style={{
-              ...globalFonts.subtitle,
-              width: "100%",
-              textAlign: "center",
-              fontSize: scaledFontSize(14),
-              fontFamily: "Poppins_500Medium",
-            }}
-            onPress={handleContinuePress}
-          >
-            {t("pages.onboarding_2.has_account")}
-          </Text>
-        </View>
-      )} */}
-    </SafeAreaView>
+                <LanguageButton
+                  label="Clear cache"
+                  onPress={async () => {
+                    try {
+                      await AsyncStorage.clear();
+                      console.log("All async storage data cleared.");
+                    } catch (error) {
+                      console.error("Error clearing async storage: ", error);
+                    }
+                  }}
+                />
+              </View>
+            )}
+          </ScrollView>
+
+          <NotificationsPopup
+            ref={notificationsModalRef}
+            setIsModalOpen={setIsModalOpen}
+            setBlurred={setIsBlurred}
+          />
+        </SafeAreaView>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -199,8 +173,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  absolute: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 1,
+  },
   scrollViewContainer: {
-    padding: 30,
+    flexGrow: 1,
   },
   stackContainer: {
     flex: 1,
