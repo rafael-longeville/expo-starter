@@ -14,8 +14,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function OnboardingItem({ item }: any) {
   const { height, width } = useWindowDimensions();
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial opacity set to 0 for fade-in effect
-  const multiplierValue = item.id === "4" ? 0.35 : 0.25;
-  const marginValue = item.id === "4" ? "-10%" : "10%";
+  const multiplierValue = item.id === "4" ? 0.45 : 0.25;
+  const marginValue = item.id === "4" ? "-17%" : "10%";
 
   useEffect(() => {
     // Reset fadeAnim to 0 before starting the animation for smoothness
