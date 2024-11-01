@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useRef } from "react";
 import {
   View,
   Text,
@@ -7,13 +7,20 @@ import {
   Pressable,
   Alert,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
 import { Divider } from "react-native-paper";
-import { TextInput } from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureHandlerRootView,
+  TextInput,
+} from "react-native-gesture-handler";
+import MainAccountPopup from "@/components/PopUp/NotificationPopup";
+import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
 // Custom Switch component to toggle notifications
 const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
@@ -66,15 +73,36 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
   );
 };
 
-const Onboarding6: React.FC = () => {
+const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
   const router = useRouter();
   const { t } = useTranslation();
   const [notifications, setNotifications] = React.useState(false);
   const [emailNotifications, setEmailNotifications] = React.useState(false);
   const [email, setEmail] = React.useState("");
+  // Handle modal
+  const { setIsBlurred, isBlurred, setIsModalOpen } =
+    useStayUpdatedModalContext();
+
+  const handlePress = (ref: any) => {
+    if (!emailNotifications && !notifications) {
+      console.log("here");
+      setIsModalOpen(true);
+      setIsBlurred(true);
+      ref.current?.present();
+      // Alert.alert("Error", "Please enable at least one type of notification.", [
+      //   { text: "OK" },
+      // ]);
+      return;
+    } else if (emailNotifications && !email) {
+      Alert.alert("Error", "Please enter your email address.", [
+        { text: "OK" },
+      ]);
+      return;
+    }
+  };
 
   return (
-    <View>
+    <View style={{ paddingHorizontal: 20 }}>
       <View style={{ flexDirection: "column", gap: 20 }}>
         <Text
           style={{
@@ -133,7 +161,11 @@ const Onboarding6: React.FC = () => {
         </Text>
       </View>
       <Divider
-        style={{ marginVertical: 20, height: 1, backgroundColor: "#212121" }}
+        style={{
+          marginVertical: 20,
+          height: 1,
+          backgroundColor: "#212121",
+        }}
       />
       <View
         style={{
@@ -188,14 +220,14 @@ const Onboarding6: React.FC = () => {
         />
         <TouchableOpacity
           style={{ ...styles.button, backgroundColor: "#333333" }}
-          onPress={() => router.push("/(onboarding)/onboarding_7")}
+          onPress={() => handlePress(ref)}
         >
           <Text style={styles.buttonText}>Enregistrer</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -276,6 +308,14 @@ const styles = StyleSheet.create({
     fontSize: scaledFontSize(14),
     color: "#FFFFFF",
     fontWeight: "500",
+  },
+  absolute: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 1,
   },
 });
 

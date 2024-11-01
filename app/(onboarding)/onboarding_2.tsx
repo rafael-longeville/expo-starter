@@ -13,50 +13,54 @@ const Onboarding2: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header Title */}
-      <Text style={styles.title}>{t("pages.onboarding_2.title")}</Text>
-      <Text style={styles.subtitle}>{t("pages.onboarding_2.subtitle")}</Text>
-
-      {/* Description Section */}
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>
-          {t("pages.onboarding_2.description")}
-        </Text>
-        <View>
-          <Text style={styles.descriptionText}>
-            • {t("pages.onboarding_2.fingerprint")}
-          </Text>
-          <Text style={styles.descriptionText}>
-            • {t("pages.onboarding_2.face_id")}
-          </Text>
-          <Text style={styles.descriptionText}>
-            • {t("pages.onboarding_2.pin_code")}
-          </Text>
-        </View>
-        <Text style={styles.descriptionText}>
-          {t("pages.onboarding_2.icloud_note")}
-        </Text>
-        <Text style={styles.descriptionText}>
-          {t("pages.onboarding_2.warning")}
-        </Text>
+      {/* Header Section with Title and Subtitle */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>{t("pages.onboarding_2.title")}</Text>
+        <Text style={styles.subtitle}>{t("pages.onboarding_2.subtitle")}</Text>
       </View>
 
-      {/* Bottom Button */}
-      <TouchableOpacity
-        style={{ ...styles.button, backgroundColor: "#333333" }}
-        onPress={handleCreateWallet}
-      >
-        <Text style={styles.buttonText}>
-          {t("pages.onboarding_2.create_wallet_button")}
-        </Text>
-      </TouchableOpacity>
+      {/* Main Content (Centered) */}
+      <View style={styles.contentContainer}>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.descriptionText}>
+            {t("pages.onboarding_2.description")}
+          </Text>
+          <View style={styles.bulletContainer}>
+            <Text style={styles.descriptionText}>
+              • {t("pages.onboarding_2.fingerprint")}
+            </Text>
+            <Text style={styles.descriptionText}>
+              • {t("pages.onboarding_2.face_id")}
+            </Text>
+            <Text style={styles.descriptionText}>
+              • {t("pages.onboarding_2.pin_code")}
+            </Text>
+          </View>
+          <Text style={styles.descriptionText}>
+            {t("pages.onboarding_2.icloud_note")}
+          </Text>
+          <Text style={styles.descriptionText}>
+            {t("pages.onboarding_2.warning")}
+          </Text>
+        </View>
 
-      {/* Bottom Text Link */}
-      <TouchableOpacity>
-        <Text style={styles.linkText}>
-          {t("pages.onboarding_2.private_key_info")}
-        </Text>
-      </TouchableOpacity>
+        {/* Bottom Button */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleCreateWallet}
+        >
+          <Text style={styles.buttonText}>
+            {t("pages.onboarding_2.create_wallet_button")}
+          </Text>
+        </TouchableOpacity>
+
+        {/* Bottom Text Link */}
+        <TouchableOpacity style={styles.linkContainer}>
+          <Text style={styles.linkText}>
+            {t("pages.onboarding_2.private_key_info")}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -64,30 +68,45 @@ const Onboarding2: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     backgroundColor: "transparent",
   },
+  headerContainer: {
+    position: "absolute",
+    top: 30, // 30px from the top
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
   title: {
-    fontSize: scaledFontSize(20),
+    fontSize: scaledFontSize(22),
     fontWeight: "700",
     textAlign: "center",
-    color: "#13293D",
-    marginBottom: 5,
+    color: "#212121",
+    fontFamily: "Poppins_600SemiBold",
   },
   subtitle: {
-    fontSize: scaledFontSize(14),
+    fontSize: scaledFontSize(16),
     textAlign: "center",
-    color: "#13293D",
-    opacity: 0.7,
-    marginBottom: "20%",
+    color: "#212121",
+    marginTop: 20, // 20px below the title
+    fontFamily: "Poppins_400Regular",
+
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 50, // Offset for the header section
   },
   descriptionContainer: {
-    marginBottom: "30%",
+    marginBottom: 60,
     alignItems: "flex-start",
     width: "100%",
     gap: 20,
+  },
+  bulletContainer: {
+    paddingLeft: 15
   },
   descriptionText: {
     fontSize: 16,
@@ -99,22 +118,26 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   button: {
+    paddingVertical: 10,
     borderRadius: 25,
     alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    marginTop: 60,
-    marginBottom: 20,
-    height: 37,
+    width: "90%",
+    backgroundColor: "#333333",
+    position: "absolute",
+    bottom: 70, // 30px above the link
   },
   buttonText: {
     fontSize: scaledFontSize(14),
     color: "#FFFFFF",
     fontWeight: "500",
   },
+  linkContainer: {
+    position: "absolute",
+    bottom: 30, // 30px from the bottom
+  },
   linkText: {
-    fontSize: scaledFontSize(14), // 1.5 times bigger
-    color: "#13293D",
+    fontSize: scaledFontSize(14),
+    color: "#212121",
     textAlign: "center",
     fontFamily: "Poppins_500Medium",
   },

@@ -19,7 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import StayUpdated from "@/components/PopUp/StayUpdated";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import MainAccountPopup from "@/components/PopUp/MainAccountPopup";
+import MainAccountPopup from "@/components/PopUp/NotificationPopup";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { BlurView } from "@react-native-community/blur";
 import OnRampModal from "@/components/PopUp/OnRampModal";
@@ -28,7 +28,13 @@ import InvestmentAccountPopup from "@/components/PopUp/InvestmentAccountPopup";
 import InvestmentCard from "@/components/InvestmentCard/InvestmentCard";
 import withFadeIn from "@/components/effects/withFadeIn";
 import TransactionPOC from "@/components/Homepage/TransactionsPOC";
-import { prepareContractCall, getContract, sendAndConfirmTransaction, toWei, sendBatchTransaction } from "thirdweb";
+import {
+  prepareContractCall,
+  getContract,
+  sendAndConfirmTransaction,
+  toWei,
+  sendBatchTransaction,
+} from "thirdweb";
 import { toUnits } from "thirdweb/utils";
 
 function HomeScreen() {
@@ -44,12 +50,12 @@ function HomeScreen() {
   const contractART = getContract({
     client,
     chain: chain,
-    address: "0x070E6A0e832401547a82AF5D6E2360438cf450cB"
+    address: "0x070E6A0e832401547a82AF5D6E2360438cf450cB",
   });
   const contractTrUSDC = getContract({
     client,
     chain: chain,
-    address: "0xa1Ebb6CcECDFE0CbC0aaE08E73917AA8E534a7Ec"
+    address: "0xa1Ebb6CcECDFE0CbC0aaE08E73917AA8E534a7Ec",
   });
 
   function createTransactionBuyArtWithTrUsdc(amount: string) {
@@ -58,18 +64,24 @@ function HomeScreen() {
       prepareContractCall({
         contract: contractTrUSDC,
         method: "function transfer(address to, uint256 value)",
-        params: ["0x7Bfe5d2746D51342DD3a1F864D66B1bD74C5a0eE", toUnits(amount, 6)],
+        params: [
+          "0x7Bfe5d2746D51342DD3a1F864D66B1bD74C5a0eE",
+          toUnits(amount, 6),
+        ],
       }),
     ];
   }
-  
+
   function createTransactionSellArt(amount: string) {
     return [
       // Sell ART (transfer then receive USDC)
       prepareContractCall({
         contract: contractART,
         method: "function transfer(address to, uint256 value)",
-        params: ["0x7Bfe5d2746D51342DD3a1F864D66B1bD74C5a0eE", toUnits(amount, 6)],
+        params: [
+          "0x7Bfe5d2746D51342DD3a1F864D66B1bD74C5a0eE",
+          toUnits(amount, 6),
+        ],
       }),
     ];
   }
@@ -106,7 +118,6 @@ function HomeScreen() {
 
   console.log("account address", account?.address);
 
-
   const {
     isCheckoutModalOpen,
     setIsCheckoutModalOpen,
@@ -134,7 +145,7 @@ function HomeScreen() {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    refetchART()
+    refetchART();
     refetch().finally(() => setRefreshing(false));
   }, [refetch]);
 
@@ -154,10 +165,9 @@ function HomeScreen() {
   useEffect(() => {
     const fetchInvestmentBalances = async () => {
       try {
-
         if (dataART) {
-          setEurBalance(parseFloat((dataART.displayValue)))
-          setUsdBalance(parseFloat((dataART.displayValue)))
+          setEurBalance(parseFloat(dataART.displayValue));
+          setUsdBalance(parseFloat(dataART.displayValue));
         }
       } catch (error) {
         console.error("Error fetching investment balances:", error);
@@ -178,7 +188,7 @@ function HomeScreen() {
             balance *= conversionRate; // Convert USD to EUR
           }
         }
-        setMainAccountBalance((balance).toFixed(2));
+        setMainAccountBalance(balance.toFixed(2));
       }
     };
 
@@ -238,17 +248,20 @@ function HomeScreen() {
           // Send the transaction
           const tx = await sendBatchTransaction({
             transactions: createTransactionBuyArtWithTrUsdc(amount.toString()),
-            account
+            account,
           });
 
           refetch();
           refetchART();
-          console.log(tx)
+          console.log(tx);
           const txHash = tx?.transactionHash; // Extract the transaction hash
           console.log("Transaction hash:", txHash);
 
           if (txHash) {
-            Alert.alert("Transaction Successful", `Transaction Hash: ${txHash}`);
+            Alert.alert(
+              "Transaction Successful",
+              `Transaction Hash: ${txHash}`
+            );
           }
         } catch (error) {
           console.error("Transaction error:", error as Error);
@@ -257,7 +270,6 @@ function HomeScreen() {
             `Error: ${(error as Error).message || error}`
           );
         }
-
       } else if (action === "withdraw" && account) {
         // Ensure sufficient balance
         if (eurBalance >= amount) {
@@ -265,17 +277,20 @@ function HomeScreen() {
             // Send the transaction
             const tx = await sendBatchTransaction({
               transactions: createTransactionSellArt(amount.toString()),
-              account
+              account,
             });
 
             refetch();
             refetchART();
-            console.log(tx)
+            console.log(tx);
             const txHash = tx?.transactionHash; // Extract the transaction hash
             console.log("Transaction hash:", txHash);
 
             if (txHash) {
-              Alert.alert("Transaction Successful", `Transaction Hash: ${txHash}`);
+              Alert.alert(
+                "Transaction Successful",
+                `Transaction Hash: ${txHash}`
+              );
             }
           } catch (error) {
             console.error("Transaction error:", error as Error);

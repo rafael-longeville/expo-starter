@@ -159,6 +159,22 @@
       },
       "button": "J'ai compris"
     },
+    "onboarding_notifications": {
+      "title": "Attention",
+      "description": "Vous n’avez activé aucune notification, vous risquez de rater le lancement de l’application et ses meilleures offres.",
+      "button": "Activer les notifications smartphone",
+      "continue_without": "Continuer sans notifications"
+    },
+    "good_answer": {
+      "title": "Bonne réponse !",
+      "description": "Si votre clé d’accès est supprimée, vous prerdez l’accès à votre portefueille.",
+      "button": "J’ai compris, continuer"
+    },
+    "bad_answer": {
+      "title": "Mauvaise réponse",
+      "description": "Relisez attentivement les explications sur les clés d’accès avant de répondre au quizz.",
+      "button": "Essayer à nouveau"
+    },
     "main_account": {
       "title": "Votre compte courant",
       "description_1": "Soyez le réél propriétaire de vos fonds, vous seul avez la possibilité d’intéragir avec votre Compte courant souverain. ",

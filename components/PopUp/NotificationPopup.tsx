@@ -1,16 +1,10 @@
-import React, {
-  useCallback,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-  useMemo,
-} from "react";
+import React, { useCallback, forwardRef, useMemo } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
-import { BlurView } from "expo-blur";
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
-import { Href, Link } from "expo-router";
+import { Href, Link, router, useRouter } from "expo-router";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 // Custom handle component
 const CustomHandle = () => {
@@ -18,7 +12,7 @@ const CustomHandle = () => {
     <View style={styles.customHandleContainer}>
       <View style={styles.customHandle}>
         <Image
-          source={require("@/assets/images/info-icon.png")}
+          source={require("@/assets/images/pop-ups/info-icon.png")}
           style={{ width: 80, height: 80 }}
         />
       </View>
@@ -26,15 +20,16 @@ const CustomHandle = () => {
   );
 };
 
-const MainAccountPopup = forwardRef(
-  ({ setIsModalOpen, setBlurred }: any, ref: any) => {
+const NotificationsPopup = forwardRef(
+  ({ setIsModalOpen, setBlurred, isModalOpen }: any, ref: any) => {
     const { t } = useTranslation();
     const snapPoints = useMemo(() => ["45%"], []);
+    const router = useRouter();
 
     const handleDismissModal = useCallback(() => {
-      setIsModalOpen(false);
       setBlurred(false);
       ref.current?.dismiss();
+      setIsModalOpen(false);
     }, []);
 
     const handleSheetChanges = useCallback(
@@ -46,6 +41,24 @@ const MainAccountPopup = forwardRef(
       [handleDismissModal]
     );
 
+    const handleContinue = () => {
+      // Close the modal
+      handleDismissModal();
+      // Navigate to the next screen
+      if (!isModalOpen) {
+        router.navigate("/(onboarding)/onboarding_7");
+      }
+    };
+
+    const handleContinueWithout = () => {
+      // Close the modal
+      handleDismissModal();
+      // Navigate to the next screen
+      if (!isModalOpen) {
+        router.navigate("/(onboarding)/onboarding_7");
+      }
+    };
+
     return (
       <BottomSheetModal
         ref={ref}
@@ -56,7 +69,9 @@ const MainAccountPopup = forwardRef(
         handleComponent={CustomHandle} // Use custom handle
       >
         <BottomSheetView style={styles.contentContainer}>
-          <Text style={styles.title}>{t("pop-ups.main_account.title")}</Text>
+          <Text style={styles.title}>
+            {t("pop-ups.onboarding_notifications.title")}
+          </Text>
 
           <View
             style={{
@@ -70,45 +85,32 @@ const MainAccountPopup = forwardRef(
               style={{
                 ...globalFonts.subtitle,
                 fontSize: scaledFontSize(14),
+                fontFamily: "Poppins_500Medium",
                 alignSelf: "center",
                 width: "80%",
                 textAlign: "center",
               }}
             >
-              {t("pop-ups.main_account.description_1")}
+              {t("pop-ups.onboarding_notifications.description")}
             </Text>
-            <Text
-              style={{
-                ...globalFonts.subtitle,
-                fontSize: scaledFontSize(14),
-                alignSelf: "center",
-                textAlign: "center",
 
-                width: "80%",
-              }}
+            {/* Bottom Button */}
+            <TouchableOpacity
+              style={[styles.button, styles.buttonActive]}
+              onPress={handleContinue}
             >
-              {t("pop-ups.main_account.description_2")}
-            </Text>
-            <Text
-              style={{
-                ...globalFonts.subtitle,
-                fontSize: scaledFontSize(12),
-                fontFamily: "Poppins_600SemiBold",
-                textDecorationLine: "underline",
-                width: "100%",
-                textAlign: "center",
-              }}
-            >
-              <Link href={t("pop-ups.main_account.href_link") as Href}>
-                {t("pop-ups.main_account.link")}
-              </Link>
-            </Text>
+              <Text style={styles.buttonText}>
+                {t("pop-ups.onboarding_notifications.button")}
+              </Text>
+            </TouchableOpacity>
+
+            {/* Bottom Text Link */}
+            <TouchableOpacity onPress={handleContinueWithout}>
+              <Text style={styles.linkText}>
+                {t("pop-ups.onboarding_notifications.continue_without")}
+              </Text>
+            </TouchableOpacity>
           </View>
-          <Pressable style={styles.button} onPress={handleDismissModal}>
-            <Text style={styles.buttonText}>
-              {t("pop-ups.main_account.button")}
-            </Text>
-          </Pressable>
         </BottomSheetView>
       </BottomSheetModal>
     );
@@ -130,20 +132,29 @@ const styles = StyleSheet.create({
     fontSize: scaledFontSize(24),
     color: "#13293D",
   },
+
   button: {
-    backgroundColor: "#13293D",
-    padding: 10,
-    borderRadius: 30,
-    height: 50,
-    justifyContent: "center",
+    borderRadius: 25,
     alignItems: "center",
-    width: 335,
-    marginTop: 20,
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 60,
+    marginBottom: 20,
+    height: 37,
+  },
+  buttonActive: {
+    backgroundColor: "#333333",
   },
   buttonText: {
     ...globalFonts.subtitle,
     textAlign: "center",
     color: "white",
+  },
+  linkText: {
+    fontSize: scaledFontSize(14),
+    color: "#13293D",
+    textAlign: "center",
+    fontFamily: "Poppins_500Medium",
   },
   customHandleContainer: {
     position: "absolute",
@@ -164,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainAccountPopup;
+export default NotificationsPopup;

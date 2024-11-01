@@ -20,98 +20,87 @@ const Onboarding3: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header Title */}
-      <Text style={styles.title}>Sécurité</Text>
-      <Text style={styles.subtitle}>Votre clé d'accès est importante</Text>
-      <Text style={styles.instructionText}>
-        Cochez toutes les cases pour confirmer que vous comprenez l'importance
-        des clés d'accès.
-      </Text>
-
-      {/* Checkbox Section */}
-      <View style={styles.checkboxContainer}>
-        <TouchableOpacity
-          style={[
-            styles.checkboxItem,
-            isFirstChecked && styles.checkedCheckbox,
-          ]}
-          onPress={() => setIsFirstChecked(!isFirstChecked)}
-        >
-          <Image
-            source={
-              isFirstChecked
-                ? require("@/assets/images/onboarding/3/green_check.png")
-                : require("@/assets/images/onboarding/3/blue_check.png")
-            }
-            style={styles.checkIcon}
-          />
-          <Text style={styles.checkboxText}>
-            Sur votre téléphone, allez dans «Paramètres › Votre compte › iCloud»
-            et activez «Mots de passe et keychain» (pas 1Password), pour activer
-            les clés d'accès.
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.checkboxItem,
-            isSecondChecked && styles.checkedCheckbox,
-          ]}
-          onPress={() => setIsSecondChecked(!isSecondChecked)}
-        >
-          <Image
-            source={
-              isSecondChecked
-                ? require("@/assets/images/onboarding/3/green_check.png")
-                : require("@/assets/images/onboarding/3/blue_check.png")
-            }
-            style={styles.checkIcon}
-          />
-          <Text style={styles.checkboxText}>
-            Les clés d'accès vous permettent de récupérer le portefeuille à
-            l'avenir, en cas de perte ou de remplacement de votre appareil.
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[
-            styles.checkboxItem,
-            isThirdChecked && styles.checkedCheckbox,
-          ]}
-          onPress={() => setIsThirdChecked(!isThirdChecked)}
-        >
-          <Image
-            source={
-              isThirdChecked
-                ? require("@/assets/images/onboarding/3/green_check.png")
-                : require("@/assets/images/onboarding/3/blue_check.png")
-            }
-            style={styles.checkIcon}
-          />
-          <Text style={styles.checkboxText}>
-            Important : si votre clé d'accès est supprimée (et que vous ne
-            l'avez pas sauvegardée autrement), vous perdez l'accès au
-            portefeuille et aux fonds.
-          </Text>
-        </TouchableOpacity>
+      {/* Header Section with Title and Subtitle */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>Sécurité</Text>
+        <Text style={styles.subtitle}>Votre clé d'accès est importante</Text>
+        <Text style={styles.instructionText}>
+          Cochez toutes les cases pour confirmer que vous comprenez l'importance des clés d'accès.
+        </Text>
       </View>
 
-      {/* Bottom Button */}
-      <TouchableOpacity
-        style={[
-          styles.button,
-          allChecked ? styles.buttonActive : styles.buttonDisabled,
-        ]}
-        onPress={handleContinue}
-        disabled={!allChecked}
-      >
-        <Text style={styles.buttonText}>Continuer</Text>
-      </TouchableOpacity>
+      {/* Main Content (Centered) */}
+      <View style={styles.contentContainer}>
+        
 
-      {/* Bottom Text Link */}
-      <TouchableOpacity>
-        <Text style={styles.linkText}>Qu’est-ce qu’une clé privée</Text>
-      </TouchableOpacity>
+        {/* Checkbox Section */}
+        <View style={styles.checkboxContainer}>
+          <TouchableOpacity
+            style={[styles.checkboxItem, isFirstChecked && styles.checkedCheckbox]}
+            onPress={() => setIsFirstChecked(!isFirstChecked)}
+          >
+            <Image
+              source={
+                isFirstChecked
+                  ? require("@/assets/images/onboarding/3/green_check.png")
+                  : require("@/assets/images/onboarding/3/blue_check.png")
+              }
+              style={styles.checkIcon}
+            />
+            <Text style={styles.checkboxText}>
+              Sur votre téléphone, allez dans «Paramètres › Votre compte › iCloud» et activez «Mots de passe et keychain» (pas 1Password), pour activer les clés d'accès.
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.checkboxItem, isSecondChecked && styles.checkedCheckbox]}
+            onPress={() => setIsSecondChecked(!isSecondChecked)}
+          >
+            <Image
+              source={
+                isSecondChecked
+                  ? require("@/assets/images/onboarding/3/green_check.png")
+                  : require("@/assets/images/onboarding/3/blue_check.png")
+              }
+              style={styles.checkIcon}
+            />
+            <Text style={styles.checkboxText}>
+              Les clés d'accès vous permettent de récupérer le portefeuille à l'avenir, en cas de perte ou de remplacement de votre appareil.
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.checkboxItem, isThirdChecked && styles.checkedCheckbox]}
+            onPress={() => setIsThirdChecked(!isThirdChecked)}
+          >
+            <Image
+              source={
+                isThirdChecked
+                  ? require("@/assets/images/onboarding/3/green_check.png")
+                  : require("@/assets/images/onboarding/3/blue_check.png")
+              }
+              style={styles.checkIcon}
+            />
+            <Text style={styles.checkboxText}>
+              Important : si votre clé d'accès est supprimée (et que vous ne l'avez pas sauvegardée autrement), vous perdez l'accès au portefeuille et aux fonds.
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Bottom Button */}
+        <TouchableOpacity
+          style={[styles.button, allChecked ? styles.buttonActive : styles.buttonDisabled]}
+          onPress={handleContinue}
+          disabled={!allChecked}
+        >
+          <Text style={styles.buttonText}>Continuer</Text>
+        </TouchableOpacity>
+
+        {/* Bottom Text Link */}
+        <TouchableOpacity style={styles.linkContainer}>
+          <Text style={styles.linkText}>Qu’est-ce qu’une clé privée</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -119,28 +108,43 @@ const Onboarding3: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    paddingHorizontal: 20,
     backgroundColor: "transparent",
+  },
+  headerContainer: {
+    position: "absolute",
+    top: 30,
+    left: 0,
+    right: 0,
+    alignItems: "center",
   },
   title: {
     fontSize: scaledFontSize(22),
     fontWeight: "700",
     textAlign: "center",
     color: "#212121",
-    marginBottom: 15,
+    fontFamily: "Poppins_600SemiBold",
   },
   subtitle: {
     fontSize: scaledFontSize(20),
     textAlign: "center",
     color: "#212121",
-    marginBottom: 15,
+    marginTop: 20,
+    fontFamily: "Poppins_400Regular",
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 100,
   },
   instructionText: {
-    fontSize: scaledFontSize(18),
+    fontSize: scaledFontSize(16),
     textAlign: "center",
     color: "#212121",
-    marginBottom: 60,
+    marginTop: 20,
+    paddingHorizontal: 30,
+    fontFamily: "Poppins_400Regular",
   },
   checkboxContainer: {
     marginBottom: 60,
@@ -179,17 +183,15 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: "#212121",
     fontFamily: "Poppins_400Regular",
-
     flex: 1,
   },
   button: {
+    paddingVertical: 10,
     borderRadius: 25,
     alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    marginTop: 20,
-    marginBottom: 20,
-    height: 37,
+    width: "90%",
+    position: "absolute",
+    bottom: 70,
   },
   buttonActive: {
     backgroundColor: "#333333",
@@ -202,9 +204,13 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "500",
   },
+  linkContainer: {
+    position: "absolute",
+    bottom: 30,
+  },
   linkText: {
     fontSize: scaledFontSize(14),
-    color: "#13293D",
+    color: "#212121",
     textAlign: "center",
     fontFamily: "Poppins_500Medium",
   },
