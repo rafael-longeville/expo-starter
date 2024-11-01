@@ -11,7 +11,7 @@ const Onboarding4: React.FC = () => {
 
   const handleVerify = () => {
     if (selectedOption === 1) {
-      router.push("/(onboarding)/onboarding_6"); // Navigate to the next screen if correct
+      router.push("/(onboarding)/onboarding_5"); // Navigate to the next screen if correct
     } else {
       setShowError(true); // Show error message if the answer is incorrect
     }
@@ -24,76 +24,81 @@ const Onboarding4: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header Title */}
-      <Text style={styles.title}>Avez-vous bien compris ?</Text>
-      <Text style={styles.subtitle}>Choisissez la bonne réponse.</Text>
-
-      {/* Question */}
-      <Text style={styles.questionText}>
-        Si vous supprimez la clé d'accès...
-      </Text>
-
-      {/* Options */}
-      <View style={styles.optionsContainer}>
-        <TouchableOpacity
-          style={styles.optionItem}
-          onPress={() => handleOptionSelect(0)}
-        >
-          <View
-            style={[
-              styles.radioCircle,
-              selectedOption === 0 && styles.radioCircleSelected,
-            ]}
-          >
-            {selectedOption === 0 && <View style={styles.innerCircle} />}
-          </View>
-          <Text style={styles.optionText}>
-            Je pourrais tout de même récupérer mon portefeuille
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.optionItem}
-          onPress={() => handleOptionSelect(1)}
-        >
-          <View
-            style={[
-              styles.radioCircle,
-              selectedOption === 1 && styles.radioCircleSelected,
-            ]}
-          >
-            {selectedOption === 1 && <View style={styles.innerCircle} />}
-          </View>
-          <Text style={styles.optionText}>
-            Je ne pourrais plus me connecter à mon portefeuille et perdrais
-            l'accès à mes fonds.
-          </Text>
-        </TouchableOpacity>
+      {/* Header Section with Title and Subtitle */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>Avez-vous bien compris ?</Text>
+        <Text style={styles.subtitle}>Choisissez la bonne réponse.</Text>
+        <Text style={styles.questionText}>
+          Si vous supprimez la clé d'accès...
+        </Text>
       </View>
 
-      {/* Error Message */}
-      {showError && (
-        <Text style={styles.errorText}>
-          Réponse incorrecte, veuillez réessayer.
-        </Text>
-      )}
+      {/* Main Content (Centered) */}
+      <View style={styles.contentContainer}>
+        
 
-      {/* Bottom Button */}
-      <TouchableOpacity
-        style={[
-          styles.button,
-          selectedOption !== null ? styles.buttonActive : styles.buttonDisabled,
-        ]}
-        onPress={handleVerify}
-        disabled={selectedOption === null}
-      >
-        <Text style={styles.buttonText}>Vérifier ma réponse</Text>
-      </TouchableOpacity>
+        {/* Options */}
+        <View style={styles.optionsContainer}>
+          <TouchableOpacity
+            style={styles.optionItem}
+            onPress={() => handleOptionSelect(0)}
+          >
+            <View
+              style={[
+                styles.radioCircle,
+                selectedOption === 0 && styles.radioCircleSelected,
+              ]}
+            >
+              {selectedOption === 0 && <View style={styles.innerCircle} />}
+            </View>
+            <Text style={styles.optionText}>
+              Je pourrais tout de même récupérer mon portefeuille
+            </Text>
+          </TouchableOpacity>
 
-      {/* Bottom Text Link */}
-      <TouchableOpacity>
-        <Text style={styles.linkText}>Qu’est-ce qu’une clé privée</Text>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.optionItem}
+            onPress={() => handleOptionSelect(1)}
+          >
+            <View
+              style={[
+                styles.radioCircle,
+                selectedOption === 1 && styles.radioCircleSelected,
+              ]}
+            >
+              {selectedOption === 1 && <View style={styles.innerCircle} />}
+            </View>
+            <Text style={styles.optionText}>
+              Je ne pourrais plus me connecter à mon portefeuille et perdrais
+              l'accès à mes fonds.
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Error Message */}
+        {showError && (
+          <Text style={styles.errorText}>
+            Réponse incorrecte, veuillez réessayer.
+          </Text>
+        )}
+
+        {/* Bottom Button */}
+        <TouchableOpacity
+          style={[
+            styles.button,
+            selectedOption !== null ? styles.buttonActive : styles.buttonDisabled,
+          ]}
+          onPress={handleVerify}
+          disabled={selectedOption === null}
+        >
+          <Text style={styles.buttonText}>Vérifier ma réponse</Text>
+        </TouchableOpacity>
+
+        {/* Bottom Text Link */}
+        <TouchableOpacity style={styles.linkContainer}>
+          <Text style={styles.linkText}>Qu’est-ce qu’une clé privée</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -101,32 +106,45 @@ const Onboarding4: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    paddingHorizontal: 30,
     backgroundColor: "transparent",
+  },
+  headerContainer: {
+    position: "absolute",
+    top: 30, // 30px from the top
+    left: 0,
+    right: 0,
+    alignItems: "center",
   },
   title: {
     fontSize: scaledFontSize(22),
     fontWeight: "700",
     textAlign: "center",
     color: "#212121",
-    marginBottom: 10,
+    fontFamily: "Poppins_600SemiBold",
   },
   subtitle: {
     fontSize: scaledFontSize(16),
     textAlign: "center",
     color: "#212121",
-    marginBottom: 30,
+    marginTop: 20, // 20px below the title
+    fontFamily: "Poppins_400Regular",
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   questionText: {
-    fontSize: scaledFontSize(16),
-    fontWeight: "600",
+    fontSize: 20,
+    fontWeight: "400",
     textAlign: "center",
     color: "#212121",
-    marginBottom: 20,
+    fontFamily: "Poppins_400Regular",
+    marginTop: 80, // Spacing below subtitle
   },
   optionsContainer: {
-    marginBottom: 20,
+    marginTop: 50,
     width: "100%",
     alignItems: "center",
   },
@@ -150,19 +168,19 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 11,
     borderWidth: 1,
-    borderColor: "black", // Fading green border
+    borderColor: "black",
     marginRight: 15,
     alignItems: "center",
     justifyContent: "center",
   },
   radioCircleSelected: {
-    borderColor: "black", // Slightly darker green for selected
+    borderColor: "black",
   },
   innerCircle: {
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: "#A0E8D1", // Lighter green color for inner circle
+    backgroundColor: "#A0E8D1",
   },
   optionText: {
     fontSize: scaledFontSize(14),
@@ -170,18 +188,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   errorText: {
-    color: "#FF0000", // Red color for error message
+    color: "#FF0000",
     fontSize: scaledFontSize(14),
     marginBottom: 20,
   },
   button: {
+    paddingVertical: 10,
     borderRadius: 25,
     alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    marginTop: 60,
-    marginBottom: 20,
-    height: 37,
+    width: "90%",
+    position: "absolute",
+    bottom: 70,
   },
   buttonActive: {
     backgroundColor: "#333333",
@@ -194,9 +211,13 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "500",
   },
+  linkContainer: {
+    position: "absolute",
+    bottom: 30,
+  },
   linkText: {
     fontSize: scaledFontSize(14),
-    color: "#13293D",
+    color: "#212121",
     textAlign: "center",
     fontFamily: "Poppins_500Medium",
   },

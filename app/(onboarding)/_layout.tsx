@@ -13,6 +13,7 @@ import Onboarding1 from "./onboarding_1";
 import Onboarding2 from "./onboarding_2";
 import Onboarding3 from "./onboarding_3";
 import Onboarding4 from "./onboarding_4";
+import Onboarding5 from "./onboarding_5";
 import Onboarding7 from "./onboarding_7";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
@@ -31,6 +32,10 @@ const IMAGES = {
   onboarding_2: require("@/assets/images/onboarding/onboarding_1.png"),
   onboarding_3: require("@/assets/images/onboarding/onboarding_1.png"),
   onboarding_4: require("@/assets/images/onboarding/onboarding_1.png"),
+  onboarding_5: require("@/assets/images/onboarding/onboarding_2.png"),
+  onboarding_6: require("@/assets/images/onboarding/onboarding_3.png"),
+
+
 } as const;
 
 export default function OnboardingLayout() {
@@ -54,6 +59,8 @@ export default function OnboardingLayout() {
         return <Onboarding3 />;
       case "onboarding_4":
         return <Onboarding4 />;
+      case "onboarding_5":
+        return <Onboarding5 />;
       case "onboarding_6":
         return <Onboarding6 ref={notificationsModalRef} />;
       case "onboarding_7":
@@ -170,6 +177,7 @@ const LanguageButton = ({
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 20,
     flex: 1,
     backgroundColor: "#fff",
   },
