@@ -11,6 +11,8 @@ import { ActivityIndicator } from "react-native-paper";
 import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
 import * as Sentry from "@sentry/react-native";
 import { useRouter } from "expo-router";
+import { getLocales } from "expo-localization";
+import i18n from "../i18n";
 
 const Onboarding1: React.FC = () => {
   const { t } = useTranslation();
@@ -22,6 +24,36 @@ const Onboarding1: React.FC = () => {
   const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(
     null
   );
+  // Get the preferred locale
+  const locales = getLocales();
+  const preferredLocale = locales[0]?.languageCode || "en"; // Fallback to 'en' if locale is not available
+  // States
+  const [selectedLanguage, setSelectedLanguage] = useState<"fr" | "en" | null>(
+    "en"
+  );
+
+  useEffect(() => {
+    const fetchStoredAndResetSettings = async () => {
+      try {
+        const storedLanguage = await AsyncStorage.getItem("selectedLanguage");
+
+        await AsyncStorage.setItem("continueWithoutFunding", "false");
+
+        if (storedLanguage) {
+          i18n.changeLanguage(storedLanguage);
+          setSelectedLanguage(storedLanguage as "fr" | "en");
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+        console.error(
+          "Error retrieving settings or JWT tokens from AsyncStorage:",
+          error
+        );
+      }
+    };
+
+    fetchStoredAndResetSettings();
+  }, []);
 
   useEffect(() => {
     const getValueFromAsyncStorage = async () => {
@@ -76,19 +108,11 @@ const Onboarding1: React.FC = () => {
     getValueFromAsyncStorage();
   }, []);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     Sentry.captureException(error);
-  //     console.error("Error during connection:", error);
-  //   }
-  // }, [error]);
-
-  const continueWithoutFundingUrl =
-    storedValue === "true" ? "/(tabs)/home" : "/(onboarding)/onboarding_4";
-
   return (
     <View style={styles.container}>
-      <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
+      <Text style={globalFonts.title}>
+        {t("pages.onboarding_1.title")} " "{preferredLocale}
+      </Text>
       <Text
         style={{
           ...globalFonts.subtitle,
