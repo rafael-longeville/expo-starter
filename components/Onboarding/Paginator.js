@@ -24,10 +24,10 @@ const Paginator = ({ data, currentIndex }) => {
 
 const styles = StyleSheet.create({
   dot: {
-    height: 13,
+    height: 16,
     borderRadius: 10,
     marginHorizontal: 8,
-    width: 13, // Fixed width for dots
+    width: 16, // Fixed width for dots
   },
 });
 

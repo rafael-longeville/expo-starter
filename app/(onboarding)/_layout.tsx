@@ -73,29 +73,6 @@ export default function OnboardingLayout() {
     }
   };
 
-  const handleContinuePress = async () => {
-    try {
-      Sentry.addBreadcrumb({
-        category: "action",
-        message: "User clicked continue without funding",
-        level: "info",
-      });
-
-      await AsyncStorage.setItem("continueWithoutFunding", "true");
-
-      Sentry.addBreadcrumb({
-        category: "storage",
-        message: "Stored continueWithoutFunding flag in AsyncStorage",
-        level: "info",
-      });
-
-      router.push("/(onboarding)/onboarding_3");
-    } catch (error) {
-      Sentry.captureException(error);
-      console.error("Error storing data or navigating:", error);
-    }
-  };
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
