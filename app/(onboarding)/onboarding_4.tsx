@@ -51,58 +51,64 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
       {/* Main Content (Centered) */}
       <View style={styles.contentContainer}>
         {/* Options */}
-        <View style={styles.optionsContainer}>
+        <View
+          style={{
+            flexDirection: "column",
+            gap: 29,
+          }}
+        >
           <TouchableOpacity
-            style={styles.optionItem}
+            style={styles.optionContainer}
             onPress={() => handleOptionSelect(0)}
           >
-            <View
-              style={[
-                styles.radioCircle,
-                selectedOption === 0 && styles.radioCircleSelected,
-              ]}
-            >
-              {/* Additional Circle with Blur Effect */}
-              {selectedOption === 0 && (
-                <View style={styles.additionalCircle} />
-              )}
-              {/* Inner Circle */}
-              {selectedOption === 0 && <View style={styles.innerCircle} />}
+            <View style={styles.optionCheckbox}>
+              <View
+                style={[
+                  styles.radioCircle,
+                  selectedOption === 0 && styles.radioCircleSelected,
+                ]}
+              >
+                {/* Additional Circle with Blur Effect */}
+                {selectedOption === 0 && (
+                  <View style={styles.additionalCircle} />
+                )}
+                {/* Inner Circle */}
+                {selectedOption === 0 && <View style={styles.innerCircle} />}
+              </View>
             </View>
-            <Text style={styles.optionText}>
-              {t("pages.onboarding_4.option_recover_wallet")}
-            </Text>
+            <View style={styles.optionItem}>
+              <Text style={styles.optionText}>
+                {t("pages.onboarding_4.option_recover_wallet")}
+              </Text>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.optionItem}
+            style={styles.optionContainer}
             onPress={() => handleOptionSelect(1)}
           >
-            <View
-              style={[
-                styles.radioCircle,
-                selectedOption === 1 && styles.radioCircleSelected,
-              ]}
-            >
-              {/* Additional Circle with Blur Effect */}
-              {selectedOption === 1 && (
-                <View style={styles.additionalCircle} />
-              )}
-              {/* Inner Circle */}
-              {selectedOption === 1 && <View style={styles.innerCircle} />}
+            <View style={styles.optionCheckbox}>
+              <View
+                style={{
+                  ...styles.radioCircle,
+                }}
+              >
+                {/* Additional Circle with Blur Effect */}
+                {selectedOption === 1 && (
+                  <>
+                    <View style={styles.additionalCircle} />
+                    <View style={styles.innerCircle} />
+                  </>
+                )}
+              </View>
             </View>
-            <Text style={styles.optionText}>
-              {t("pages.onboarding_4.option_lose_access")}
-            </Text>
+            <View style={styles.optionItem}>
+              <Text style={styles.optionText}>
+                {t("pages.onboarding_4.option_lose_access")}
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
-
-        {/* Error Message */}
-        {showError && (
-          <Text style={styles.errorText}>
-            {t("pages.onboarding_4.incorrect_answer")}
-          </Text>
-        )}
 
         {/* Bottom Button */}
         <TouchableOpacity
@@ -141,19 +147,16 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 30,
+    paddingHorizontal: 20,
     backgroundColor: "transparent",
   },
   headerContainer: {
-    position: "absolute",
-    top: 30, // 30px from the top
-    left: 0,
-    right: 0,
+    flexDirection: "column",
     alignItems: "center",
+    gap: 15,
   },
   title: {
     fontSize: scaledFontSize(22),
-    fontWeight: "700",
     textAlign: "center",
     color: "#212121",
     fontFamily: "Poppins_600SemiBold",
@@ -162,49 +165,53 @@ const styles = StyleSheet.create({
     fontSize: scaledFontSize(16),
     textAlign: "center",
     color: "#212121",
-    marginTop: 20, // 20px below the title
     fontFamily: "Poppins_400Regular",
   },
   contentContainer: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    marginTop: 90,
   },
   questionText: {
-    fontSize: 20,
+    fontSize: scaledFontSize(20),
     fontWeight: "400",
     textAlign: "center",
     color: "#212121",
     fontFamily: "Poppins_400Regular",
-    marginTop: 80, // Spacing below subtitle
+    marginTop: 64, // Spacing below subtitle
   },
-  optionsContainer: {
-    marginTop: 50,
+  optionContainer: {
     width: "100%",
-    alignItems: "center",
-  },
-  optionItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    justifyContent: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     borderRadius: 45,
-    backgroundColor: "#F8F8F8",
-    marginBottom: 15,
-    width: "90%",
+    backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 3,
+    elevation: 5,
+  },
+  optionCheckbox: {
+    width: "10%",
+  },
+  optionItem: {
+    width: "90%",
+  },
+  optionText: {
+    fontSize: scaledFontSize(12),
+    color: "#212121",
+    fontFamily: "Poppins_400Regular",
   },
   radioCircle: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#525252",
-    marginRight: 15,
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
@@ -226,16 +233,12 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   innerCircle: {
-    width: 6,
-    height: 6,
+    width: 1,
+    height: 1,
     borderRadius: 3,
     backgroundColor: "#6EE7B7",
   },
-  optionText: {
-    fontSize: scaledFontSize(14),
-    color: "#212121",
-    flex: 1,
-  },
+
   errorText: {
     color: "#FF0000",
     fontSize: scaledFontSize(14),

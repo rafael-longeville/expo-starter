@@ -38,11 +38,11 @@ const Onboarding1: React.FC = () => {
         const storedLanguage = await AsyncStorage.getItem("selectedLanguage");
 
         await AsyncStorage.setItem("continueWithoutFunding", "false");
-
-        if (storedLanguage) {
-          i18n.changeLanguage(storedLanguage);
-          setSelectedLanguage(storedLanguage as "fr" | "en");
-        }
+        i18n.changeLanguage("fr");
+        // if (storedLanguage) {
+        //   i18n.changeLanguage(storedLanguage);
+        //   setSelectedLanguage(storedLanguage as "fr" | "en");
+        // }
       } catch (error) {
         Sentry.captureException(error);
         console.error(
