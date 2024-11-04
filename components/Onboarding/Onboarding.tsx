@@ -178,11 +178,11 @@ export default function Onboarding() {
             scrollTo={handleNextButtonPress}
             percentage={currentIndex * (100 / (slides.length - 1))}
           />
-          {currentIndex >= 1 && currentIndex <= 3 && (
-            <View style={styles.paginatorContainer}>
+          <View style={styles.paginatorContainer}>
+            {currentIndex >= 1 && currentIndex <= 3 && (
               <Paginator data={slides.slice(1)} currentIndex={currentIndex} />
-            </View>
-          )}
+            )}
+          </View>
         </View>
       </ImageBackground>
     </View>
@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   paginatorContainer: {
+    height: 20,
     marginTop: 10, // Adjust as needed for spacing
   },
 });

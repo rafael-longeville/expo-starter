@@ -91,10 +91,12 @@ export default function OnboardingLayout() {
               experimentalBlurMethod="dimezisBlurView"
             />
           )}
-          <Image
-            source={require("@/assets/images/onboarding/background.png")}
-            style={styles.backgroundImage}
-          />
+          {currentSegment !== "onboarding_7" && (
+            <Image
+              source={require("@/assets/images/onboarding/background.png")}
+              style={styles.backgroundImage}
+            />
+          )}
           <ScrollView
             ref={scrollViewRef}
             contentContainerStyle={styles.scrollViewContainer}

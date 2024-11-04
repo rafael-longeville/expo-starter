@@ -61,23 +61,31 @@ const Onboarding7: React.FC = () => {
         </Text>
       </View>
       <View style={styles.socialsContainer}>
-        <Pressable onPress={handlePress("website")}>
-          <Image
-            source={require("@/assets/images/onboarding/7/website.png")}
-            style={styles.image}
-          />
+        <Pressable onPress={handlePress("website")} style={styles.shadow}>
+          <View style={styles.imageWrapper}>
+            <Image
+              source={require("@/assets/images/onboarding/7/website.png")}
+              style={styles.image}
+            />
+          </View>
         </Pressable>
-        <Pressable onPress={handlePress("telegram")}>
-          <Image
-            source={require("@/assets/images/onboarding/7/telegram.png")}
-            style={styles.image}
-          />
+
+        <Pressable onPress={handlePress("telegram")} style={styles.shadow}>
+          <View style={styles.imageWrapper}>
+            <Image
+              source={require("@/assets/images/onboarding/7/telegram.png")}
+              style={styles.image}
+            />
+          </View>
         </Pressable>
-        <Pressable onPress={handlePress("twitter")}>
-          <Image
-            source={require("@/assets/images/onboarding/7/twitter.png")}
-            style={styles.image}
-          />
+
+        <Pressable onPress={handlePress("twitter")} style={styles.shadow}>
+          <View style={styles.imageWrapper}>
+            <Image
+              source={require("@/assets/images/onboarding/7/twitter.png")}
+              style={styles.image}
+            />
+          </View>
         </Pressable>
       </View>
     </View>
@@ -102,9 +110,21 @@ const styles = StyleSheet.create({
     gap: 20,
     marginTop: 60,
   },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 }, // Moves the shadow downwards
+    shadowOpacity: 0.3, // Increase opacity for a more pronounced shadow
+    shadowRadius: 8, // Increase radius for a softer, more diffuse shadow
+    elevation: 10, // Matches shadow on Android
+    borderRadius: 10, // Ensures rounded shadow if desired
+  },
+  imageWrapper: {
+    padding: 5, // Adds space around the image to prevent clipping of the shadow
+    borderRadius: 10, // Matches shadow radius for a consistent look
+  },
   image: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
   },
   title: {
     fontSize: scaledFontSize(22),

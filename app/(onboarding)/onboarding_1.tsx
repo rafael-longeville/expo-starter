@@ -180,10 +180,10 @@ const Onboarding1: React.FC = () => {
           }}
         />
         <Button
-          title={"To onboarding 6"}
+          title={"To onboarding 7"}
           onPress={() => {
             AsyncStorage.setItem("continueWithoutFunding", "true");
-            router.push("/(onboarding)/onboarding_6");
+            router.push("/(onboarding)/onboarding_7");
           }}
         />
       </View>
