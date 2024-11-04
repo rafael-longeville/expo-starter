@@ -3,16 +3,26 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
+import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
 const Onboarding4: React.FC = () => {
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState<null | number>(null);
   const [showError, setShowError] = useState(false);
+  // Handle modal
+  const { setIsBlurred, isBlurred, setIsModalOpen, setIsModalError } =
+    useStayUpdatedModalContext();
 
   const handleVerify = () => {
     if (selectedOption === 1) {
+      // setIsModalError(false);
+      // setIsBlurred(true);
+      // setIsModalOpen(true);
       router.push("/(onboarding)/onboarding_5"); // Navigate to the next screen if correct
     } else {
+      // setIsModalError(true);
+      // setIsBlurred(true);
+      // setIsModalOpen(true);
       setShowError(true); // Show error message if the answer is incorrect
     }
   };
@@ -21,6 +31,24 @@ const Onboarding4: React.FC = () => {
     setSelectedOption(option);
     setShowError(false); // Reset error message when the user selects a new option
   };
+
+  //  const handlePress = (ref: any) => {
+  //    if (!emailNotifications && !notifications) {
+  //      console.log("here");
+  //      setIsModalOpen(true);
+  //      setIsBlurred(true);
+  //      ref.current?.present();
+  //      // Alert.alert("Error", "Please enable at least one type of notification.", [
+  //      //   { text: "OK" },
+  //      // ]);
+  //      return;
+  //    } else if (emailNotifications && !email) {
+  //      Alert.alert("Error", "Please enter your email address.", [
+  //        { text: "OK" },
+  //      ]);
+  //      return;
+  //    }
+  //  };
 
   return (
     <View style={styles.container}>
@@ -35,8 +63,6 @@ const Onboarding4: React.FC = () => {
 
       {/* Main Content (Centered) */}
       <View style={styles.contentContainer}>
-        
-
         {/* Options */}
         <View style={styles.optionsContainer}>
           <TouchableOpacity
@@ -86,7 +112,9 @@ const Onboarding4: React.FC = () => {
         <TouchableOpacity
           style={[
             styles.button,
-            selectedOption !== null ? styles.buttonActive : styles.buttonDisabled,
+            selectedOption !== null
+              ? styles.buttonActive
+              : styles.buttonDisabled,
           ]}
           onPress={handleVerify}
           disabled={selectedOption === null}
