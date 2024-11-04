@@ -9,56 +9,29 @@ const Onboarding4: React.FC = () => {
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState<null | number>(null);
   const [showError, setShowError] = useState(false);
-  // Handle modal
   const { setIsBlurred, isBlurred, setIsModalOpen, setIsModalError } =
     useStayUpdatedModalContext();
 
   const handleVerify = () => {
     if (selectedOption === 1) {
-      // setIsModalError(false);
-      // setIsBlurred(true);
-      // setIsModalOpen(true);
-      router.push("/(onboarding)/onboarding_5"); // Navigate to the next screen if correct
+      router.push("/(onboarding)/onboarding_5");
     } else {
-      // setIsModalError(true);
-      // setIsBlurred(true);
-      // setIsModalOpen(true);
-      setShowError(true); // Show error message if the answer is incorrect
+      setShowError(true);
     }
   };
 
   const handleOptionSelect = (option: number) => {
     setSelectedOption(option);
-    setShowError(false); // Reset error message when the user selects a new option
+    setShowError(false);
   };
-
-  //  const handlePress = (ref: any) => {
-  //    if (!emailNotifications && !notifications) {
-  //      console.log("here");
-  //      setIsModalOpen(true);
-  //      setIsBlurred(true);
-  //      ref.current?.present();
-  //      // Alert.alert("Error", "Please enable at least one type of notification.", [
-  //      //   { text: "OK" },
-  //      // ]);
-  //      return;
-  //    } else if (emailNotifications && !email) {
-  //      Alert.alert("Error", "Please enter your email address.", [
-  //        { text: "OK" },
-  //      ]);
-  //      return;
-  //    }
-  //  };
 
   return (
     <View style={styles.container}>
       {/* Header Section with Title and Subtitle */}
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Avez-vous bien compris ?</Text>
-        <Text style={styles.subtitle}>Choisissez la bonne réponse.</Text>
-        <Text style={styles.questionText}>
-          Si vous supprimez la clé d'accès...
-        </Text>
+        <Text style={styles.title}>{t("pages.onboarding_4.understood_title")}</Text>
+        <Text style={styles.subtitle}>{t("pages.onboarding_4.choose_correct_answer")}</Text>
+        <Text style={styles.questionText}>{t("pages.onboarding_4.access_key_deletion")}</Text>
       </View>
 
       {/* Main Content (Centered) */}
@@ -78,7 +51,7 @@ const Onboarding4: React.FC = () => {
               {selectedOption === 0 && <View style={styles.innerCircle} />}
             </View>
             <Text style={styles.optionText}>
-              Je pourrais tout de même récupérer mon portefeuille
+              {t("pages.onboarding_4.option_recover_wallet")}
             </Text>
           </TouchableOpacity>
 
@@ -95,8 +68,7 @@ const Onboarding4: React.FC = () => {
               {selectedOption === 1 && <View style={styles.innerCircle} />}
             </View>
             <Text style={styles.optionText}>
-              Je ne pourrais plus me connecter à mon portefeuille et perdrais
-              l'accès à mes fonds.
+              {t("pages.onboarding_4.option_lose_access")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -104,7 +76,7 @@ const Onboarding4: React.FC = () => {
         {/* Error Message */}
         {showError && (
           <Text style={styles.errorText}>
-            Réponse incorrecte, veuillez réessayer.
+            {t("pages.onboarding_4.incorrect_answer")}
           </Text>
         )}
 
@@ -119,12 +91,12 @@ const Onboarding4: React.FC = () => {
           onPress={handleVerify}
           disabled={selectedOption === null}
         >
-          <Text style={styles.buttonText}>Vérifier ma réponse</Text>
+          <Text style={styles.buttonText}>{t("pages.onboarding_4.verify_answer")}</Text>
         </TouchableOpacity>
 
         {/* Bottom Text Link */}
         <TouchableOpacity style={styles.linkContainer}>
-          <Text style={styles.linkText}>Qu’est-ce qu’une clé privée</Text>
+          <Text style={styles.linkText}>{t("pages.onboarding_4.private_key_info")}</Text>
         </TouchableOpacity>
       </View>
     </View>

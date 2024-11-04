@@ -46,32 +46,35 @@
       "icloud_note": "Identification is done automatically using the access key linked to your iCloud account.",
       "warning": "Do not let anyone access your phone and your funds.",
       "create_wallet_button": "Create my wallet",
-      "private_key_info": "What is a private key",
-      "money_question": "Would you like a general display of amounts in Euro or Dollar?",
-      "money_question_helper": "To help you, amounts converted for display (according to the chosen currency) will be preceded by an asterisk (*).",
-      "notifications_question": "Would you like to enable notifications?",
-      "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
-      "language_question": "In which language would you like to use the application?",
-      "dollar": "US Dollar",
-      "save_button": "Save"
+      "private_key_info": "What is a private key"
     },
     "onboarding_3": {
-      "title": "Set up currency display and notifications",
-      "money_question": "Would you like a general display of amounts in Euro or Dollar?",
-      "money_question_helper": "To help you, amounts converted for display (according to the chosen currency) will be preceded by an asterisk (*).",
-      "notifications_question": "Would you like to enable notifications?",
-      "notifications_question_helper": "Stay ahead and take advantage of the best investment opportunities.",
-      "language_question": "In which language would you like to use the application?",
-      "dollar": "US Dollar",
-      "save_button": "Save"
+      "security_title": "Security",
+      "access_key_importance": "Your access key is important",
+      "confirm_checkboxes": "Check all the boxes to confirm you understand the importance of access keys.",
+      "checkbox_1": "On your phone, go to 'Settings > Your Account > iCloud' and activate 'Passwords and Keychain' (not 1Password), to enable access keys.",
+      "checkbox_2": "Access keys allow you to recover the wallet in the future, in case of loss or replacement of your device.",
+      "checkbox_3": "Important: if your access key is deleted (and not backed up elsewhere), you lose access to the wallet and funds.",
+      "continue_button": "Continue",
+      "private_key_info": "What is a private key"
     },
     "onboarding_4": {
-      "account": "Account",
-      "title": "Fund your account",
-      "subtitle_angleEUR": "Place your funds in one of the EURO remunerated accounts via bank card, Apple Pay, or Google Pay.",
-      "subtitle_angleUSD": "Place your funds in one of the US DOLLAR remunerated accounts via bank card, Apple Pay, or Google Pay.",
-      "subtitle_onRamp": "Place your funds in your Current Account via bank card, Apple Pay, or Google Pay.",
-      "cancel": "Cancel"
+      "understood_title": "Did you understand?",
+      "choose_correct_answer": "Choose the correct answer.",
+      "access_key_deletion": "If you delete the access key...",
+      "option_recover_wallet": "I will still be able to recover my wallet",
+      "option_lose_access": "I will no longer be able to log in to my wallet and will lose access to my funds.",
+      "incorrect_answer": "Incorrect answer, please try again.",
+      "verify_answer": "Verify my answer",
+      "private_key_info": "What is a private key"
+    },
+    "onboarding_5": {
+      "title": "Create your wallet",
+      "label": "Give it a nickname:",
+      "placeholder": "Enter a name",
+      "access_text": "Only you will have access.",
+      "create_wallet_button": "Create my wallet",
+      "private_key_info": "What is a private key"
     },
     "onboarding_6": {
       "title": "Enable notifications",

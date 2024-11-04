@@ -22,17 +22,15 @@ const Onboarding3: React.FC = () => {
     <View style={styles.container}>
       {/* Header Section with Title and Subtitle */}
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>Sécurité</Text>
-        <Text style={styles.subtitle}>Votre clé d'accès est importante</Text>
+        <Text style={styles.title}>{t("pages.onboarding_3.security_title")}</Text>
+        <Text style={styles.subtitle}>{t("pages.onboarding_3.access_key_importance")}</Text>
         <Text style={styles.instructionText}>
-          Cochez toutes les cases pour confirmer que vous comprenez l'importance des clés d'accès.
+          {t("pages.onboarding_3.confirm_checkboxes")}
         </Text>
       </View>
 
       {/* Main Content (Centered) */}
       <View style={styles.contentContainer}>
-        
-
         {/* Checkbox Section */}
         <View style={styles.checkboxContainer}>
           <TouchableOpacity
@@ -48,7 +46,7 @@ const Onboarding3: React.FC = () => {
               style={styles.checkIcon}
             />
             <Text style={styles.checkboxText}>
-              Sur votre téléphone, allez dans «Paramètres › Votre compte › iCloud» et activez «Mots de passe et keychain» (pas 1Password), pour activer les clés d'accès.
+              {t("pages.onboarding_3.checkbox_1")}
             </Text>
           </TouchableOpacity>
 
@@ -65,7 +63,7 @@ const Onboarding3: React.FC = () => {
               style={styles.checkIcon}
             />
             <Text style={styles.checkboxText}>
-              Les clés d'accès vous permettent de récupérer le portefeuille à l'avenir, en cas de perte ou de remplacement de votre appareil.
+              {t("pages.onboarding_3.checkbox_2")}
             </Text>
           </TouchableOpacity>
 
@@ -82,7 +80,7 @@ const Onboarding3: React.FC = () => {
               style={styles.checkIcon}
             />
             <Text style={styles.checkboxText}>
-              Important : si votre clé d'accès est supprimée (et que vous ne l'avez pas sauvegardée autrement), vous perdez l'accès au portefeuille et aux fonds.
+              {t("pages.onboarding_3.checkbox_3")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -93,12 +91,12 @@ const Onboarding3: React.FC = () => {
           onPress={handleContinue}
           disabled={!allChecked}
         >
-          <Text style={styles.buttonText}>Continuer</Text>
+          <Text style={styles.buttonText}>{t("pages.onboarding_3.continue_button")}</Text>
         </TouchableOpacity>
 
         {/* Bottom Text Link */}
         <TouchableOpacity style={styles.linkContainer}>
-          <Text style={styles.linkText}>Qu’est-ce qu’une clé privée</Text>
+          <Text style={styles.linkText}>{t("pages.onboarding_3.private_key_info")}</Text>
         </TouchableOpacity>
       </View>
     </View>
