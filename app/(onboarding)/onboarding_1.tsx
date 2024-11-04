@@ -110,9 +110,7 @@ const Onboarding1: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={globalFonts.title}>
-        {t("pages.onboarding_1.title")} " "{preferredLocale}
-      </Text>
+      <Text style={globalFonts.title}>{t("pages.onboarding_1.title")}</Text>
       <Text
         style={{
           ...globalFonts.subtitle,
