@@ -91,7 +91,7 @@ export default function OnboardingLayout() {
               experimentalBlurMethod="dimezisBlurView"
             />
           )}
-          {currentSegment !== "onboarding_7" && (
+          {currentSegment !== "onboarding_7" && currentSegment !== "onboarding_6" && (
             <Image
               source={require("@/assets/images/onboarding/background.png")}
               style={styles.backgroundImage}

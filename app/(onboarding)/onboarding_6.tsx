@@ -60,7 +60,7 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
         {value ? (
           <Image
             source={require("@/assets/images/onboarding/6/check-icon.png")}
-            style={styles.iconImage}
+            style={styles.iconImageOn}
           />
         ) : (
           <Image
@@ -165,7 +165,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
         </View>
         <Divider
           style={{
-            marginVertical: 20,
+            marginVertical: 35,
             height: 1,
             backgroundColor: "#212121",
           }}
@@ -208,6 +208,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
           <TextInput
             placeholder={t("pages.onboarding_6.mail.input_placeholder")}
+            placeholderTextColor="#212121" // Sets placeholder color
             style={{
               width: "60%",
               height: 40,
@@ -215,13 +216,15 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
               backgroundColor: "transparent",
               borderWidth: 1,
               borderColor: "#212121",
-              color: "#212121",
+              color: "#212121", // Sets text color
               textAlign: "center",
               alignSelf: "center",
-              display: emailNotifications ? "flex" : "none",
+              // display: emailNotifications ? "flex" : "none",
+              display: "flex",
               marginTop: 10,
             }}
           />
+
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: "#333333" }}
             onPress={() => handlePress(ref)}
@@ -294,15 +297,24 @@ const styles = StyleSheet.create({
     height: 60,
   },
   iconImage: {
-    width: 10,
-    height: 10,
+    width: 13,
+    height: 13,
+  },
+  iconImageOn: {
+    width: 16,
+    height: 16,
+    shadowColor: "#6EE7B7", // Green shadow color
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 8, // Adjust the shadow radius as desired
+    borderRadius: 8
   },
   title: {
     fontSize: scaledFontSize(22),
     textAlign: "center",
   },
   button: {
-    marginTop: 60,
+    marginTop: 80,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
