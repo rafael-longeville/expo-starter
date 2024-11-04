@@ -145,7 +145,7 @@ const Onboarding1: React.FC = () => {
           </Text>
         </Link>
       </Text>
-      <View
+      {/* <View
         style={{
           marginTop: 20,
         }}
@@ -164,7 +164,7 @@ const Onboarding1: React.FC = () => {
             router.push("/(onboarding)/onboarding_6");
           }}
         />
-      </View>
+      </View> */}
 
       {/* Display the value retrieved from AsyncStorage */}
       {/* {storedValue && (
