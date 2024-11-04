@@ -26,6 +26,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { BlurView } from "@react-native-community/blur";
 import NotificationsPopup from "@/components/PopUp/NotificationPopup";
+import OnboardingAnswerPopup from "@/components/PopUp/OnboardingAnswerPopup";
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
@@ -34,8 +35,6 @@ const IMAGES = {
   onboarding_4: require("@/assets/images/onboarding/onboarding_1.png"),
   onboarding_5: require("@/assets/images/onboarding/onboarding_2.png"),
   onboarding_6: require("@/assets/images/onboarding/onboarding_3.png"),
-
-
 } as const;
 
 export default function OnboardingLayout() {
@@ -45,7 +44,7 @@ export default function OnboardingLayout() {
   const { isTyping } = useTyping();
   const scrollViewRef = useRef(null);
   // Handle modals in onboarding
-  const { setIsBlurred, isBlurred, setIsModalOpen } =
+  const { setIsBlurred, isBlurred, setIsModalOpen, isModalError } =
     useStayUpdatedModalContext();
   const notificationsModalRef = useRef(null);
 
@@ -156,6 +155,12 @@ export default function OnboardingLayout() {
             ref={notificationsModalRef}
             setIsModalOpen={setIsModalOpen}
             setBlurred={setIsBlurred}
+          />
+          <OnboardingAnswerPopup
+            setIsModalOpen={setIsModalOpen}
+            setBlurred={setIsBlurred}
+            isModalOpen={isBlurred}
+            isModalError={isModalError}
           />
         </SafeAreaView>
       </BottomSheetModalProvider>

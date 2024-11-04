@@ -46,32 +46,35 @@
       "icloud_note": "L'identification se fait automatiquement grâce à la clé d'accès liée à votre compte iCloud.",
       "warning": "Ne laissez personne accédez à votre Téléphone et à vos fonds.",
       "create_wallet_button": "Créer mon portefeuille",
-      "private_key_info": "Qu’est-ce qu’une clé privée",
-      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
-      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
-      "notifications_question": "Souhaitez-vous activer les notifications ?",
-      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
-      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
-      "dollar": "Dollar US",
-      "save_button": "Enregistrer"
+      "private_key_info": "Qu’est-ce qu’une clé privée"
     },
     "onboarding_3": {
-      "title": "Paramètrez l'affichage de la devise et les notifications",
-      "money_question": "Souhaitez-vous un affichage général des montants en Euro ou en Dollar ?",
-      "money_question_helper": "Pour vous aider, les montants convertis à l’affichage (selon la devise choisie) seront précédés d’une astérisque (*).",
-      "notifications_question": "Souhaitez-vous activer les notifications ?",
-      "notifications_question_helper": "Gardez une longueur d'avance et profitez des meilleures opportunités d'investissement.",
-      "language_question": "En quelle langue souhaitez-vous utiliser l’application ?",
-      "dollar": "Dollar US",
-      "save_button": "Enregistrer"
+      "security_title": "Sécurité",
+      "access_key_importance": "Votre clé d'accès est importante",
+      "confirm_checkboxes": "Cochez toutes les cases pour confirmer que vous comprenez l'importance des clés d'accès.",
+      "checkbox_1": "Sur votre téléphone, allez dans «Paramètres › Votre compte › iCloud» et activez «Mots de passe et keychain» (pas 1Password), pour activer les clés d'accès.",
+      "checkbox_2": "Les clés d'accès vous permettent de récupérer le portefeuille à l'avenir, en cas de perte ou de remplacement de votre appareil.",
+      "checkbox_3": "Important : si votre clé d'accès est supprimée (et que vous ne l'avez pas sauvegardée autrement), vous perdez l'accès au portefeuille et aux fonds.",
+      "continue_button": "Continuer",
+      "private_key_info": "Qu’est-ce qu’une clé privée"
     },
     "onboarding_4": {
-      "account": "Compte",
-      "title": "Alimentez votre compte",
-      "subtitle_angleEUR": "Placez vos fonds dans un des compte rémunéré EURO via carte bancaire, Apple Pay ou Google Pay.",
-      "subtitle_angleUSD": "Placez vos fonds dans un des compte rémunéré DOLLAR US via carte bancaire, Apple Pay ou Google Pay.",
-      "subtitle_onRamp": "Placez vos fonds dans votre Compte courant via carte bancaire, Apple Pay ou Google Pay.",
-      "cancel": "Annuler"
+      "understood_title": "Avez-vous bien compris ?",
+      "choose_correct_answer": "Choisissez la bonne réponse.",
+      "access_key_deletion": "Si vous supprimez la clé d'accès...",
+      "option_recover_wallet": "Je pourrais tout de même récupérer mon portefeuille",
+      "option_lose_access": "Je ne pourrais plus me connecter à mon portefeuille et perdrais l'accès à mes fonds.",
+      "incorrect_answer": "Réponse incorrecte, veuillez réessayer.",
+      "verify_answer": "Vérifier ma réponse",
+      "private_key_info": "Qu’est-ce qu’une clé privée"
+    },
+    "onboarding_5": {
+      "title": "Créez votre portefeuille",
+      "label": "Donnez lui un petit nom :",
+      "placeholder": "Saisir un nom",
+      "access_text": "Vous seul en aurez l'accès.",
+      "create_wallet_button": "Créer mon portefeuille",
+      "private_key_info": "Qu’est-ce qu’une clé privée"
     },
     "onboarding_6": {
       "title": "Activez les notifications",

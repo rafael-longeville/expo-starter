@@ -11,6 +11,8 @@ interface StayUpdatedModalContentProps {
   setIsValidationModalOpen: (isOpen: boolean) => void;
   isOffRamp: boolean;
   setIsOffRamp: (isOffRamp: boolean) => void;
+  isModalError: boolean;
+  setIsModalError: (isError: boolean) => void;
 }
 
 const StayUpdatedModalContent = createContext<StayUpdatedModalContentProps>({
@@ -24,6 +26,8 @@ const StayUpdatedModalContent = createContext<StayUpdatedModalContentProps>({
   setIsValidationModalOpen: () => {},
   isOffRamp: false,
   setIsOffRamp: () => {},
+  isModalError: false,
+  setIsModalError: () => {},
 });
 
 export const StayUpdatedModalContentProvider: React.FC<{
@@ -34,6 +38,7 @@ export const StayUpdatedModalContentProvider: React.FC<{
   const [isBlurred, setIsBlurred] = useState(false); // Add this line to declare isBlurred state
   const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
   const [isOffRamp, setIsOffRamp] = useState(false);
+  const [isModalError, setIsModalError] = useState(false);
 
   return (
     <StayUpdatedModalContent.Provider
@@ -48,6 +53,8 @@ export const StayUpdatedModalContentProvider: React.FC<{
         setIsValidationModalOpen,
         isOffRamp,
         setIsOffRamp,
+        isModalError,
+        setIsModalError,
       }}
     >
       {children}

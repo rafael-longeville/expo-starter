@@ -102,7 +102,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
   };
 
   return (
-    <View style={{ paddingHorizontal: 20 }}>
+    <View style={{ paddingHorizontal: 30 }}>
       <View style={{ flexDirection: "column", gap: 20 }}>
         <Text
           style={{
@@ -122,108 +122,113 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
           {t("pages.onboarding_6.subtitle")}
         </Text>
       </View>
-      <View
-        style={{
-          marginTop: 60,
-          flexDirection: "column",
-          gap: 10,
-          alignItems: "flex-start",
-        }}
-      >
-        <View style={{ flexDirection: "row", gap: 20 }}>
-          <Text
-            style={{
-              ...globalFonts.title,
-              fontSize: scaledFontSize(14),
-              width: "65%",
-              textAlign: "left",
-            }}
-          >
-            {t("pages.onboarding_6.push.cta")}
-          </Text>
-          <CustomSwitch
-            value={notifications}
-            onValueChange={() => {
-              setNotifications(!notifications);
-            }}
-          />
-        </View>
-        <Text
+      {/* Notifications and custom switch section  */}
+      <View style={{ flexDirection: "column", gap: 20 }}>
+        <View
           style={{
-            ...globalFonts.disclaimerText,
-            fontSize: scaledFontSize(14),
-            textAlign: "left",
+            marginTop: 60,
+            flexDirection: "column",
+            gap: 10,
+            alignItems: "flex-start",
           }}
         >
-          {t("pages.onboarding_6.push.cta_disclaimer")}
-          {"\n"}
-          {t("pages.onboarding_6.push.cta_disclaimer_2")}
-        </Text>
-      </View>
-      <Divider
-        style={{
-          marginVertical: 20,
-          height: 1,
-          backgroundColor: "#212121",
-        }}
-      />
-      <View
-        style={{
-          marginTop: 40,
-          flexDirection: "column",
-          gap: 10,
-          alignItems: "flex-start",
-        }}
-      >
-        <View style={{ flexDirection: "row", gap: 20 }}>
+          <View style={{ flexDirection: "row", gap: 20 }}>
+            <Text
+              style={{
+                ...globalFonts.title,
+                fontSize: scaledFontSize(14),
+                width: "65%",
+                textAlign: "left",
+              }}
+            >
+              {t("pages.onboarding_6.push.cta")}
+            </Text>
+            <CustomSwitch
+              value={notifications}
+              onValueChange={() => {
+                setNotifications(!notifications);
+              }}
+            />
+          </View>
           <Text
             style={{
-              ...globalFonts.title,
+              ...globalFonts.disclaimerText,
               fontSize: scaledFontSize(14),
-              width: "65%",
               textAlign: "left",
+              lineHeight: 16,
             }}
           >
-            {t("pages.onboarding_6.mail.cta")}
+            {t("pages.onboarding_6.push.cta_disclaimer")}
+            {"\n"}
+            {t("pages.onboarding_6.push.cta_disclaimer_2")}
           </Text>
-          <CustomSwitch
-            value={emailNotifications}
-            onValueChange={() => {
-              setEmailNotifications(!emailNotifications);
-            }}
-          />
         </View>
-        <Text
+        <Divider
           style={{
-            ...globalFonts.disclaimerText,
-            fontSize: scaledFontSize(14),
-            textAlign: "left",
-          }}
-        >
-          {t("pages.onboarding_6.mail.cta_disclaimer")}
-        </Text>
-
-        <TextInput
-          placeholder={t("pages.onboarding_6.mail.input_placeholder")}
-          style={{
-            width: "60%",
-            height: 40,
-            borderRadius: 65,
-            backgroundColor: "transparent",
-            borderWidth: 1,
-            borderColor: "#212121",
-            color: "#212121",
-            textAlign: "center",
-            alignSelf: "center",
-            display: emailNotifications ? "flex" : "none",
+            marginVertical: 20,
+            height: 1,
+            backgroundColor: "#212121",
           }}
         />
-        <TouchableOpacity
-          style={{ ...styles.button, backgroundColor: "#333333" }}
-          onPress={() => handlePress(ref)}
+        <View
+          style={{
+            flexDirection: "column",
+            gap: 10,
+            alignItems: "flex-start",
+          }}
         >
-          <Text style={styles.buttonText}>Enregistrer</Text>
-        </TouchableOpacity>
+          <View style={{ flexDirection: "row", gap: 20 }}>
+            <Text
+              style={{
+                ...globalFonts.title,
+                fontSize: scaledFontSize(14),
+                width: "65%",
+                textAlign: "left",
+              }}
+            >
+              {t("pages.onboarding_6.mail.cta")}
+            </Text>
+            <CustomSwitch
+              value={emailNotifications}
+              onValueChange={() => {
+                setEmailNotifications(!emailNotifications);
+              }}
+            />
+          </View>
+          <Text
+            style={{
+              ...globalFonts.disclaimerText,
+              fontSize: scaledFontSize(14),
+              textAlign: "left",
+              lineHeight: 16,
+            }}
+          >
+            {t("pages.onboarding_6.mail.cta_disclaimer")}
+          </Text>
+
+          <TextInput
+            placeholder={t("pages.onboarding_6.mail.input_placeholder")}
+            style={{
+              width: "60%",
+              height: 40,
+              borderRadius: 65,
+              backgroundColor: "transparent",
+              borderWidth: 1,
+              borderColor: "#212121",
+              color: "#212121",
+              textAlign: "center",
+              alignSelf: "center",
+              display: emailNotifications ? "flex" : "none",
+              marginTop: 10,
+            }}
+          />
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: "#333333" }}
+            onPress={() => handlePress(ref)}
+          >
+            <Text style={styles.buttonText}>Enregistrer</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -297,15 +302,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button: {
+    marginTop: 60,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginTop: 60,
     height: 37,
+    //shadow
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   buttonText: {
     fontSize: scaledFontSize(14),
+    fontFamily: "Poppins_500Medium",
     color: "#FFFFFF",
     fontWeight: "500",
   },

@@ -17,19 +17,19 @@ const Onboarding5: React.FC = () => {
   return (
     <View style={styles.container}>
       {/* Header Title */}
-      <Text style={styles.title}>Créez votre portefeuille</Text>
+      <Text style={styles.title}>{t("pages.onboarding_5.title")}</Text>
 
       {/* Input Section */}
       <View style={styles.inputSection}>
-        <Text style={styles.label}>Donnez lui un petit nom :</Text>
+        <Text style={styles.label}>{t("pages.onboarding_5.label")}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Saisir un nom"
+          placeholder={t("pages.onboarding_5.placeholder")}
           placeholderTextColor="#A0A0A0"
           value={walletName}
           onChangeText={setWalletName}
         />
-        <Text style={styles.accessText}>Vous seul en aurez l'accès.</Text>
+        <Text style={styles.accessText}>{t("pages.onboarding_5.access_text")}</Text>
       </View>
 
       {/* Bottom Button */}
@@ -41,12 +41,12 @@ const Onboarding5: React.FC = () => {
         onPress={handleCreateWallet}
         disabled={!walletName.trim()}
       >
-        <Text style={styles.buttonText}>Créer mon portefeuille</Text>
+        <Text style={styles.buttonText}>{t("pages.onboarding_5.create_wallet_button")}</Text>
       </TouchableOpacity>
 
       {/* Bottom Text Link */}
       <TouchableOpacity style={styles.linkContainer}>
-        <Text style={styles.linkText}>Qu’est-ce qu’une clé privée</Text>
+        <Text style={styles.linkText}>{t("pages.onboarding_5.private_key_info")}</Text>
       </TouchableOpacity>
     </View>
   );

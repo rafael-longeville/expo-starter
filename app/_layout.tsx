@@ -19,7 +19,6 @@ import {
   Poppins_400Regular_Italic,
 } from "@expo-google-fonts/poppins";
 import {
-  useFonts as useAlegreyaFonts,
   AlegreyaSansSC_400Regular,
   AlegreyaSansSC_500Medium,
   AlegreyaSansSC_800ExtraBold,
