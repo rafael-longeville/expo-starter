@@ -27,22 +27,19 @@ i18n
   });
 
 // Check if "selectedLanguage" is already set in AsyncStorage
-// const setInitialLanguage = async () => {
-//   const selectedLanguage = await AsyncStorage.getItem("selectedLanguage");
-//   if (!selectedLanguage) {
-//     await AsyncStorage.setItem("selectedLanguage", preferredLocale || "en");
-//     if (preferredLocale == "fr") {
-//       await AsyncStorage.setItem("selectedCurrency", "euro");
-//     }
-//     else
-//       await AsyncStorage.setItem("selectedCurrency", "dollar");
-//   }
-//   else{
-//     i18n.changeLanguage(selectedLanguage);
-//   }
-// };
+const setInitialLanguage = async () => {
+  const selectedLanguage = await AsyncStorage.getItem("selectedLanguage");
+  if (!selectedLanguage) {
+    await AsyncStorage.setItem("selectedLanguage", preferredLocale || "en");
+    if (preferredLocale == "fr") {
+      await AsyncStorage.setItem("selectedCurrency", "euro");
+    } else await AsyncStorage.setItem("selectedCurrency", "dollar");
+  } else {
+    i18n.changeLanguage(selectedLanguage);
+  }
+};
 
-// // Call the function to set the initial language
-// setInitialLanguage();
+// Call the function to set the initial language
+setInitialLanguage();
 
 export default i18n;
