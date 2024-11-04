@@ -45,17 +45,21 @@ const Onboarding2: React.FC = () => {
         </View>
 
         {/* Bottom Button */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleCreateWallet}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
           <Text style={styles.buttonText}>
             {t("pages.onboarding_2.create_wallet_button")}
           </Text>
         </TouchableOpacity>
 
         {/* Bottom Text Link */}
-        <TouchableOpacity style={styles.linkContainer}>
+        <TouchableOpacity
+          style={styles.linkContainer}
+          onPress={() =>
+            router.push(
+              "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+            )
+          }
+        >
           <Text style={styles.linkText}>
             {t("pages.onboarding_2.private_key_info")}
           </Text>
@@ -91,7 +95,6 @@ const styles = StyleSheet.create({
     color: "#212121",
     marginTop: 20, // 20px below the title
     fontFamily: "Poppins_400Regular",
-
   },
   contentContainer: {
     flex: 1,
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   bulletContainer: {
-    paddingLeft: 15
+    paddingLeft: 15,
   },
   descriptionText: {
     fontSize: 16,

@@ -167,16 +167,16 @@ const Onboarding1: React.FC = () => {
           </Text>
         </Link>
       </Text>
-      {/* <View
+      <View
         style={{
           marginTop: 20,
         }}
       >
         <Button
-          title={"To onboarding 2"}
+          title={"To onboarding 4"}
           onPress={() => {
             AsyncStorage.setItem("continueWithoutFunding", "true");
-            router.push("/(onboarding)/onboarding_2");
+            router.push("/(onboarding)/onboarding_4");
           }}
         />
         <Button
@@ -186,7 +186,7 @@ const Onboarding1: React.FC = () => {
             router.push("/(onboarding)/onboarding_6");
           }}
         />
-      </View> */}
+      </View>
 
       {/* Display the value retrieved from AsyncStorage */}
       {/* {storedValue && (

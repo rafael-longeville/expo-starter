@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 
-const Onboarding4: React.FC = () => {
+const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
   const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState<null | number>(null);
   const [showError, setShowError] = useState(false);
@@ -14,9 +14,17 @@ const Onboarding4: React.FC = () => {
 
   const handleVerify = () => {
     if (selectedOption === 1) {
-      router.push("/(onboarding)/onboarding_5");
+      setIsBlurred(true);
+      setIsModalOpen(true);
+      setIsModalError(false);
+      ref.current?.present();
     } else {
-      setShowError(true);
+      setIsBlurred(true);
+      setIsModalOpen(true);
+      setIsModalError(true);
+      ref.current?.present();
+
+      // setShowError(true);
     }
   };
 
@@ -29,9 +37,15 @@ const Onboarding4: React.FC = () => {
     <View style={styles.container}>
       {/* Header Section with Title and Subtitle */}
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>{t("pages.onboarding_4.understood_title")}</Text>
-        <Text style={styles.subtitle}>{t("pages.onboarding_4.choose_correct_answer")}</Text>
-        <Text style={styles.questionText}>{t("pages.onboarding_4.access_key_deletion")}</Text>
+        <Text style={styles.title}>
+          {t("pages.onboarding_4.understood_title")}
+        </Text>
+        <Text style={styles.subtitle}>
+          {t("pages.onboarding_4.choose_correct_answer")}
+        </Text>
+        <Text style={styles.questionText}>
+          {t("pages.onboarding_4.access_key_deletion")}
+        </Text>
       </View>
 
       {/* Main Content (Centered) */}
@@ -91,17 +105,28 @@ const Onboarding4: React.FC = () => {
           onPress={handleVerify}
           disabled={selectedOption === null}
         >
-          <Text style={styles.buttonText}>{t("pages.onboarding_4.verify_answer")}</Text>
+          <Text style={styles.buttonText}>
+            {t("pages.onboarding_4.verify_answer")}
+          </Text>
         </TouchableOpacity>
 
         {/* Bottom Text Link */}
-        <TouchableOpacity style={styles.linkContainer}>
-          <Text style={styles.linkText}>{t("pages.onboarding_4.private_key_info")}</Text>
+        <TouchableOpacity
+          style={styles.linkContainer}
+          onPress={() =>
+            router.push(
+              "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+            )
+          }
+        >
+          <Text style={styles.linkText}>
+            {t("pages.onboarding_4.private_key_info")}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

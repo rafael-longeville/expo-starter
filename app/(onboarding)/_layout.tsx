@@ -25,6 +25,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { BlurView } from "@react-native-community/blur";
+import { BlurView as ExpoBlurView } from "expo-blur";
 import NotificationsPopup from "@/components/PopUp/NotificationPopup";
 import OnboardingAnswerPopup from "@/components/PopUp/OnboardingAnswerPopup";
 
@@ -47,6 +48,7 @@ export default function OnboardingLayout() {
   const { setIsBlurred, isBlurred, setIsModalOpen, isModalError } =
     useStayUpdatedModalContext();
   const notificationsModalRef = useRef(null);
+  const answerRef = useRef(null);
 
   const renderCurrentScreen = (scrollViewRef: any) => {
     switch (currentSegment) {
@@ -57,7 +59,7 @@ export default function OnboardingLayout() {
       case "onboarding_3":
         return <Onboarding3 />;
       case "onboarding_4":
-        return <Onboarding4 />;
+        return <Onboarding4 ref={answerRef} />;
       case "onboarding_5":
         return <Onboarding5 />;
       case "onboarding_6":
@@ -99,11 +101,17 @@ export default function OnboardingLayout() {
       <BottomSheetModalProvider>
         <SafeAreaView style={styles.container}>
           {isBlurred && (
-            <BlurView
+            // <BlurView
+            //   style={styles.absolute}
+            //   blurType="dark"
+            //   blurAmount={10}
+            //   reducedTransparencyFallbackColor="white"
+            // />
+            <ExpoBlurView
               style={styles.absolute}
-              blurType="dark"
-              blurAmount={10}
-              reducedTransparencyFallbackColor="white"
+              tint="dark"
+              intensity={100}
+              experimentalBlurMethod="dimezisBlurView"
             />
           )}
           <Image
@@ -157,6 +165,7 @@ export default function OnboardingLayout() {
             setBlurred={setIsBlurred}
           />
           <OnboardingAnswerPopup
+            ref={answerRef}
             setIsModalOpen={setIsModalOpen}
             setBlurred={setIsBlurred}
             isModalOpen={isBlurred}

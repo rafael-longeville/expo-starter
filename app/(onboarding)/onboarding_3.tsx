@@ -22,8 +22,12 @@ const Onboarding3: React.FC = () => {
     <View style={styles.container}>
       {/* Header Section with Title and Subtitle */}
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>{t("pages.onboarding_3.security_title")}</Text>
-        <Text style={styles.subtitle}>{t("pages.onboarding_3.access_key_importance")}</Text>
+        <Text style={styles.title}>
+          {t("pages.onboarding_3.security_title")}
+        </Text>
+        <Text style={styles.subtitle}>
+          {t("pages.onboarding_3.access_key_importance")}
+        </Text>
         <Text style={styles.instructionText}>
           {t("pages.onboarding_3.confirm_checkboxes")}
         </Text>
@@ -34,7 +38,10 @@ const Onboarding3: React.FC = () => {
         {/* Checkbox Section */}
         <View style={styles.checkboxContainer}>
           <TouchableOpacity
-            style={[styles.checkboxItem, isFirstChecked && styles.checkedCheckbox]}
+            style={[
+              styles.checkboxItem,
+              isFirstChecked && styles.checkedCheckbox,
+            ]}
             onPress={() => setIsFirstChecked(!isFirstChecked)}
           >
             <Image
@@ -51,7 +58,10 @@ const Onboarding3: React.FC = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.checkboxItem, isSecondChecked && styles.checkedCheckbox]}
+            style={[
+              styles.checkboxItem,
+              isSecondChecked && styles.checkedCheckbox,
+            ]}
             onPress={() => setIsSecondChecked(!isSecondChecked)}
           >
             <Image
@@ -68,7 +78,10 @@ const Onboarding3: React.FC = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.checkboxItem, isThirdChecked && styles.checkedCheckbox]}
+            style={[
+              styles.checkboxItem,
+              isThirdChecked && styles.checkedCheckbox,
+            ]}
             onPress={() => setIsThirdChecked(!isThirdChecked)}
           >
             <Image
@@ -87,16 +100,30 @@ const Onboarding3: React.FC = () => {
 
         {/* Bottom Button */}
         <TouchableOpacity
-          style={[styles.button, allChecked ? styles.buttonActive : styles.buttonDisabled]}
+          style={[
+            styles.button,
+            allChecked ? styles.buttonActive : styles.buttonDisabled,
+          ]}
           onPress={handleContinue}
           disabled={!allChecked}
         >
-          <Text style={styles.buttonText}>{t("pages.onboarding_3.continue_button")}</Text>
+          <Text style={styles.buttonText}>
+            {t("pages.onboarding_3.continue_button")}
+          </Text>
         </TouchableOpacity>
 
         {/* Bottom Text Link */}
-        <TouchableOpacity style={styles.linkContainer}>
-          <Text style={styles.linkText}>{t("pages.onboarding_3.private_key_info")}</Text>
+        <TouchableOpacity
+          style={styles.linkContainer}
+          onPress={() =>
+            router.push(
+              "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+            )
+          }
+        >
+          <Text style={styles.linkText}>
+            {t("pages.onboarding_3.private_key_info")}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

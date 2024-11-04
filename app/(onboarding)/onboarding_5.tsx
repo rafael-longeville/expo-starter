@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
@@ -29,7 +35,9 @@ const Onboarding5: React.FC = () => {
           value={walletName}
           onChangeText={setWalletName}
         />
-        <Text style={styles.accessText}>{t("pages.onboarding_5.access_text")}</Text>
+        <Text style={styles.accessText}>
+          {t("pages.onboarding_5.access_text")}
+        </Text>
       </View>
 
       {/* Bottom Button */}
@@ -41,12 +49,23 @@ const Onboarding5: React.FC = () => {
         onPress={handleCreateWallet}
         disabled={!walletName.trim()}
       >
-        <Text style={styles.buttonText}>{t("pages.onboarding_5.create_wallet_button")}</Text>
+        <Text style={styles.buttonText}>
+          {t("pages.onboarding_5.create_wallet_button")}
+        </Text>
       </TouchableOpacity>
 
       {/* Bottom Text Link */}
-      <TouchableOpacity style={styles.linkContainer}>
-        <Text style={styles.linkText}>{t("pages.onboarding_5.private_key_info")}</Text>
+      <TouchableOpacity
+        style={styles.linkContainer}
+        onPress={() =>
+          router.push(
+            "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces"
+          )
+        }
+      >
+        <Text style={styles.linkText}>
+          {t("pages.onboarding_5.private_key_info")}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -127,7 +146,6 @@ const styles = StyleSheet.create({
     color: "#212121",
     textAlign: "center",
     fontFamily: "Poppins_500Medium",
-
   },
 });
 
