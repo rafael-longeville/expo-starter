@@ -221,12 +221,19 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 25,
     alignItems: "center",
-    width: "90%",
+    width: "95%",
     position: "absolute",
     bottom: 70,
   },
   buttonActive: {
     backgroundColor: "#333333",
+    // Add drop shadow for iOS
+    shadowColor: "#091E42",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    // Add elevation for Android
+    elevation: 5,
   },
   buttonDisabled: {
     backgroundColor: "#E0E0E0",

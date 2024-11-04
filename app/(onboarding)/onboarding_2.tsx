@@ -124,10 +124,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 25,
     alignItems: "center",
-    width: "90%",
+    width: "95%",
     backgroundColor: "#333333",
     position: "absolute",
     bottom: 70, // 30px above the link
+    // Add drop shadow for iOS
+    shadowColor: "#091E42",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    // Add elevation for Android
+    elevation: 5,
   },
   buttonText: {
     fontSize: scaledFontSize(14),

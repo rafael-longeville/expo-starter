@@ -58,23 +58,16 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 30,
     height: 37,
-
     justifyContent: "center",
     alignItems: "center",
     width: "85%",
-    borderWidth: 1,
-    borderColor: "#13293D",
-    // Adding shadow properties for iOS
-    shadowColor: "#000", // Shadow color
-    shadowOffset: {
-      width: 0,
-      height: 10, // Vertical shadow offset
-      // Vertical shadow offset
-    },
-    shadowOpacity: 0.1, // Shadow opacity
-    shadowRadius: 3.5, // Shadow blur radius
-    // Adding elevation for Android
-    elevation: 5, // Elevation for Android shadow effect
+    // Add drop shadow for iOS
+    shadowColor: "#091E42",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    // Add elevation for Android
+    elevation: 5,
   },
   overlay: {
     position: "absolute",
