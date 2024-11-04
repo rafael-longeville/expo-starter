@@ -186,63 +186,6 @@ export default function Onboarding() {
         </View>
       </ImageBackground>
     </View>
-    //   <BlurView intensity={100} style={{ flex: 1 }}>
-    //   <View style={styles.container}>
-    //     <ImageBackground
-    //       source={require("@/components/Onboarding/background-image.png")}
-    //       style={styles.backgroundImage}
-    //     >
-    //       <LinearGradient
-    //         colors={[
-    //           "rgba(51, 51, 51, 1)", // Top 20% - Full background color
-    //           "rgba(51, 51, 51, 0.5)", // Fade to transparent
-    //           "rgba(51, 51, 51, 1)",
-    //         ]}
-    //         style={StyleSheet.absoluteFill}
-    //         start={{ x: 0, y: 0 }}
-    //         end={{ x: 1, y: 1 }}
-    //       />
-
-    //       {/* <ImageBackground
-    //       source={require("@/components/Onboarding/linear-bg-overlay.png")}
-    //       style={styles.backgroundImage}
-    //     > */}
-    //       {/* Overlay LinearGradient for fading effect */}
-
-    //       <FlatList
-    //         data={slides}
-    //         renderItem={({ item }) => <OnboardingItem item={item} />}
-    //         horizontal
-    //         showsHorizontalScrollIndicator={false}
-    //         pagingEnabled
-    //         bounces={false}
-    //         keyExtractor={(item) => item.id}
-    //         onScroll={Animated.event(
-    //           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-    //           { useNativeDriver: false }
-    //         )}
-    //         scrollEventThrottle={32}
-    //         onViewableItemsChanged={viewableItemsChanged}
-    //         viewabilityConfig={viewConfig}
-    //         ref={slidesRef}
-    //         style={{ flexGrow: 0, height: "100%" }}
-    //       />
-
-    //       <View style={styles.bottomContainer}>
-    //         <NextButton
-    //           scrollTo={handleNextButtonPress}
-    //           percentage={currentIndex * (100 / (slides.length - 1))}
-    //         />
-    //         {currentIndex >= 1 && currentIndex <= 3 && (
-    //           <View style={styles.paginatorContainer}>
-    //             <Paginator data={slides.slice(1)} currentIndex={currentIndex} />
-    //           </View>
-    //         )}
-    //       </View>
-    //       {/* </ImageBackground> */}
-    //     </ImageBackground>
-    //   </View>
-    // </BlurView>
   );
 }
 
