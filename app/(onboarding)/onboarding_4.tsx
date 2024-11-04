@@ -62,6 +62,11 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
                 selectedOption === 0 && styles.radioCircleSelected,
               ]}
             >
+              {/* Additional Circle with Blur Effect */}
+              {selectedOption === 0 && (
+                <View style={styles.additionalCircle} />
+              )}
+              {/* Inner Circle */}
               {selectedOption === 0 && <View style={styles.innerCircle} />}
             </View>
             <Text style={styles.optionText}>
@@ -79,6 +84,11 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
                 selectedOption === 1 && styles.radioCircleSelected,
               ]}
             >
+              {/* Additional Circle with Blur Effect */}
+              {selectedOption === 1 && (
+                <View style={styles.additionalCircle} />
+              )}
+              {/* Inner Circle */}
               {selectedOption === 1 && <View style={styles.innerCircle} />}
             </View>
             <Text style={styles.optionText}>
@@ -189,23 +199,37 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   radioCircle: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 1,
-    borderColor: "black",
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#525252",
     marginRight: 15,
     alignItems: "center",
     justifyContent: "center",
+    position: "relative",
   },
   radioCircleSelected: {
-    borderColor: "black",
+    // You can add styles here if needed when selected
+  },
+  additionalCircle: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#6EE7B7",
+    position: "absolute",
+    // Simulate blur with shadow (optional)
+    shadowColor: "#6EE7B7",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 4,
   },
   innerCircle: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    backgroundColor: "#A0E8D1",
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "#6EE7B7",
   },
   optionText: {
     fontSize: scaledFontSize(14),
