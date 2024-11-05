@@ -110,35 +110,36 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
           </TouchableOpacity>
         </View>
 
-        {/* Bottom Button */}
-        <TouchableOpacity
-          style={[
-            styles.button,
-            selectedOption !== null
-              ? styles.buttonActive
-              : styles.buttonDisabled,
-          ]}
-          onPress={handleVerify}
-          disabled={selectedOption === null}
-        >
-          <Text style={styles.buttonText}>
-            {t("pages.onboarding_4.verify_answer")}
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          {/* Bottom Button */}
+          <TouchableOpacity
+            style={[
+              styles.button,
+              selectedOption !== null
+                ? styles.buttonActive
+                : styles.buttonDisabled,
+            ]}
+            onPress={handleVerify}
+            disabled={selectedOption === null}
+          >
+            <Text style={styles.buttonText}>
+              {t("pages.onboarding_4.verify_answer")}
+            </Text>
+          </TouchableOpacity>
 
-        {/* Bottom Text Link */}
-        <TouchableOpacity
-          style={styles.linkContainer}
-          onPress={() =>
-            router.push(
-              "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
-            )
-          }
-        >
-          <Text style={styles.linkText}>
-            {t("pages.onboarding_4.private_key_info")}
-          </Text>
-        </TouchableOpacity>
+          {/* Bottom Text Link */}
+          <TouchableOpacity
+            onPress={() =>
+              router.push(
+                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+              )
+            }
+          >
+            <Text style={styles.linkText}>
+              {t("pages.onboarding_4.private_key_info")}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -149,11 +150,18 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     backgroundColor: "transparent",
+    paddingBottom: 30,
   },
   headerContainer: {
     flexDirection: "column",
     alignItems: "center",
     gap: 15,
+  },
+  buttonContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 15,
+    width: "100%",
   },
   title: {
     fontSize: scaledFontSize(22),
@@ -171,6 +179,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginTop: 90,
+    justifyContent: "space-between",
   },
   questionText: {
     fontSize: scaledFontSize(20),
@@ -249,8 +258,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     width: "95%",
-    position: "absolute",
-    bottom: 70,
+    height: 40,
   },
   buttonActive: {
     backgroundColor: "#333333",
@@ -264,16 +272,14 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: {
     backgroundColor: "#E0E0E0",
+    width: "95%",
   },
   buttonText: {
     fontSize: scaledFontSize(14),
     color: "#FFFFFF",
-    fontWeight: "500",
+    fontFamily: "Poppins_500Medium",
   },
-  linkContainer: {
-    position: "absolute",
-    bottom: 30,
-  },
+
   linkText: {
     fontSize: scaledFontSize(14),
     color: "#212121",
