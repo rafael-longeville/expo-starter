@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#13293D"
+      "backgroundColor": "#333333"
     },
     "ios": {
       "supportsTablet": true,
@@ -32,8 +32,8 @@
     "android": {
       "package": "com.mcs_ibex.app",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#13293D"
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#333333"
       },
       "intentFilters": [
         {
