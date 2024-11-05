@@ -43,27 +43,28 @@ const Onboarding2: React.FC = () => {
             {t("pages.onboarding_2.warning")}
           </Text>
         </View>
+        <View style={styles.buttonContainer}>
+          {/* Bottom Button */}
+          <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
+            <Text style={styles.buttonText}>
+              {t("pages.onboarding_2.create_wallet_button")}
+            </Text>
+          </TouchableOpacity>
 
-        {/* Bottom Button */}
-        <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
-          <Text style={styles.buttonText}>
-            {t("pages.onboarding_2.create_wallet_button")}
-          </Text>
-        </TouchableOpacity>
-
-        {/* Bottom Text Link */}
-        <TouchableOpacity
-          style={styles.linkContainer}
-          onPress={() =>
-            router.push(
-              "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
-            )
-          }
-        >
-          <Text style={styles.linkText}>
-            {t("pages.onboarding_2.private_key_info")}
-          </Text>
-        </TouchableOpacity>
+          {/* Bottom Text Link */}
+          <TouchableOpacity
+            style={styles.linkContainer}
+            onPress={() =>
+              router.push(
+                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+              )
+            }
+          >
+            <Text style={styles.linkText}>
+              {t("pages.onboarding_2.private_key_info")}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -74,36 +75,26 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 30,
     backgroundColor: "transparent",
+    paddingBottom: 30,
   },
   headerContainer: {
-    position: "absolute",
-    top: 30, // 30px from the top
-    left: 0,
-    right: 0,
-    alignItems: "center",
-  },
-  title: {
-    fontSize: scaledFontSize(22),
-    fontWeight: "700",
-    textAlign: "center",
-    color: "#212121",
-    fontFamily: "Poppins_600SemiBold",
-  },
-  subtitle: {
-    fontSize: scaledFontSize(16),
-    textAlign: "center",
-    color: "#212121",
-    marginTop: 20, // 20px below the title
-    fontFamily: "Poppins_400Regular",
-  },
-  contentContainer: {
-    flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 50, // Offset for the header section
+    gap: 15,
+  },
+  contentContainer: {
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 85,
+  },
+  buttonContainer: {
+    width: "100%",
+    gap: 20,
   },
   descriptionContainer: {
-    marginBottom: 60,
     alignItems: "flex-start",
     width: "100%",
     gap: 20,
@@ -111,14 +102,25 @@ const styles = StyleSheet.create({
   bulletContainer: {
     paddingLeft: 15,
   },
+  title: {
+    fontSize: scaledFontSize(22),
+    textAlign: "center",
+    color: "#212121",
+    fontFamily: "Poppins_600SemiBold",
+    letterSpacing: 0.44,
+  },
+  subtitle: {
+    fontSize: scaledFontSize(16),
+    textAlign: "center",
+    color: "#212121",
+    fontFamily: "Poppins_400Regular",
+  },
   descriptionText: {
-    fontSize: 16,
+    fontSize: scaledFontSize(16),
     lineHeight: 22,
-    fontWeight: "400",
     letterSpacing: 0.32,
     color: "#212121",
     fontFamily: "Poppins_400Regular",
-    marginBottom: 5,
   },
   button: {
     paddingVertical: 10,
@@ -126,8 +128,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "95%",
     backgroundColor: "#333333",
-    position: "absolute",
-    bottom: 70, // 30px above the link
     // Add drop shadow for iOS
     shadowColor: "#091E42",
     shadowOffset: { width: 0, height: 4 },
@@ -141,10 +141,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "500",
   },
-  linkContainer: {
-    position: "absolute",
-    bottom: 30, // 30px from the bottom
-  },
+  linkContainer: {},
   linkText: {
     fontSize: scaledFontSize(14),
     color: "#212121",
