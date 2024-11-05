@@ -143,15 +143,19 @@ export default function Onboarding() {
         style={styles.backgroundImage}
       >
         <LinearGradient
-          colors={[
-            "rgba(51, 51, 51, 1)", // Top 20% - Full background color
-            "rgba(51, 51, 51, 0.5)", // Fade to transparent
-            "rgba(51, 51, 51, 1)",
-          ]}
-          style={StyleSheet.absoluteFill}
-          start={{ x: 0, y: 0.2 }}
-          end={{ x: 0, y: 0.9 }}
-        />
+        colors={[
+          "rgba(51, 51, 51, 1)", // Top 20% - Full background color
+          "rgba(51, 51, 51, 0.9)", // Top 20% - Full background color
+
+          "rgba(51, 51, 51, 0)", // Fade to transparent
+          "rgba(51, 51, 51, 0)", // Stay transparent
+
+          "rgba(51, 51, 51, 0.9)", 
+          "rgba(51, 51, 51, 1)", 
+        ]}
+        locations={[0, 0.05, 0.2, 0.7, 0.85, 1]}
+        style={StyleSheet.absoluteFill}
+      />
         {/* Overlay LinearGradient for fading effect */}
 
         <FlatList
