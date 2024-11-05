@@ -14,9 +14,9 @@ import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
 
-interface ConnectWithPasskeyProps { }
+interface ConnectWithPasskeyProps {}
 
-export default function ConnectWithPasskey({ }: ConnectWithPasskeyProps) {
+export default function ConnectWithPasskey({}: ConnectWithPasskeyProps) {
   // Only render the view if no passkey is stored
   // if (!hasPasskey) {
   //   return null; // Do not render if a passkey already exists
