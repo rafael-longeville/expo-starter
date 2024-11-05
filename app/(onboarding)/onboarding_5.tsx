@@ -15,77 +15,86 @@ const Onboarding5: React.FC = () => {
   const [walletName, setWalletName] = useState("");
 
   const handleCreateWallet = () => {
-    if (walletName.trim()) {
-      router.push("/(onboarding)/onboarding_6");
-    }
+    router.navigate("/(onboarding)/onboarding_6");
   };
 
   return (
-    <View style={styles.container}>
-      {/* Header Title */}
+    <>
       <Text style={styles.title}>{t("pages.onboarding_5.title")}</Text>
 
-      {/* Input Section */}
-      <View style={styles.inputSection}>
-        <Text style={styles.label}>{t("pages.onboarding_5.label")}</Text>
-        <TextInput
-          style={styles.input}
-          placeholder={t("pages.onboarding_5.placeholder")}
-          placeholderTextColor="#A0A0A0"
-          value={walletName}
-          onChangeText={setWalletName}
-        />
-        <Text style={styles.accessText}>
-          {t("pages.onboarding_5.access_text")}
-        </Text>
+      <View style={styles.container}>
+        {/* Header Title */}
+
+        {/* Input Section */}
+        <View style={styles.inputSection}>
+          <Text style={styles.label}>{t("pages.onboarding_5.label")}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={t("pages.onboarding_5.placeholder")}
+            placeholderTextColor="#A0A0A0"
+            value={walletName}
+            onChangeText={setWalletName}
+          />
+          <Text style={styles.accessText}>
+            {t("pages.onboarding_5.access_text")}
+          </Text>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          {/* Bottom Button */}
+          <TouchableOpacity
+            style={[
+              styles.button,
+              walletName.trim() ? styles.buttonActive : styles.buttonDisabled,
+            ]}
+            onPress={handleCreateWallet}
+            disabled={!walletName.trim()}
+          >
+            <Text style={styles.buttonText}>
+              {t("pages.onboarding_5.create_wallet_button")}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Bottom Text Link */}
+          <TouchableOpacity
+            onPress={() =>
+              router.push(
+                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces"
+              )
+            }
+          >
+            <Text style={styles.linkText}>
+              {t("pages.onboarding_5.private_key_info")}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
-      {/* Bottom Button */}
-      <TouchableOpacity
-        style={[
-          styles.button,
-          walletName.trim() ? styles.buttonActive : styles.buttonDisabled,
-        ]}
-        onPress={handleCreateWallet}
-        disabled={!walletName.trim()}
-      >
-        <Text style={styles.buttonText}>
-          {t("pages.onboarding_5.create_wallet_button")}
-        </Text>
-      </TouchableOpacity>
-
-      {/* Bottom Text Link */}
-      <TouchableOpacity
-        style={styles.linkContainer}
-        onPress={() =>
-          router.push(
-            "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces"
-          )
-        }
-      >
-        <Text style={styles.linkText}>
-          {t("pages.onboarding_5.private_key_info")}
-        </Text>
-      </TouchableOpacity>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
     backgroundColor: "transparent",
+    paddingBottom: 30,
+    marginTop: 170,
+  },
+  buttonContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 15,
+    width: "100%",
   },
   title: {
     fontSize: scaledFontSize(22),
     fontWeight: "700",
     textAlign: "center",
     color: "#212121",
-    position: "absolute",
-    top: 30, // 30px from the top
   },
   inputSection: {
     alignItems: "center",
@@ -123,8 +132,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     width: "95%",
-    position: "absolute",
-    bottom: 70, // 30px above the link
+    height: 40,
   },
   buttonActive: {
     backgroundColor: "#333333",
@@ -142,12 +150,9 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: scaledFontSize(14),
     color: "#FFFFFF",
-    fontWeight: "500",
+    fontFamily: "Poppins_500Medium",
   },
-  linkContainer: {
-    position: "absolute",
-    bottom: 30, // 30px from the bottom
-  },
+
   linkText: {
     fontSize: scaledFontSize(14),
     color: "#212121",
