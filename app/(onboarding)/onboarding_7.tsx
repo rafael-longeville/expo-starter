@@ -26,7 +26,7 @@ const Onboarding7: React.FC = () => {
         paddingHorizontal: 20,
         flex: 1,
         alignItems: "center",
-        marginTop: 40,
+        marginTop: 20,
       }}
     >
       <Text
