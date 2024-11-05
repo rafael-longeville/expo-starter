@@ -15,6 +15,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import OnboardingItem from "./OnboardingItem";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
+import { BlurView } from "expo-blur";
 
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notifications from FlatList
 
@@ -136,27 +137,23 @@ export default function Onboarding() {
   };
 
   return (
-    <ImageBackground
-      source={require("@/components/Onboarding/background-image.png")}
-      style={styles.backgroundImage}
-    >
-      {/* Overlay LinearGradient for fading effect */}
-      <LinearGradient
-        colors={[
-          "rgba(51, 51, 51, 1)", // Top 20% - Full background color
-          "rgba(51, 51, 51, 0.9)", // Top 20% - Full background color
+    <View style={styles.container}>
+      <ImageBackground
+        source={require("@/components/Onboarding/background-image.png")}
+        style={styles.backgroundImage}
+      >
+        <LinearGradient
+          colors={[
+            "rgba(51, 51, 51, 1)", // Top 20% - Full background color
+            "rgba(51, 51, 51, 0.5)", // Fade to transparent
+            "rgba(51, 51, 51, 1)",
+          ]}
+          style={StyleSheet.absoluteFill}
+          start={{ x: 0, y: 0.2 }}
+          end={{ x: 0, y: 0.9 }}
+        />
+        {/* Overlay LinearGradient for fading effect */}
 
-          "rgba(51, 51, 51, 0.5)", // Fade to transparent
-          "rgba(51, 51, 51, 0.5)", // Stay transparent
-
-          "rgba(51, 51, 51, 0.9)", 
-          "rgba(51, 51, 51, 1)", 
-        ]}
-        locations={[0, 0.15, 0.2, 0.7, 0.85, 1]}
-        style={StyleSheet.absoluteFill}
-      />
-
-      <View style={styles.container}>
         <FlatList
           data={slides}
           renderItem={({ item }) => <OnboardingItem item={item} />}
@@ -181,14 +178,14 @@ export default function Onboarding() {
             scrollTo={handleNextButtonPress}
             percentage={currentIndex * (100 / (slides.length - 1))}
           />
-          {currentIndex >= 1 && currentIndex <= 3 && (
-            <View style={styles.paginatorContainer}>
+          <View style={styles.paginatorContainer}>
+            {currentIndex >= 1 && currentIndex <= 3 && (
               <Paginator data={slides.slice(1)} currentIndex={currentIndex} />
-            </View>
-          )}
+            )}
+          </View>
         </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+    </View>
   );
 }
 
@@ -199,7 +196,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    backgroundColor: "rgba(51,51,51, 0.4)", // Ensure the container background is semi-transparent
   },
   backgroundImage: {
     flex: 1,
@@ -207,13 +203,14 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: "absolute",
-    bottom: 20,
+    bottom: 40,
     width: "100%",
     alignItems: "center",
-    // Removed height to let contents define the height
+    flexDirection: "column",
+    gap: 20,
   },
   paginatorContainer: {
+    height: 20,
     marginTop: 10, // Adjust as needed for spacing
-    // Optionally, you can set height here if needed
   },
 });

@@ -12,7 +12,7 @@ const OnboardingAnswerPopup = forwardRef(
     ref: any
   ) => {
     const { t } = useTranslation();
-    const snapPoints = useMemo(() => ["45%"], []);
+    const snapPoints = useMemo(() => ["40%"], []);
     const router = useRouter();
 
     const handleDismissModal = useCallback(() => {
@@ -31,20 +31,12 @@ const OnboardingAnswerPopup = forwardRef(
     );
 
     const handleContinue = () => {
-      // Close the modal
       handleDismissModal();
+      console.log(!isModalError && !isModalOpen);
       // Navigate to the next screen
-      if (!isModalOpen) {
-        router.navigate("/(onboarding)/onboarding_7");
-      }
-    };
-
-    const handleContinueWithout = () => {
-      // Close the modal
-      handleDismissModal();
-      // Navigate to the next screen
-      if (!isModalOpen) {
-        router.navigate("/(onboarding)/onboarding_7");
+      if (!isModalError) {
+        console.log("Navigating to the next screen");
+        router.navigate("/(onboarding)/onboarding_5");
       }
     };
 
@@ -69,6 +61,8 @@ const OnboardingAnswerPopup = forwardRef(
       );
     };
 
+    const answerState = isModalError ? "bad_answer" : "good_answer";
+
     return (
       <BottomSheetModal
         ref={ref}
@@ -79,9 +73,7 @@ const OnboardingAnswerPopup = forwardRef(
         handleComponent={CustomHandle} // Use custom handle
       >
         <BottomSheetView style={styles.contentContainer}>
-          <Text style={styles.title}>
-            {t("pop-ups.onboarding_notifications.title")}
-          </Text>
+          <Text style={styles.title}>{t(`pop-ups.${answerState}.title`)}</Text>
 
           <View
             style={{
@@ -101,7 +93,7 @@ const OnboardingAnswerPopup = forwardRef(
                 textAlign: "center",
               }}
             >
-              {t("pop-ups.onboarding_notifications.description")}
+              {t(`pop-ups.${answerState}.description`)}
             </Text>
 
             {/* Bottom Button */}
@@ -110,14 +102,7 @@ const OnboardingAnswerPopup = forwardRef(
               onPress={handleContinue}
             >
               <Text style={styles.buttonText}>
-                {t("pop-ups.onboarding_notifications.button")}
-              </Text>
-            </TouchableOpacity>
-
-            {/* Bottom Text Link */}
-            <TouchableOpacity onPress={handleContinueWithout}>
-              <Text style={styles.linkText}>
-                {t("pop-ups.onboarding_notifications.continue_without")}
+                {t(`pop-ups.${answerState}.button`)}
               </Text>
             </TouchableOpacity>
           </View>
@@ -135,7 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 10,
     paddingHorizontal: 24,
-    marginTop: 50, // Adjust this to move the content upwards as it was before
+    marginTop: "20%", // Adjust this to move the content upwards as it was before
   },
   title: {
     fontFamily: "Poppins_600SemiBold",
@@ -150,7 +135,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 60,
     marginBottom: 20,
-    height: 37,
+    height: 50,
   },
   buttonActive: {
     backgroundColor: "#333333",

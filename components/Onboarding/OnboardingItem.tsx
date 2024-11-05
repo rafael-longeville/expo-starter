@@ -56,17 +56,18 @@ export default function OnboardingItem({ item }: any) {
     },
     title: {
       fontFamily: "AlegreyaSansSC_500Medium",
-      fontSize: scaledFontSize(28),
+      fontSize: scaledFontSize(30),
       marginBottom: 10,
       color: "#fff",
       textAlign: "center",
-      width: "80%", // Responsive width
+      width: "90%", // Responsive width
     },
     subtitle: {
       fontFamily: "Poppins_400Regular",
-      fontSize: scaledFontSize(16),
+      fontSize: scaledFontSize(18),
       color: "#6EE7B7",
       textAlign: "center",
+      width: "90%", // Responsive width
     },
   });
 

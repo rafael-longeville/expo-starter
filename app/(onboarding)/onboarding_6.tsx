@@ -4,23 +4,19 @@ import {
   Text,
   StyleSheet,
   Image,
-  Pressable,
   Alert,
   TouchableOpacity,
-  Button,
 } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import * as Notifications from "expo-notifications";
 import { Divider } from "react-native-paper";
-import {
-  Gesture,
-  GestureHandlerRootView,
-  TextInput,
-} from "react-native-gesture-handler";
-import MainAccountPopup from "@/components/PopUp/NotificationPopup";
+import { TextInput } from "react-native-gesture-handler";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
+
+// Regular expression to validate the email format
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Custom Switch component to toggle notifications
 const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
@@ -60,7 +56,7 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
         {value ? (
           <Image
             source={require("@/assets/images/onboarding/6/check-icon.png")}
-            style={styles.iconImage}
+            style={styles.iconImageOn}
           />
         ) : (
           <Image
@@ -85,16 +81,45 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
   const handlePress = (ref: any) => {
     if (!emailNotifications && !notifications) {
+      // Case 1: No notifications enabled
       console.log("here");
       setIsModalOpen(true);
       setIsBlurred(true);
       ref.current?.present();
-      // Alert.alert("Error", "Please enable at least one type of notification.", [
-      //   { text: "OK" },
-      // ]);
       return;
-    } else if (emailNotifications && !email) {
+    }
+
+    if (emailNotifications && !email) {
+      // Case 2: Email notifications enabled but no email provided
       Alert.alert("Error", "Please enter your email address.", [
+        { text: "OK" },
+      ]);
+      return;
+    }
+
+    if (emailNotifications && !emailRegex.test(email)) {
+      // Case 3: Invalid email format
+      Alert.alert("Error", "Please enter a valid email address.", [
+        { text: "OK" },
+      ]);
+      return;
+    }
+
+    if (notifications && emailNotifications && emailRegex.test(email)) {
+      // Case 4: Both notifications enabled and valid email provided
+      router.navigate("/(onboarding)/onboarding_7");
+      return;
+    }
+
+    if (notifications && !emailNotifications) {
+      // Case 5: Only push notifications enabled
+      router.navigate("/(onboarding)/onboarding_7");
+      return;
+    }
+
+    if (emailNotifications && emailRegex.test(email)) {
+      // Case 6: Only email notifications enabled with valid email
+      Alert.alert("Info", "Email notifications have been enabled.", [
         { text: "OK" },
       ]);
       return;
@@ -123,7 +148,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
         </Text>
       </View>
       {/* Notifications and custom switch section  */}
-      <View style={{ flexDirection: "column", gap: 20 }}>
+      <View style={{ flexDirection: "column", gap: 40 }}>
         <View
           style={{
             marginTop: 60,
@@ -165,7 +190,6 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
         </View>
         <Divider
           style={{
-            marginVertical: 20,
             height: 1,
             backgroundColor: "#212121",
           }}
@@ -208,6 +232,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
           <TextInput
             placeholder={t("pages.onboarding_6.mail.input_placeholder")}
+            placeholderTextColor="#212121" // Sets placeholder color
             style={{
               width: "60%",
               height: 40,
@@ -215,13 +240,17 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
               backgroundColor: "transparent",
               borderWidth: 1,
               borderColor: "#212121",
-              color: "#212121",
+              color: "#212121", // Sets text color
               textAlign: "center",
               alignSelf: "center",
-              display: emailNotifications ? "flex" : "none",
+              // display: emailNotifications ? "flex" : "none",
+              display: "flex",
               marginTop: 10,
             }}
+            value={email}
+            onChange={(e) => setEmail(e.nativeEvent.text)}
           />
+
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: "#333333" }}
             onPress={() => handlePress(ref)}
@@ -294,15 +323,24 @@ const styles = StyleSheet.create({
     height: 60,
   },
   iconImage: {
-    width: 10,
-    height: 10,
+    width: 13,
+    height: 13,
+  },
+  iconImageOn: {
+    width: 16,
+    height: 16,
+    shadowColor: "#6EE7B7", // Green shadow color
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 8, // Adjust the shadow radius as desired
+    borderRadius: 8,
   },
   title: {
     fontSize: scaledFontSize(22),
     textAlign: "center",
   },
   button: {
-    marginTop: 60,
+    marginTop: 80,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",

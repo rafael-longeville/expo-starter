@@ -170,7 +170,7 @@
     },
     "good_answer": {
       "title": "Bonne réponse !",
-      "description": "Si votre clé d’accès est supprimée, vous prerdez l’accès à votre portefueille.",
+      "description": "Si votre clé d’accès est supprimée, vous perdez l’accès à votre portefueille.",
       "button": "J’ai compris, continuer"
     },
     "bad_answer": {
