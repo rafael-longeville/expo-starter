@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     alignSelf: "center",
     marginBottom: 40,
+    marginTop: 5,
   },
   backgroundImage: {
     position: "absolute",
