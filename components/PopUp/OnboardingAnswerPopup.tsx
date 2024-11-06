@@ -19,7 +19,7 @@ const OnboardingAnswerPopup = forwardRef(
     ref: any
   ) => {
     const { t } = useTranslation();
-    const snapPoints = useMemo(() => ["40%"], []);
+    const snapPoints = useMemo(() => [360], []);
     const router = useRouter();
 
     const handleDismissModal = useCallback(() => {
@@ -186,11 +186,11 @@ const styles = StyleSheet.create({
   customHandle: {
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5, // For Android
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.3,
+    // shadowRadius: 4,
+    // elevation: 5, // For Android
   },
 });
 

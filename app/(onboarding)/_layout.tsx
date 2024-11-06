@@ -84,7 +84,7 @@ export default function OnboardingLayout() {
               <View
                 style={[
                   styles.absolute,
-                  { backgroundColor: "rgba(122, 122, 122, 1)" },
+                  { backgroundColor: "rgba(0, 0, 0, 0.7)" },
                 ]}
               />
             ) : (

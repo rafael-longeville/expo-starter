@@ -23,7 +23,7 @@ const CustomHandle = () => {
 const NotificationsPopup = forwardRef(
   ({ setIsModalOpen, setBlurred, isModalOpen }: any, ref: any) => {
     const { t } = useTranslation();
-    const snapPoints = useMemo(() => ["45%"], []);
+    const snapPoints = useMemo(() => [360], []);
     const router = useRouter();
 
     const handleDismissModal = useCallback(() => {
