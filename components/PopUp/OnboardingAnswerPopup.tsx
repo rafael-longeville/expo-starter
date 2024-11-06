@@ -1,9 +1,16 @@
 import React, { useCallback, forwardRef, useMemo } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  BackHandler,
+} from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
-import { Href, Link, router, useRouter } from "expo-router";
+import { Href, Link, router, useFocusEffect, useRouter } from "expo-router";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const OnboardingAnswerPopup = forwardRef(
@@ -39,6 +46,23 @@ const OnboardingAnswerPopup = forwardRef(
         router.navigate("/(onboarding)/onboarding_5");
       }
     };
+
+    useFocusEffect(
+      useCallback(() => {
+        const onBackPress = () => {
+          if (isModalOpen) {
+            handleDismissModal();
+            return true;
+          }
+          return false;
+        };
+
+        BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+        return () =>
+          BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      }, [isModalOpen, handleDismissModal])
+    );
 
     // Custom handle component
     const CustomHandle = () => {

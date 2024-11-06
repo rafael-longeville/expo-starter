@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   Pressable,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useSegments } from "expo-router";
@@ -77,20 +78,24 @@ export default function OnboardingLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <SafeAreaView style={styles.container}>
-          {isBlurred && (
-            // <BlurView
-            //   style={styles.absolute}
-            //   blurType="dark"
-            //   blurAmount={10}
-            //   reducedTransparencyFallbackColor="white"
-            // />
-            <ExpoBlurView
-              style={styles.absolute}
-              tint="dark"
-              intensity={100}
-              experimentalBlurMethod="dimezisBlurView"
-            />
-          )}
+          {isBlurred &&
+            (Platform.OS === "android" ? (
+              // Render a black background for Android
+              <View
+                style={[
+                  styles.absolute,
+                  { backgroundColor: "rgba(122, 122, 122, 1)" },
+                ]}
+              />
+            ) : (
+              // Render ExpoBlurView for iOS
+              <ExpoBlurView
+                style={styles.absolute}
+                tint="dark"
+                intensity={100}
+                experimentalBlurMethod="none"
+              />
+            ))}
           {currentSegment !== "onboarding_7" &&
             currentSegment !== "onboarding_6" && (
               <Image
@@ -138,7 +143,6 @@ export default function OnboardingLayout() {
               </View>
             )}
           </ScrollView>
-
           <NotificationsPopup
             ref={notificationsModalRef}
             setIsModalOpen={setIsModalOpen}
@@ -215,6 +219,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 40,
     marginTop: 5,
+    maxWidth: 126,
+    maxHeight: 30,
   },
   backgroundImage: {
     position: "absolute",
