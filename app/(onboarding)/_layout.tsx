@@ -215,6 +215,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 40,
     marginTop: 5,
+    maxWidth: 126,
+    maxHeight: 30,
   },
   backgroundImage: {
     position: "absolute",
