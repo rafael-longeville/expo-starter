@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { SplashScreen, Stack, router } from "expo-router";
+import React, { useEffect } from "react";
+import { StyleSheet } from "react-native";
+import { SplashScreen, Stack } from "expo-router";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   useFonts,
   Poppins_400Regular,
@@ -38,11 +37,15 @@ Sentry.init({
   },
 });
 
-SplashScreen.preventAutoHideAsync();
+// Prevent the splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync().catch((error) => {
+  console.warn("Error preventing splash screen auto hide:", error);
+});
 
-function RootLayout() {
+const RootLayout: React.FC = () => {
   const colorScheme = useColorScheme();
-  const [loaded, error] = useFonts({
+
+  const [fontsLoaded, fontLoadError] = useFonts({
     // Alegreya Sans SC
     AlegreyaSansSC_400Regular,
     AlegreyaSansSC_500Medium,
@@ -58,12 +61,24 @@ function RootLayout() {
   });
 
   useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
+    let timer: NodeJS.Timeout;
 
-  if (!loaded && !error) {
+    if (fontsLoaded || fontLoadError) {
+      timer = setTimeout(() => {
+        SplashScreen.hideAsync().catch((error) => {
+          console.warn("Error hiding splash screen:", error);
+        });
+      }, 200); // 0.2 second delay
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [fontsLoaded, fontLoadError]);
+
+  if (!fontsLoaded && !fontLoadError) {
     return null;
   }
 
@@ -86,7 +101,7 @@ function RootLayout() {
       </TypingProvider>
     </ThemeProvider>
   );
-}
+};
 
 export default Sentry.wrap(RootLayout);
 
