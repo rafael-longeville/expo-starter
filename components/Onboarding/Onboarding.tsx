@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
+    backgroundColor: "#333333",
   },
   backgroundImage: {
     flex: 1,
