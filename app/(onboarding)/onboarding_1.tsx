@@ -7,7 +7,6 @@ import CreateWithPasskey from "@/components/SignInSignUp/CreateWithPasskey";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link } from "expo-router";
 import { ActivityIndicator } from "react-native-paper";
-import ConnectWithGoogle from "@/components/SignInSignUp/ConnectWithGoogle";
 import * as Sentry from "@sentry/react-native";
 import { useRouter } from "expo-router";
 import { getLocales } from "expo-localization";
