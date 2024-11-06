@@ -296,8 +296,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#0C0C0C",
   },
   switchThumb: {
-    width: 25,
-    height: 25,
+    width: 28,
+    height: 28,
     borderRadius: 52.5,
     justifyContent: "center",
     alignItems: "center",
@@ -307,12 +307,15 @@ const styles = StyleSheet.create({
     transform: [{ translateX: 15 }],
     borderWidth: 1,
     borderColor: "#474747",
+    justifyContent: "center",
+    alignItems: "center",
   },
   switchThumbOff: {
     backgroundColor: "#333333",
     transform: [{ translateX: -15 }],
     borderWidth: 1,
     borderColor: "#474747",
+    alignItems: "center",
   },
   switchIcon: {
     fontSize: scaledFontSize(16),
@@ -323,8 +326,9 @@ const styles = StyleSheet.create({
     height: 60,
   },
   iconImage: {
-    width: 13,
-    height: 13,
+    width: 10,
+    height: 10,
+    resizeMode: "contain",
   },
   iconImageOn: {
     width: 16,
@@ -334,6 +338,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 8, // Adjust the shadow radius as desired
     borderRadius: 8,
+    resizeMode: "contain",
   },
   title: {
     fontSize: scaledFontSize(22),

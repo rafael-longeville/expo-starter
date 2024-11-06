@@ -28,7 +28,7 @@ export default function ConnectWithPasskey({}: ConnectWithPasskeyProps) {
     try {
       // Connect to the wallet
       // Redirect to the next page
-      router.push("/(onboarding)/onboarding_2");
+      router.push("/(onboarding)/onboarding_7");
     } catch (error: any) {
       // Sentry.captureException(error);
       Alert.alert("Error", error.message);
