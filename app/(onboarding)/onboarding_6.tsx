@@ -119,9 +119,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
     if (emailNotifications && emailRegex.test(email)) {
       // Case 6: Only email notifications enabled with valid email
-      Alert.alert("Info", "Email notifications have been enabled.", [
-        { text: "OK" },
-      ]);
+      router.navigate("/(onboarding)/onboarding_7");
       return;
     }
   };
