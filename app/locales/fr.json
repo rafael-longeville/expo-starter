@@ -134,9 +134,7 @@
     }
   },
   "disclaimer": "En continuant, vous confirmez avoir lu et accepté ",
-  "disclaimer_link": "nos conditions générales de ventes ",
-  "disclaimer_2": "et celles d'",
-  "disclaimer_link_2": "Inblocks UAB",
+  "disclaimer_link": "nos conditions générales de ventes",
   "components": {
     "investment_card": {
       "investment": "Placement",

@@ -93,13 +93,7 @@ const Onboarding1: React.FC = () => {
         {t("disclaimer")}
         <Link href={"https://moncomptesouverain.fr"}>
           <Text style={{ textDecorationLine: "underline" }}>
-            {t("disclaimer_link")}
-          </Text>
-        </Link>
-        {t("disclaimer_2")}
-        <Link href={"https://moncomptesouverain.fr"}>
-          <Text style={{ textDecorationLine: "underline" }}>
-            {t("disclaimer_link_2")}
+            {t("disclaimer_link")}.
           </Text>
         </Link>
       </Text>
