@@ -19,7 +19,7 @@ const OnboardingAnswerPopup = forwardRef(
     ref: any
   ) => {
     const { t } = useTranslation();
-    const snapPoints = useMemo(() => ["40%"], []);
+    const snapPoints = useMemo(() => [360], []);
     const router = useRouter();
 
     const handleDismissModal = useCallback(() => {

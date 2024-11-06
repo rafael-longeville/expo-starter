@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Platform } from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
@@ -54,7 +54,7 @@ const Onboarding3: React.FC = () => {
                 style={styles.checkIcon}
               />
               <Text style={styles.checkboxText}>
-                {t("pages.onboarding_3.checkbox_1")}
+                {Platform.OS === 'ios' ? t("pages.onboarding_3.checkbox_1_ios") : t("pages.onboarding_3.checkbox_1_android")}
               </Text>
             </TouchableOpacity>
 
