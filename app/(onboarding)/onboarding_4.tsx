@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
@@ -68,12 +68,14 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
                   selectedOption === 0 && styles.radioCircleSelected,
                 ]}
               >
-                {/* Additional Circle with Blur Effect */}
                 {selectedOption === 0 && (
-                  <View style={styles.additionalCircle} />
+                  <>
+                    <Image
+                      source={require("@/assets/images/onboarding/6/check-icon.png")}
+                      style={styles.iconImageOn}
+                    />
+                  </>
                 )}
-                {/* Inner Circle */}
-                {selectedOption === 0 && <View style={styles.innerCircle} />}
               </View>
             </View>
             <View style={styles.optionItem}>
@@ -96,8 +98,10 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
                 {/* Additional Circle with Blur Effect */}
                 {selectedOption === 1 && (
                   <>
-                    <View style={styles.additionalCircle} />
-                    <View style={styles.innerCircle} />
+                    <Image
+                      source={require("@/assets/images/onboarding/6/check-icon.png")}
+                      style={styles.iconImageOn}
+                    />
                   </>
                 )}
               </View>
@@ -112,20 +116,22 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
 
         <View style={styles.buttonContainer}>
           {/* Bottom Button */}
-          <TouchableOpacity
-            style={[
-              styles.button,
-              selectedOption !== null
-                ? styles.buttonActive
-                : styles.buttonDisabled,
-            ]}
-            onPress={handleVerify}
-            disabled={selectedOption === null}
-          >
-            <Text style={styles.buttonText}>
-              {t("pages.onboarding_4.verify_answer")}
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.buttonWrapper}>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                selectedOption !== null
+                  ? styles.buttonActive
+                  : styles.buttonDisabled,
+              ]}
+              onPress={handleVerify}
+              disabled={selectedOption === null}
+            >
+              <Text style={styles.buttonText}>
+                {t("pages.onboarding_4.verify_answer")}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           {/* Bottom Text Link */}
           <TouchableOpacity
@@ -146,6 +152,27 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
 });
 
 const styles = StyleSheet.create({
+  buttonWrapper: {
+    shadowColor: "#091E42", // iOS
+    shadowOffset: { width: 0, height: 4 }, // iOS
+    shadowOpacity: 0.25, // iOS
+    shadowRadius: 8, // iOS
+    elevation: 5, // Android
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "95%",
+  },
+  iconImageOn: {
+    width: 16,
+    height: 16,
+    shadowColor: "#6EE7B7", // Green shadow color
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 8, // Adjust the shadow radius as desired
+    borderRadius: 8,
+    resizeMode: "contain",
+  },
   container: {
     flex: 1,
     paddingHorizontal: 20,
