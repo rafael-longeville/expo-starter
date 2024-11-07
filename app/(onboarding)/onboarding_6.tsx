@@ -14,6 +14,7 @@ import * as Notifications from "expo-notifications";
 import { Divider } from "react-native-paper";
 import { TextInput } from "react-native-gesture-handler";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
+import { LinearGradient } from "expo-linear-gradient";
 
 // Regular expression to validate the email format
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,24 +48,46 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
       onPress={handlePress}
       activeOpacity={0.8}
     >
-      <View
+      {/* <View
         style={[
           styles.switchThumb,
           value ? styles.switchThumbOn : styles.switchThumbOff,
         ]}
+      > */}
+      <LinearGradient
+        colors={["rgba(0,0,0,0.5)", "#666666"]}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 0, y: 0 }}
+        style={[
+          styles.switchThumb,
+          value ? styles.switchThumbOn : styles.switchThumbOff,
+        ]}
+        // style={styles.switchContainer}
       >
-        {value ? (
-          <Image
-            source={require("@/assets/images/onboarding/6/check-icon.png")}
-            style={styles.iconImageOn}
-          />
-        ) : (
-          <Image
-            source={require("@/assets/images/onboarding/6/cross-icon.png")}
-            style={styles.iconImage}
-          />
-        )}
-      </View>
+        <View
+          style={{
+            width: 26,
+            height: 26,
+            borderRadius: 52.5,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#333333",
+          }}
+        >
+          {value ? (
+            <Image
+              source={require("@/assets/images/onboarding/6/check-icon.png")}
+              style={styles.iconImageOn}
+            />
+          ) : (
+            <Image
+              source={require("@/assets/images/onboarding/6/cross-icon.png")}
+              style={styles.iconImage}
+            />
+          )}
+        </View>
+      </LinearGradient>
+      {/* </View> */}
     </TouchableOpacity>
   );
 };
@@ -286,7 +309,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    padding: 2,
+    paddingTop: 2,
+    paddingLeft: 3,
+    paddingRight: 2,
+    paddingBottom: 1,
     borderWidth: 4,
     borderColor: "#333333",
   },
@@ -303,16 +329,12 @@ const styles = StyleSheet.create({
   switchThumbOn: {
     backgroundColor: "#333333",
     transform: [{ translateX: 15 }],
-    borderWidth: 1,
-    borderColor: "#474747",
     justifyContent: "center",
     alignItems: "center",
   },
   switchThumbOff: {
     backgroundColor: "#333333",
     transform: [{ translateX: -15 }],
-    borderWidth: 1,
-    borderColor: "#474747",
     alignItems: "center",
   },
   switchIcon: {
