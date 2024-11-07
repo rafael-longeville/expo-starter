@@ -90,7 +90,7 @@ const Onboarding1: React.FC = () => {
         style={{ ...globalFonts.disclaimerText, width: "90%", marginTop: 30 }}
       >
         {t("disclaimer")}
-        <Link href={"https://moncomptesouverain.fr"}>
+        <Link href={"https://wallet.civicpower.org/terms/"}>
           <Text style={{ textDecorationLine: "underline" }}>
             {t("disclaimer_link")}.
           </Text>
