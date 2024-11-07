@@ -153,15 +153,11 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
 
 const styles = StyleSheet.create({
   buttonWrapper: {
-    shadowColor: "#091E42", // iOS
-    shadowOffset: { width: 0, height: 4 }, // iOS
-    shadowOpacity: 0.25, // iOS
-    shadowRadius: 8, // iOS
-    elevation: 5, // Android
-    borderRadius: 25,
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    width: "95%",
+    gap: 15,
+    width: "100%",
   },
   iconImageOn: {
     width: 16,
