@@ -68,7 +68,7 @@ const RootLayout: React.FC = () => {
         SplashScreen.hideAsync().catch((error) => {
           console.warn("Error hiding splash screen:", error);
         });
-      }, 200); // 0.2 second delay
+      }, 1000); // 1 second delay
     }
 
     return () => {
