@@ -55,7 +55,7 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
         ]}
       > */}
       <LinearGradient
-        colors={["rgba(0,0,0,0.5)", "#666666"]}
+        colors={["rgba(0,0,0,0.5)", "rgba(102, 102, 102, 0.5)"]}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
         style={[
