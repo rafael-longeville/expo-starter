@@ -20,14 +20,16 @@ import { LinearGradient } from "expo-linear-gradient";
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Custom Switch component to toggle notifications
-const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
+const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void, isEmail?: boolean; }> = ({
   value,
   onValueChange,
+  isEmail
 }) => {
   const handlePress = async () => {
-    if (value) {
+    if (value || isEmail===true) {
       onValueChange();
-    } else {
+    } else if (isEmail === undefined) {
+      console.log('got there')
       // Request notification permissions
       const { status } = await Notifications.requestPermissionsAsync();
       if (status === "granted") {
@@ -55,7 +57,7 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void }> = ({
         ]}
       > */}
       <LinearGradient
-        colors={["rgba(0,0,0,0.5)", "#666666"]}
+        colors={["rgba(0,0,0,0.5)", "rgba(102, 102, 102, 0.5)"]}
         start={{ x: 0, y: 1 }}
         end={{ x: 0, y: 0 }}
         style={[
@@ -238,6 +240,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
               onValueChange={() => {
                 setEmailNotifications(!emailNotifications);
               }}
+              isEmail={true}
             />
           </View>
           <Text
