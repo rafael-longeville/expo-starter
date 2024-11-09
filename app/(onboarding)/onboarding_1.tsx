@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+  Button,
+  Dimensions,
+} from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import ConnectWithPasskey from "@/components/SignInSignUp/ConnectWithPasskey";
@@ -12,35 +20,29 @@ import { useRouter } from "expo-router";
 import { getLocales } from "expo-localization";
 import i18n from "../i18n";
 
+// Get the screen height for proportional margins
+const { height: screenHeight } = Dimensions.get("window");
+
 const Onboarding1: React.FC = () => {
   const { t } = useTranslation();
-
   const router = useRouter();
 
   const [storedValue, setStoredValue] = useState<string | null>(null);
-  const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(
-    null
-  );
+  const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(null);
+
   // Get the preferred locale
   const locales = getLocales();
   const preferredLocale = locales[0]?.languageCode || "en"; // Fallback to 'en' if locale is not available
-  // States
-  const [selectedLanguage, setSelectedLanguage] = useState<"fr" | "en" | null>(
-    "en"
-  );
+
+  const [selectedLanguage, setSelectedLanguage] = useState<"fr" | "en" | null>("en");
 
   useEffect(() => {
     const fetchStoredAndResetSettings = async () => {
       try {
         const storedLanguage = await AsyncStorage.getItem("selectedLanguage");
-
         await AsyncStorage.setItem("continueWithoutFunding", "false");
         i18n.changeLanguage("fr");
         // Handle language selection later
-        // if (storedLanguage) {
-        //   i18n.changeLanguage(storedLanguage);
-        //   setSelectedLanguage(storedLanguage as "fr" | "en");
-        // }
       } catch (error) {
         Sentry.captureException(error);
         console.error(
@@ -76,7 +78,7 @@ const Onboarding1: React.FC = () => {
           textAlign: "center",
           width: "70%",
           lineHeight: scaledFontSize(22),
-          marginBottom: 10,
+          marginBottom: screenHeight * 0.0123, // Original 10px
         }}
       >
         {t("pages.onboarding_1.second_subtitle")}
@@ -87,7 +89,11 @@ const Onboarding1: React.FC = () => {
       </View>
 
       <Text
-        style={{ ...globalFonts.disclaimerText, width: "90%", marginTop: 30 }}
+        style={{
+          ...globalFonts.disclaimerText,
+          width: "90%",
+          marginTop: screenHeight * 0.037, // Original 30px
+        }}
       >
         {t("disclaimer")}
         <Link href={"https://wallet.civicpower.org/terms/"}>
@@ -108,20 +114,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    gap: 10,
+    gap: screenHeight * 0.0123, // Original 10px
   },
   buttonContainer: {
     flexDirection: "column",
-    gap: 10,
+    gap: screenHeight * 0.0123, // Original 10px
     width: "80%",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: screenHeight * 0.0123, // Original 10px
   },
   image: {
-    marginTop: 40,
-    marginBottom: 10,
-    height: 240,
-    width: 175,
+    marginTop: screenHeight * 0.0493, // Original 40px
+    marginBottom: screenHeight * 0.0123, // Original 10px
+    height: screenHeight * 0.2958, // Original 240px
+    width: screenHeight * 0.2155, // Original 175px
     resizeMode: "contain",
   },
   text: {
