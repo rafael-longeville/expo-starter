@@ -3,7 +3,7 @@ import "@expo-google-fonts/poppins";
 
 // Utility function to scale fonts based on screen size
 const { width, height } = Dimensions.get("window");
-const scale = width / 400; // Base screen width, typically iPhone 6/7/8
+const scale = width / 420; // Base screen width, typically iPhone 6/7/8
 
 export const scaledFontSize = (size: number) => size * scale;
 

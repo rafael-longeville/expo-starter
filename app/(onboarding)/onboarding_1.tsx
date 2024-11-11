@@ -28,13 +28,17 @@ const Onboarding1: React.FC = () => {
   const router = useRouter();
 
   const [storedValue, setStoredValue] = useState<string | null>(null);
-  const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(null);
+  const [asyncStorageValue, setAsyncStorageValue] = useState<string | null>(
+    null
+  );
 
   // Get the preferred locale
   const locales = getLocales();
   const preferredLocale = locales[0]?.languageCode || "en"; // Fallback to 'en' if locale is not available
 
-  const [selectedLanguage, setSelectedLanguage] = useState<"fr" | "en" | null>("en");
+  const [selectedLanguage, setSelectedLanguage] = useState<"fr" | "en" | null>(
+    "en"
+  );
 
   useEffect(() => {
     const fetchStoredAndResetSettings = async () => {
@@ -115,6 +119,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     gap: screenHeight * 0.0123, // Original 10px
+    paddingHorizontal: 20,
   },
   buttonContainer: {
     flexDirection: "column",
