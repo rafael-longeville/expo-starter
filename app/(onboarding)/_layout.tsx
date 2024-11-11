@@ -7,6 +7,7 @@ import {
   Text,
   Pressable,
   Platform,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useSegments } from "expo-router";
@@ -29,6 +30,8 @@ import { BlurView } from "@react-native-community/blur";
 import { BlurView as ExpoBlurView } from "expo-blur";
 import NotificationsPopup from "@/components/PopUp/NotificationPopup";
 import OnboardingAnswerPopup from "@/components/PopUp/OnboardingAnswerPopup";
+
+const { height: screenHeight } = Dimensions.get("window");
 
 const IMAGES = {
   onboarding_1: require("@/assets/images/onboarding/onboarding_1.png"),
@@ -220,7 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     marginTop: 5,
     maxWidth: 126,
-    maxHeight: 30,
+    maxHeight: screenHeight * 0.037,
   },
   backgroundImage: {
     position: "absolute",
