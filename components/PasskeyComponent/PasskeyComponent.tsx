@@ -1,48 +1,25 @@
 import React, { useState } from "react";
 import { View, Button, Text, Alert } from "react-native";
-import Clipboard from "@react-native-clipboard/clipboard";
+import * as Clipboard from "expo-clipboard";
 import {
   Passkey,
+  PasskeyCreateRequest,
   PasskeyCreateResult,
-  PasskeyGetResult,
   PasskeyGetRequest,
+  PasskeyGetResult,
 } from "react-native-passkey";
 
-// Define the possible values for `transports`
-type AuthenticatorTransportType =
-  | "usb"
-  | "nfc"
-  | "ble"
-  | "smart-card"
-  | "hybrid"
-  | "internal";
-
-// Utility function to generate a mock base64 encoded challenge
-const generateMockChallenge = (): string => {
-  const randomBytes = new Uint8Array(32); // 32 bytes = 256 bits
-  window.crypto.getRandomValues(randomBytes);
-  return base64UrlEncode(randomBytes);
-};
-
-// Utility function for base64 URL encoding without padding
-const base64UrlEncode = (arrayBuffer: Uint8Array): string => {
-  return btoa(String.fromCharCode(...arrayBuffer))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, ""); // Remove any trailing '='
-};
-
 const PasskeyComponent: React.FC = () => {
-  const [assertion, setAssertion] = useState<PasskeyGetResult | null>(null);
   const [registrationResult, setRegistrationResult] =
     useState<PasskeyCreateResult | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const copyToClipboard = (text: string) => {
-    Clipboard.setString(text);
+    Clipboard.setStringAsync(text);
     Alert.alert("Copied to Clipboard", "The result has been copied.");
   };
 
-  const showResultAlert = (title: string, result: object) => {
+  const showResultAlert = (title: string, result: any) => {
     const resultString = JSON.stringify(result, null, 2);
     Alert.alert(
       title,
@@ -59,34 +36,40 @@ const PasskeyComponent: React.FC = () => {
   };
 
   const handleCreatePasskey = async (): Promise<void> => {
-    const registrationRequest = {
-      challenge: generateMockChallenge(),
-      rp: {
-        name: "moncomptesouverain.fr",
-        id: "moncomptesouverain.fr",
-      },
-      user: {
-        id: base64UrlEncode(new Uint8Array([1, 2, 3, 4])),
-        name: "example_user",
-        displayName: "Example User",
-      },
-      pubKeyCredParams: [
-        { type: "public-key", alg: -7 }, // -7 stands for ES256
-      ],
-    };
-
     try {
-      showResultAlert("Registration Request", registrationRequest);
-      const result = await Passkey.create(registrationRequest);
-      showResultAlert("Passkey Created", result);
-      setRegistrationResult(result);
+      const response = await fetch(
+        "https://api-testnet.ibexwallet.org/auth/passkey",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ type: "SIGN_UP" }),
+        }
+      );
+      const registrationOptions = await response.json();
+      console.log("Received registration options:", registrationOptions);
+
+      const passkeyCreationRequest: PasskeyCreateRequest = {
+        challenge:
+          registrationOptions.credentialsRequestOptions.publicKey.challenge,
+        rp: registrationOptions.credentialsRequestOptions.publicKey.rp,
+        user: registrationOptions.credentialsRequestOptions.publicKey.user,
+        pubKeyCredParams:
+          registrationOptions.credentialsRequestOptions.publicKey
+            .pubKeyCredParams,
+      };
+
+      const passkeyResult: PasskeyCreateResult = await Passkey.create(
+        passkeyCreationRequest
+      );
+      console.log("Passkey creation result:", passkeyResult);
+
+      setRegistrationResult(passkeyResult);
+      showResultAlert("Passkey Created", passkeyResult);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
-      showResultAlert("Passkey Creation Failed", {
-        error: errorMessage,
-        details: error,
-      });
+      showResultAlert("Passkey Creation Failed", { error });
     }
   };
 
@@ -96,37 +79,64 @@ const PasskeyComponent: React.FC = () => {
       return;
     }
 
-    const fakeChallenge = generateMockChallenge();
-
-    const authenticationRequest: PasskeyGetRequest = {
-      challenge: fakeChallenge,
-      rpId: "moncomptesouverain.fr",
-      //   allowCredentials: [
-      //     {
-      //       id: registrationResult.id,
-      //       type: "public-key",
-      //       transports: ["internal"] as AuthenticatorTransportType[], // Use our custom type for transports
-      //     },
-      //   ],
-    };
-
     try {
-      showResultAlert("Authentication", {
-        message: "Starting Passkey.get() with the following request",
-        request: authenticationRequest,
-      });
+      const response = await fetch(
+        "https://api-testnet.ibexwallet.org/auth/passkey/login",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      const result = await Passkey.get(authenticationRequest);
+      const authenticationOptions = await response.json();
+      console.log("Received authentication options:", authenticationOptions);
 
-      showResultAlert("Authentication Successful", result);
-      setAssertion(result);
+      const authenticationRequest: PasskeyGetRequest = {
+        challenge:
+          authenticationOptions.credentialsRequestOptions.publicKey.challenge,
+        rpId: authenticationOptions.credentialsRequestOptions.publicKey.rpId,
+      };
+
+      const authenticationResult: PasskeyGetResult = await Passkey.get(
+        authenticationRequest
+      );
+      console.log("Authentication result:", authenticationResult);
+
+      const loginResponse = await fetch(
+        "https://api-testnet.ibexwallet.org/auth/passkey/login",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            authenticatorAttachment: "platform",
+            clientExtensionResults: {},
+            id: authenticationResult.id,
+            rawId: authenticationResult.rawId,
+            response: {
+              authenticatorData:
+                authenticationResult.response.authenticatorData,
+              clientDataJSON: authenticationResult.response.clientDataJSON,
+              signature: authenticationResult.response.signature,
+              userHandle: authenticationResult.response.userHandle,
+            },
+            type: "public-key",
+          }),
+        }
+      );
+
+      const loginData = await loginResponse.json();
+      console.log("Login response data:", loginData);
+
+      setAccessToken(loginData.access_token);
+      showResultAlert("Login Successful", loginData);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
-      showResultAlert("Authentication Failed", {
-        error: errorMessage,
-        details: error,
-      });
+      showResultAlert("Authentication Failed", { error });
     }
   };
 
@@ -140,10 +150,10 @@ const PasskeyComponent: React.FC = () => {
           <Text>{JSON.stringify(registrationResult, null, 2)}</Text>
         </View>
       )}
-      {assertion && (
+      {accessToken && (
         <View>
-          <Text>Authentication Assertion:</Text>
-          <Text>{JSON.stringify(assertion, null, 2)}</Text>
+          <Text>Access Token:</Text>
+          <Text>{accessToken}</Text>
         </View>
       )}
     </View>

@@ -46,7 +46,7 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "versionCode": 26
+      "versionCode": 32
     },
     "web": {
       "bundler": "metro",

@@ -19,6 +19,7 @@ import * as Sentry from "@sentry/react-native";
 import { useRouter } from "expo-router";
 import { getLocales } from "expo-localization";
 import i18n from "../i18n";
+import PasskeyComponent from "@/components/PasskeyComponent/PasskeyComponent";
 
 // Get the screen height for proportional margins
 const { height: screenHeight } = Dimensions.get("window");
@@ -88,8 +89,9 @@ const Onboarding1: React.FC = () => {
         {t("pages.onboarding_1.second_subtitle")}
       </Text>
       <View style={styles.buttonContainer}>
-        <ConnectWithPasskey />
-        <CreateWithPasskey />
+        {/* <ConnectWithPasskey />
+        <CreateWithPasskey /> */}
+        <PasskeyComponent />
       </View>
 
       <Text
