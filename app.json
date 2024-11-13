@@ -15,8 +15,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.civicpower.ibexwallet",
       "associatedDomains": [
-        "webcredentials:moncomptesouverain.fr",
-        "applinks:moncomptesouverain.fr"
+        "webcredentials:ibexwallet.org",
+        "applinks:ibexwallet.org"
       ],
       "buildNumber": "44",
       "infoPlist": {
@@ -41,7 +41,7 @@
           "autoVerify": true,
           "data": {
             "scheme": "https",
-            "host": "moncomptesouverain.fr"
+            "host": "ibexwallet.org"
           },
           "category": ["BROWSABLE", "DEFAULT"]
         }
