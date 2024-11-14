@@ -49,7 +49,10 @@ const PasskeyComponent: React.FC = () => {
         }
       );
       const registrationOptions = await response.json();
-      console.log("Received registration options:", registrationOptions);
+      console.log(
+        "Received registration options:",
+        registrationOptions.credentialsRequestOptions.publicKey.user
+      );
 
       const passkeyCreationRequest: PasskeyCreateRequest = {
         challenge:

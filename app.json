@@ -15,8 +15,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.civicpower.ibexwallet",
       "associatedDomains": [
-        "webcredentials:ibexwallet.org",
-        "applinks:ibexwallet.org"
+        "webcredentials:app-testnet.ibexwallet.org",
+        "applinks:app-testnet.ibexwallet.org"
       ],
       "buildNumber": "44",
       "infoPlist": {
@@ -41,7 +41,7 @@
           "autoVerify": true,
           "data": {
             "scheme": "https",
-            "host": "ibexwallet.org"
+            "host": "app-testnet.ibexwallet.org"
           },
           "category": ["BROWSABLE", "DEFAULT"]
         }
