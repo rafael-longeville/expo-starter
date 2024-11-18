@@ -6,6 +6,9 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
 } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useRouter } from "expo-router";
@@ -176,7 +179,10 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
   };
 
   return (
-    <View style={{ paddingHorizontal: 30 }}>
+    <ScrollView
+      contentContainerStyle={{ paddingHorizontal: 30, paddingBottom: 50 }}
+      automaticallyAdjustKeyboardInsets={true}
+    >
       <View style={{ flexDirection: "column", gap: 20 }}>
         <Text style={{ ...globalFonts.bigTitle, ...styles.title }}>
           {t("pages.onboarding_6.title")}
@@ -231,7 +237,11 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
         </View>
         <Divider style={{ height: 1, backgroundColor: "#212121" }} />
         <View
-          style={{ flexDirection: "column", gap: 10, alignItems: "flex-start" }}
+          style={{
+            flexDirection: "column",
+            gap: 10,
+            alignItems: "flex-start",
+          }}
         >
           <View style={{ flexDirection: "row", gap: 20 }}>
             <Text
@@ -288,7 +298,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 });
 
