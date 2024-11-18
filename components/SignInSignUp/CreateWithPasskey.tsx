@@ -14,30 +14,19 @@ import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import * as Sentry from "@sentry/react-native";
 import { useTranslation } from "react-i18next";
 
-interface ConnectWithPasskeyProps {}
+interface ConnectWithPasskeyProps {
+  onPressFunction: () => void;
+}
 
-export default function CreateWithPasskey({}: ConnectWithPasskeyProps) {
-  // Only render the view if no passkey is stored
-  // if (!hasPasskey) {
-  //   return null; // Do not render if a passkey already exists
-  // }
-
+export default function CreateWithPasskey({
+  onPressFunction,
+}: ConnectWithPasskeyProps) {
   const { t } = useTranslation();
 
-  const handlePress = async () => {
-    try {
-      // Connect to the wallet
-      // Redirect to the next page
-      router.push("/(onboarding)/onboarding_2");
-    } catch (error: any) {
-      // Sentry.captureException(error);
-      Alert.alert("Error", error.message);
-    }
-  };
   return (
     <Pressable
       style={styles.button} // No changes to button style
-      onPress={handlePress}
+      onPress={onPressFunction}
     >
       <Text
         style={{
