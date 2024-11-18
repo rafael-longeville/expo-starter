@@ -11,13 +11,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
-import {
-  Passkey,
-  PasskeyCreateRequest,
-  PasskeyCreateResult,
-  PasskeyGetRequest,
-  PasskeyGetResult,
-} from "react-native-passkey";
+import { Passkey, PasskeyCreateRequest } from "react-native-passkey";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Onboarding5: React.FC = () => {
   const { t } = useTranslation();
@@ -155,7 +150,8 @@ const Onboarding5: React.FC = () => {
 
       // Step 4: Store the JWT token
       try {
-        setAccessToken(loginData.access_token);
+        await AsyncStorage.setItem("jwt_token", loginData.access_token);
+        console.log("JWT saved successfully in AsyncStorage.");
         router.push("/(onboarding)/onboarding_6");
       } catch (error) {
         console.error("Error in Step 4 (Storing JWT):", error);

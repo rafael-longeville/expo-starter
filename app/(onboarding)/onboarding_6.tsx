@@ -15,6 +15,8 @@ import { Divider } from "react-native-paper";
 import { TextInput } from "react-native-gesture-handler";
 import { useStayUpdatedModalContext } from "@/context/StayUpdatedModalContext";
 import { LinearGradient } from "expo-linear-gradient";
+import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Regular expression to validate the email format
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -95,19 +97,33 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
   const handleEmailUpdate = async () => {
     try {
-      console.log("hi");
+      // Retrieve JWT from AsyncStorage
+      const token = await AsyncStorage.getItem("jwt_token");
+      if (!token) {
+        Alert.alert(
+          "Error",
+          "User is not authenticated. Please log in again.",
+          [{ text: "OK" }]
+        );
+        return;
+      }
+
+      console.log("Retrieved JWT:", token);
+
+      // Make the API call
       const response = await fetch(
         "https://api-testnet.ibexwallet.org/account/email",
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include JWT in Authorization header
           },
           body: JSON.stringify({ email }),
         }
       );
-      console.log(response);
 
+      console.log("Email update response:", response);
       if (response.status === 200) {
         Alert.alert("Success", "Your email has been successfully updated!", [
           { text: "OK" },
