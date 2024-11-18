@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from "react";
+import React, { forwardRef } from "react";
 import {
   View,
   Text,
@@ -19,18 +19,15 @@ import { LinearGradient } from "expo-linear-gradient";
 // Regular expression to validate the email format
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Custom Switch component to toggle notifications
-const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void, isEmail?: boolean; }> = ({
-  value,
-  onValueChange,
-  isEmail
-}) => {
+const CustomSwitch: React.FC<{
+  value: boolean;
+  onValueChange: () => void;
+  isEmail?: boolean;
+}> = ({ value, onValueChange, isEmail }) => {
   const handlePress = async () => {
-    if (value || isEmail===true) {
+    if (value || isEmail === true) {
       onValueChange();
     } else if (isEmail === undefined) {
-      console.log('got there')
-      // Request notification permissions
       const { status } = await Notifications.requestPermissionsAsync();
       if (status === "granted") {
         onValueChange();
@@ -50,12 +47,6 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void, isEmai
       onPress={handlePress}
       activeOpacity={0.8}
     >
-      {/* <View
-        style={[
-          styles.switchThumb,
-          value ? styles.switchThumbOn : styles.switchThumbOff,
-        ]}
-      > */}
       <LinearGradient
         colors={["rgba(0,0,0,0.5)", "rgba(102, 102, 102, 0.5)"]}
         start={{ x: 0, y: 1 }}
@@ -64,7 +55,6 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void, isEmai
           styles.switchThumb,
           value ? styles.switchThumbOn : styles.switchThumbOff,
         ]}
-        // style={styles.switchContainer}
       >
         <View
           style={{
@@ -89,7 +79,6 @@ const CustomSwitch: React.FC<{ value: boolean; onValueChange: () => void, isEmai
           )}
         </View>
       </LinearGradient>
-      {/* </View> */}
     </TouchableOpacity>
   );
 };
@@ -100,14 +89,45 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
   const [notifications, setNotifications] = React.useState(false);
   const [emailNotifications, setEmailNotifications] = React.useState(false);
   const [email, setEmail] = React.useState("");
-  // Handle modal
+
   const { setIsBlurred, isBlurred, setIsModalOpen } =
     useStayUpdatedModalContext();
 
-  const handlePress = (ref: any) => {
+  const handleEmailUpdate = async () => {
+    try {
+      console.log("hi");
+      const response = await fetch(
+        "https://api-testnet.ibexwallet.org/account/email",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+      console.log(response);
+
+      if (response.status === 200) {
+        Alert.alert("Success", "Your email has been successfully updated!", [
+          { text: "OK" },
+        ]);
+        router.navigate("/(onboarding)/onboarding_7");
+      } else if (response.status === 409) {
+        Alert.alert("Error", "This email address has already been added.", [
+          { text: "OK" },
+        ]);
+      }
+    } catch (error) {
+      console.error("Error updating email:", error);
+      Alert.alert("Error", "Failed to update email. Please try again.", [
+        { text: "OK" },
+      ]);
+    }
+  };
+
+  const handlePress = () => {
     if (!emailNotifications && !notifications) {
-      // Case 1: No notifications enabled
-      console.log("here");
       setIsModalOpen(true);
       setIsBlurred(true);
       ref.current?.present();
@@ -115,36 +135,26 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
     }
 
     if (emailNotifications && !email) {
-      // Case 2: Email notifications enabled but no email provided
       Alert.alert("Error", "Please enter your email address.", [
         { text: "OK" },
       ]);
       return;
     }
 
-    if (emailNotifications && !emailRegex.test(email)) {
-      // Case 3: Invalid email format
+    if (emailNotifications /* && emailRegex.test(email) */) {
+      handleEmailUpdate();
+      return;
+    }
+
+    if (notifications && !email) {
+      router.push("/(onboarding)/onboarding_7");
+      return;
+    }
+
+    if (notifications && !emailRegex.test(email)) {
       Alert.alert("Error", "Please enter a valid email address.", [
         { text: "OK" },
       ]);
-      return;
-    }
-
-    if (notifications && emailNotifications && emailRegex.test(email)) {
-      // Case 4: Both notifications enabled and valid email provided
-      router.navigate("/(onboarding)/onboarding_7");
-      return;
-    }
-
-    if (notifications && !emailNotifications) {
-      // Case 5: Only push notifications enabled
-      router.navigate("/(onboarding)/onboarding_7");
-      return;
-    }
-
-    if (emailNotifications && emailRegex.test(email)) {
-      // Case 6: Only email notifications enabled with valid email
-      router.navigate("/(onboarding)/onboarding_7");
       return;
     }
   };
@@ -152,12 +162,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
   return (
     <View style={{ paddingHorizontal: 30 }}>
       <View style={{ flexDirection: "column", gap: 20 }}>
-        <Text
-          style={{
-            ...globalFonts.bigTitle,
-            ...styles.title,
-          }}
-        >
+        <Text style={{ ...globalFonts.bigTitle, ...styles.title }}>
           {t("pages.onboarding_6.title")}
         </Text>
         <Text
@@ -170,7 +175,6 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
           {t("pages.onboarding_6.subtitle")}
         </Text>
       </View>
-      {/* Notifications and custom switch section  */}
       <View style={{ flexDirection: "column", gap: 40 }}>
         <View
           style={{
@@ -193,9 +197,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
             </Text>
             <CustomSwitch
               value={notifications}
-              onValueChange={() => {
-                setNotifications(!notifications);
-              }}
+              onValueChange={() => setNotifications(!notifications)}
             />
           </View>
           <Text
@@ -211,18 +213,9 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
             {t("pages.onboarding_6.push.cta_disclaimer_2")}
           </Text>
         </View>
-        <Divider
-          style={{
-            height: 1,
-            backgroundColor: "#212121",
-          }}
-        />
+        <Divider style={{ height: 1, backgroundColor: "#212121" }} />
         <View
-          style={{
-            flexDirection: "column",
-            gap: 10,
-            alignItems: "flex-start",
-          }}
+          style={{ flexDirection: "column", gap: 10, alignItems: "flex-start" }}
         >
           <View style={{ flexDirection: "row", gap: 20 }}>
             <Text
@@ -237,9 +230,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
             </Text>
             <CustomSwitch
               value={emailNotifications}
-              onValueChange={() => {
-                setEmailNotifications(!emailNotifications);
-              }}
+              onValueChange={() => setEmailNotifications(!emailNotifications)}
               isEmail={true}
             />
           </View>
@@ -253,31 +244,29 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
           >
             {t("pages.onboarding_6.mail.cta_disclaimer")}
           </Text>
-
-          <TextInput
-            placeholder={t("pages.onboarding_6.mail.input_placeholder")}
-            placeholderTextColor="#212121" // Sets placeholder color
-            style={{
-              width: "60%",
-              height: 40,
-              borderRadius: 65,
-              backgroundColor: "transparent",
-              borderWidth: 1,
-              borderColor: "#212121",
-              color: "#212121", // Sets text color
-              textAlign: "center",
-              alignSelf: "center",
-              // display: emailNotifications ? "flex" : "none",
-              display: "flex",
-              marginTop: 10,
-            }}
-            value={email}
-            onChange={(e) => setEmail(e.nativeEvent.text)}
-          />
-
+          {emailNotifications && (
+            <TextInput
+              placeholder={t("pages.onboarding_6.mail.input_placeholder")}
+              placeholderTextColor="#212121"
+              style={{
+                width: "80%",
+                height: 40,
+                borderRadius: 65,
+                backgroundColor: "transparent",
+                borderWidth: 1,
+                borderColor: "#212121",
+                color: "#212121",
+                textAlign: "center",
+                alignSelf: "center",
+                marginTop: 10,
+              }}
+              value={email}
+              onChange={(e) => setEmail(e.nativeEvent.text)}
+            />
+          )}
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: "#333333" }}
-            onPress={() => handlePress(ref)}
+            onPress={handlePress}
           >
             <Text style={styles.buttonText}>Enregistrer</Text>
           </TouchableOpacity>
@@ -293,17 +282,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  descriptionContainer: {
-    marginTop: 20,
-    flexDirection: "column",
+  button: {
+    marginTop: 80,
+    borderRadius: 25,
+    alignItems: "center",
     justifyContent: "center",
-    gap: 15,
+    width: "100%",
+    height: 37,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  socialsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 20,
-    marginTop: 60,
+  buttonText: {
+    fontSize: scaledFontSize(14),
+    fontFamily: "Poppins_500Medium",
+    color: "#FFFFFF",
+    fontWeight: "500",
   },
   switchContainer: {
     width: 70,
@@ -312,10 +308,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    paddingTop: 2,
-    paddingLeft: 3,
-    paddingRight: 2,
-    paddingBottom: 1,
     borderWidth: 4,
     borderColor: "#333333",
   },
@@ -332,21 +324,10 @@ const styles = StyleSheet.create({
   switchThumbOn: {
     backgroundColor: "#333333",
     transform: [{ translateX: 15 }],
-    justifyContent: "center",
-    alignItems: "center",
   },
   switchThumbOff: {
     backgroundColor: "#333333",
     transform: [{ translateX: -15 }],
-    alignItems: "center",
-  },
-  switchIcon: {
-    fontSize: scaledFontSize(16),
-    color: "#13293D",
-  },
-  image: {
-    width: 60,
-    height: 60,
   },
   iconImage: {
     width: 10,
@@ -356,47 +337,11 @@ const styles = StyleSheet.create({
   iconImageOn: {
     width: 16,
     height: 16,
-    shadowColor: "#6EE7B7", // Green shadow color
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 1,
-    shadowRadius: 8, // Adjust the shadow radius as desired
-    borderRadius: 8,
     resizeMode: "contain",
   },
   title: {
     fontSize: scaledFontSize(22),
     textAlign: "center",
-  },
-  button: {
-    marginTop: 80,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    height: 37,
-    //shadow
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  buttonText: {
-    fontSize: scaledFontSize(14),
-    fontFamily: "Poppins_500Medium",
-    color: "#FFFFFF",
-    fontWeight: "500",
-  },
-  absolute: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 1,
   },
 });
 
