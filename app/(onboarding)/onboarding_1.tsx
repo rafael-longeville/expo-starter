@@ -88,12 +88,7 @@ const Onboarding1: React.FC = () => {
       >
         {t("pages.onboarding_1.second_subtitle")}
       </Text>
-      <View style={styles.buttonContainer}>
-        {/* <ConnectWithPasskey />
-        <CreateWithPasskey /> */}
-        <PasskeyComponent />
-      </View>
-
+      <PasskeyComponent />
       <Text
         style={{
           ...globalFonts.disclaimerText,
@@ -126,8 +121,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "column",
     gap: screenHeight * 0.0123, // Original 10px
-    width: "80%",
-    alignItems: "center",
+    width: "100%",
     marginTop: screenHeight * 0.0123, // Original 10px
   },
   image: {
