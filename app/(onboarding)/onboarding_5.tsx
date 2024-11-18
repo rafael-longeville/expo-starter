@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
 import { Passkey, PasskeyCreateRequest } from "react-native-passkey";
+import * as Sentry from "@sentry/react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Onboarding5: React.FC = () => {
@@ -56,6 +57,7 @@ const Onboarding5: React.FC = () => {
         );
       } catch (error) {
         console.error("Error in Step 1 (Passkey creation options):", error);
+        Sentry.captureException(error);
         throw error;
       }
 
@@ -97,6 +99,7 @@ const Onboarding5: React.FC = () => {
           }
         }
         console.error("Error in Step 2 (Passkey creation):", error);
+        Sentry.captureException(error);
         throw error; // Re-throw for other errors
       }
 
@@ -143,6 +146,8 @@ const Onboarding5: React.FC = () => {
         loginData = await loginResponse.json();
       } catch (error) {
         console.error("Error in Step 3 (Login):", error);
+        Sentry.captureException(error);
+
         throw error;
       } finally {
         setLoading(false); // Hide loader after login process
@@ -155,6 +160,8 @@ const Onboarding5: React.FC = () => {
         router.push("/(onboarding)/onboarding_6");
       } catch (error) {
         console.error("Error in Step 4 (Storing JWT):", error);
+        Sentry.captureException(error);
+
         throw error;
       }
     } catch (error) {
@@ -179,6 +186,7 @@ const Onboarding5: React.FC = () => {
           return; // Exit without throwing
         }
       }
+      Sentry.captureException(error);
       console.error("Passkey creation/login failed:", error);
     }
   };
