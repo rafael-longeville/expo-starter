@@ -54,7 +54,7 @@ export default function OnboardingLayout() {
   const notificationsModalRef = useRef(null);
   const answerRef = useRef(null);
 
-  const renderCurrentScreen = (scrollViewRef: any) => {
+  const renderCurrentScreen = () => {
     switch (currentSegment) {
       case "onboarding_1":
         return <Onboarding1 />;
@@ -106,17 +106,26 @@ export default function OnboardingLayout() {
                 style={styles.backgroundImage}
               />
             )}
-          <ScrollView
-            ref={scrollViewRef}
-            contentContainerStyle={styles.scrollViewContainer}
-          >
-            {IMAGES[currentSegment as keyof typeof IMAGES] && (
-              <Image
-                source={IMAGES[currentSegment as keyof typeof IMAGES]}
-                style={styles.image}
-              />
-            )}
-            {renderCurrentScreen(scrollViewRef)}
+          <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+            <View
+              style={{
+                height: "10%",
+              }}
+            >
+              {IMAGES[currentSegment as keyof typeof IMAGES] && (
+                <Image
+                  source={IMAGES[currentSegment as keyof typeof IMAGES]}
+                  style={styles.image}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                height: "90%",
+              }}
+            >
+              {renderCurrentScreen()}
+            </View>
 
             {process.env.EXPO_PUBLIC_IS_DEVELOPMENT && (
               <View style={styles.languageSwitcher}>

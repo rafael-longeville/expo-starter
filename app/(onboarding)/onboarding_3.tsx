@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
@@ -54,7 +61,9 @@ const Onboarding3: React.FC = () => {
                 style={styles.checkIcon}
               />
               <Text style={styles.checkboxText}>
-                {Platform.OS === 'ios' ? t("pages.onboarding_3.checkbox_1_ios") : t("pages.onboarding_3.checkbox_1_android")}
+                {Platform.OS === "ios"
+                  ? t("pages.onboarding_3.checkbox_1_ios")
+                  : t("pages.onboarding_3.checkbox_1_android")}
               </Text>
             </TouchableOpacity>
 
@@ -109,34 +118,34 @@ const Onboarding3: React.FC = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          {/* Bottom Button */}
-          <TouchableOpacity
-            style={[
-              styles.button,
-              allChecked ? styles.buttonActive : styles.buttonDisabled,
-            ]}
-            onPress={handleContinue}
-            disabled={!allChecked}
-          >
-            <Text style={styles.buttonText}>
-              {t("pages.onboarding_3.continue_button")}
-            </Text>
-          </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        {/* Bottom Button */}
+        <TouchableOpacity
+          style={[
+            styles.button,
+            allChecked ? styles.buttonActive : styles.buttonDisabled,
+          ]}
+          onPress={handleContinue}
+          disabled={!allChecked}
+        >
+          <Text style={styles.buttonText}>
+            {t("pages.onboarding_3.continue_button")}
+          </Text>
+        </TouchableOpacity>
 
-          {/* Bottom Text Link */}
-          <TouchableOpacity
-            onPress={() =>
-              router.push(
-                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
-              )
-            }
-          >
-            <Text style={styles.linkText}>
-              {t("pages.onboarding_3.private_key_info")}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {/* Bottom Text Link */}
+        <TouchableOpacity
+          onPress={() =>
+            router.push(
+              "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+            )
+          }
+        >
+          <Text style={styles.linkText}>
+            {t("pages.onboarding_3.private_key_info")}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -144,18 +153,25 @@ const Onboarding3: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 20,
     backgroundColor: "transparent",
-  },
-  mainContainer: {
+    height: "100%",
     flexDirection: "column",
     justifyContent: "space-between",
+    paddingBottom: 30,
   },
   headerContainer: {
     flexDirection: "column",
     alignItems: "center",
     gap: 15,
+  },
+  mainContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: "center",
   },
   buttonContainer: {
     flexDirection: "column",
@@ -163,22 +179,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 15,
   },
-  title: {
-    fontSize: scaledFontSize(22),
-    textAlign: "center",
-    color: "#212121",
-    fontFamily: "Poppins_600SemiBold",
-  },
   subtitle: {
     fontSize: scaledFontSize(20),
     textAlign: "center",
     color: "#212121",
     fontFamily: "Poppins_400Regular",
   },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-    marginTop: 36,
+  title: {
+    fontSize: scaledFontSize(22),
+    textAlign: "center",
+    color: "#212121",
+    fontFamily: "Poppins_600SemiBold",
   },
   instructionText: {
     fontSize: scaledFontSize(16),
@@ -188,7 +199,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.32,
   },
   checkboxContainer: {
-    marginBottom: 60,
     alignItems: "flex-start",
     width: "100%",
     gap: 15,
