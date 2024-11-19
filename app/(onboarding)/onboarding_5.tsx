@@ -66,9 +66,10 @@ const Onboarding5: React.FC = () => {
             .pubKeyCredParams,
       };
 
+      console.log(passkeyCreationRequest);
       const passkeyResult = await Passkey.create(passkeyCreationRequest);
 
-      // Step 3: Login with the passkey result
+      // // Step 3: Login with the passkey result
       const loginPayload = {
         rawId: passkeyResult.rawId,
         response: {
@@ -173,6 +174,17 @@ const Onboarding5: React.FC = () => {
               >
                 <Text style={styles.buttonText}>
                   {t("pages.onboarding_5.create_wallet_button")}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  router.push(
+                    "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+                  )
+                }
+              >
+                <Text style={styles.linkText}>
+                  {t("pages.onboarding_3.private_key_info")}
                 </Text>
               </TouchableOpacity>
             </View>

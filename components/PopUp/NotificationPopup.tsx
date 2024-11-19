@@ -1,10 +1,11 @@
 import React, { useCallback, forwardRef, useMemo } from "react";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Alert, Platform, Linking } from "react-native";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { globalFonts, scaledFontSize } from "@/app/styles/globalFonts";
 import { useTranslation } from "react-i18next";
 import { Href, Link, router, useRouter } from "expo-router";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import * as Notifications from "expo-notifications";
 
 // Custom handle component
 const CustomHandle = () => {
@@ -41,12 +42,72 @@ const NotificationsPopup = forwardRef(
       [handleDismissModal]
     );
 
-    const handleContinue = () => {
+    const handleContinue = async () => {
       // Close the modal
       handleDismissModal();
       // Navigate to the next screen
       if (!isModalOpen) {
+        const { status } = await Notifications.getPermissionsAsync();
+
+      if (status === "granted") {
+        // Permission is already granted
         router.navigate("/(onboarding)/onboarding_7");
+      } else if (status === "denied") {
+        // Permission has been denied previously
+        Alert.alert(
+          "Permission Required",
+          "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
+          [
+            { text: "Cancel", style: "cancel" },
+            {
+              text: "Open Settings",
+              onPress: () => {
+                const settingsUrl =
+                  Platform.OS === "ios"
+                    ? "app-settings:" // iOS settings
+                    : "package:com.mcs_ibex.app"; // Android settings with package name
+                Linking.openURL(settingsUrl).catch(() => {
+                  Alert.alert(
+                    "Error",
+                    "Unable to open settings. Please navigate to your device settings manually.",
+                    [{ text: "OK" }]
+                  );
+                });
+              },
+            },
+          ]
+        );
+      } else {
+        // Request permission again
+        const { status: newStatus } = await Notifications.requestPermissionsAsync();
+        if (newStatus === "granted") {
+          router.navigate("/(onboarding)/onboarding_7");
+        } else {
+          Alert.alert(
+            "Permission Required",
+            "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
+            [
+              { text: "Cancel", style: "cancel" },
+              {
+                text: "Open Settings",
+                onPress: () => {
+                  const settingsUrl =
+                    Platform.OS === "ios"
+                      ? "app-settings:" // iOS settings
+                      : "package:com.mcs_ibex.app"; // Android settings with package name
+                  Linking.openURL(settingsUrl).catch(() => {
+                    Alert.alert(
+                      "Error",
+                      "Unable to open settings. Please navigate to your device settings manually.",
+                      [{ text: "OK" }]
+                    );
+                  });
+                },
+              },
+            ]
+          );
+        }
+      }
       }
     };
 

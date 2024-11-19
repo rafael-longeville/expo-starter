@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
@@ -22,7 +28,6 @@ const Onboarding2: React.FC = () => {
         <Text style={styles.subtitle}>{t("pages.onboarding_2.subtitle")}</Text>
       </View>
 
-      {/* Main Content (Centered) */}
       <View style={styles.contentContainer}>
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionText}>
@@ -46,28 +51,28 @@ const Onboarding2: React.FC = () => {
             {t("pages.onboarding_2.warning")}
           </Text>
         </View>
-        <View style={styles.buttonContainer}>
-          {/* Bottom Button */}
-          <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
-            <Text style={styles.buttonText}>
-              {t("pages.onboarding_2.create_wallet_button")}
-            </Text>
-          </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        {/* Bottom Button */}
+        <TouchableOpacity style={styles.button} onPress={handleCreateWallet}>
+          <Text style={styles.buttonText}>
+            {t("pages.onboarding_2.create_wallet_button")}
+          </Text>
+        </TouchableOpacity>
 
-          {/* Bottom Text Link */}
-          <TouchableOpacity
-            style={styles.linkContainer}
-            onPress={() =>
-              router.push(
-                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces"
-              )
-            }
-          >
-            <Text style={styles.linkText}>
-              {t("pages.onboarding_2.private_key_info")}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {/* Bottom Text Link */}
+        <TouchableOpacity
+          style={styles.linkContainer}
+          onPress={() =>
+            router.push(
+              "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+            )
+          }
+        >
+          <Text style={styles.linkText}>
+            {t("pages.onboarding_2.private_key_info")}
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -75,10 +80,12 @@ const Onboarding2: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 30,
     backgroundColor: "transparent",
-    paddingBottom: screenHeight * 0.0369, // Original 30px
+    paddingBottom: 30,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    height: "100%",
   },
   headerContainer: {
     flexDirection: "column",
@@ -88,10 +95,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexDirection: "column",
-    flex: 1,
-    justifyContent: "space-between",
     alignItems: "center",
-    marginTop: screenHeight * 0.1047, // Original 85px
   },
   buttonContainer: {
     width: "100%",

@@ -10,7 +10,7 @@ import {
   ScrollView,
   Platform,
   Dimensions,
-  Linking
+  Linking,
 } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useRouter } from "expo-router";
@@ -36,46 +36,17 @@ const CustomSwitch: React.FC<{
 }> = ({ value, onValueChange, isEmail }) => {
   // ... (No changes to the switch or icons)
 
-const handlePress = async () => {
-  if (value || isEmail === true) {
-    onValueChange();
-  } else if (isEmail === undefined) {
-    const { status } = await Notifications.getPermissionsAsync();
-
-    if (status === "granted") {
-      // Permission is already granted
+  const handlePress = async () => {
+    if (value || isEmail === true) {
       onValueChange();
-    } else if (status === "denied") {
-      // Permission has been denied previously
-      Alert.alert(
-        "Permission Required",
-        "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
-        [
-          { text: "Cancel", style: "cancel" },
-          {
-            text: "Open Settings",
-            onPress: () => {
-              const settingsUrl =
-                Platform.OS === "ios"
-                  ? "app-settings:" // iOS settings
-                  : "package:com.mcs_ibex.app"; // Android settings with package name
-              Linking.openURL(settingsUrl).catch(() => {
-                Alert.alert(
-                  "Error",
-                  "Unable to open settings. Please navigate to your device settings manually.",
-                  [{ text: "OK" }]
-                );
-              });
-            },
-          },
-        ]
-      );
-    } else {
-      // Request permission again
-      const { status: newStatus } = await Notifications.requestPermissionsAsync();
-      if (newStatus === "granted") {
+    } else if (isEmail === undefined) {
+      const { status } = await Notifications.getPermissionsAsync();
+
+      if (status === "granted") {
+        // Permission is already granted
         onValueChange();
-      } else {
+      } else if (status === "denied") {
+        // Permission has been denied previously
         Alert.alert(
           "Permission Required",
           "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
@@ -99,13 +70,40 @@ const handlePress = async () => {
             },
           ]
         );
+      } else {
+        // Request permission again
+        const { status: newStatus } =
+          await Notifications.requestPermissionsAsync();
+        if (newStatus === "granted") {
+          onValueChange();
+        } else {
+          Alert.alert(
+            "Permission Required",
+            "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
+            [
+              { text: "Cancel", style: "cancel" },
+              {
+                text: "Open Settings",
+                onPress: () => {
+                  const settingsUrl =
+                    Platform.OS === "ios"
+                      ? "app-settings:" // iOS settings
+                      : "package:com.mcs_ibex.app"; // Android settings with package name
+                  Linking.openURL(settingsUrl).catch(() => {
+                    Alert.alert(
+                      "Error",
+                      "Unable to open settings. Please navigate to your device settings manually.",
+                      [{ text: "OK" }]
+                    );
+                  });
+                },
+              },
+            ]
+          );
+        }
       }
     }
-  }
-};
-
-  
-  
+  };
 
   return (
     <TouchableOpacity
@@ -189,9 +187,6 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
       console.log("Email update response:", response);
       if (response.status === 200) {
-        Alert.alert("Success", "Your email has been successfully updated!", [
-          { text: "OK" },
-        ]);
         router.navigate("/(onboarding)/onboarding_7");
       } else if (response.status === 409) {
         Alert.alert("Error", "This email address has already been added.", [
@@ -215,13 +210,20 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
     }
 
     if (emailNotifications && !email) {
-      Alert.alert("Error", "Please enter your email address.", [
+      Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail", [
         { text: "OK" },
       ]);
       return;
     }
 
-    if (emailNotifications /* && emailRegex.test(email) */) {
+    if (emailNotifications && !emailRegex.test(email)) {
+      Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail valide", [
+        { text: "OK" },
+      ]);
+      return;
+    }
+
+    if (emailNotifications && emailRegex.test(email)) {
       handleEmailUpdate();
       return;
     }
@@ -243,7 +245,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
     <ScrollView
       contentContainerStyle={{
         paddingHorizontal: 30,
-        paddingBottom: screenHeight * 0.0616, // Original 50px
+        height: "100%",
       }}
       automaticallyAdjustKeyboardInsets={true}
     >
@@ -320,9 +322,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
             </Text>
             <CustomSwitch
               value={emailNotifications}
-              onValueChange={() =>
-                setEmailNotifications(!emailNotifications)
-              }
+              onValueChange={() => setEmailNotifications(!emailNotifications)}
               isEmail={true}
             />
           </View>
@@ -356,27 +356,29 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
               onChange={(e) => setEmail(e.nativeEvent.text)}
             />
           )}
-          <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: "#333333" }}
-            onPress={handlePress}
-          >
-            <Text style={styles.buttonText}>Enregistrer</Text>
-          </TouchableOpacity>
         </View>
       </View>
+      <TouchableOpacity
+        style={{ ...styles.button, backgroundColor: "#333333" }}
+        onPress={handlePress}
+      >
+        <Text style={styles.buttonText}>Enregistrer</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 });
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    height: "100%"
   },
   button: {
-    marginTop: screenHeight * 0.0985, // Original 80px
+    position: "absolute",
+    bottom: 20,
     borderRadius: 25,
+    alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
