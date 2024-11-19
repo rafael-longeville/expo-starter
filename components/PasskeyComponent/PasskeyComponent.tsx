@@ -54,8 +54,7 @@ const PasskeyComponent: React.FC = () => {
         if (!response.ok) {
           const errorResponse = await response.json();
           throw new Error(
-            `Error in Step 1 (Authentication options): ${
-              response.status
+            `Error in Step 1 (Authentication options): ${response.status
             } - ${JSON.stringify(errorResponse)}`
           );
         }
@@ -142,8 +141,7 @@ const PasskeyComponent: React.FC = () => {
           const errorResponse = await loginResponse.json();
           console.error("Login response error details:", errorResponse);
           throw new Error(
-            `Error in Step 3 (Sign-In): ${
-              loginResponse.status
+            `Error in Step 3 (Sign-In): ${loginResponse.status
             } - ${JSON.stringify(errorResponse)}`
           );
         }
@@ -171,20 +169,12 @@ const PasskeyComponent: React.FC = () => {
   };
 
   return (
-    <View
-      style={{
-        flexDirection: "column",
-        gap: 10,
-        padding: 20,
-        width: "100%",
-        alignItems: "center",
-      }}
-    >
+    <>
       <CreateWithPasskey
         onPressFunction={() => router.push("/(onboarding)/onboarding_2")}
       />
       <ConnectWithPasskey onPressFunction={handleSignIn} />
-    </View>
+    </>
   );
 };
 

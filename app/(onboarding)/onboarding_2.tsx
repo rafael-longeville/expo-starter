@@ -1,8 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
+
+// Get the screen height for proportional margins
+const { height: screenHeight } = Dimensions.get("window");
 
 const Onboarding2: React.FC = () => {
   const { t } = useTranslation();
@@ -82,7 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    gap: 15,
+    gap: screenHeight * 0.0185, // Original 15px
   },
   contentContainer: {
     flexDirection: "column",
@@ -90,15 +99,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
-    gap: 20,
+    gap: screenHeight * 0.0246, // Original 20px
   },
   descriptionContainer: {
     alignItems: "flex-start",
     width: "100%",
-    gap: 20,
+    gap: screenHeight * 0.0246, // Original 20px
   },
   bulletContainer: {
-    paddingLeft: 15,
+    paddingLeft: 15, // Unchanged since it's horizontal padding
   },
   title: {
     fontSize: scaledFontSize(22),
@@ -121,7 +130,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
   },
   button: {
-    paddingVertical: 10,
+    paddingVertical: screenHeight * 0.0123, // Original 10px
     borderRadius: 25,
     alignItems: "center",
     width: "95%",

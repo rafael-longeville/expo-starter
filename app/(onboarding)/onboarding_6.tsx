@@ -9,6 +9,8 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  Dimensions,
+  Linking
 } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useRouter } from "expo-router";
@@ -24,27 +26,86 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // Regular expression to validate the email format
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Get the screen height for proportional margins
+const { height: screenHeight } = Dimensions.get("window");
+
 const CustomSwitch: React.FC<{
   value: boolean;
   onValueChange: () => void;
   isEmail?: boolean;
 }> = ({ value, onValueChange, isEmail }) => {
-  const handlePress = async () => {
-    if (value || isEmail === true) {
+  // ... (No changes to the switch or icons)
+
+const handlePress = async () => {
+  if (value || isEmail === true) {
+    onValueChange();
+  } else if (isEmail === undefined) {
+    const { status } = await Notifications.getPermissionsAsync();
+
+    if (status === "granted") {
+      // Permission is already granted
       onValueChange();
-    } else if (isEmail === undefined) {
-      const { status } = await Notifications.requestPermissionsAsync();
-      if (status === "granted") {
+    } else if (status === "denied") {
+      // Permission has been denied previously
+      Alert.alert(
+        "Permission Required",
+        "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Open Settings",
+            onPress: () => {
+              const settingsUrl =
+                Platform.OS === "ios"
+                  ? "app-settings:" // iOS settings
+                  : "package:com.mcs_ibex.app"; // Android settings with package name
+              Linking.openURL(settingsUrl).catch(() => {
+                Alert.alert(
+                  "Error",
+                  "Unable to open settings. Please navigate to your device settings manually.",
+                  [{ text: "OK" }]
+                );
+              });
+            },
+          },
+        ]
+      );
+    } else {
+      // Request permission again
+      const { status: newStatus } = await Notifications.requestPermissionsAsync();
+      if (newStatus === "granted") {
         onValueChange();
       } else {
         Alert.alert(
           "Permission Required",
-          "This app needs permission to show notifications.",
-          [{ text: "OK" }]
+          "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
+          [
+            { text: "Cancel", style: "cancel" },
+            {
+              text: "Open Settings",
+              onPress: () => {
+                const settingsUrl =
+                  Platform.OS === "ios"
+                    ? "app-settings:" // iOS settings
+                    : "package:com.mcs_ibex.app"; // Android settings with package name
+                Linking.openURL(settingsUrl).catch(() => {
+                  Alert.alert(
+                    "Error",
+                    "Unable to open settings. Please navigate to your device settings manually.",
+                    [{ text: "OK" }]
+                  );
+                });
+              },
+            },
+          ]
         );
       }
     }
-  };
+  }
+};
+
+  
+  
 
   return (
     <TouchableOpacity
@@ -180,10 +241,13 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ paddingHorizontal: 30, paddingBottom: 50 }}
+      contentContainerStyle={{
+        paddingHorizontal: 30,
+        paddingBottom: screenHeight * 0.0616, // Original 50px
+      }}
       automaticallyAdjustKeyboardInsets={true}
     >
-      <View style={{ flexDirection: "column", gap: 20 }}>
+      <View style={{ flexDirection: "column", gap: screenHeight * 0.0246 }}>
         <Text style={{ ...globalFonts.bigTitle, ...styles.title }}>
           {t("pages.onboarding_6.title")}
         </Text>
@@ -197,16 +261,16 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
           {t("pages.onboarding_6.subtitle")}
         </Text>
       </View>
-      <View style={{ flexDirection: "column", gap: 40 }}>
+      <View style={{ flexDirection: "column", gap: screenHeight * 0.0493 }}>
         <View
           style={{
-            marginTop: 60,
+            marginTop: screenHeight * 0.0739, // Original 60px
             flexDirection: "column",
-            gap: 10,
+            gap: screenHeight * 0.0123, // Original 10px
             alignItems: "flex-start",
           }}
         >
-          <View style={{ flexDirection: "row", gap: 20 }}>
+          <View style={{ flexDirection: "row", gap: screenHeight * 0.0246 }}>
             <Text
               style={{
                 ...globalFonts.title,
@@ -239,11 +303,11 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
         <View
           style={{
             flexDirection: "column",
-            gap: 10,
+            gap: screenHeight * 0.0123, // Original 10px
             alignItems: "flex-start",
           }}
         >
-          <View style={{ flexDirection: "row", gap: 20 }}>
+          <View style={{ flexDirection: "row", gap: screenHeight * 0.0246 }}>
             <Text
               style={{
                 ...globalFonts.title,
@@ -256,7 +320,9 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
             </Text>
             <CustomSwitch
               value={emailNotifications}
-              onValueChange={() => setEmailNotifications(!emailNotifications)}
+              onValueChange={() =>
+                setEmailNotifications(!emailNotifications)
+              }
               isEmail={true}
             />
           </View>
@@ -284,7 +350,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
                 color: "#212121",
                 textAlign: "center",
                 alignSelf: "center",
-                marginTop: 10,
+                marginTop: screenHeight * 0.0123, // Original 10px
               }}
               value={email}
               onChange={(e) => setEmail(e.nativeEvent.text)}
@@ -309,7 +375,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    marginTop: 80,
+    marginTop: screenHeight * 0.0985, // Original 80px
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
@@ -327,6 +393,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontWeight: "500",
   },
+  // Switch and icon styles remain unchanged
   switchContainer: {
     width: 70,
     height: 40,
