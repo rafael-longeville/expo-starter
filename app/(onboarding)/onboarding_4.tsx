@@ -137,7 +137,7 @@ const Onboarding4 = forwardRef(({ setIsREF }: any, ref: any) => {
           <TouchableOpacity
             onPress={() =>
               router.push(
-                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces"
               )
             }
           >

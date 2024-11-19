@@ -59,7 +59,7 @@ const Onboarding2: React.FC = () => {
             style={styles.linkContainer}
             onPress={() =>
               router.push(
-                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces"
               )
             }
           >
