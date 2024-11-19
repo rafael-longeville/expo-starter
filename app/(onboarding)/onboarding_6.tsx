@@ -47,14 +47,8 @@ const CustomSwitch: React.FC<{
         // Permission has been denied previously
         Alert.alert(
           "Permission Required",
-          "This app needs permission to show notifications. Please enable notifications in your device settings.",
-          [
-            { text: "Cancel", style: "cancel" },
-            {
-              text: "Open Settings",
-              onPress: () => Notifications.openSettings(),
-            },
-          ]
+          "This app needs permission to show notifications. Please go to your device settings and enable notifications for this app.",
+          [{ text: "OK" }]
         );
       } else {
         // Request permission again
@@ -64,13 +58,14 @@ const CustomSwitch: React.FC<{
         } else {
           Alert.alert(
             "Permission Required",
-            "This app needs permission to show notifications.",
+            "This app needs permission to show notifications. Please go to your device settings and enable notifications for this app.",
             [{ text: "OK" }]
           );
         }
       }
     }
   };
+  
   
 
   return (
