@@ -10,6 +10,7 @@ import {
   ScrollView,
   Platform,
   Dimensions,
+  Linking
 } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useRouter } from "expo-router";
@@ -34,37 +35,75 @@ const CustomSwitch: React.FC<{
   isEmail?: boolean;
 }> = ({ value, onValueChange, isEmail }) => {
   // ... (No changes to the switch or icons)
-  const handlePress = async () => {
-    if (value || isEmail === true) {
+
+const handlePress = async () => {
+  if (value || isEmail === true) {
+    onValueChange();
+  } else if (isEmail === undefined) {
+    const { status } = await Notifications.getPermissionsAsync();
+
+    if (status === "granted") {
+      // Permission is already granted
       onValueChange();
-    } else if (isEmail === undefined) {
-      const { status } = await Notifications.getPermissionsAsync();
-  
-      if (status === "granted") {
-        // Permission is already granted
+    } else if (status === "denied") {
+      // Permission has been denied previously
+      Alert.alert(
+        "Permission Required",
+        "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Open Settings",
+            onPress: () => {
+              const settingsUrl =
+                Platform.OS === "ios"
+                  ? "app-settings:" // iOS settings
+                  : "package:com.mcs_ibex.app"; // Android settings with package name
+              Linking.openURL(settingsUrl).catch(() => {
+                Alert.alert(
+                  "Error",
+                  "Unable to open settings. Please navigate to your device settings manually.",
+                  [{ text: "OK" }]
+                );
+              });
+            },
+          },
+        ]
+      );
+    } else {
+      // Request permission again
+      const { status: newStatus } = await Notifications.requestPermissionsAsync();
+      if (newStatus === "granted") {
         onValueChange();
-      } else if (status === "denied") {
-        // Permission has been denied previously
+      } else {
         Alert.alert(
           "Permission Required",
-          "This app needs permission to show notifications. Please go to your device settings and enable notifications for this app.",
-          [{ text: "OK" }]
+          "This app needs permission to show notifications. Please go to your app settings to enable notifications.",
+          [
+            { text: "Cancel", style: "cancel" },
+            {
+              text: "Open Settings",
+              onPress: () => {
+                const settingsUrl =
+                  Platform.OS === "ios"
+                    ? "app-settings:" // iOS settings
+                    : "package:com.mcs_ibex.app"; // Android settings with package name
+                Linking.openURL(settingsUrl).catch(() => {
+                  Alert.alert(
+                    "Error",
+                    "Unable to open settings. Please navigate to your device settings manually.",
+                    [{ text: "OK" }]
+                  );
+                });
+              },
+            },
+          ]
         );
-      } else {
-        // Request permission again
-        const { status: newStatus } = await Notifications.requestPermissionsAsync();
-        if (newStatus === "granted") {
-          onValueChange();
-        } else {
-          Alert.alert(
-            "Permission Required",
-            "This app needs permission to show notifications. Please go to your device settings and enable notifications for this app.",
-            [{ text: "OK" }]
-          );
-        }
       }
     }
-  };
+  }
+};
+
   
   
 
