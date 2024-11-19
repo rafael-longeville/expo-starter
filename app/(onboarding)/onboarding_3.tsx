@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Platform } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Platform, Dimensions } from "react-native";
 import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
+
+// Get the screen height for proportional margins
+const { height: screenHeight } = Dimensions.get("window");
 
 const Onboarding3: React.FC = () => {
   const { t } = useTranslation();
@@ -54,7 +57,9 @@ const Onboarding3: React.FC = () => {
                 style={styles.checkIcon}
               />
               <Text style={styles.checkboxText}>
-                {Platform.OS === 'ios' ? t("pages.onboarding_3.checkbox_1_ios") : t("pages.onboarding_3.checkbox_1_android")}
+                {Platform.OS === "ios"
+                  ? t("pages.onboarding_3.checkbox_1_ios")
+                  : t("pages.onboarding_3.checkbox_1_android")}
               </Text>
             </TouchableOpacity>
 
@@ -76,7 +81,7 @@ const Onboarding3: React.FC = () => {
               <Text
                 style={{
                   ...styles.checkboxText,
-                  paddingRight: 30,
+                  paddingRight: screenHeight * 0.0369, // Original 30px
                 }}
               >
                 {t("pages.onboarding_3.checkbox_2")}
@@ -101,7 +106,7 @@ const Onboarding3: React.FC = () => {
               <Text
                 style={{
                   ...styles.checkboxText,
-                  paddingRight: 30,
+                  paddingRight: screenHeight * 0.0369, // Original 30px
                 }}
               >
                 {t("pages.onboarding_3.checkbox_3")}
@@ -155,13 +160,13 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "column",
     alignItems: "center",
-    gap: 15,
+    gap: screenHeight * 0.0185, // Original 15px
   },
   buttonContainer: {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    gap: 15,
+    gap: screenHeight * 0.0185, // Original 15px
   },
   title: {
     fontSize: scaledFontSize(22),
@@ -178,7 +183,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: "center",
-    marginTop: 36,
+    marginTop: screenHeight * 0.0443, // Original 36px
   },
   instructionText: {
     fontSize: scaledFontSize(16),
@@ -188,20 +193,20 @@ const styles = StyleSheet.create({
     letterSpacing: 0.32,
   },
   checkboxContainer: {
-    marginBottom: 60,
+    marginBottom: screenHeight * 0.0739, // Original 60px
     alignItems: "flex-start",
     width: "100%",
-    gap: 15,
+    gap: screenHeight * 0.0185, // Original 15px
   },
   checkboxItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 7,
-    paddingRight: 5,
-    paddingLeft: 15,
+    paddingVertical: screenHeight * 0.0086, // Original 7px
+    paddingRight: 5, // Unchanged since horizontal padding
+    paddingLeft: 15, // Unchanged since horizontal padding
     borderRadius: 30,
     backgroundColor: "#fff",
-    marginBottom: 10,
+    marginBottom: screenHeight * 0.0123, // Original 10px
     shadowColor: "#091E42",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
@@ -216,7 +221,7 @@ const styles = StyleSheet.create({
   checkIcon: {
     width: 24,
     height: 24,
-    marginRight: 15,
+    marginRight: 15, // Unchanged
   },
   checkboxText: {
     fontSize: scaledFontSize(12),
@@ -231,7 +236,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "95%",
     height: 40,
-    paddingVertical: 10,
+    paddingVertical: screenHeight * 0.0123, // Original 10px
   },
   buttonActive: {
     backgroundColor: "#333333",
