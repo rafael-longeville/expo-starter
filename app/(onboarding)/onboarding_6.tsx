@@ -210,13 +210,20 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
     }
 
     if (emailNotifications && !email) {
-      Alert.alert("Error", "Please enter your email address.", [
+      Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail", [
         { text: "OK" },
       ]);
       return;
     }
 
-    if (emailNotifications /* && emailRegex.test(email) */) {
+    if (emailNotifications && !emailRegex.test(email)) {
+      Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail valide", [
+        { text: "OK" },
+      ]);
+      return;
+    }
+
+    if (emailNotifications && emailRegex.test(email)) {
       handleEmailUpdate();
       return;
     }
