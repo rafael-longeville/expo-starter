@@ -245,7 +245,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
     <ScrollView
       contentContainerStyle={{
         paddingHorizontal: 30,
-        paddingBottom: screenHeight * 0.0616, // Original 50px
+        height: "100%",
       }}
       automaticallyAdjustKeyboardInsets={true}
     >
@@ -356,27 +356,29 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
               onChange={(e) => setEmail(e.nativeEvent.text)}
             />
           )}
-          <TouchableOpacity
-            style={{ ...styles.button, backgroundColor: "#333333" }}
-            onPress={handlePress}
-          >
-            <Text style={styles.buttonText}>Enregistrer</Text>
-          </TouchableOpacity>
         </View>
       </View>
+      <TouchableOpacity
+        style={{ ...styles.button, backgroundColor: "#333333" }}
+        onPress={handlePress}
+      >
+        <Text style={styles.buttonText}>Enregistrer</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 });
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    height: "100%"
   },
   button: {
-    marginTop: screenHeight * 0.0985, // Original 80px
+    position: "absolute",
+    bottom: 20,
     borderRadius: 25,
+    alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
