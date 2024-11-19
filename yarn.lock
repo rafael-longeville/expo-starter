@@ -4200,9 +4200,9 @@ expo-blur@~13.0.2:
   resolved "https://registry.npmjs.org/expo-blur/-/expo-blur-13.0.2.tgz"
   integrity sha512-t2p7BChO3Reykued++QJRMZ/og6J3aXtSQ+bU31YcBeXhZLkHwjWEhiPKPnJka7J2/yTs4+jOCNDY0kCZmcE3w==
 
-expo-build-properties@^0.12.5:
+expo-build-properties@~0.12.5:
   version "0.12.5"
-  resolved "https://registry.npmjs.org/expo-build-properties/-/expo-build-properties-0.12.5.tgz"
+  resolved "https://registry.yarnpkg.com/expo-build-properties/-/expo-build-properties-0.12.5.tgz#4d6232389f00c846ba37ca5df2c0b5527c2d94ca"
   integrity sha512-donC1le0PYfLKCPKRMGQoixuWuwDWCngzXSoQXUPsgHTDHQUKr8aw+lcWkTwZcItgNovcnk784I0dyfYDcxybA==
   dependencies:
     ajv "^8.11.0"

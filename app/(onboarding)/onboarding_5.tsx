@@ -176,7 +176,6 @@ const Onboarding5: React.FC = () => {
                   {t("pages.onboarding_5.create_wallet_button")}
                 </Text>
               </TouchableOpacity>
-              {/* Bottom Text Link */}
               <TouchableOpacity
                 onPress={() =>
                   router.push(
