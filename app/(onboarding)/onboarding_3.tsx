@@ -133,7 +133,7 @@ const Onboarding3: React.FC = () => {
           <TouchableOpacity
             onPress={() =>
               router.push(
-                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces "
+                "https://docs.wallet.civicpower.org/tout-comprendre/votre-paire-de-cle-dacces"
               )
             }
           >
