@@ -38,18 +38,40 @@ const CustomSwitch: React.FC<{
     if (value || isEmail === true) {
       onValueChange();
     } else if (isEmail === undefined) {
-      const { status } = await Notifications.requestPermissionsAsync();
+      const { status } = await Notifications.getPermissionsAsync();
+  
       if (status === "granted") {
+        // Permission is already granted
         onValueChange();
-      } else {
+      } else if (status === "denied") {
+        // Permission has been denied previously
         Alert.alert(
           "Permission Required",
-          "This app needs permission to show notifications.",
-          [{ text: "OK" }]
+          "This app needs permission to show notifications. Please enable notifications in your device settings.",
+          [
+            { text: "Cancel", style: "cancel" },
+            {
+              text: "Open Settings",
+              onPress: () => Notifications.openSettings(),
+            },
+          ]
         );
+      } else {
+        // Request permission again
+        const { status: newStatus } = await Notifications.requestPermissionsAsync();
+        if (newStatus === "granted") {
+          onValueChange();
+        } else {
+          Alert.alert(
+            "Permission Required",
+            "This app needs permission to show notifications.",
+            [{ text: "OK" }]
+          );
+        }
       }
     }
   };
+  
 
   return (
     <TouchableOpacity
