@@ -202,6 +202,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
   };
 
   const handlePress = () => {
+    // Case 1: Neither emailNotifications nor notifications are enabled
     if (!emailNotifications && !notifications) {
       setIsModalOpen(true);
       setIsBlurred(true);
@@ -209,6 +210,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
       return;
     }
 
+    // Case 2: Email notifications are enabled but email is not provided
     if (emailNotifications && !email) {
       Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail", [
         { text: "OK" },
@@ -216,6 +218,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
       return;
     }
 
+    // Case 3: Email notifications are enabled but the email format is invalid
     if (emailNotifications && !emailRegex.test(email)) {
       Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail valide", [
         { text: "OK" },
@@ -223,22 +226,28 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
       return;
     }
 
+    // Case 4: Email notifications are enabled and the email format is valid
     if (emailNotifications && emailRegex.test(email)) {
       handleEmailUpdate();
       return;
     }
 
+    // Case 5: Notifications are enabled but no email provided, proceed with onboarding
     if (notifications && !email) {
       router.push("/(onboarding)/onboarding_7");
       return;
     }
 
+    // Case 6: Notifications are enabled and the email format is invalid
     if (notifications && !emailRegex.test(email)) {
-      Alert.alert("Error", "Please enter a valid email address.", [
+      Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail valide", [
         { text: "OK" },
       ]);
       return;
     }
+
+    // Case 7: Edge case - If notifications are enabled and email is both valid and provided,
+    // no action is needed, but you might want to handle further logic here (e.g., updating settings)
   };
 
   return (
@@ -372,7 +381,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    height: "100%"
+    height: "100%",
   },
   button: {
     position: "absolute",
