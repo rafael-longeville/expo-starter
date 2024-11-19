@@ -37,6 +37,12 @@ Sentry.init({
   },
 });
 
+Sentry.addBreadcrumb({
+  category: "log",
+  message: "Production log captured",
+  level: "info",
+});
+
 // Prevent the splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync().catch((error) => {
   console.warn("Error preventing splash screen auto hide:", error);

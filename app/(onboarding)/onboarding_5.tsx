@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import { scaledFontSize } from "../styles/globalFonts";
 import { router } from "expo-router";
 import { Passkey, PasskeyCreateRequest } from "react-native-passkey";
+import * as Sentry from "@sentry/react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Onboarding5: React.FC = () => {
@@ -22,164 +23,116 @@ const Onboarding5: React.FC = () => {
 
   const handleCreatePasskey = async (): Promise<void> => {
     try {
+      Sentry.addBreadcrumb({
+        category: "auth",
+        message: "Starting passkey creation process",
+        level: "info",
+      });
+
+      setLoading(true); // Show loader
+
       // Step 1: Request passkey creation options
-      let registrationOptions;
-      try {
-        const signUpResponse = await fetch(
-          "https://api-testnet.ibexwallet.org/auth/passkey",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              type: "SIGN_UP",
-              userName: walletName,
-            }),
-          }
-        );
-
-        if (!signUpResponse.ok) {
-          const errorResponse = await signUpResponse.json();
-          throw new Error(
-            `Error in Step 1 (Passkey creation options): ${
-              signUpResponse.status
-            } - ${JSON.stringify(errorResponse)}`
-          );
+      const signUpResponse = await fetch(
+        "https://api-testnet.ibexwallet.org/auth/passkey",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ type: "SIGN_UP", userName: walletName }),
         }
+      );
 
-        registrationOptions = await signUpResponse.json();
-        console.log(
-          "Received registration options:",
-          registrationOptions.credentialsRequestOptions.publicKey.user
+      if (!signUpResponse.ok) {
+        const errorResponse = await signUpResponse.json();
+        throw new Error(
+          `Error requesting passkey options: ${
+            signUpResponse.status
+          } - ${JSON.stringify(errorResponse)}`
         );
-      } catch (error) {
-        console.error("Error in Step 1 (Passkey creation options):", error);
-        throw error;
       }
+
+      const registrationOptions = await signUpResponse.json();
 
       // Step 2: Create passkey
-      let passkeyResult;
-      try {
-        const passkeyCreationRequest: PasskeyCreateRequest = {
-          challenge:
-            registrationOptions.credentialsRequestOptions.publicKey.challenge,
-          rp: registrationOptions.credentialsRequestOptions.publicKey.rp,
-          user: registrationOptions.credentialsRequestOptions.publicKey.user,
-          pubKeyCredParams:
-            registrationOptions.credentialsRequestOptions.publicKey
-              .pubKeyCredParams,
-        };
+      const passkeyCreationRequest: PasskeyCreateRequest = {
+        challenge:
+          registrationOptions.credentialsRequestOptions.publicKey.challenge,
+        rp: registrationOptions.credentialsRequestOptions.publicKey.rp,
+        user: registrationOptions.credentialsRequestOptions.publicKey.user,
+        pubKeyCredParams:
+          registrationOptions.credentialsRequestOptions.publicKey
+            .pubKeyCredParams,
+      };
 
-        passkeyResult = await Passkey.create(passkeyCreationRequest);
-        console.log("Passkey creation result:", passkeyResult);
-      } catch (error) {
-        if (
-          typeof error === "object" &&
-          error !== null &&
-          "error" in error &&
-          "message" in error
-        ) {
-          const nativeError = error as { error: string; message: string };
-          if (
-            nativeError.error === "Native error" &&
-            nativeError.message.includes(
-              "(com.apple.AuthenticationServices.AuthorizationError error 1001.)"
-            )
-          ) {
-            console.warn("Passkey creation was canceled by the user.");
-            Alert.alert(
-              "Passkey Creation Canceled",
-              "You canceled the passkey creation process. Please try again."
-            );
-            return; // Exit without throwing
-          }
-        }
-        console.error("Error in Step 2 (Passkey creation):", error);
-        throw error; // Re-throw for other errors
-      }
+      const passkeyResult = await Passkey.create(passkeyCreationRequest);
 
       // Step 3: Login with the passkey result
-      let loginData;
-      try {
-        setLoading(true); // Show loader before login process
-        const loginPayload = {
-          rawId: passkeyResult.rawId,
-          response: {
-            attestationObject: passkeyResult.response.attestationObject, // Correct field mapping
-            clientDataJSON: passkeyResult.response.clientDataJSON,
+      const loginPayload = {
+        rawId: passkeyResult.rawId,
+        response: {
+          attestationObject: passkeyResult.response.attestationObject,
+          clientDataJSON: passkeyResult.response.clientDataJSON,
+        },
+        type: "public-key",
+      };
+
+      const loginResponse = await fetch(
+        "https://api-testnet.ibexwallet.org/auth/passkey/login",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-          type: "public-key",
-        };
-
-        console.log(
-          "Corrected Login payload:",
-          JSON.stringify(loginPayload, null, 2)
-        );
-
-        const loginResponse = await fetch(
-          "https://api-testnet.ibexwallet.org/auth/passkey/login",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(loginPayload),
-          }
-        );
-
-        if (!loginResponse.ok) {
-          const errorResponse = await loginResponse.json();
-          console.error("Login response error details:", errorResponse);
-          throw new Error(
-            `Error in Step 3 (Login): ${
-              loginResponse.status
-            } - ${JSON.stringify(errorResponse)}`
-          );
+          body: JSON.stringify(loginPayload),
         }
+      );
 
-        loginData = await loginResponse.json();
-      } catch (error) {
-        console.error("Error in Step 3 (Login):", error);
-        throw error;
-      } finally {
-        setLoading(false); // Hide loader after login process
+      if (!loginResponse.ok) {
+        const errorResponse = await loginResponse.json();
+        throw new Error(
+          `Error logging in: ${loginResponse.status} - ${JSON.stringify(
+            errorResponse
+          )}`
+        );
       }
 
-      // Step 4: Store the JWT token
-      try {
-        await AsyncStorage.setItem("jwt_token", loginData.access_token);
-        console.log("JWT saved successfully in AsyncStorage.");
-        router.push("/(onboarding)/onboarding_6");
-      } catch (error) {
-        console.error("Error in Step 4 (Storing JWT):", error);
-        throw error;
-      }
+      const loginData = await loginResponse.json();
+
+      // Step 4: Store JWT token
+      await AsyncStorage.setItem("jwt_token", loginData.access_token);
+
+      Sentry.addBreadcrumb({
+        category: "auth",
+        message: "JWT token saved successfully",
+        level: "info",
+      });
+
+      router.push("/(onboarding)/onboarding_6");
     } catch (error) {
+      console.error("Passkey creation/login failed:", error);
+      Sentry.captureException(error);
+
       if (
         typeof error === "object" &&
         error !== null &&
-        "error" in error &&
-        "message" in error
+        "message" in error &&
+        //@ts-ignore
+        error.message.includes(
+          "(com.apple.AuthenticationServices.AuthorizationError error 1001.)"
+        )
       ) {
-        const nativeError = error as { error: string; message: string };
-        if (
-          nativeError.error === "Native error" &&
-          nativeError.message.includes(
-            "(com.apple.AuthenticationServices.AuthorizationError error 1001.)"
-          )
-        ) {
-          console.warn("Passkey creation/login was canceled by the user.");
-          Alert.alert(
-            "Operation Canceled",
-            "You canceled the process. Please try again."
-          );
-          return; // Exit without throwing
-        }
+        Alert.alert(
+          "Operation Canceled",
+          "You canceled the process. Please try again."
+        );
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
       }
-      console.error("Passkey creation/login failed:", error);
+    } finally {
+      setLoading(false); // Hide loader
     }
   };
 
