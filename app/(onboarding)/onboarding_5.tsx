@@ -59,22 +59,38 @@ const Onboarding5: React.FC = () => {
       const passkeyCreationRequest: PasskeyCreateRequest = {
         challenge:
           registrationOptions.credentialsRequestOptions.publicKey.challenge,
-        rp: registrationOptions.credentialsRequestOptions.publicKey.rp,
         user: registrationOptions.credentialsRequestOptions.publicKey.user,
+        authenticatorSelection: {
+          authenticatorAttachment: "platform",
+          residentKey: "required",
+          userVerification: "required",
+          requireResidentKey: true,
+        },
+        rp: registrationOptions.credentialsRequestOptions.publicKey.rp,
         pubKeyCredParams:
           registrationOptions.credentialsRequestOptions.publicKey
             .pubKeyCredParams,
       };
 
-      console.log(passkeyCreationRequest);
+      console.log("creation: ", passkeyCreationRequest);
       const passkeyResult = await Passkey.create(passkeyCreationRequest);
+      console.log(
+        "creation result : ",
+        passkeyResult,
+        "type : ",
+        typeof passkeyResult
+      );
+      const parsedResult =
+        typeof passkeyResult === "string"
+          ? JSON.parse(passkeyResult)
+          : passkeyResult;
 
-      // // Step 3: Login with the passkey result
+      // Step 3: Login with the passkey result
       const loginPayload = {
-        rawId: passkeyResult.rawId,
+        rawId: parsedResult.rawId,
         response: {
-          attestationObject: passkeyResult.response.attestationObject,
-          clientDataJSON: passkeyResult.response.clientDataJSON,
+          attestationObject: parsedResult.response.attestationObject,
+          clientDataJSON: parsedResult.response.clientDataJSON,
         },
         type: "public-key",
       };

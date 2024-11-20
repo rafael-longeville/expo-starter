@@ -99,7 +99,7 @@ const Onboarding1: React.FC = () => {
         {t("disclaimer")}
         <Link href={"https://wallet.civicpower.org/terms/"}>
           <Text style={{ textDecorationLine: "underline" }}>
-            {t("disclaimer_link")}.
+            {t("disclaimer_link")}. (v1.1.0)
           </Text>
         </Link>
       </Text>

@@ -44,6 +44,9 @@
             "host": "app-testnet.ibexwallet.org"
           },
           "category": ["BROWSABLE", "DEFAULT"]
+        },
+        {
+          "action": "android.credentials.provider.PASSKEY_PROVIDER"
         }
       ],
       "versionCode": 32
@@ -59,7 +62,9 @@
         "expo-build-properties",
         {
           "android": {
-            "minSdkVersion": 26
+            "targetSdkVersion": 34,
+            "compileSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
           },
           "ios": {
             "extraPods": [
@@ -73,16 +78,7 @@
           }
         }
       ],
-      "expo-localization",
-      [
-        "@sentry/react-native/expo",
-        {
-          "url": "https://sentry.io/",
-          "project": "react-native",
-          "organization": "civicpower"
-        }
-      ],
-      "expo-secure-store"
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true

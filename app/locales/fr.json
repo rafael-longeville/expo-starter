@@ -7,7 +7,7 @@
     },
     "2": {
       "title": "Placez vos fonds dans un compte rémunéré",
-      "subtitle": "PERCEVEZ DES INTÉRETS SUR VOS INTÉRETS, SANS EFFORTS.",
+      "subtitle": "PERCEVEZ DES INTÉRÊTS SUR VOS INTÉRÊTS, SANS EFFORTS.",
       "second_subtitle_1": "Jusqu’à",
       "second_subtitle_2": "4,5% ",
       "second_subtitle_3": "d'intérêts annuels versés tous les jours !"
@@ -53,7 +53,7 @@
       "access_key_importance": "Votre clé d'accès est importante",
       "confirm_checkboxes": "Cochez toutes les cases pour confirmer que vous comprenez l'importance des clés d'accès.",
       "checkbox_1_ios": "Sur votre téléphone, allez dans «Paramètres › Votre compte › iCloud» et activez «Mots de passe et keychain» (pas 1Password), pour activer les clés d'accès.",
-      "checkbox_1_android" : "Une fois le portefueille créé, les moyens d’identifications (empreintes digitales, reconnaissance faciale ou code pin) seront synchronisés avec votre compte Google.",
+      "checkbox_1_android": "Une fois le portefueille créé, les moyens d’identifications (empreintes digitales, reconnaissance faciale ou code pin) seront synchronisés avec votre compte Google.",
       "checkbox_2": "Les clés d'accès vous permettent de récupérer le portefeuille à l'avenir, en cas de perte ou de remplacement de votre appareil.",
       "checkbox_3": "Important : si votre clé d'accès est supprimée (et que vous ne l'avez pas sauvegardée autrement), vous perdez l'accès au portefeuille et aux fonds.",
       "continue_button": "Continuer",
@@ -90,9 +90,37 @@
         "cta_disclaimer": "Offrez-vous une chance supplémentaire d’etre parmis les premiers à profiter des meilleures offres.",
         "input_placeholder": "Votre adresse mail"
       },
-      "save_button": "Enregistrer"
+      "save_button": "Enregistrer",
+      "alerts": {
+        "error_title": "Erreur",
+        "auth_error": "L'utilisateur n'est pas authentifié. Veuillez vous reconnecter.",
+        "email_conflict": "Cette adresse e-mail a déjà été ajoutée.",
+        "update_failed": "Échec de la mise à jour de l'e-mail. Veuillez réessayer.",
+        "enter_email": "Veuillez rentrer une adresse e-mail",
+        "invalid_email": "Veuillez rentrer une adresse e-mail valide",
+        "ok": "OK"
+      }
     },
-
+    "onboarding_7": {
+      "title": "Fil d'attente VIP",
+      "description_1": "Êtes vous prêt à votre souveraineté financière ?",
+      "description_2": {
+        "first": "Vous avez rejoint notre communauté des ",
+        "second": "membres fondateurs ",
+        "third": "déjà forte de plus de ",
+        "fourth": "10000 ",
+        "fifth": "investisseurs souverains"
+      },
+      "description_3": {
+        "title": "Vous bénéficiez :",
+        "bullets": {
+          "bullet_1": "de la version IBEx Wallet Power",
+          "bullet_2": "d'un accès privilégié à l'équipe des fondateurs",
+          "bullet_3": "d'un badge \"Membre fondateur\" sur votre profil"
+        }
+      },
+      "description_4": "Afin de donner satisfaction à tout le monde nous allons ouvrir progressivement la plateforme afin d’éviter des temps d’attente lors de votre inscription complète."
+    },
     "home": {
       "total_balance": "Solde total",
       "balance": "Solde",

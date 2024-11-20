@@ -35,136 +35,115 @@ const PasskeyComponent: React.FC = () => {
   const handleSignIn = async (): Promise<void> => {
     try {
       // Step 1: Request authentication options for sign-in
-      let authenticationOptions;
-      try {
-        const response = await fetch(
-          "https://api-testnet.ibexwallet.org/auth/passkey",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              type: "SIGN_IN",
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          const errorResponse = await response.json();
-          throw new Error(
-            `Error in Step 1 (Authentication options): ${response.status
-            } - ${JSON.stringify(errorResponse)}`
-          );
+      const authOptionsResponse = await fetch(
+        "https://api-testnet.ibexwallet.org/auth/passkey",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ type: "SIGN_IN" }),
         }
+      );
 
-        authenticationOptions = await response.json();
-        console.log("Received authentication options:", authenticationOptions);
-      } catch (error) {
-        console.error("Error in Step 1 (Authentication options):", error);
-        throw error;
+      if (!authOptionsResponse.ok) {
+        const errorResponse = await authOptionsResponse.json();
+        throw new Error(
+          `Error requesting authentication options: ${
+            authOptionsResponse.status
+          } - ${JSON.stringify(errorResponse)}`
+        );
       }
+
+      const authenticationOptions = await authOptionsResponse.json();
+      console.log("Received authentication options:", authenticationOptions);
 
       // Step 2: Use passkey to authenticate
-      let authenticationResult;
-      try {
-        const authenticationRequest: PasskeyGetRequest = {
-          challenge:
-            authenticationOptions.credentialsRequestOptions.publicKey.challenge,
-          rpId: "app-testnet.ibexwallet.org", // Explicitly set rpId if missing
-          userVerification:
-            authenticationOptions.credentialsRequestOptions.publicKey
-              .userVerification,
-        };
+      const authenticationRequest: PasskeyGetRequest = {
+        challenge:
+          authenticationOptions.credentialsRequestOptions.publicKey.challenge,
+        rpId: "app-testnet.ibexwallet.org", // Explicitly set rpId
+        userVerification:
+          authenticationOptions.credentialsRequestOptions.publicKey
+            .userVerification,
+      };
 
-        authenticationResult = await Passkey.get(authenticationRequest);
-        console.log("Authentication result:", authenticationResult);
-      } catch (error) {
-        if (
-          typeof error === "object" &&
-          error !== null &&
-          "error" in error &&
-          "message" in error
-        ) {
-          const nativeError = error as { error: string; message: string }; // Type assertion
-          if (
-            nativeError.error === "Native error" &&
-            nativeError.message.includes(
-              "(com.apple.AuthenticationServices.AuthorizationError error 1001.)"
-            )
-          ) {
-            console.warn("Authentication was canceled by the user.");
-            Alert.alert(
-              "Sign-In Canceled",
-              "You canceled the authentication process. Please try again."
-            );
-            return; // Exit without throwing
-          }
-        }
-        console.error("Error in Step 2 (Passkey authentication):", error);
-        throw error; // Re-throw for other errors
-      }
+      const authenticationResult = await Passkey.get(authenticationRequest);
+      console.log("Authentication result:", authenticationResult);
+
+      const parsedResult =
+        typeof authenticationResult === "string"
+          ? JSON.parse(authenticationResult)
+          : authenticationResult;
 
       // Step 3: Send authentication result to login endpoint
-      let loginData;
-      try {
-        const loginPayload = {
-          authenticatorAttachment: "platform", // Assume platform authenticator
-          clientExtensionResults: {},
-          id: authenticationResult.id,
-          rawId: authenticationResult.rawId,
-          response: {
-            authenticatorData: authenticationResult.response.authenticatorData,
-            clientDataJSON: authenticationResult.response.clientDataJSON,
-            signature: authenticationResult.response.signature,
-            userHandle: authenticationResult.response.userHandle,
+      const loginPayload = {
+        authenticatorAttachment: "platform", // Assume platform authenticator
+        clientExtensionResults: {},
+        id: parsedResult.id,
+        rawId: parsedResult.rawId,
+        response: {
+          authenticatorData: parsedResult.response.authenticatorData,
+          clientDataJSON: parsedResult.response.clientDataJSON,
+          signature: parsedResult.response.signature,
+          userHandle: parsedResult.response.userHandle,
+        },
+        type: "public-key",
+      };
+
+      console.log("Sign-in payload:", JSON.stringify(loginPayload, null, 2));
+
+      const loginResponse = await fetch(
+        "https://api-testnet.ibexwallet.org/auth/passkey/login",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-          type: "public-key",
-        };
-
-        console.log("Sign-in payload:", JSON.stringify(loginPayload, null, 2));
-
-        const loginResponse = await fetch(
-          "https://api-testnet.ibexwallet.org/auth/passkey/login",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(loginPayload),
-          }
-        );
-
-        if (!loginResponse.ok) {
-          const errorResponse = await loginResponse.json();
-          console.error("Login response error details:", errorResponse);
-          throw new Error(
-            `Error in Step 3 (Sign-In): ${loginResponse.status
-            } - ${JSON.stringify(errorResponse)}`
-          );
+          body: JSON.stringify(loginPayload),
         }
+      );
 
-        loginData = await loginResponse.json();
-        console.log("Sign-in response data:", loginData);
-      } catch (error) {
-        console.error("Error in Step 3 (Sign-In):", error);
-        throw error;
+      if (!loginResponse.ok) {
+        const errorResponse = await loginResponse.json();
+        throw new Error(
+          `Error during sign-in: ${loginResponse.status} - ${JSON.stringify(
+            errorResponse
+          )}`
+        );
       }
 
-      // Step 4: Store the JWT token
-      try {
-        await AsyncStorage.setItem("jwt_token", loginData.access_token);
-        console.log("JWT saved successfully in AsyncStorage.");
-        router.push("/(onboarding)/onboarding_7");
-      } catch (error) {
-        console.error("Error in Step 4 (Storing JWT):", error);
-        throw error;
-      }
+      const loginData = await loginResponse.json();
+      console.log("Sign-in response data:", loginData);
+
+      // Step 4: Store JWT token
+      await AsyncStorage.setItem("jwt_token", loginData.access_token);
+
+      router.push("/(onboarding)/onboarding_7");
     } catch (error) {
       console.error("Passkey sign-in failed:", error);
-      showResultAlert("Sign-In Failed", { error });
+
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        //@ts-ignore
+        error.message.includes(
+          "(com.apple.AuthenticationServices.AuthorizationError error 1001.)"
+        )
+      ) {
+        Alert.alert(
+          "Sign-In Canceled",
+          "You canceled the authentication process. Please try again."
+        );
+      } else {
+        Alert.alert(
+          "Error",
+          "An error occurred during sign-in. Please try again."
+        );
+      }
     }
   };
 
