@@ -32,7 +32,14 @@ const PasskeyComponent: React.FC = () => {
     );
   };
 
+  let isSigningIn = false;
+
   const handleSignIn = async (): Promise<void> => {
+    if (isSigningIn) {
+      console.warn("Sign-in already in progress.");
+      return;
+    }
+    isSigningIn = true;
     try {
       // Step 1: Request authentication options for sign-in
       const authOptionsResponse = await fetch(
@@ -139,11 +146,10 @@ const PasskeyComponent: React.FC = () => {
           "You canceled the authentication process. Please try again."
         );
       } else {
-        Alert.alert(
-          "Error",
-          "An error occurred during sign-in. Please try again."
-        );
+        Alert.alert("Error", JSON.stringify(error));
       }
+    } finally {
+      isSigningIn = false;
     }
   };
 
