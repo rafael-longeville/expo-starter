@@ -163,9 +163,9 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
       const token = await AsyncStorage.getItem("jwt_token");
       if (!token) {
         Alert.alert(
-          "Error",
-          "User is not authenticated. Please log in again.",
-          [{ text: "OK" }]
+          t("pages.onboarding_6.alerts.error_title"),
+          t("pages.onboarding_6.alerts.auth_error"),
+          [{ text: t("pages.onboarding_6.alerts.ok") }]
         );
         return;
       }
@@ -189,15 +189,19 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
       if (response.status === 200) {
         router.navigate("/(onboarding)/onboarding_7");
       } else if (response.status === 409) {
-        Alert.alert("Error", "This email address has already been added.", [
-          { text: "OK" },
-        ]);
+        Alert.alert(
+          t("pages.onboarding_6.alerts.error_title"),
+          t("pages.onboarding_6.alerts.email_conflict"),
+          [{ text: t("pages.onboarding_6.alerts.ok") }]
+        );
       }
     } catch (error) {
       console.error("Error updating email:", error);
-      Alert.alert("Error", "Failed to update email. Please try again.", [
-        { text: "OK" },
-      ]);
+      Alert.alert(
+        t("pages.onboarding_6.alerts.error_title"),
+        t("pages.onboarding_6.alerts.update_failed"),
+        [{ text: t("pages.onboarding_6.alerts.ok") }]
+      );
     }
   };
 
@@ -212,17 +216,21 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
     // Case 2: Email notifications are enabled but email is not provided
     if (emailNotifications && !email) {
-      Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail", [
-        { text: "OK" },
-      ]);
+      Alert.alert(
+        t("pages.onboarding_6.alerts.error_title"),
+        t("pages.onboarding_6.alerts.enter_email"),
+        [{ text: t("pages.onboarding_6.alerts.ok") }]
+      );
       return;
     }
 
     // Case 3: Email notifications are enabled but the email format is invalid
     if (emailNotifications && !emailRegex.test(email)) {
-      Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail valide", [
-        { text: "OK" },
-      ]);
+      Alert.alert(
+        t("pages.onboarding_6.alerts.error_title"),
+        t("pages.onboarding_6.alerts.invalid_email"),
+        [{ text: t("pages.onboarding_6.alerts.ok") }]
+      );
       return;
     }
 
@@ -240,9 +248,11 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
 
     // Case 6: Notifications are enabled and the email format is invalid
     if (notifications && !emailRegex.test(email)) {
-      Alert.alert("Erreur", "Veuillez rentrer une adresse e-mail valide", [
-        { text: "OK" },
-      ]);
+      Alert.alert(
+        t("pages.onboarding_6.alerts.error_title"),
+        t("pages.onboarding_6.alerts.invalid_email"),
+        [{ text: t("pages.onboarding_6.alerts.ok") }]
+      );
       return;
     }
 
@@ -371,7 +381,7 @@ const Onboarding6 = forwardRef(({ setIsREF }: any, ref: any) => {
         style={{ ...styles.button, backgroundColor: "#333333" }}
         onPress={handlePress}
       >
-        <Text style={styles.buttonText}>Enregistrer</Text>
+        <Text style={styles.buttonText}>{t("pages.onboarding_6.save_button")}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

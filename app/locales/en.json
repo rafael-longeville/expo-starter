@@ -90,7 +90,21 @@
         "cta_disclaimer": "Give yourself an extra chance to be among the first to enjoy the best offers.",
         "input_placeholder": "Your email address"
       },
-      "save_button": "Save"
+      "save_button": "Save",
+      "alerts": {
+        "error_title": "Error",
+        "auth_error": "User is not authenticated. Please log in again.",
+        "email_conflict": "This email address has already been added.",
+        "update_failed": "Failed to update email. Please try again.",
+        "enter_email": "Please enter an email address.",
+        "invalid_email": "Please enter a valid email address.",
+        "ok": "OK"
+      }
+    },
+    "onboarding_7": {
+      "title": "Waiting Page",
+      "description_1": "Please wait while we verify your account",
+      "description_2": "You will be redirected to the home page shortly. Thank you for your patience, you are almost ready to use your account. We are doing our best to connect you to your IBEx Wallet account as quickly as possible."
     },
     "home": {
       "total_balance": "Total Balance",

@@ -18,6 +18,9 @@
       "distribution": "internal",
       "channel": "development"
     },
+    "staging": {
+      "channel": "staging"
+    },
     "preview": {
       "distribution": "internal",
       "channel": "preview"

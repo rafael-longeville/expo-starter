@@ -2,9 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { globalFonts, scaledFontSize } from "../styles/globalFonts";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 const Onboarding7: React.FC = () => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handlePress = (type: string) => () => {
     switch (type) {
@@ -16,6 +18,8 @@ const Onboarding7: React.FC = () => {
         break;
       case "twitter":
         router.push("https://x.com/ibex_official");
+        break;
+      default:
         break;
     }
   };
@@ -35,7 +39,7 @@ const Onboarding7: React.FC = () => {
           ...styles.title,
         }}
       >
-        Page d'attente
+        {t("pages.onboarding_7.title")}
       </Text>
       <View style={styles.descriptionContainer}>
         <Text
@@ -45,7 +49,7 @@ const Onboarding7: React.FC = () => {
             textAlign: "left",
           }}
         >
-          Veuillez patienter pendant que nous vérifions votre compte
+          {t("pages.onboarding_7.description_1")}
         </Text>
         <Text
           style={{
@@ -54,10 +58,7 @@ const Onboarding7: React.FC = () => {
             textAlign: "left",
           }}
         >
-          Vous allez être redirigé vers la page d'accueil, merci de votre
-          patience, vous êtes bientôt prêt à utiliser votre compte. Nous faisons
-          de notre mieux pour vous connecter le plus rapidement à votre compte
-          IBEx Wallet
+          {t("pages.onboarding_7.description_2")}
         </Text>
       </View>
       <View style={styles.socialsContainer}>
