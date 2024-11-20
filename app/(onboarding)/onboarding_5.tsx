@@ -74,14 +74,23 @@ const Onboarding5: React.FC = () => {
 
       console.log("creation: ", passkeyCreationRequest);
       const passkeyResult = await Passkey.create(passkeyCreationRequest);
-      console.log("creation result: ", passkeyResult);
+      console.log(
+        "creation result : ",
+        passkeyResult,
+        "type : ",
+        typeof passkeyResult
+      );
+      const parsedResult =
+        typeof passkeyResult === "string"
+          ? JSON.parse(passkeyResult)
+          : passkeyResult;
 
       // Step 3: Login with the passkey result
       const loginPayload = {
-        rawId: passkeyResult.rawId,
+        rawId: parsedResult.rawId,
         response: {
-          attestationObject: passkeyResult.response.attestationObject,
-          clientDataJSON: passkeyResult.response.clientDataJSON,
+          attestationObject: parsedResult.response.attestationObject,
+          clientDataJSON: parsedResult.response.clientDataJSON,
         },
         type: "public-key",
       };
