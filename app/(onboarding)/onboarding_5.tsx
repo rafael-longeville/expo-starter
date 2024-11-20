@@ -59,59 +59,66 @@ const Onboarding5: React.FC = () => {
       const passkeyCreationRequest: PasskeyCreateRequest = {
         challenge:
           registrationOptions.credentialsRequestOptions.publicKey.challenge,
-        rp: registrationOptions.credentialsRequestOptions.publicKey.rp,
         user: registrationOptions.credentialsRequestOptions.publicKey.user,
+        authenticatorSelection: {
+          authenticatorAttachment: "platform",
+          residentKey: "required",
+          userVerification: "required",
+          requireResidentKey: true,
+        },
+        rp: registrationOptions.credentialsRequestOptions.publicKey.rp,
         pubKeyCredParams:
           registrationOptions.credentialsRequestOptions.publicKey
             .pubKeyCredParams,
       };
 
-      console.log(passkeyCreationRequest);
+      console.log("creation: ", passkeyCreationRequest);
       const passkeyResult = await Passkey.create(passkeyCreationRequest);
+      console.log("creation result: ", passkeyResult);
 
       // // Step 3: Login with the passkey result
-      const loginPayload = {
-        rawId: passkeyResult.rawId,
-        response: {
-          attestationObject: passkeyResult.response.attestationObject,
-          clientDataJSON: passkeyResult.response.clientDataJSON,
-        },
-        type: "public-key",
-      };
+      // const loginPayload = {
+      //   rawId: passkeyResult.rawId,
+      //   response: {
+      //     attestationObject: passkeyResult.response.attestationObject,
+      //     clientDataJSON: passkeyResult.response.clientDataJSON,
+      //   },
+      //   type: "public-key",
+      // };
 
-      const loginResponse = await fetch(
-        "https://api-testnet.ibexwallet.org/auth/passkey/login",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginPayload),
-        }
-      );
+      // const loginResponse = await fetch(
+      //   "https://api-testnet.ibexwallet.org/auth/passkey/login",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       Accept: "application/json",
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify(loginPayload),
+      //   }
+      // );
 
-      if (!loginResponse.ok) {
-        const errorResponse = await loginResponse.json();
-        throw new Error(
-          `Error logging in: ${loginResponse.status} - ${JSON.stringify(
-            errorResponse
-          )}`
-        );
-      }
+      // if (!loginResponse.ok) {
+      //   const errorResponse = await loginResponse.json();
+      //   throw new Error(
+      //     `Error logging in: ${loginResponse.status} - ${JSON.stringify(
+      //       errorResponse
+      //     )}`
+      //   );
+      // }
 
-      const loginData = await loginResponse.json();
+      // const loginData = await loginResponse.json();
 
-      // Step 4: Store JWT token
-      await AsyncStorage.setItem("jwt_token", loginData.access_token);
+      // // Step 4: Store JWT token
+      // await AsyncStorage.setItem("jwt_token", loginData.access_token);
 
-      Sentry.addBreadcrumb({
-        category: "auth",
-        message: "JWT token saved successfully",
-        level: "info",
-      });
+      // Sentry.addBreadcrumb({
+      //   category: "auth",
+      //   message: "JWT token saved successfully",
+      //   level: "info",
+      // });
 
-      router.push("/(onboarding)/onboarding_6");
+      // router.push("/(onboarding)/onboarding_6");
     } catch (error) {
       console.error("Passkey creation/login failed:", error);
       Sentry.captureException(error);
