@@ -102,9 +102,24 @@
       }
     },
     "onboarding_7": {
-      "title": "Page d'attente",
-      "description_1": "Veuillez patienter pendant que nous vérifions votre compte",
-      "description_2": "Vous allez être redirigé vers la page d'accueil, merci de votre patience, vous êtes bientôt prêt à utiliser votre compte. Nous faisons de notre mieux pour vous connecter le plus rapidement à votre compte IBEx Wallet."
+      "title": "Fil d'attente VIP",
+      "description_1": "Êtes vous prêt à votre souveraineté financière ?",
+      "description_2": {
+        "first": "Vous avez rejoint notre communauté des ",
+        "second": "membres fondateurs ",
+        "third": "déjà forte de plus de ",
+        "fourth": "10000 ",
+        "fifth": "investisseurs souverains"
+      },
+      "description_3": {
+        "title": "Vous bénéficiez :",
+        "bullets": {
+          "bullet_1": "de la version IBEx Wallet Power",
+          "bullet_2": "d'un accès privilégié à l'équipe des fondateurs",
+          "bullet_3": "d'un badge \"Membre fondateur\" sur votre profil"
+        }
+      },
+      "description_4": "Afin de donner satisfaction à tout le monde nous allons ouvrir progressivement la plateforme afin d’éviter des temps d’attente lors de votre inscription complète."
     },
     "home": {
       "total_balance": "Solde total",

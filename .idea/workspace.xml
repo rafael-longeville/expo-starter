@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7e29a71-9e71-4955-9851-d8e06550ce68" name="Changes" comment="" />
+    <list default="true" id="d7e29a71-9e71-4955-9851-d8e06550ce68" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/app/(onboarding)/onboarding_7.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(onboarding)/onboarding_7.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/locales/fr.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/locales/fr.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
