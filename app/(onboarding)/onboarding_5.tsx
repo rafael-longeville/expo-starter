@@ -89,7 +89,7 @@ const Onboarding5: React.FC = () => {
       const loginPayload = {
         rawId: parsedResult.rawId,
         response: {
-          attestationObject: parsedResult.response.attestationObject,
+          authenticatorData: parsedResult.response.authenticatorData,
           clientDataJSON: parsedResult.response.clientDataJSON,
         },
         type: "public-key",
