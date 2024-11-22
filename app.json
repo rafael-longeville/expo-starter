@@ -12,7 +12,7 @@
       "backgroundColor": "#333333"
     },
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.civicpower.ibexwallet",
       "associatedDomains": [
         "webcredentials:app-testnet.ibexwallet.org",

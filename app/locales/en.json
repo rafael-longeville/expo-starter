@@ -2,33 +2,33 @@
   "welcome": "Welcome",
   "splash": {
     "1": {
-      "title": "Manage your money yourself!",
+      "title": "Keep your money yourself!",
       "subtitle": "AND BECOME UNTOUCHABLE: ONLY YOU HAVE ACCESS TO YOUR SECURE WALLET."
     },
     "2": {
       "title": "Place your funds in an interest-bearing account",
       "subtitle": "EARN INTEREST ON YOUR INTEREST, EFFORTLESSLY.",
       "second_subtitle_1": "Up to",
-      "second_subtitle_2": "4.5%",
+      "second_subtitle_2": "4.5% ",
       "second_subtitle_3": "annual interest paid daily!"
     },
     "3": {
       "first_title": "Diversify your investments",
-      "first_subtitle": "ACCESS A RANGE OF PRODUCTS WITH ONE CLICK:",
+      "first_subtitle": "ACCESS A RANGE OF PRODUCTS IN ONE CLICK:",
       "subtitle": "REAL ESTATE, LISTED STOCKS, CRYPTOS, COMMODITIES..."
     }
   },
   "pages": {
     "login": {
       "title": "Welcome",
-      "subtitle": "You’re one step away from creating your sovereign account for free!"
+      "subtitle": "You are one step away from creating your free sovereign account!"
     },
     "settings": {
       "title": "Settings"
     },
     "onboarding_1": {
       "title": "Access your account",
-      "subtitle": "Open or access an existing IBEx Wallet account with one click:",
+      "subtitle": "Open or access an existing IBEx Wallet account in one click:",
       "second_subtitle": "Create your encrypted digital wallet using your fingerprint, face, or access code.",
       "sign-in": "Use an existing wallet",
       "sign-up": "Create my wallet",
@@ -38,52 +38,52 @@
     },
     "onboarding_2": {
       "title": "Create your wallet",
-      "subtitle": "Only you will have access to it.",
+      "subtitle": "Only you will have access.",
       "description": "Create and reconnect to a digital wallet using new identification methods:",
       "fingerprint": "Fingerprint",
       "face_id": "Face ID",
       "pin_code": "Pin Code",
       "icloud_note": "Identification is done automatically via the access key linked to your iCloud account.",
-      "warning": "Do not allow anyone to access your phone and your funds.",
+      "warning": "Do not let anyone access your phone and your funds.",
       "create_wallet_button": "Create my wallet",
-      "private_key_info": "What is a private key"
+      "private_key_info": "What is a private key?"
     },
     "onboarding_3": {
       "security_title": "Security",
       "access_key_importance": "Your access key is important",
-      "confirm_checkboxes": "Check all boxes to confirm you understand the importance of access keys.",
-      "checkbox_1_ios": "On your phone, go to “Settings › Your account › iCloud” and enable “Passwords and keychain” (not 1Password) to activate access keys.",
-      "checkbox_1_android": "Once the wallet is created, identification methods (fingerprints, facial recognition, or PIN code) will be synchronized with your Google account.",
-      "checkbox_2": "Access keys allow you to recover the wallet in the future if your device is lost or replaced.",
-      "checkbox_3": "Important: if your access key is deleted (and you haven't saved it otherwise), you will lose access to the wallet and funds.",
+      "confirm_checkboxes": "Check all the boxes to confirm that you understand the importance of access keys.",
+      "checkbox_1_ios": "On your phone, go to \"Settings › Your Account › iCloud\" and enable \"Passwords and keychain\" (not 1Password), to activate access keys.",
+      "checkbox_1_android": "Once the wallet is created, the identification methods (fingerprints, facial recognition, or pin code) will be synchronized with your Google account.",
+      "checkbox_2": "Access keys allow you to recover the wallet in the future, in case of loss or replacement of your device.",
+      "checkbox_3": "Important: if your access key is deleted (and not saved elsewhere), you lose access to the wallet and funds.",
       "continue_button": "Continue",
-      "private_key_info": "What is a private key"
+      "private_key_info": "What is a private key?"
     },
     "onboarding_4": {
-      "understood_title": "Did you understand well?",
+      "understood_title": "Did you understand?",
       "choose_correct_answer": "Choose the correct answer.",
       "access_key_deletion": "If you delete the access key...",
-      "option_recover_wallet": "I could still recover my wallet",
-      "option_lose_access": "I would no longer be able to connect to my wallet and would lose access to my funds.",
+      "option_recover_wallet": "I can still recover my wallet",
+      "option_lose_access": "I will no longer be able to access my wallet and lose access to my funds.",
       "incorrect_answer": "Incorrect answer, please try again.",
       "verify_answer": "Verify my answer",
-      "private_key_info": "What is a private key"
+      "private_key_info": "What is a private key?"
     },
     "onboarding_5": {
       "title": "Create your wallet",
       "label": "Give it a name:",
       "placeholder": "Enter a name",
-      "access_text": "Only you will have access to it.",
+      "access_text": "Only you will have access.",
       "create_wallet_button": "Create my wallet",
-      "private_key_info": "What is a private key"
+      "private_key_info": "What is a private key?"
     },
     "onboarding_6": {
       "title": "Enable notifications",
       "subtitle": "First come, first served...",
       "push": {
         "cta": "Enable notifications on your phone?",
-        "cta_disclaimer": "Stay ahead of the game!",
-        "cta_disclaimer_2": "Be notified when the app is available and seize the best investment opportunities before anyone else."
+        "cta_disclaimer": "Stay ahead!",
+        "cta_disclaimer_2": "Be notified when the app is available and take advantage of the best investment opportunities before anyone else."
       },
       "mail": {
         "cta": "Enable email notifications?",
@@ -93,35 +93,50 @@
       "save_button": "Save",
       "alerts": {
         "error_title": "Error",
-        "auth_error": "User is not authenticated. Please log in again.",
+        "auth_error": "The user is not authenticated. Please log in again.",
         "email_conflict": "This email address has already been added.",
         "update_failed": "Failed to update email. Please try again.",
-        "enter_email": "Please enter an email address.",
-        "invalid_email": "Please enter a valid email address.",
+        "enter_email": "Please enter an email address",
+        "invalid_email": "Please enter a valid email address",
         "ok": "OK"
       }
     },
     "onboarding_7": {
-      "title": "Waiting Page",
-      "description_1": "Please wait while we verify your account",
-      "description_2": "You will be redirected to the home page shortly. Thank you for your patience, you are almost ready to use your account. We are doing our best to connect you to your IBEx Wallet account as quickly as possible."
+      "title": "VIP Queue",
+      "description_1": "Are you ready for your financial sovereignty?",
+      "description_2": {
+        "first": "You have joined our community of ",
+        "second": "founding members ",
+        "third": "now over ",
+        "fourth": "10,000 ",
+        "fifth": "sovereign investors strong"
+      },
+      "description_3": {
+        "title": "You benefit from:",
+        "bullets": {
+          "bullet_1": "the IBEx Wallet Power version",
+          "bullet_2": "privileged access to the founding team",
+          "bullet_3": "a \"Founding Member\" badge on your profile"
+        }
+      },
+      "description_4": "To ensure satisfaction for everyone, we will gradually open the platform to avoid wait times during your full registration."
     },
     "home": {
       "total_balance": "Total Balance",
       "balance": "Balance",
       "on_main_account": "Main Account",
-      "on_investments": "Interest-bearing Accounts",
+      "on_investments": "Interest-Bearing Accounts",
       "your_main_account": "Main Account",
-      "your_investment_account": "Interest-bearing Accounts",
+      "your_investment_account": "Interest-Bearing Accounts",
       "details": "Details",
-      "hide_details": "Hide",
+      "hide_details": "Hide ",
       "including_gains": "Including gains",
       "transactions": {
-        "title": "Your Transaction History",
+        "title": "Your transaction history",
         "in_progress": "In progress",
-        "seeAll": "View All",
+        "seeAll": "See all",
         "no_transactions_1": "You haven't made any transactions yet.",
-        "no_transactions_2": "Fund your main account or make an investment to start.",
+        "no_transactions_2": "Fund your main account or make an investment to get started.",
         "copied": "Copied",
         "copied_link": "A link to the transaction has been copied to your clipboard"
       }
@@ -130,18 +145,18 @@
       "title": "My Account",
       "rate_wallet": {
         "title": "Rate IBEx Wallet",
-        "href": "https://moncomptesouverain.fr/"
+        "href": "https://mysovereignaccount.com/"
       },
       "help_center": {
         "title": "Help Center",
-        "href": "https://moncomptesouverain.fr/"
+        "href": "https://mysovereignaccount.com/"
       },
       "contact_us": {
         "title": "Contact Us",
-        "href": "https://moncomptesouverain.fr/"
+        "href": "https://mysovereignaccount.com/"
       },
-      "make_a_donation": "Make a Donation",
-      "public_adress": "Your IBEx Wallet Public Address",
+      "make_a_donation": "Make a donation",
+      "public_adress": "Your IBEx Wallet public address",
       "disconnect": "Log out",
       "show_qr_code": "Show QR code",
       "close": "Close"
@@ -165,72 +180,72 @@
   },
   "pop-ups": {
     "stay_updated": {
-      "title": "Stay up to date!",
+      "title": "Stay updated!",
       "subtitle": "Swipe down to refresh.",
       "disclaimer": {
-        "description": "Amounts are rounded to the hundredth (2 decimal places).",
+        "description": "Amounts are rounded to the nearest cent (2 decimal places).",
         "link": "Learn more.",
-        "href_link": "https://moncomptesouverain.fr/"
+        "href_link": "https://mysovereignaccount.com/"
       },
       "button": "Got it"
     },
     "onboarding_notifications": {
       "title": "Warning",
-      "description": "You have not enabled any notifications, you may miss the app launch and its best offers.",
+      "description": "You haven't enabled any notifications, so you may miss the app launch and its best offers.",
       "button": "Enable smartphone notifications",
       "continue_without": "Continue without notifications"
     },
     "good_answer": {
       "title": "Correct answer!",
       "description": "If your access key is deleted, you lose access to your wallet.",
-      "button": "Got it, continue"
+      "button": "Understood, continue"
     },
     "bad_answer": {
-      "title": "Incorrect answer",
-      "description": "Carefully read the explanations on access keys before answering the quiz.",
+      "title": "Wrong answer",
+      "description": "Read the explanations about access keys carefully before taking the quiz again.",
       "button": "Try again"
     },
     "main_account": {
       "title": "Your main account",
-      "description_1": "Be the real owner of your funds; only you can interact with your sovereign Main Account.",
+      "description_1": "Be the true owner of your funds; only you can interact with your sovereign Main Account.",
       "description_2": "You can transfer money from it to your interest-bearing accounts.",
       "link": "Learn more.",
-      "href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/dollar",
+      "href_link": "https://docs.wallet.civicpower.org/start-here/available-investments/dollar",
       "button": "Got it"
     },
     "investment_account": {
       "title": "Your investments",
-      "description_1": "This investment functions like a savings account, but better!",
+      "description_1": "This investment acts like a savings account, but better!",
       "description_2": "Lock your funds and earn interest from the first minute. Withdraw anytime.",
       "disclaimer": "Estimated annual yield, not guaranteed.",
       "link": "Learn more.",
-      "DOLLAR US_href_link": "https://docs.wallet.civicpower.org/commencer-ici/les-investissements-disponible/fond-en-dollar",
-      "EURO_href_link": "https://docs.wallet.civicpower.org/fr-fr/placements/compte_courant_usd/",
+      "DOLLAR US_href_link": "https://docs.wallet.civicpower.org/start-here/available-investments/us-dollar-fund",
+      "EURO_href_link": "https://docs.wallet.civicpower.org/en-us/investments/savings_account_usd/",
       "button": "Got it"
     },
     "transaction": {
       "home": {
         "swap_cc_to_usd": {
-          "title": "This operation requires your attention",
-          "message": "You will transfer {{amount}} € from your Main Account to the US DOLLAR interest-bearing Account.",
+          "title": "This action requires your attention",
+          "message": "You will move {{amount}} € from your Main Account to the DOLLAR US interest-bearing account.",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
         "swap_cc_to_euro": {
-          "title": "This operation requires your attention",
-          "message": "You will transfer {{amount}} € from your Main Account to the EURO interest-bearing Account.",
+          "title": "This action requires your attention",
+          "message": "You will move {{amount}} € from your Main Account to the EURO interest-bearing account.",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
         "swap_usd_to_cc": {
-          "title": "This operation requires your attention",
-          "message": "You will transfer {{amount}} € from the US DOLLAR investment to your Main Account.",
+          "title": "This action requires your attention",
+          "message": "You will move {{amount}} € from the DOLLAR US placement to your Main Account.",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
         "swap_euro_to_cc": {
-          "title": "This operation requires your attention",
-          "message": "You will transfer {{amount}} € from the EURO investment to your Main Account.",
+          "title": "This action requires your attention",
+          "message": "You will move {{amount}} € from the EURO placement to your Main Account.",
           "confirm": "Confirm",
           "cancel": "Cancel"
         },
@@ -239,15 +254,15 @@
     },
     "inactivity": {
       "title": "Session expired",
-      "message": "You have been inactive for more than 5 minutes. Please sign in again."
+      "message": "You have been inactive for more than 5 minutes. Please log in again."
     }
   },
   "onramp": {
     "title": "Fund your account",
-    "subtitle": "Place your funds in your Main Account via credit card, Apple Pay, or Google Pay."
+    "subtitle": "Place funds in your Main Account via credit card, Apple Pay, or Google Pay."
   },
   "offramp": {
     "title": "Withdraw from your account",
-    "subtitle": "You can retrieve funds from your account by withdrawing via credit card, bank transfer, or Google Pay."
+    "subtitle": "You can retrieve funds from your account via credit card, bank transfer, or Google Pay."
   }
 }
