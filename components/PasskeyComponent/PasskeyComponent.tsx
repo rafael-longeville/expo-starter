@@ -35,13 +35,22 @@ const PasskeyComponent: React.FC = () => {
   let isSigningIn = false;
 
   const handleSignIn = async (): Promise<void> => {
+    // Check if passkeys are supported before proceeding
+    const isSupported = Passkey.isSupported();
+    if (!isSupported) {
+      Alert.alert(
+        "Passkeys Not Supported",
+        "Your device does not support passkeys. Please use another method."
+      );
+      return;
+    }
+
     if (isSigningIn) {
       console.warn("Sign-in already in progress.");
       return;
     }
     isSigningIn = true;
     try {
-      // Step 1: Request authentication options for sign-in
       const authOptionsResponse = await fetch(
         "https://api-testnet.ibexwallet.org/auth/passkey",
         {
@@ -66,11 +75,10 @@ const PasskeyComponent: React.FC = () => {
       const authenticationOptions = await authOptionsResponse.json();
       console.log("Received authentication options:", authenticationOptions);
 
-      // Step 2: Use passkey to authenticate
       const authenticationRequest: PasskeyGetRequest = {
         challenge:
           authenticationOptions.credentialsRequestOptions.publicKey.challenge,
-        rpId: "app-testnet.ibexwallet.org", // Explicitly set rpId
+        rpId: "app-testnet.ibexwallet.org",
         userVerification:
           authenticationOptions.credentialsRequestOptions.publicKey
             .userVerification,
@@ -84,9 +92,8 @@ const PasskeyComponent: React.FC = () => {
           ? JSON.parse(authenticationResult)
           : authenticationResult;
 
-      // Step 3: Send authentication result to login endpoint
       const loginPayload = {
-        authenticatorAttachment: "platform", // Assume platform authenticator
+        authenticatorAttachment: "platform",
         clientExtensionResults: {},
         id: parsedResult.id,
         rawId: parsedResult.rawId,
@@ -125,7 +132,6 @@ const PasskeyComponent: React.FC = () => {
       const loginData = await loginResponse.json();
       console.log("Sign-in response data:", loginData);
 
-      // Step 4: Store JWT token
       await AsyncStorage.setItem("jwt_token", loginData.access_token);
 
       router.push("/(onboarding)/onboarding_7");
@@ -156,7 +162,17 @@ const PasskeyComponent: React.FC = () => {
   return (
     <>
       <CreateWithPasskey
-        onPressFunction={() => router.push("/(onboarding)/onboarding_2")}
+        onPressFunction={() => {
+          const isSupported = Passkey.isSupported();
+          if (!isSupported) {
+            Alert.alert(
+              "Passkeys Not Supported",
+              "Your device does not support passkeys. Please use another method."
+            );
+            return;
+          }
+          router.push("/(onboarding)/onboarding_2");
+        }}
       />
       <ConnectWithPasskey onPressFunction={handleSignIn} />
     </>
