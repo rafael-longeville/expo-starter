@@ -147,10 +147,7 @@ const PasskeyComponent: React.FC = () => {
           "(com.apple.AuthenticationServices.AuthorizationError error 1001.)"
         )
       ) {
-        Alert.alert(
-          "Sign-In Canceled",
-          "You canceled the authentication process. Please try again."
-        );
+        console.log("Sign in canceled")
       } else {
         Alert.alert("Error", JSON.stringify(error));
       }
